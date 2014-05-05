@@ -448,6 +448,8 @@ public interface ServidorMapper {
     @Select(value = "SELECT ser_cod      AS ser_cod, " +
             "  dni                AS dni,    "+
             "  ser_cod_ant        AS codAnt,"+
+            "  abv_est            AS abrevEst,"+
+            "  des_abr_tip_ser    AS abrevTip,"+
             "  ser_ape_pat        AS apePat, " +
             "  ser_ape_mat        AS apeMat, " +
             "  ser_nom            AS nom, "+
@@ -460,6 +462,8 @@ public interface ServidorMapper {
             @Result(property = "codigo", column = "ser_cod"),
             @Result(property = "numDoc", column = "dni"),
             @Result(property = "codAnt", column = "codAnt"),
+            @Result(property = "abv_est", column = "abrevEst"),
+            @Result(property = "abv_tip_ser", column = "abrevTip"),
             @Result(property = "paterno", column = "apePat"),
             @Result(property = "materno", column = "apeMat"),
             @Result(property = "nombre", column = "nom"),

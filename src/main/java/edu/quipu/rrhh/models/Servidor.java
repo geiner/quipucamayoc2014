@@ -47,6 +47,24 @@ public class Servidor implements Serializable {
     private String estadoTrabaActual;
     private String codAnt;
     private String categoria;
+    private String abv_est;
+    private String abv_tip_ser;
+
+    public String getAbv_est() {
+        return abv_est;
+    }
+
+    public void setAbv_est(String abv_est) {
+        this.abv_est = abv_est;
+    }
+
+    public String getAbv_tip_ser() {
+        return abv_tip_ser;
+    }
+
+    public void setAbv_tip_ser(String abv_tip_ser) {
+        this.abv_tip_ser = abv_tip_ser;
+    }
 
     public String getCategoria() {
         return categoria;

@@ -174,7 +174,7 @@
 
 <div class="tab-pane" id="1B">
 
-    <form class="form-horizontal well" id="tercerForm" onsubmit="return false;">
+    <form class="form-horizontal well" id="tercerForm" onsubmit="return false">
         <div class="row form-group">
             <div class="col-md-2 col-md-offset-1">
                 <label class="control-label"> Buscar por :</label>
@@ -210,7 +210,7 @@
                         <input type="text" class="form-control" id="busca-resol" autocomplete="off">
                         <span class="input-group-btn">
 
-                            <a id="buscaAnio" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></a>
+                            <button id="buscaAnio" class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                         </span>
                     </div>
 
@@ -302,7 +302,7 @@
     <br/>
 
     <div class="btn-group col-md-2 pull-right">
-        <form action="/rest/reportes/resoluciones/reporteresoluciones/pdf" method="POST" id="form_reporte" style="display: none">
+        <form action="rest/reportes/resoluciones/reporteresoluciones/pdf" method="POST" id="form_reporte" style="display: none">
             <input type="hidden" style="display: none" id="codigo" name="codigo">
             <input type="hidden" style="display: none" id="numserest" name="numserest">
             <input type="hidden" style="display: none" id="cod_serv" name="cod_serv">
@@ -395,7 +395,7 @@
     </div>
 </div>
 ​
-
+</div>
 
 </fieldset>
 
