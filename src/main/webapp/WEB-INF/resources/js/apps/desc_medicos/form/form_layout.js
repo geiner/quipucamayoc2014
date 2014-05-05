@@ -1,15 +1,22 @@
-define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/resoluciones/form/view/servidor-view','lib/bootstrap-datetimepicker.min',"lib/moment",
-        "lib/jquery.dataTables.min","jquery","lib/bootstrap-datepicker","bootstrap"],
-    function (ErzaManager, layoutTpl,listaServView) {
+define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/resoluciones/form/view/servidor-view','apps/desc_medicos/form/model/save_descanso',
+        'apps/desc_medicos/form/view/descansos_serv','lib/bootstrap-datetimepicker.min',"lib/moment","lib/jquery.dataTables.min","jquery","lib/bootstrap-datepicker","bootstrap"],
+    function (ErzaManager, layoutTpl,listaServView,addDescanso,DescansosServ) {
         ErzaManager.module('DescansoMedicoApp.list.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
                 template: layoutTpl,
 
                 listaServView:new listaServView(),
+                descansosServ:new DescansosServ(),
+
+
+                //variables globales
+                dni:null,
+                numserest:null,
 
                 regions:{
-                   listServ:"#list_serv_reg"
+                   listServ:"#list_serv_reg",
+                   regiontabladescansos:"#table-descansos"
                 },
                 events:{
                   "click #serv_desc_med":"lista_servidor",
@@ -31,8 +38,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
 
                     this.model.set({
-
-
+                        "addDescanso":new addDescanso()
                     });
                 },
                 initialFetch: function(){
@@ -69,6 +75,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 },
 
                 hide_lista_serv:function(e){
+                    var self=this;
                     var clickedElement= $(e.currentTarget);
 
                     var dni_serv=clickedElement.children(':nth-child(2)').text();
@@ -77,6 +84,9 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     var estado_serv=clickedElement.children(':nth-child(6)').text();
                     var abv_est=clickedElement.attr('data3');
                     var abv_tip=clickedElement.attr('data4');
+
+                    this.dni=dni_serv;
+                    this.numserest=clickedElement.children(':nth-child(7)').text()
 
 
 
@@ -88,6 +98,16 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                    $("#reg_descrip").show();
                     $("#footer_med").show();
                     $("#list_serv_reg").modal("hide");
+                    self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                        if(self.descansosServ.collection.length!=0){
+                            $("#table-descansos-servidor").dataTable();
+                            $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+                        }
+                    })
+                    self.regiontabladescansos.show(self.descansosServ)
                 },
                 show_fech_med:function(){
                     var med_inicio = $('#fech_ini_med');
@@ -116,7 +136,47 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     $("#fech_fin_med").val("");
                 },
                 fun_save_descMed:function(){
-                 alert("Guardar");
+                    var self=this;
+                    alert("codigo y numser"+this.dni+"-"+this.numserest);
+
+                    self.model.get("addDescanso").set({
+                        "id_serv":self.dni,
+                        "numserest":parseInt(self.numserest),
+                        "citt": $("#citt").val(),
+                        "f_inicio": $("#fech_ini_med").val(),
+                        "f_fin":  $("#fech_fin_med").val(),
+                        "tipo_lic": $("#tipo_lic").val()
+                    });
+
+                    self.model.get("addDescanso").url = "rest/descansos/addDescanso";
+
+                    var self_s = self.model.get("addDescanso").save({}, {wait: true});
+
+                    self_s.done(function(){
+                        self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                            if(self.descansosServ.collection.length!=0){
+                                $("#table-descansos-servidor").dataTable();
+                                $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                $('.dataTables_filter input').attr('placeholder','Buscar..');
+                            }
+                        })
+                        self.regiontabladescansos.show(self.descansosServ)
+                    });
+                    self_s.fail(function(){
+                        self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                           if(self.descansosServ.collection.length!=0){
+                               $("#table-descansos-servidor").dataTable();
+                               $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                               $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                               $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                               $('.dataTables_filter input').attr('placeholder','Buscar..');
+                           }
+                        })
+                        self.regiontabladescansos.show(self.descansosServ)
+                    })
+
                 }
 
             });

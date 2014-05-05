@@ -1,89 +1,111 @@
 <fieldset>
     <legend>Descansos Médicos</legend>
 
-    <div class="row ">
-        <div class="col-md-12">
-            <button id="serv_desc_med" class="btn btn-primary pull-right"  type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
+    <div id="advertencia" class="alert alert-warning" style="text-align:center;display:none;"></div>
 
-        </div>
-    </div>
-    <br>
-    <div class="row" id="reg_descrip" style="display: none;">
-        <div class="col-md-2">
-            <strong style="font-size: 18px;">DNI:<strong id="dni_serv" style="font-size: 16px;color: #00585f;"></strong></strong>
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#1A" class="a" data-toggle="tab">Registrar Descansos Medicos</a></li>
 
-        </div>
-        <div class="col-md-4">
-            <strong style="font-size: 18px;">Servidor:<strong id="descrip_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+            <li class=""><a href="#1B" class="b" data-toggle="tab">Reportes</a></li>
+            <a class="btn btn-primary pull-right" id="serv_desc_med" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
 
-        </div>
-        <div class="col-md-3">
-            <strong style="font-size: 18px;">Cod Antiguo:<strong id="codAnt_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+        </ul>
 
-        </div>
-        <div class="col-md-3">
-            <strong style="font-size: 18px;">Estado:<strong id="estado_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+        <div class="tab-content">
+            <br>
 
-        </div>
-    </div>
-    <br>
-    <form class="form-horizontal well" onsubmit="return false">
+            <div class="row" id="reg_descrip" style="display: none;">
+                <div class="col-md-2">
+                    <strong style="font-size: 18px;">DNI:<strong id="dni_serv" style="font-size: 16px;color: #00585f;"></strong></strong>
 
-      <div class="row form-group">
-          <div class="col-md-6">
-              <label class="col-md-5 control-label">C.I.T.T</label>
-             <div class="col-md-7">
-                 <input type="text" class="form-control">
-             </div>
-          </div>
-      </div>
-      <div class="row form-group">
-          <div class="col-md-6">
-              <label class="col-md-5 control-label">Fecha Inicial</label>
-              <div class="col-md-7">
-                  <div class="input-group">
-                      <input type="text" value="" id="fech_ini_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
+                </div>
+                <div class="col-md-4">
+                    <strong style="font-size: 18px;">Servidor:<strong id="descrip_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+
+                </div>
+                <div class="col-md-3">
+                    <strong style="font-size: 18px;">Cod Antiguo:<strong id="codAnt_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+
+                </div>
+                <div class="col-md-3">
+                    <strong style="font-size: 18px;">Estado:<strong id="estado_serv" style="font-size: 16px; color: #00585f;"></strong></strong>
+
+                </div>
+            </div>
+            <br>
+            <div class="tab-pane active" id="1A">
+                <form class="form-horizontal well" onsubmit="return false">
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label class="col-md-5 control-label">C.I.T.T</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="citt">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label class="col-md-5 control-label">Fecha Inicial</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <input type="text" value="" id="fech_ini_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
                         <span class="input-group-btn">
                                <button class="btn btn-default" id="show_fech_inic" type="button"><span class="glyphicon glyphicon-calendar"></span></button>
                         <button class="btn btn-default" id="clear_inicio" type="button" ><span class="glyphicon glyphicon-refresh"></span> </button>
                         </span>
 
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-6">
-              <label class="col-md-5 control-label">Fecha Final</label>
-              <div class="col-md-7">
-                  <div class="input-group">
-                      <input type="text" value="" id="fech_fin_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-md-5 control-label">Fecha Final</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <input type="text" value="" id="fech_fin_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
                         <span class="input-group-btn">
                                <button class="btn btn-default" id="show_fech_fin" type="button"><span class="glyphicon glyphicon-calendar"></span></button>
                         <button class="btn btn-default" id="clear_fin" type="button" ><span class="glyphicon glyphicon-refresh"></span> </button>
                         </span>
 
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="row form-group">
-         <div class="col-md-6">
-             <label class="col-md-5 control-label">Tipo de Licencia</label>
-             <div class="col-md-7">
-                <select class="form-control">
-                    <option>Seleccione Licencia</option>
-                    <option>ENFERMEDAD</option>
-                    <option>MATERNIDAD</option>
-                </select>
-             </div>
-         </div>
-      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label class="col-md-5 control-label">Tipo de Licencia</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="tipo_lic">
+                                    <option>Seleccione Licencia</option>
+                                    <option>ENFERMEDAD</option>
+                                    <option>MATERNIDAD</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-        <hr>
-        <div class="form-actions" id="footer_med" style="text-align:center;display:none;">
-            <button type="submit" class="btn btn-primary left" id="save_med">Guardar</button>
-            <button type="reset" class="btn btn-default left" id="cancel_med">Cancelar</button>
+                    <hr>
+                    <div class="form-actions" id="footer_med" style="text-align:center;display:none;">
+                        <button type="submit" class="btn btn-primary left" id="save_med">Guardar</button>
+                        <button type="reset" class="btn btn-default left" id="cancel_med">Cancelar</button>
+                    </div>
+                </form>
+                <br>
+                <form class="form-horizontal" id="form_tabla_descansos">
+                    <div id="table-descansos">
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="1B">
+                <h1>formularios para descargar</h1>
+            </div>
         </div>
-    </form>
+    </div>
+
 </fieldset>
 
 <div id="list_serv_reg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

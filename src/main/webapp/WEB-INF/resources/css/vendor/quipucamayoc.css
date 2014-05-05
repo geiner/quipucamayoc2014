@@ -674,3 +674,42 @@
 }
 
 
+#table-descansos-servidor_length{
+    display:none;
+}
+
+#table-descansos-servidor_paginate{
+    position: absolute;
+    margin-top: -17px;
+    left: 52%;
+}
+#table-descansos-servidor_info{
+    float: left;
+    margin-top: -12px;
+    margin-left: 18px;
+    font-size: 10px;
+    color: rgb(2, 2, 2);
+}
+#fam_content>tr{
+    cursor: pointer;
+}
+
+#table-descansos-servidor_previous{
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}
+#table-descansos-servidor_next{
+    cursor: pointer;
+    margin-left: 19px;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}
