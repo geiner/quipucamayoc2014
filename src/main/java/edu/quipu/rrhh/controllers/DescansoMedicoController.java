@@ -11,9 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * Created by GEINER on 05/05/2014.
- */
 
 @Controller
 @RequestMapping(value = "/rest/descansos")
@@ -39,5 +36,16 @@ public class DescansoMedicoController {
         System.out.println(numserest);
         return descansoservice.buscarDescansos(codigo, numserest);
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, /*consumes = "application/json",*/produces = "application/json", value = "/deleteDescansoMed/{idDesc}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public String eliminarDescaMed(@PathVariable(value = "idDesc") Integer  idDesc) {
+        System.out.println("controller"+idDesc);
+
+        descansoservice.removeDescMed(idDesc);
+        return "delete" +idDesc;
+    }
+
 
 }

@@ -19,11 +19,16 @@ public class DescansoServiceImpl implements DescansoService {
 
     @Override
     public void addDescanso(DescansoMedico descansomedico) {
-        descansoMapper.addDescanso(descansomedico.getId_serv(),descansomedico.getNumserest(),descansomedico.getCitt(),descansomedico.getF_inicio(),descansomedico.getF_fin(),descansomedico.getTipo_lic());
+        descansoMapper.addDescanso(descansomedico.getId_serv(),descansomedico.getNumserest(),descansomedico.getCitt(),descansomedico.getF_inicio(),descansomedico.getF_fin(),descansomedico.getTipo_lic(),descansomedico.getTiempo());
     }
 
     @Override
     public List<DescansoMedico> buscarDescansos(String codigo, Integer numserest) {
         return descansoMapper.buscarDescansos(codigo,numserest);
+    }
+
+    @Override
+    public void removeDescMed(Integer idDesc) {
+        descansoMapper.removeDescMed(idDesc);
     }
 }

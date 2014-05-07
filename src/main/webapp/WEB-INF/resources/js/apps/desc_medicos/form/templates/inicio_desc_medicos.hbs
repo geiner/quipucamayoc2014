@@ -1,7 +1,7 @@
 <fieldset>
     <legend>Descansos Médicos</legend>
 
-    <div id="advertencia" class="alert alert-warning" style="text-align:center;display:none;"></div>
+    <div id="descMed_message" class="alert" style="text-align:center;display:none;"></div>
 
     <div class="tabbable">
         <ul class="nav nav-tabs">
@@ -39,7 +39,7 @@
 
                     <div class="row form-group">
                         <div class="col-md-6">
-                            <label class="col-md-5 control-label">C.I.T.T</label>
+                            <label class="col-md-5 control-label">C.I.T.T <span style="color:red;">*</span></label>
                             <div class="col-md-7">
                                 <input type="text" class="form-control" id="citt">
                             </div>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-md-6">
-                            <label class="col-md-5 control-label">Fecha Inicial</label>
+                            <label class="col-md-5 control-label">Fecha Inicial <span style="color:red;">*</span></label>
                             <div class="col-md-7">
                                 <div class="input-group">
                                     <input type="text" value="" id="fech_ini_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="col-md-5 control-label">Fecha Final</label>
+                            <label class="col-md-5 control-label">Fecha Final <span style="color:red;">*</span></label>
                             <div class="col-md-7">
                                 <div class="input-group">
                                     <input type="text" value="" id="fech_fin_med" class="form-control" placeholder="Ejm. 11/05/2004" readonly="">
@@ -75,12 +75,12 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-md-6">
-                            <label class="col-md-5 control-label">Tipo de Licencia</label>
+                            <label class="col-md-5 control-label">Tipo de Licencia <span style="color:red;">*</span></label>
                             <div class="col-md-7">
                                 <select class="form-control" id="tipo_lic">
-                                    <option>Seleccione Licencia</option>
-                                    <option>ENFERMEDAD</option>
-                                    <option>MATERNIDAD</option>
+                                    <option value="0">Seleccione Licencia</option>
+                                    <option value="1">ENFERMEDAD</option>
+                                    <option value="2">MATERNIDAD</option>
                                 </select>
                             </div>
                         </div>
@@ -90,6 +90,10 @@
                     <div class="form-actions" id="footer_med" style="text-align:center;display:none;">
                         <button type="submit" class="btn btn-primary left" id="save_med">Guardar</button>
                         <button type="reset" class="btn btn-default left" id="cancel_med">Cancelar</button>
+                    </div>
+                    <div class="form-actions" id="act_med" style="text-align:center;display:none;">
+                        <button type="submit" class="btn btn-primary left" id="update_med">Actualizar</button>
+                        <button type="reset" class="btn btn-default left" id="update_cancel">Cancelar</button>
                     </div>
                 </form>
                 <br>
@@ -109,5 +113,28 @@
 </fieldset>
 
 <div id="list_serv_reg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<div id="show_eliminar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>¿Esta seguro de eliminar C.I.I.T ?</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="delete-med" data-dismiss="modal">Aceptar</button>
+            </div>
+
+        </div>
+    </div>
 
 </div>

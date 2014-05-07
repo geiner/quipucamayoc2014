@@ -12,6 +12,15 @@ public class DescansoMedico {
     private String f_inicio;
     private String f_fin;
     private String tipo_lic;
+    private String tiempo;
+
+    public String getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
+    }
 
     public String getId_serv() {
         return id_serv;

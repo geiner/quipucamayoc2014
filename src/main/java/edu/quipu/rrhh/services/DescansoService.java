@@ -11,4 +11,6 @@ public interface DescansoService {
     void addDescanso(DescansoMedico descansomedico);
 
     List<DescansoMedico> buscarDescansos(String codigo, Integer numserest);
+
+    void removeDescMed(Integer idDesc);
 }

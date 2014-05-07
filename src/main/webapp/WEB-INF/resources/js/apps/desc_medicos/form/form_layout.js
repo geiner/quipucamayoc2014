@@ -14,6 +14,9 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 dni:null,
                 numserest:null,
 
+                idDescMed:null,
+
+
                 regions:{
                    listServ:"#list_serv_reg",
                    regiontabladescansos:"#table-descansos"
@@ -25,7 +28,14 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                   "click #clear_inicio":"hide_fech_ini",
                   "click #clear_fin":"hide_fech_fin",
                   "click #table-servidor > tbody >tr":"hide_lista_serv",
-                  "click #save_med":"fun_save_descMed"
+                  "click #save_med":"fun_save_descMed",
+                  "click #delete-med":"fun_delete_descMed",
+                  "click #modalAV":"fun_eliminar",
+                  "click #cancel_med":"fun_reset",
+                  "click #edit_desc":"fun_edit_desc",
+                  "click #update_cancel":"fun_cancel_edit",
+                  "click #update_med":"fun_edit_action"
+
                 },
 
                 onRender:function(){
@@ -44,6 +54,13 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 initialFetch: function(){
 
                     this.listaServView.fetchServidores();
+                },
+
+                fun_cancel_edit:function(){
+
+                    $("#act_med").hide();
+                    $("#footer_med").show();
+
                 },
 
                 lista_servidor:function(ev){
@@ -73,7 +90,38 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
 
                 },
+                fun_reset:function(){
+                   $("#descMed_message").hide();
+                } ,
 
+                fun_edit_action:function(){
+
+                },
+                fun_edit_desc:function(ev){
+                    var clickedElement=$(ev.currentTarget);
+                    $("#footer_med").hide();
+                    $("#act_med").show();
+                    $("#descMed_message").hide();
+                    var ciit=clickedElement.parent().parent().children(':nth-child(1)').text();
+                    var fech_ini=clickedElement.parent().parent().children(':nth-child(3)').text();
+                    var fech_fin=clickedElement.parent().parent().children(':nth-child(4)').text();
+                    var tip_lic=clickedElement.parent().parent().children(':nth-child(2)').text();
+                    var idTip;
+
+                    if(tip_lic=="ENFERMEDAD"){
+                        idTip=1;
+                    }
+                    if(tip_lic=="MATERNIDAD"){
+                        idTip=2;
+
+                    }
+                    $("#citt").val(ciit);
+                    $("#fech_ini_med").val(fech_ini);
+                    $("#fech_fin_med").val(fech_fin);
+                    $("#tipo_lic").val(idTip);
+
+
+                },
                 hide_lista_serv:function(e){
                     var self=this;
                     var clickedElement= $(e.currentTarget);
@@ -137,47 +185,145 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 },
                 fun_save_descMed:function(){
                     var self=this;
-                    alert("codigo y numser"+this.dni+"-"+this.numserest);
+                    var diaI=parseInt($("#fech_ini_med").val().substring(0,2));
+                    var mesI=parseInt($("#fech_ini_med").val().substring(3,5));
+                    var anioI=parseInt($("#fech_ini_med").val().substring(6,10));
+                    var fechaInic=365*anioI+30*mesI+diaI;
 
-                    self.model.get("addDescanso").set({
-                        "id_serv":self.dni,
-                        "numserest":parseInt(self.numserest),
-                        "citt": $("#citt").val(),
-                        "f_inicio": $("#fech_ini_med").val(),
-                        "f_fin":  $("#fech_fin_med").val(),
-                        "tipo_lic": $("#tipo_lic").val()
-                    });
+                    var diaF=parseInt($("#fech_fin_med").val().substring(0,2));
+                    var mesF=parseInt($("#fech_fin_med").val().substring(3,5));
+                    var anioF=parseInt($("#fech_fin_med").val().substring(6,10));
+                    var fechaFin=365*anioF+30*mesF+diaF;
 
-                    self.model.get("addDescanso").url = "rest/descansos/addDescanso";
+                    var tiempo=(fechaFin-fechaInic)+" dias";
 
-                    var self_s = self.model.get("addDescanso").save({}, {wait: true});
+                   // alert(tiempo);
+                    if( $("#citt").val()!="" && $("#fech_ini_med").val()!="" && $("#fech_fin_med").val()!=""){
 
-                    self_s.done(function(){
-                        self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
-                            if(self.descansosServ.collection.length!=0){
-                                $("#table-descansos-servidor").dataTable();
-                                $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                                $('.dataTables_filter input').attr('placeholder','Buscar..');
+                        if($("#tipo_lic").val()=="0"){
+                            $("#descMed_message").removeClass("alert-success");
+                            $("#descMed_message").addClass("alert-warning");
+                            $("#descMed_message").html("<strong>Seleccione Tipo de Licencia</strong>");
+                            $("#descMed_message").show();
+                            //alert("SELECCIONE TIPO DE LICENCIA");
+                        }else{
+                            if(fechaFin>fechaInic){
+
+
+                               // alert($("#tipo_lic option:selected").html());
+
+                                  self.model.get("addDescanso").set({
+                                 "id_serv":self.dni,
+                                 "numserest":parseInt(self.numserest),
+                                 "citt": $("#citt").val(),
+                                 "f_inicio": $("#fech_ini_med").val(),
+                                 "f_fin":  $("#fech_fin_med").val(),
+                                 "tipo_lic": $("#tipo_lic option:selected").html(),
+                                 "tiempo":tiempo
+                                 });
+
+                                 self.model.get("addDescanso").url = "rest/descansos/addDescanso";
+
+                                 var self_s = self.model.get("addDescanso").save({}, {wait: true});
+
+                                 self_s.done(function(){
+                                 self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                                 if(self.descansosServ.collection.length!=0){
+                                 $("#table-descansos-servidor").dataTable();
+                                 $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                 $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                 $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                 $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                 }
+                                 })
+                                 self.regiontabladescansos.show(self.descansosServ)
+                                 });
+                                 self_s.fail(function(){
+                                 self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                                 if(self.descansosServ.collection.length!=0){
+                                 $("#table-descansos-servidor").dataTable();
+                                 $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                 $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                 $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                 $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+                                     $("#citt").val("");
+                                     $("#fech_ini_med").val("");
+                                     $("#fech_fin_med").val("");
+                                     $("#tipo_lic").val("0");
+                                 }
+                                 })
+                                 self.regiontabladescansos.show(self.descansosServ)
+                                 })
+
+
+
+                                $("#descMed_message").removeClass("alert-warning");
+                                $("#descMed_message").addClass("alert-success");
+                                $("#descMed_message").html("<strong>Se registró con éxito el Descanso Médico</strong>");
+                                $("#descMed_message").show();
                             }
-                        })
-                        self.regiontabladescansos.show(self.descansosServ)
+                            else{
+                                //alert("FECHAS INCORRECTAS");
+                                $("#descMed_message").removeClass("alert-success");
+                                $("#descMed_message").addClass("alert-warning");
+                                $("#descMed_message").html("<strong>Fechas Incorrectas</strong>");
+                                $("#descMed_message").show();
+                            }
+
+                        }
+
+                    }
+                    else{
+
+
+                        $("#descMed_message").removeClass("alert-success");
+                        $("#descMed_message").addClass("alert-warning");
+                        $("#descMed_message").html("<strong>Campos Obligatorios Incompletos</strong>");
+                        $("#descMed_message").show();
+                       // alert("CAMPOS OBLIGATORIOS INCOMPLETOS");
+                    }
+
+
+
+                },
+                fun_eliminar:function(e){
+                    var clickedElement= $(e.currentTarget);
+                    this.idDescMed=clickedElement.parent().parent().attr("id");
+
+                },
+                fun_delete_descMed:function(){
+
+                    var self = this;
+                    var idDescMedico=self.idDescMed;
+                    var url='rest/descansos/deleteDescansoMed/'+idDescMedico;
+
+                    $.ajax({
+                        type: 'DELETE',
+                        url: url,
+                        success: function(){
+
+
+
+                        },
+                        error: function(){
+
+                            self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
+                                if(self.descansosServ.collection.length!=0){
+                                    $("#table-descansos-servidor").dataTable();
+                                    $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                    $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                }
+                            })
+                            self.regiontabladescansos.show(self.descansosServ)
+
+                        }
                     });
-                    self_s.fail(function(){
-                        self.descansosServ.fetchDescansos(self.dni,self.numserest,function(){
-                           if(self.descansosServ.collection.length!=0){
-                               $("#table-descansos-servidor").dataTable();
-                               $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
-                               $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                               $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                               $('.dataTables_filter input').attr('placeholder','Buscar..');
-                           }
-                        })
-                        self.regiontabladescansos.show(self.descansosServ)
-                    })
 
                 }
+
 
             });
         });
