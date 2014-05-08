@@ -47,5 +47,16 @@ public class DescansoMedicoController {
         return "delete" +idDesc;
     }
 
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json",produces = "application/json",value = "/updateDescMed")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String UpdateDescanso(@RequestBody DescansoMedico descMed){
+        System.out.print("Hola Mundooooooooooo!!!!"+descMed.getId_desc_med());
+        descansoservice.updateDescMed(descMed);
+
+
+        return "";
+    }
+
 
 }

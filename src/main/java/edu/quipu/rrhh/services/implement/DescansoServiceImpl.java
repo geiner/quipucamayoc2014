@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by GEINER on 05/05/2014.
- */
+
 @Service
 public class DescansoServiceImpl implements DescansoService {
 
@@ -31,4 +29,11 @@ public class DescansoServiceImpl implements DescansoService {
     public void removeDescMed(Integer idDesc) {
         descansoMapper.removeDescMed(idDesc);
     }
+
+    @Override
+    public void updateDescMed(DescansoMedico descMed) {
+        descansoMapper.updateDescanso(descMed.getCitt(),descMed.getF_inicio(),descMed.getF_fin(),descMed.getTiempo(),descMed.getTipo_lic(),descMed.getId_desc_med());
+    }
+
+
 }
