@@ -13,4 +13,6 @@ public interface DescansoService {
     void removeDescMed(Integer idDesc);
 
     void updateDescMed(DescansoMedico descMed);
+
+    List<DescansoMedico> listarDescansos(String anio, String mes);
 }

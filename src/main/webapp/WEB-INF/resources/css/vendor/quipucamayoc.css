@@ -1,3 +1,38 @@
+.control{
+    background-color:#62c462;
+    border: 1px solid #fad42e;
+}
+.control:hover{
+    opacity: 0.7;
+}
+.devueltos{
+    background-color:#ee5f5b;
+    border: 1px solid #fad42e;
+}
+.devueltos:hover{
+    opacity: 0.7;
+}
+.rrhh{
+    background-color:#5bc0de ;
+    border: 1px solid #fad42e;
+}
+.rrhh:hover{
+    opacity: 0.7;
+}
+.textonegrito {
+    color: #000000;
+    font-weight:900;
+    font-style:italic ;
+    /*color: #ffffff;*/
+}
+#tabla-servidores .table > tbody > tr{
+    cursor: pointer;
+}
+
+#tabla-servidores .highlight{
+    background-color:#fbec88 ;
+    border: 1px solid #fad42e;
+}
 #table-resol-modal_length{
     display:none;
 }

@@ -35,5 +35,10 @@ public class DescansoServiceImpl implements DescansoService {
         descansoMapper.updateDescanso(descMed.getCitt(),descMed.getF_inicio(),descMed.getF_fin(),descMed.getTiempo(),descMed.getTipo_lic(),descMed.getId_desc_med());
     }
 
+    @Override
+    public List<DescansoMedico> listarDescansos(String anio, String mes) {
+        return descansoMapper.listarDescansos(mes,anio);
+    }
+
 
 }

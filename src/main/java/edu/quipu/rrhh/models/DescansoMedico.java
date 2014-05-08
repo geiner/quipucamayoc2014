@@ -12,6 +12,52 @@ public class DescansoMedico {
     private String tipo_lic;
     private String tiempo;
 
+    private String dni;
+    private String desc_est;
+    private String ser_ape_pat;
+    private String ser_ape_mat;
+    private String ser_nom;
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getDesc_est() {
+        return desc_est;
+    }
+
+    public void setDesc_est(String desc_est) {
+        this.desc_est = desc_est;
+    }
+
+    public String getSer_ape_pat() {
+        return ser_ape_pat;
+    }
+
+    public void setSer_ape_pat(String ser_ape_pat) {
+        this.ser_ape_pat = ser_ape_pat;
+    }
+
+    public String getSer_ape_mat() {
+        return ser_ape_mat;
+    }
+
+    public void setSer_ape_mat(String ser_ape_mat) {
+        this.ser_ape_mat = ser_ape_mat;
+    }
+
+    public String getSer_nom() {
+        return ser_nom;
+    }
+
+    public void setSer_nom(String ser_nom) {
+        this.ser_nom = ser_nom;
+    }
+
     public String getTiempo() {
         return tiempo;
     }
