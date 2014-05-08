@@ -35,7 +35,8 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                   "click #cancel_med":"fun_reset",
                   "click #edit_desc":"fun_edit_desc",
                   "click #update_cancel":"fun_cancel_edit",
-                  "click #update_med":"fun_edit_action"
+                  "click #update_med":"fun_edit_action",
+                  "click #search_desc":"fun_buscar_desc"
 
                 },
 
@@ -470,6 +471,11 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                         }
                     });
 
+                },
+
+                fun_buscar_desc:function(){
+
+                   alert($("#mes_desc").val()+" "+$("#anio_desc").val());
                 }
 
 
