@@ -1,8 +1,6 @@
 package edu.quipu.rrhh.models;
 
-/**
- * Created by GEINER on 05/05/2014.
- */
+
 public class DescansoMedico {
 
     private int id_desc_med;

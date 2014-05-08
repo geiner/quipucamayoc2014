@@ -46,4 +46,13 @@ public interface DescansoMapper {
     @Delete(value="DELETE FROM DATAPERLIQU.DESC_MEDICOS WHERE ID_DESC_MED=#{idDesc}")
 
     void removeDescMed(@Param("idDesc") Integer idDesc);
+
+    @Update(value ="UPDATE DATAPERLIQU.DESC_MEDICOS " +
+            "  SET CITT      =#{citt}, " +
+            "  FECHA_INICIO  =#{f_inicio}, " +
+            "  FECHA_FIN     =#{f_fin} , " +
+            "  TIPO_LIC      =#{tipo_lic} , " +
+            "  TIEMPO        =#{tiempo} " +
+            "  WHERE ID_DESC_MED=#{id_desc_med}")
+    void updateDescanso(@Param("citt")String citt,@Param("f_inicio") String f_inicio,@Param("f_fin") String f_fin,@Param("tiempo") String tiempo,@Param("tipo_lic") String tipLic,@Param("id_desc_med") Integer idDescMed);
 }
