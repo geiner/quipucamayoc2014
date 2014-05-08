@@ -1,0 +1,30 @@
+<table id="table-descansos-totales" class="table table-bordered table-hover" style="font-size: 12px;">
+    <thead class="header" style="color: #040404;background-color:#f5f5f5">
+    <tr>
+        <th><input type="checkbox" id="select-all" style="margin-top: 0px;width: 12px;height: 12px;"> Todos</th>
+        <th>DNI</th>
+        <th>Servidor</th>
+        <th>Estado</th>
+        <th>CITT</th>
+        <th>Fecha de Inicio</th>
+        <th>Fecha fin</th>
+        <th>Tipo Licencia</th>
+    </tr>
+    </thead>
+    <tbody id="fam_content">
+    {{#each items}}
+        <tr id="{{dni}}" class="">
+            <td><input type="checkbox" class="check-all" style="margin-top: 0px;width: 12px;height: 12px;"></td>
+            <td>{{dni}}</td>
+            <td>{{ser_ape_pat}} {{ser_ape_mat}} {{ser_nom}}</td>
+            <td>{{desc_est}}</td>
+            <td>{{citt}}</td>
+            <td>{{f_inicio}}</td>
+            <td>{{f_fin}}</td>
+            <td>{{tipo_lic}}</td>
+        </tr>
+    {{else}}
+        <td colspan="6">No existen</td>
+    {{/each}}
+    </tbody>
+</table>

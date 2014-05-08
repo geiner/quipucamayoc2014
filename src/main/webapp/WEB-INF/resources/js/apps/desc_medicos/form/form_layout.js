@@ -1,6 +1,7 @@
 define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/resoluciones/form/view/servidor-view','apps/desc_medicos/form/model/save_descanso',
-        'apps/desc_medicos/form/view/descansos_serv','apps/desc_medicos/form/model/update_descanso','lib/bootstrap-datetimepicker.min',"lib/moment","lib/jquery.dataTables.min","jquery","lib/bootstrap-datepicker","bootstrap"],
-    function (ErzaManager, layoutTpl,listaServView,addDescanso,DescansosServ,UpdateDescanso) {
+        'apps/desc_medicos/form/view/descansos_serv','apps/desc_medicos/form/model/update_descanso','apps/desc_medicos/form/view/tabla_descansos_totales',
+        'lib/bootstrap-datetimepicker.min',"lib/moment","lib/jquery.dataTables.min","jquery","lib/bootstrap-datepicker","bootstrap"],
+    function (ErzaManager, layoutTpl,listaServView,addDescanso,DescansosServ,UpdateDescanso,TablaDescansoTotales) {
         ErzaManager.module('DescansoMedicoApp.list.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
@@ -8,19 +9,22 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                 listaServView:new listaServView(),
                 descansosServ:new DescansosServ(),
+                tablaDescansoTotales:new TablaDescansoTotales(),
 
 
                 //variables globales
                 dni:null,
                 numserest:null,
 
+                servidoresSeleccionados: [],
                 idDescMed:null,
                 cant_mat:0,
                 cant_enf:0,
 
                 regions:{
                    listServ:"#list_serv_reg",
-                   regiontabladescansos:"#table-descansos"
+                   regiontabladescansos:"#table-descansos",
+                   regiontabladescansostotales:"#table-descansos-tot"
                 },
                 events:{
                   "click #serv_desc_med":"lista_servidor",
@@ -36,7 +40,10 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                   "click #edit_desc":"fun_edit_desc",
                   "click #update_cancel":"fun_cancel_edit",
                   "click #update_med":"fun_edit_action",
-                  "click #search_desc":"fun_buscar_desc"
+                  "click #search_desc":"fun_buscar_desc",
+                  "click #select-all":"seleccionarTodosLosServidores",
+                  "click #table-descansos-totales > tbody > tr ": "clickServidorRow",
+                  "click #descargar_rep_descansos":"descargarReporteDescansos"
 
                 },
 
@@ -64,6 +71,56 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                     $("#act_med").hide();
                     $("#footer_med").show();
+
+                },
+                seleccionarTodosLosServidores:function(){
+                    if($('#select-all').is(':checked'))
+                    {
+                        var parent=$('.check-all').prop('checked',true);
+                        $('.check-all').addClass("check");
+                        var dni_sel=parent.parent().parent().children(':nth-child(2)');
+                        for(var i=0;i<dni_sel.length;i++){
+                            this.servidoresSeleccionados[i]=dni_sel[i].innerHTML;
+                        };
+                        $('#table-descansos-totales > tbody > tr ').addClass("highlight");
+                    }else{
+                        $('.check-all').prop('checked',false);
+                        $('.check-all').removeClass("check");
+                        $('#table-descansos-totales > tbody > tr').removeClass("highlight");
+                        this.servidoresSeleccionados.splice(0,this.servidoresSeleccionados.length);
+                    };
+                },
+                clickServidorRow:function(e){
+                    /*var clickedElement=$(e.currentTarget);
+                    var dni=clickedElement.children(':nth-child(2)').text();
+                    var check=clickedElement.children(':nth-child(1)').children();
+                    console.log(check);
+                    if(clickedElement.hasClass('highlight')&&check.hasClass("check")){
+                        clickedElement.removeClass("highlight");
+                        check.removeClass("check");
+                        check.prop('checked',false);
+                        this.servidoresSeleccionados.splice(this.servidoresSeleccionados.indexOf(dni),1);
+                    }
+                    else{
+                        clickedElement.addClass("highlight");
+                        check.addClass("check");
+                        check.prop('checked',true);
+                        this.servidoresSeleccionados.push(dni);
+
+                    };*/
+
+                },
+                descargarReporteDescansos: function(){
+                    var dnis="";
+                    if(this.servidoresSeleccionados.length==0){
+                        alert("debe seleccionar al menos un dni");
+                    }else{
+                        for(var i=0;i<this.servidoresSeleccionados.length;i++){
+                            dnis=dnis+this.servidoresSeleccionados[i];
+                            console.log(this.servidoresSeleccionados[i]);
+                        };
+                        $(form).append('<textarea style="display: none" id="dnis" name="dnis" value='+dnis+'>'+dnis+'</textarea>');
+                    };
 
                 },
 
@@ -474,8 +531,20 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 },
 
                 fun_buscar_desc:function(){
+                    var self=this;
 
-                   alert($("#mes_desc").val()+" "+$("#anio_desc").val());
+                    self.tablaDescansoTotales.fetchDescansostotales($("#mes_desc").val(),$("#anio_desc").val(),function(){
+                        if(self.tablaDescansoTotales.collection.length!=0){
+                            $("#table-descansos-totales").dataTable();
+                            $('#table-descansos-totales_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-descansos-totales_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#table-descansos-totales_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+                        }
+                    });
+
+                    self.regiontabladescansostotales.show(self.tablaDescansoTotales);
+
                 }
 
 

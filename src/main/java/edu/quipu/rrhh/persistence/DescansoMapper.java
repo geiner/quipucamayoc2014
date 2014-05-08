@@ -63,7 +63,7 @@ public interface DescansoMapper {
             "  ID_SERV, " +
             "  CITT, " +
             "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO, " +
-            "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY'), " +
+            "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
             "  TIPO_LIC " +
             "FROM DATAPERLIQU.desc_medicos dm, " +
             "  DATAPERSUEL.lista_servidor se " +

@@ -31,8 +31,19 @@
 
 #tabla-servidores .highlight{
     background-color:#fbec88 ;
+    /*border: 1px solid #fad42e;*/
+}
+
+#table-descansos-totales .table > tbody > tr{
+    cursor: pointer;
+}
+
+#table-descansos-totales .highlight{
+    background-color:#fbec88 ;
     border: 1px solid #fad42e;
 }
+
+
 #table-resol-modal_length{
     display:none;
 }
@@ -739,6 +750,47 @@
     border-radius: 5px;
 }
 #table-descansos-servidor_next{
+    cursor: pointer;
+    margin-left: 19px;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}
+
+
+#table-descansos-totales_length{
+    display:none;
+}
+
+#table-descansos-totales_paginate{
+    position: absolute;
+    margin-top: -17px;
+    left: 52%;
+}
+#table-descansos-totales_info{
+    float: left;
+    margin-top: -12px;
+    margin-left: 18px;
+    font-size: 10px;
+    color: rgb(2, 2, 2);
+}
+#fam_content>tr{
+    cursor: pointer;
+}
+
+#table-descansos-totales_previous{
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}
+#table-descansos-totales_next{
     cursor: pointer;
     margin-left: 19px;
     display: inline-block;
