@@ -90,4 +90,24 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+    @Override
+    public void cargarReporteDescansos(HttpServletResponse response, Integer anio, Integer mes, String nombremes, String usuario, String[] array_codigos) {
+        String rutaReporte="/reportes/reportedescansos.jrxml";
+        HashMap params = new HashMap();
+        params.put("anio", anio);
+        params.put("mes", mes);
+        params.put("nombremes", nombremes);
+        params.put("usuario", usuario);
+        params.put("vectorSeleccionados",array_codigos);
+//        h.put("logo", servletContext.getRealPath("/pages/images/escudo.jpg"));
+//        h.put("miniLogoQuipu",
+//                servletContext.getRealPath("/pages/images/LogoQuipu-jpg.png"));
+        try {
+            reportDownloader.downloadPDF(response, rutaReporte, "reportedescansos.pdf", params);
+        } catch (Exception e) {
+            logger.error("No se pudo descargar el reporte: "+rutaReporte);
+            e.printStackTrace();
+        }
+    }
+
 }
