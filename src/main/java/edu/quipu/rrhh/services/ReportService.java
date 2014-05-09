@@ -11,5 +11,5 @@ public interface ReportService {
 
     void cargarReporteDeResoluciones(HttpServletResponse response,String codigo, Integer numserest, String nom_serv, String cod_serv,String usuario);
 
-    void cargarReporteDescansos(HttpServletResponse response, Integer anio, Integer mes, String nombremes, String usuario, String[] array_codigos);
+    void cargarReporteDescansos(HttpServletResponse response, String anio, String mes, String nombremes, String usuario, String[] array_codigos);
 }

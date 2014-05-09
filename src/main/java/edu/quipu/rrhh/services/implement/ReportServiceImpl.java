@@ -91,7 +91,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void cargarReporteDescansos(HttpServletResponse response, Integer anio, Integer mes, String nombremes, String usuario, String[] array_codigos) {
+    public void cargarReporteDescansos(HttpServletResponse response, String anio, String mes, String nombremes, String usuario, String[] array_codigos) {
         String rutaReporte="/reportes/reportedescansos.jrxml";
         HashMap params = new HashMap();
         params.put("anio", anio);

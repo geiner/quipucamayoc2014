@@ -65,7 +65,7 @@ public class ReportsController {
     }
 
     @RequestMapping(value = "/beneficio/reportedescansos/pdf", method = RequestMethod.POST)
-    public void mostrarReporteDescansosMedicos(HttpServletResponse response, Integer anio, Integer mes,String nombremes,String usuario,String codigos) {
+    public void mostrarReporteDescansosMedicos(HttpServletResponse response, String anio, String mes,String nombremes,String usuario,String codigos) {
 
         int tamaño=codigos.length()/8;
         String[] array_codigos=new String[tamaño];

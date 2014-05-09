@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteIndicadorAnual" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="59c139a6-7964-4e8a-a9f0-312e2a0f518b">
-	<property name="ireport.scriptlethandling" value="0"/>
-	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Conformidad" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"  >
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<import value="net.sf.jasperreports.engine.*"/>
-	<import value="java.util.*"/>
-	<import value="net.sf.jasperreports.engine.data.*"/>
+	<property name="ireport.y" value="140"/>
 	<parameter name="usuario" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["usuario_plani"]]></defaultValueExpression>
 	</parameter>
@@ -67,101 +62,101 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<pageHeader>
 		<band height="99" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="eb17bd37-6383-4515-8e55-ce196435ea50" key="staticText-5" x="249" y="23" width="158" height="13"/>
+				<reportElement key="staticText-5" x="249" y="23" width="158" height="13"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DESCANSOS MEDICOS ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0f7e4ace-1175-4b82-835c-ff800eeff2b6" key="staticText-7" x="663" y="36" width="34" height="13"/>
+				<reportElement  key="staticText-7" x="663" y="36" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Usuario:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy   h:mm a" isBlankWhenNull="false">
-				<reportElement uuid="ead12e5f-9589-41b9-bb6d-818caa12b0e0" key="textField-18" x="699" y="23" width="83" height="13"/>
+				<reportElement  key="textField-18" x="699" y="23" width="83" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="67e74dcb-6aba-48b0-9095-eff5e0684522" key="textField-19" x="699" y="36" width="83" height="13"/>
+				<reportElement  key="textField-19" x="699" y="36" width="83" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5b4dc1fc-e24f-4d6f-82bb-6946871afab4" key="staticText-8" x="663" y="23" width="34" height="13"/>
+				<reportElement  key="staticText-8" x="663" y="23" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6b8659c7-61f6-41e6-b9c6-463dd7a33522" key="staticText-11" x="4" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-11" x="4" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8602dd70-da59-4bd0-b040-8ad0964b63ce" key="staticText-12" x="99" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-12" x="99" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[SERVIDOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="54a1db50-3768-409e-bc63-689c8e9e5bdd" key="staticText-13" x="249" y="80" width="27" height="12"/>
+				<reportElement key="staticText-13" x="249" y="80" width="27" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CITT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c8b99ba8-eff1-4ef2-a4e8-18999ecb0581" key="staticText-14" x="380" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-14" x="380" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA INICIAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b8c72947-c8f9-4637-96d7-93319cc5f5fd" key="staticText-15" x="490" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="490" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA FINAL]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="573caee6-90a8-419f-9f69-3915fc3861fa" key="line-1" x="3" y="96" width="778" height="1"/>
+				<reportElement  key="line-1" x="3" y="96" width="778" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="588b044f-71a1-4abb-9433-e71c2c4088b8" key="staticText-15" x="584" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="584" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DNI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="82df3c26-8fc1-4e5f-ac0e-72568a52181d" key="staticText-15" x="684" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="684" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO LIC.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="dd20ecc2-4530-4324-b027-9a7237612022" key="textField" x="407" y="23" width="59" height="13"/>
+				<reportElement  key="textField" x="407" y="23" width="59" height="13"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombremes}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="7c78ff6f-9f18-4e2b-9685-0f4b5b40ffc9" key="textField" x="466" y="23" width="59" height="13"/>
+				<reportElement  key="textField" x="466" y="23" width="59" height="13"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -175,37 +170,37 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<detail>
 		<band height="34" splitType="Stretch">
 			<textField>
-				<reportElement uuid="e8f0db95-64a8-458f-8136-e46636d6485b" x="4" y="8" width="59" height="14"/>
+				<reportElement  x="4" y="8" width="59" height="14"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{DESC_EST}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e9ac26f6-9b7e-4c37-81d7-1c192eacca41" x="99" y="8" width="100" height="20"/>
+				<reportElement  x="99" y="8" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="86cbe762-e274-4e89-b194-a89a725601a6" x="249" y="8" width="73" height="20"/>
+				<reportElement  x="249" y="8" width="73" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{CITT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="78cd60a8-8401-4415-8dc0-5b9cf547c28f" x="354" y="8" width="100" height="20"/>
+				<reportElement x="354" y="8" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{FECHA_INICIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="48fd5c8d-20e1-413f-a45d-1b1fdbe034b0" x="490" y="8" width="59" height="20"/>
+				<reportElement  x="490" y="8" width="59" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{FECHA_FIN}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="374784d4-4a3b-4928-b66b-969717003b19" x="584" y="8" width="100" height="20"/>
+				<reportElement  x="584" y="8" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{SER_COD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="000b2ca6-3940-4752-b0bd-ce7538ab3269" x="684" y="8" width="100" height="20"/>
+				<reportElement  x="684" y="8" width="100" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$F{TIPO_LIC}]]></textFieldExpression>
 			</textField>
@@ -217,56 +212,56 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="1e1ce046-d797-4697-9f00-b5888b6f09da" key="staticText-16" x="4" y="6" width="288" height="11"/>
+				<reportElement key="staticText-16" x="4" y="6" width="288" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="008b8941-3e57-4c08-b7d1-1ff7435d4c1e" key="textField-23" x="699" y="7" width="44" height="11"/>
+				<reportElement  key="textField-23" x="699" y="7" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="4a4c743e-3467-4731-ad7f-c2eba7c1274c" key="textField-24" x="743" y="7" width="34" height="11"/>
+				<reportElement  key="textField-24" x="743" y="7" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="17837562-51e4-471a-a701-3f9c0b6b6863" key="line-2" x="3" y="3" width="778" height="1"/>
+				<reportElement  key="line-2" x="3" y="3" width="778" height="1"/>
 			</line>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
 		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="cb308514-caef-4234-a9ae-0cd70fb6aea6" key="staticText-17" x="4" y="10" width="288" height="11"/>
+				<reportElement  key="staticText-17" x="4" y="10" width="288" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="ce9f9166-41c1-421f-9b11-c9f3725f9cc4" key="textField-25" x="699" y="17" width="44" height="11"/>
+				<reportElement  key="textField-25" x="699" y="17" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="880a845d-977f-47ba-9d53-58def025c76a" key="textField-26" x="743" y="17" width="34" height="11"/>
+				<reportElement  key="textField-26" x="743" y="17" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="c492a20d-f2fa-4aae-be1d-9d1c1feb4d2f" x="4" y="7" width="778" height="1"/>
+				<reportElement x="4" y="7" width="778" height="1"/>
 			</line>
 		</band>
 	</lastPageFooter>
