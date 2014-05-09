@@ -29,18 +29,13 @@
     cursor: pointer;
 }
 
-#tabla-servidores .highlight{
+.color_row{
     background-color:#fbec88 ;
-    /*border: 1px solid #fad42e;*/
+
 }
 
 #table-descansos-totales .table > tbody > tr{
     cursor: pointer;
-}
-
-#table-descansos-totales .highlight{
-    background-color:#fbec88 ;
-    border: 1px solid #fad42e;
 }
 
 
