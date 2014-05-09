@@ -66,15 +66,23 @@ public class ReportsController {
 
     @RequestMapping(value = "/beneficio/reportedescansos/pdf", method = RequestMethod.POST)
     public void mostrarReporteDescansosMedicos(HttpServletResponse response, String anio, String mes,String nombremes,String usuario,String codigos) {
+        System.out.println(codigos+"-");
+        String[] array_codigos= codigos.split("/");
+        for(String dia : array_codigos){
+            System.out.println(dia);
+        }
 
-        int tamaño=codigos.length()/8;
+
+
+
+        /*int tamaño=codigos.length()/8;
         String[] array_codigos=new String[tamaño];
         int k=0;
         for(int i=0;i<=codigos.length()-8;i=i+8){
             array_codigos[k]=codigos.substring(i,i+8);
             System.out.println(array_codigos[k]+"-");
             k=k+1;
-        }
+        }*/
         reportsService.cargarReporteDescansos(response,anio,mes,nombremes,usuario,array_codigos);
     }
 

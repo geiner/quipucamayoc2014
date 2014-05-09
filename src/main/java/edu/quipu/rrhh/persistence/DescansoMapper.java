@@ -56,7 +56,7 @@ public interface DescansoMapper {
             "  WHERE ID_DESC_MED=#{id_desc_med}")
     void updateDescanso(@Param("citt")String citt,@Param("f_inicio") String f_inicio,@Param("f_fin") String f_fin,@Param("tiempo") String tiempo,@Param("tipo_lic") String tipLic,@Param("id_desc_med") Integer idDescMed);
 
-    @Select(value ="SELECT desc_est, " +
+    @Select(value ="SELECT ID_DESC_MED,desc_est, " +
             "  SER_APE_PAT, " +
             "  SER_APE_MAT, " +
             "  SER_NOM, " +
@@ -83,6 +83,7 @@ public interface DescansoMapper {
             @Result(property = "f_inicio" , column = "FECHA_INICIO"),
             @Result(property = "f_fin" , column = "FECHA_FIN"),
             @Result(property = "tipo_lic" , column = "TIPO_LIC"),
+            @Result(property = "id_desc_med" , column = "ID_DESC_MED")
     })
     List<DescansoMedico> listarDescansos(@Param("mes")String mes, @Param("anio")String anio);
 }

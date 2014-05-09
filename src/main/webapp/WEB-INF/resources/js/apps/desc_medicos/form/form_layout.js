@@ -83,14 +83,13 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                         var parent=$('.check-all').prop('checked',true);
                         $(".estatic_desc").addClass("color_row");
                         $(".estatic_desc>td>input").prop("checked",true);
-                        var cant_dnis=parent.parent().parent().children(':nth-child(2)');
+                        var cant_dnis=parent.parent().parent().children(':nth-child(3)');
 
 
                         for(var i=0;i<cant_dnis.length;i++){
 
+                            this.servidoresSeleccionados[i]=cant_dnis[i].innerHTML+"/";
 
-
-                            this.servidoresSeleccionados[i]=cant_dnis[i].innerHTML;
 
                         }
 
@@ -100,25 +99,6 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                         this.servidoresSeleccionados.splice(0,this.servidoresSeleccionados.length);
 
                     }
-
-                    /*
-                    if($('#select-all').is(':checked'))
-                    {
-
-                        var parent=$('.check-all').prop('checked',true);
-                        $('.check-all').addClass("check");
-                        var dni_sel=parent.parent().parent().children(':nth-child(2)');
-                        for(var i=0;i<dni_sel.length;i++){
-                            this.servidoresSeleccionados[i]=dni_sel[i].innerHTML;
-                        };
-                        $('#table-descansos-totales > tbody > tr ').addClass("highlight");
-
-                    }else{
-                        $('.check-all').prop('checked',false);
-                        $('.check-all').removeClass("check");
-                        $('#table-descansos-totales > tbody > tr').removeClass("highlight");
-                        this.servidoresSeleccionados.splice(0,this.servidoresSeleccionados.length);
-                    };*/
                 },
                 clickServidorRow:function(e){
 
@@ -126,22 +106,25 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                     var check=clickedElement.children(':nth-child(1)').children();
 
+                    var dni=clickedElement.children(':nth-child(3)').text();
 
 
                     if(check.is(':checked')){
+                        console.log("deschekear")
                         check.prop('checked',false);
 
                         clickedElement.removeClass('color_row');
+
+                        this.servidoresSeleccionados.splice(this.servidoresSeleccionados.indexOf(dni+"/"),1);
                     }
                     else{
                         check.prop('checked', true);
                         clickedElement.addClass('color_row');
+                        this.servidoresSeleccionados.push(dni+"/");
+                        console.log("chekear")
                     }
-                    /*var clickedElement=$(e.currentTarget);
-                    var dni=clickedElement.children(':nth-child(2)').text();
-                    var check=clickedElement.children(':nth-child(1)').children();
-                    console.log(check);
-                    if(clickedElement.hasClass('highlight')&&check.hasClass("check")){
+
+                    /*if(clickedElement.hasClass('color_row')&&check.hasClass("check")){
                         clickedElement.removeClass("highlight");
                         check.removeClass("check");
                         check.prop('checked',false);
@@ -171,7 +154,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                             dnis=dnis+this.servidoresSeleccionados[i].trim();
                             console.log(this.servidoresSeleccionados[i]);
                         };
-                        $('#form_reporte').append('<textarea style="display: none" id="dnis" name="codigos" value='+dnis+'>'+dnis+'</textarea>');
+                        $('#form_reporte').append('<textarea style="display: none" id="dnis" name="codigos" value='+dnis+' >'+dnis+'</textarea>');
                     };
 
                 },

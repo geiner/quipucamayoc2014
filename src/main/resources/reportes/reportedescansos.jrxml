@@ -23,8 +23,8 @@
 (SER_APE_PAT ||' '|| SER_APE_MAT ||' '|| SER_NOM) as NOMBRE,
 ID_SERV,
 CITT,
-FECHA_INICIO,
-FECHA_FIN,
+TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO,
+TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN,
 SER_COD,
 TIPO_LIC from (select desc_est,
 SER_APE_PAT,
@@ -40,14 +40,14 @@ where (to_char(fecha_inicio, 'mm')=$P{mes} or to_char(fecha_fin, 'mm')=$P{mes})
 and (to_char(fecha_inicio, 'yyyy')=$P{anio} or to_char(fecha_fin, 'yyyy')=$P{anio})
 and trim(dm.id_serv)=trim(se.ser_cod)
 and se.NUM_SEREST=1
-and $X{IN,id_serv,vectorSeleccionados})]]>
+and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 	</queryString>
 	<field name="DESC_EST" class="java.lang.String"/>
 	<field name="NOMBRE" class="java.lang.String"/>
 	<field name="ID_SERV" class="java.lang.String"/>
 	<field name="CITT" class="java.lang.String"/>
-	<field name="FECHA_INICIO" class="java.sql.Timestamp"/>
-	<field name="FECHA_FIN" class="java.sql.Timestamp"/>
+	<field name="FECHA_INICIO" class="java.lang.String"/>
+	<field name="FECHA_FIN" class="java.lang.String"/>
 	<field name="SER_COD" class="java.lang.String"/>
 	<field name="TIPO_LIC" class="java.lang.String"/>
 	<variable name="fecha" class="java.util.Date" resetType="Page">
@@ -62,101 +62,101 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<pageHeader>
 		<band height="99" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-5" x="249" y="23" width="158" height="13"/>
+				<reportElement  key="staticText-5" x="122" y="23" width="158" height="13"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DESCANSOS MEDICOS ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-7" x="663" y="36" width="34" height="13"/>
+				<reportElement  key="staticText-7" x="420" y="36" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Usuario:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy   h:mm a" isBlankWhenNull="false">
-				<reportElement  key="textField-18" x="699" y="23" width="83" height="13"/>
+				<reportElement  key="textField-18" x="456" y="23" width="79" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-19" x="699" y="36" width="83" height="13"/>
+				<reportElement  key="textField-19" x="456" y="36" width="79" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement  key="staticText-8" x="663" y="23" width="34" height="13"/>
+				<reportElement  key="staticText-8" x="420" y="23" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-11" x="4" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-11" x="4" y="80" width="29" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-12" x="99" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-12" x="102" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[SERVIDOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-13" x="249" y="80" width="27" height="12"/>
+				<reportElement  key="staticText-13" x="205" y="80" width="27" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CITT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-14" x="380" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-14" x="260" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA INICIAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-15" x="490" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="339" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA FINAL]]></text>
 			</staticText>
 			<line>
-				<reportElement  key="line-1" x="3" y="96" width="778" height="1"/>
+				<reportElement  key="line-1" x="3" y="96" width="530" height="1"/>
 			</line>
 			<staticText>
-				<reportElement  key="staticText-15" x="584" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="405" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DNI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-15" x="684" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="466" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO LIC.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField" x="407" y="23" width="59" height="13"/>
+				<reportElement  key="textField" x="280" y="23" width="59" height="13"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombremes}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField" x="466" y="23" width="59" height="13"/>
+				<reportElement  key="textField" x="339" y="23" width="59" height="13"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -170,38 +170,52 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<detail>
 		<band height="34" splitType="Stretch">
 			<textField>
-				<reportElement  x="4" y="8" width="59" height="14"/>
-				<textElement/>
+				<reportElement  x="4" y="8" width="29" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{DESC_EST}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="99" y="8" width="100" height="20"/>
-				<textElement/>
+				<reportElement  x="63" y="8" width="142" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="249" y="8" width="73" height="20"/>
-				<textElement/>
+				<reportElement  x="205" y="8" width="53" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CITT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="354" y="8" width="100" height="20"/>
-				<textElement/>
+				<reportElement  x="260" y="8" width="64" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{FECHA_INICIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="490" y="8" width="59" height="20"/>
-				<textElement/>
+				<reportElement  x="339" y="8" width="59" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{FECHA_FIN}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="584" y="8" width="100" height="20"/>
-				<textElement/>
+				<reportElement  x="405" y="8" width="69" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{SER_COD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="684" y="8" width="100" height="20"/>
-				<textElement/>
+				<reportElement  x="466" y="8" width="64" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{TIPO_LIC}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -212,28 +226,28 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-16" x="4" y="6" width="288" height="11"/>
+				<reportElement  key="staticText-16" x="4" y="6" width="288" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-23" x="699" y="7" width="44" height="11"/>
+				<reportElement  key="textField-23" x="441" y="8" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement  key="textField-24" x="743" y="7" width="34" height="11"/>
+				<reportElement  key="textField-24" x="485" y="8" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement  key="line-2" x="3" y="3" width="778" height="1"/>
+				<reportElement  key="line-2" x="3" y="3" width="530" height="1"/>
 			</line>
 		</band>
 	</pageFooter>
@@ -247,21 +261,21 @@ and $X{IN,id_serv,vectorSeleccionados})]]>
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-25" x="699" y="17" width="44" height="11"/>
+				<reportElement  key="textField-25" x="441" y="13" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement  key="textField-26" x="743" y="17" width="34" height="11"/>
+				<reportElement  key="textField-26" x="485" y="13" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="4" y="7" width="778" height="1"/>
+				<reportElement  x="4" y="7" width="530" height="1"/>
 			</line>
 		</band>
 	</lastPageFooter>
