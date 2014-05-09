@@ -264,6 +264,16 @@
 
                     </div>
                 </form>
+                <br>
+                <div class="btn-group col-md-2 pull-right" id="reporte_show" style="display: none;">
+                    <form action="rest/reportes/beneficio/reportedescansos/pdf"  method="POST" id="form_reporte" style="">
+                        <input type="hidden" style="display: none" id="anio" name="anio" >
+                        <input type="hidden" style="display: none" id="mes" name="mes" >
+                        <input type="hidden" style="display: none" id="mes_descr" name="nombremes" >
+                        <input type="hidden" style="display: none" id="usuario_report" name="usuario" >
+                        <button id="descargar_rep_descansos" class="btn btn-warning" >Descargar Reporte</button>
+                  </form>
+                </div>
 
             </div>
         </div>

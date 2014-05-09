@@ -73,18 +73,31 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     $("#footer_med").show();
 
                 },
-                seleccionarTodosLosServidores:function(){
+                seleccionarTodosLosServidores:function(ev){
 
+                    var  clickedElement=$(ev.currentTarget);
 
 
                     if($("#select-all").is(':checked')){
                            //alert("seleccionado");
+                        var parent=$('.check-all').prop('checked',true);
                         $(".estatic_desc").addClass("color_row");
                         $(".estatic_desc>td>input").prop("checked",true);
+                        var cant_dnis=parent.parent().parent().children(':nth-child(2)');
+
+
+                        for(var i=0;i<cant_dnis.length;i++){
+
+
+
+                            this.servidoresSeleccionados[i]=cant_dnis[i].innerHTML;
+
+                        }
 
                     }else{
                         $(".estatic_desc").removeClass("color_row");
                         $(".estatic_desc>td>input").prop("checked",false);
+                        this.servidoresSeleccionados.splice(0,this.servidoresSeleccionados.length);
 
                     }
 
@@ -148,11 +161,17 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     if(this.servidoresSeleccionados.length==0){
                         alert("debe seleccionar al menos un dni");
                     }else{
+
+                        $("#anio").val($("#anio_desc").val());
+                        $("#mes").val($("#mes_desc").val());
+                        $("#mes_descr").val($("#mes_desc option:selected").html());
+
+                        $("#usuario_report").val($("#email").text());
                         for(var i=0;i<this.servidoresSeleccionados.length;i++){
-                            dnis=dnis+this.servidoresSeleccionados[i];
+                            dnis=dnis+this.servidoresSeleccionados[i].trim();
                             console.log(this.servidoresSeleccionados[i]);
                         };
-                        $(form).append('<textarea style="display: none" id="dnis" name="dnis" value='+dnis+'>'+dnis+'</textarea>');
+                        $('#form_reporte').append('<textarea style="display: none" id="dnis" name="codigos" value='+dnis+'>'+dnis+'</textarea>');
                     };
 
                 },
@@ -568,6 +587,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                     self.tablaDescansoTotales.fetchDescansostotales($("#mes_desc").val(),$("#anio_desc").val(),function(){
                         if(self.tablaDescansoTotales.collection.length!=0){
+                            $("#reporte_show").show();
                             $("#table-descansos-totales").dataTable();
                             $('#table-descansos-totales_wrapper').append("<div id='footer-table'></div>");
                             $('#table-descansos-totales_next').html("<i  class='glyphicon glyphicon-forward'></i>");
