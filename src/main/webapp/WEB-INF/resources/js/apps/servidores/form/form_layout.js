@@ -30,7 +30,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 CondicionPlanView: new condicionPlanillaView(),
                 tipoOcupacionView: new tipoOcupacionView(),
 
-
+                tab:0,
                 prov_act: null,
                 distr_act: null,
                 cod_paisNac: 120,
@@ -74,9 +74,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #reg_pen_show": "fun_reg_pen_show",
                     "click #reg_lab_clos": "fun_reg_lab_clos",
                     "click #reg_lab_show": "fun_reg_lab_show",
-                    "submit #cod_sea": "fun_search_servidor",
+                    "click #cod_sea": "fun_search_servidor",
                     "click #save_laborales": "save_serv_lab",
-                    "change #serv_act_pais":"fun_camb_pais_resid"
+                    "change #serv_act_pais":"fun_camb_pais_resid",
+                    "click .tab_a":"fun_camb_tab_a",
+                    "click .tab_b":"fun_camb_tab_b",
+                    "keyup :input#codigo":"fun_validar_codigo"
 
 
                 },
@@ -406,20 +409,28 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      var self_s = self.model.get("servidor").save({}, { wait: true});
 
                      self_s.done(function(){
-
-
+                         $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                         $('#serv_save').show()
                      });
                      self_s.fail(function(){
-                         $('#help_save_ok').html('<strong>la Informacion General se guardo correctamente</strong>')
+                         $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                         $('#serv_save').show()
                      });
                 },
                 serv_save_servidor:function () {
                     var self = this;
                     var fullDate = new Date();
-                    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                    var twoDigitDay=((fullDate.getDate().length) === 1) ? (fullDate.getDate()) : '0' + (fullDate.getDate());
-                    var currentDate = twoDigitDay + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
+                    var dia=fullDate.getDate()+"";
+                    var mes=(fullDate.getMonth()+1)+"";
+                    var anio=fullDate.getFullYear()+"";
+                    if(dia.length==1){
+                        dia='0'+fullDate.getDate();
+                    }
+                    if(mes.length==1){
+                        mes='0'+(fullDate.getMonth()+1);
+                    }
+                    var currentDate = dia + "/" + mes + "/" + anio;
+                    console.log(currentDate)
                     if($('#codigo').val() != "" & !isNaN($('#codigo').val())){
                         if ($('#serv_ape_pat').val() != "" & $('#serv_ape_mat').val() != "" & $('#serv_nom').val() != "" &
                             $('#serv_est_civil').val() != "99" & $('#serv_tip_docu').val() != "99" & $('#num_document').val() != "" & $('#serv_sexo').val() != "99") {
@@ -660,7 +671,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var temp_reg_pen = $('#reg_pen');
 
                     temp_reg_pen.datepicker({
-                        format: 'dd-mm-yyyy',
+                        format: 'dd/mm/yyyy',
                         viewMode: 2
                     });
 
@@ -678,7 +689,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var temp_reg_lab = $('#reg_lab');
 
                     temp_reg_lab.datepicker({
-                        format: 'dd-mm-yyyy',
+                        format: 'dd/mm/yyyy',
                         viewMode: 2
                     });
 
@@ -731,51 +742,57 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                     self_l.done(function () {
 
-                        var temp_help_save_ok = $("#help_save_ok");
+                        var temp_serv_save = $("#serv_save");
 
-                        temp_help_save_ok.show();
-                        temp_help_save_ok.text("Datos registrados!");
+                        temp_serv_save.show();
+                        temp_serv_save.text("Datos laborales registrados!");
 
 
                     });
 
                     self_l.fail(function () {
 
-                        var temp_help_cod = $("#help_codigo");
+                        var temp_serv_cod = $("#serv_cod");
 
-                        temp_help_cod.show();
-                        temp_help_cod.text("Error de registro laboral.!");
+                        temp_serv_cod.removeClass('alert-warning');
+                        temp_serv_cod.addClass('alert-danger');
+                        temp_serv_cod.show();
+                        temp_serv_cod.text("Error de registro laboral.!");
 
 
                     });
                 },
                 save_serv_lab: function () {
                     var self = this;
+                    var fullDate = new Date();
+                    var dia=fullDate.getDate()+"";
+                    var mes=(fullDate.getMonth()+1)+"";
+                    var anio=fullDate.getFullYear()+"";
+                    if(dia.length==1){
+                        dia='0'+fullDate.getDate();
+                    }
+                    if(mes.length==1){
+                        mes='0'+(fullDate.getMonth()+1);
+                    }
+                    var currentDate = dia + "/" + mes + "/" + anio;
 
                     if($("#serv_est").val()!="999" & $("#serv_gen").val()!="999" & $("#serv_tip").val()!="999" & $("#serv_cat").val()!="999" & $("#rpe").val()!="999" & $('#codigo').val()!="" ){
-                       if($("#rpe").val()!="5" || $("#rpe").val()!="6"){
+
+                        if($("#rpe").val()=="5" || $("#rpe").val()=="6"){
                            if($('#tip_pag').val()!="999"){
-                              if($('#tip_pag').val()!="1" & $('#cta_ban').val()!="" ){
-                                  if($('#cond_pla').val()!="999"){
-                                      var fullDate = new Date();
-                                      var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                      var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
-                                      if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                          if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                                if($('#serv_tip_ocup').val()!="999"){
-                                                   self.ingresar_datos_laborales();
-                                                }
-                                          }
-                                      }
-                                  }
-                              };
-                               if($('#tip_pag').val()!="2" ){
+                               if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
                                    if($('#cond_pla').val()!="999"){
-                                       var fullDate = new Date();
-                                       var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                       var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
+                                       if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                           if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                               if($('#serv_tip_ocup').val()!="999"){
+                                                   self.ingresar_datos_laborales();
+                                               }
+                                           }
+                                       }
+                                   }
+                               };
+                               if($('#tip_pag').val()=="2" ){
+                                   if($('#cond_pla').val()!="999"){
                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                if($('#serv_tip_ocup').val()!="999"){
@@ -785,84 +802,112 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        }
                                    }
                                }
-
                            }
                        };
-                        if($("#rpe").val()!="4" & $('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!="" & !isNaN($('#num_sis_pri_pen').val())){
-                            if($('#tip_pag').val()!="999"){
-                                if($('#tip_pag').val()!="1" & $('#cta_ban').val()!="" ){
-                                    if($('#cond_pla').val()!="999"){
-                                        var fullDate = new Date();
-                                        var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                        var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
 
-                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                                if($('#serv_tip_ocup').val()!="999"){
-                                                    self.ingresar_datos_laborales();
-                                                }
-                                            }
-                                        }
-                                    }
-                                };
-                                if($('#tip_pag').val()!="2" ){
-                                    if($('#cond_pla').val()!="999"){
-                                        var fullDate = new Date();
-                                        var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                        var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
-                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                                if($('#serv_tip_ocup').val()!="999"){
-                                                    self.ingresar_datos_laborales();
-                                                }
+                        if($("#rpe").val()=="4" & $('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!="" & !isNaN($('#num_sis_pri_pen').val())){
+                            if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
+                                if($('#cond_pla').val()!="999"){
+                                    if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                        if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                            if($('#serv_tip_ocup').val()!="999"){
+                                                self.ingresar_datos_laborales();
                                             }
                                         }
                                     }
                                 }
-
-                            }
-                        }else{alert("caracter")};
-                        if($("#rpe").val()!="1" || $("#rpe").val()!="2" || $("#rpe").val()!="3" ){
-                            if($('#ent_aseg').val()!="999"){
-                                if($('#tip_pag').val()!="999"){
-                                    if($('#tip_pag').val()!="1" & $('#cta_ban').val()!="" ){
-                                        if($('#cond_pla').val()!="999"){
-                                            var fullDate = new Date();
-                                            var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                            var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
-                                            if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                                if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                                    if($('#serv_tip_ocup').val()!="999"){
-                                                        self.ingresar_datos_laborales();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    };
-                                    if($('#tip_pag').val()!="2" ){
-                                        if($('#cond_pla').val()!="999"){
-                                            var fullDate = new Date();
-                                            var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                                            var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-
-                                            if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                                if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                                    if($('#serv_tip_ocup').val()!="999"){
-                                                        self.ingresar_datos_laborales();
-                                                    }
-                                                }
+                            };
+                            if($('#tip_pag').val()=="2" ){
+                                if($('#cond_pla').val()!="999"){
+                                    if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                        if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                            if($('#serv_tip_ocup').val()!="999"){
+                                                self.ingresar_datos_laborales();
                                             }
                                         }
                                     }
-
                                 }
                             }
-                        }
+                        }else{alert("el campo numero sistema privado no acepta caracter")};
+
+                       if($("#rpe").val()=="2" || $("#rpe").val()=="3" || $("#rpe").val()=="1"){
+                           if($('#ent_aseg').val()!="999"){
+                               if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
+                                   if($('#cond_pla').val()!="999"){
+                                       if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                           if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                               if($('#serv_tip_ocup').val()!="999"){
+                                                   self.ingresar_datos_laborales();
+                                               }
+                                           }
+                                       }
+                                   }
+                               };
+                               if($('#tip_pag').val()=="2" ){
+                                   if($('#cond_pla').val()!="999"){
+                                       if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                           if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                               if($('#serv_tip_ocup').val()!="999"){
+                                                   self.ingresar_datos_laborales();
+                                               }
+                                           }
+                                       }
+                                   }
+                               }
+                           }
+                       }
+
                     }else{
                         alert("los datos ingresados son incorrectos")
                     }
+
+                },
+                fun_camb_tab_a:function(){
+                    this.tab=0;
+                    $("#serv_cod").hide();
+                    $("#block-descr_serv").hide();
+                },
+                fun_validar_codigo:function(){
+                    if(this.tab==1 & ($("#codigo").val().length >7 || $("#codigo").val().length==0)){
+                       this.fun_camb_tab_b();
+                    };
+                },
+                fun_camb_tab_b:function(){
+                    this.tab=1;
+                    var self=this;
+                    $('advertencia').hide();
+                    var codigo = $("#codigo").val();
+                    if(codigo==""){
+                        $("#block-descr_serv").hide();
+                        var temp_help = $("#serv_cod");
+                        temp_help.removeClass('alert-danger');
+                        temp_help.addClass('alert-warning')
+                        temp_help.show();
+                        temp_help.text("debe ingresar el codigo de la persona a la que desea ingresar sus datos laborales!");
+                    }else{
+                        $("#serv_cod").hide();
+                        self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
+
+                        var fetch_s = self.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
+
+                        fetch_s.done(function () {
+                            console.log(self.model.get("servidor").get("codigo"));
+                            var nom_completo=self.model.get("servidor").get("paterno")+' '+self.model.get("servidor").get("materno")+' '+self.model.get("servidor").get("nombre");
+                            $("#block-descr_serv").show();
+                            $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
+                            $('#desc_serv_lab').text(nom_completo)
+                        });
+                        fetch_s.fail(function () {
+                            $("#block-descr_serv").hide();
+                            var temp_help = $("#serv_cod");
+                            temp_help.removeClass('alert-warning');
+                            temp_help.addClass('alert-danger')
+                            temp_help.show();
+                            temp_help.text("No existe registro!");
+                        });
+                    }
+
+
 
                 },
                 fun_search_servidor: function (ev) {
@@ -895,7 +940,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#serv_ape_mat").val(self.model.get("servidor").get("materno"));
                         $("#serv_ape_pat").val(self.model.get("servidor").get("paterno"));
                         $("#serv_nom").val(self.model.get("servidor").get("nombre"));
-                        $("#serv_est_civ").val(self.model.get("servidor").get("estCiv"));
+                        console.log(self.model.get("servidor").get("estCiv")+" akaaaaaaaaaaaa")
+
                         $("#serv_tip_docu").val(self.model.get("servidor").get("tipoDoc"));
 
                         $("#num_document").val(self.model.get("servidor").get("numDoc"));
@@ -941,14 +987,16 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#serv_cel").val(self.model.get("servidor").get("celular"));
 
                         $("#serv_correo").val(self.model.get("servidor").get("correo"));
-
+                        $("#serv_est_civ").val(self.model.get("servidor").get("estCiv"));
                     });
 
                     fetch_s.fail(function () {
 
-                        var temp_help = $("#help_codigo");
+                        var temp_help = $("#serv_cod");
 
                         temp_help.show();
+                        temp_help.removeClass('alert-warning');
+                        temp_help.addClass('alert-danger');
                         temp_help.text("No existe registro!");
 
 

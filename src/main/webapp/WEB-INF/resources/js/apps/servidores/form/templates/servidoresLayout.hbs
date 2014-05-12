@@ -4,16 +4,28 @@
 
 <legend>Servidores</legend>
 <div class="alert text-center" id="advertencia" style="display: none">
-
+</div>
+<div id="serv_save" class='alert alert-success text-center' style="display: none;">
+</div>
+<div id="serv_cod" class="alert text-center" style="display: none;">
 </div>
 
 <br/>
 
 <div class="tabbable">
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#lA" data-toggle="tab">I. General</a></li>
-    <li class=""><a href="#lB" data-toggle="tab">I. Laboral</a></li>
-    <form class="form-horizontal pull-right" id="cod_sea">
+    <li class="active"><a href="#lA" data-toggle="tab" class="tab_a">I. General</a></li>
+    <li class=""><a href="#lB" data-toggle="tab" class="tab_b">I. Laboral</a></li>
+
+    <div class="input-group col-md-3 pull-right">
+        <input type="text" id="codigo" placeholder="Ingrese Codigo Servidor" class="form-control">
+             <span class="input-group-btn">
+                 <button id="cod_sea" class="btn btn-default" type=""><i class="glyphicon glyphicon-search icon-white"></i></button>
+             </span>
+    </div>
+
+
+    <!--<form class="form-horizontal pull-right" id="cod_sea">
         <div class="row form-group">
             <div class="col-md-12">
                 <label class="control-label col-md-2" for="codigo">Código Servidor <span style="color:red;">*</span></label>
@@ -34,7 +46,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form>-->
 </ul>
 <br/>
 
@@ -325,6 +337,15 @@
 </div>
 <div class="tab-pane" id="lB">
     <br>
+    <div class="row form-group" id="block-descr_serv" style="display: none">
+        <div class="col-md-4">
+            <strong style="font-size: 18px;">DNI:<strong id="dni_serv_lab" style="font-size: 16px; color:#00585f;"></strong></strong>
+        </div>
+        <div class="col-md-4">
+            <strong style="font-size: 18px;">Servidor:<strong id="desc_serv_lab" style="font-size: 16px; color: #00585f;"></strong></strong>
+        </div>
+        <br>
+    </div>
     <form class="form-horizontal" id="sav_serv_lab">
         <fieldset>
             <br/>
