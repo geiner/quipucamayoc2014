@@ -3282,16 +3282,23 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             },
 
             fun_save_fam:function(){
-                var self=this;
+                var self = this;
                 var fullDate = new Date();
-                var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-                var twoDigitDay=((fullDate.getDate().length) === 1) ? (fullDate.getDate()) : '0' + (fullDate.getDate());
-                var currentDate = twoDigitDay + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+                var dia=fullDate.getDate()+"";
+                var mes=(fullDate.getMonth()+1)+"";
+                var anio=fullDate.getFullYear()+"";
+                if(dia.length==1){
+                    dia='0'+fullDate.getDate();
+                }
+                if(mes.length==1){
+                    mes='0'+(fullDate.getMonth()+1);
+                }
+                var currentDate = dia + "/" + mes + "/" + anio;
 
-                    if($("#legaj_nom_ape").val()!="" && $("#legaj_domici").val()!="" && $("#serv_ape_pat").val()!=""
-                        && $("#lega_tel").val()!="" && $("#lega_seguro").val()!="" && $("#legaj_naci").val()!=""
-                        && $("#leg_tip_parent").val()!="0" && $("#leg_tip_document").val()!="0" && $("#sexo").val()!="0"
-                        && $("#leg_est_civil").val()!="0" && $("#beneficio").val()!="000" && $("#depen").val()!="000"){
+
+                    if($("#legaj_nom_ape").val()!="" && $("#ap_paterno").val()!="" && $("#ap_materno").val()!=""
+                        && $("#leg_tip_parent").val()!="0")
+                    {
                         if(isNaN($('#serv_ape_pat').val())){
                             $("#fam-advertencia").removeClass("alert-success");
                             $("#fam-advertencia").removeClass("alert-danger");
@@ -3317,6 +3324,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                 }
                                 else{
                                     if(this.Comparar_Fecha(currentDate,$("#legaj_naci").val())){
+
                                         this.validarExistenteDocument.fetchdocumento($("#serv_ape_pat").val(),function(){
                                             if(self.validarExistenteDocument.collection.length!=0){
                                                 $("#fam-advertencia").removeClass("alert-success");
@@ -3345,7 +3353,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                     self.dni=$('#id-servidor').text();
 
                                                     self.model.get("datosfamiliares").set({
-                                                        "cargfamnom": $("#legaj_nom_ape").val(),
+                                                        "cargfamnom": $("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+$("#legaj_nom_ape").val(),
                                                         "cargfampar": $("#leg_tip_parent").val(),
                                                         "cargfamdir": $("#legaj_domici").val(),
                                                         "cargfamdoc": $("#leg_tip_document").val(),
@@ -3389,6 +3397,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                                                                 $("#legaj_nom_ape").val("");
                                                                 $("#legaj_domici").val("");
+                                                                $("#ap_paterno").val("");
+                                                                $("#ap_materno").val("");
                                                                 $("#serv_ape_pat").val("");
                                                                 $("#lega_tel").val("");
                                                                 $("#legaj_naci").val("");
@@ -3446,7 +3456,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                                     self.dni=$('#id-servidor').text();
 
                                                                     self.model.get("datosfamiliares").set({
-                                                                        "cargfamnom": $("#legaj_nom_ape").val(),
+                                                                        "cargfamnom": $("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+$("#legaj_nom_ape").val(),
                                                                         "cargfampar": $("#leg_tip_parent").val(),
                                                                         "cargfamdir": $("#legaj_domici").val(),
                                                                         "cargfamdoc": $("#leg_tip_document").val(),
@@ -3514,6 +3524,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
 
                                                                                     $("#legaj_nom_ape").val("");
+                                                                                    $("#ap_paterno").val("");
+                                                                                    $("#ap_materno").val("");
                                                                                     $("#legaj_domici").val("");
                                                                                     $("#serv_ape_pat").val("");
                                                                                     $("#lega_tel").val("");
@@ -3569,7 +3581,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                             self.dni=$('#id-servidor').text();
 
                                                             self.model.get("datosfamiliares").set({
-                                                                "cargfamnom": $("#legaj_nom_ape").val(),
+                                                                "cargfamnom": $("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+$("#legaj_nom_ape").val(),
                                                                 "cargfampar": $("#leg_tip_parent").val(),
                                                                 "cargfamdir": $("#legaj_domici").val(),
                                                                 "cargfamdoc": $("#leg_tip_document").val(),
@@ -3636,6 +3648,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                                             $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                                                                             $("#legaj_nom_ape").val("");
+                                                                            $("#ap_paterno").val("");
+                                                                            $("#ap_materno").val("");
                                                                             $("#legaj_domici").val("");
                                                                             $("#serv_ape_pat").val("");
                                                                             $("#lega_tel").val("");
@@ -3697,8 +3711,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                         $("#fam-advertencia").removeClass("alert-success");
                         $("#fam-advertencia").removeClass("alert-danger");
                         $("#fam-advertencia").addClass("alert-warning");
-                         $("#fam-advertencia").html("<strong>Existen campos obligatorios vacíos</strong>");
-                            $("#fam-advertencia").show();
+                        $("#fam-advertencia").html("<strong>Existen campos obligatorios vacíos</strong>");
+                        $("#fam-advertencia").show();
                     }
 
 
@@ -3707,7 +3721,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             fun_fam_edit:function(e){
 
                 var clickedElement=$(e.currentTarget);
-                var nom_ape=clickedElement.parent().parent().children(':nth-child(1)').text();
+                var nom_ape=clickedElement.parent().parent().children(':nth-child(1)').text().split(" ");
                 var domicilio=clickedElement.parent().parent().children(':nth-child(2)').text();
                 var num_document=clickedElement.parent().parent().children(':nth-child(5)').text();
                 var sexo=clickedElement.parent().parent().children(':nth-child(6)').text();
@@ -3726,7 +3740,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                 var tipobenef=clickedElement.parent().parent().attr('datatipbenf');
                 var idresol=clickedElement.parent().parent().attr('dataresol');
+                var aux_nom="";
 
+                for(var i=2;i<nom_ape.length;i++){
+                    aux_nom=aux_nom+nom_ape[i]+" ";
+                }
 
                 $('#idfamiliar').text(idfamiliar);
                 $('#form_save_rts').hide();
@@ -3734,7 +3752,9 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
 
                 parent.trim();
-                $('#legaj_nom_ape').val(nom_ape);
+                $('#legaj_nom_ape').val(aux_nom);
+                $("#ap_paterno").val(nom_ape[0]);
+                $("#ap_materno").val(nom_ape[1]);
                 $('#legaj_domici').val(domicilio);
                 $('#serv_ape_pat').val(num_document.trim());
                 $('#sexo').val(sexo);
@@ -3762,7 +3782,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 var self=this;
 
 
-                        if($("#legaj_nom_ape").val()!="" && $("#legaj_domici").val()!="" && $("#serv_ape_pat").val()!=""
+                        if($("#legaj_nom_ape").val()!="" && $("#legaj_domici").val()!="" && $("#serv_ape_pat").val()!="" && $("#ap_paterno").val()!="" && $("#ap_materno").val()!=""
                             && $("#lega_tel").val()!="" && $("#lega_seguro").val()!="" && $("#legaj_naci").val()!=""
                             && $("#leg_tip_parent").val()!="0" && $("#leg_tip_document").val()!="0" && $("#sexo").val()!="0"
                             && $("#leg_est_civil").val()!="0" && $("#beneficio").val()!="000" && $("#depen").val()!="000"){
@@ -3807,7 +3827,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                      var beneficio=$("#beneficio").val();
 
                                                      self.model.get("editdatosfamiliares").set({
-                                                         "cargfamnom": $("#legaj_nom_ape").val(),
+                                                         "cargfamnom":$("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+ $("#legaj_nom_ape").val(),
                                                          "cargfampar": $("#leg_tip_parent").val(),
                                                          "cargfamdir": $("#legaj_domici").val(),
                                                          "cargfamdoc": $("#leg_tip_document").val(),
@@ -3837,6 +3857,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                                 $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                                                                 $("#legaj_nom_ape").val("");
+                                                                $("#ap_paterno").val("");
+                                                                $("#ap_materno").val("");
                                                                 $("#legaj_domici").val("");
                                                                 $("#serv_ape_pat").val("");
                                                                 $("#lega_tel").val("");
@@ -3881,7 +3903,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                                      var beneficio=$("#beneficio").val();
 
                                                                      self.model.get("editdatosfamiliares").set({
-                                                                         "cargfamnom": $("#legaj_nom_ape").val(),
+                                                                         "cargfamnom": $("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+ $("#legaj_nom_ape").val(),
                                                                          "cargfampar": $("#leg_tip_parent").val(),
                                                                          "cargfamdir": $("#legaj_domici").val(),
                                                                          "cargfamdoc": $("#leg_tip_document").val(),
@@ -3945,6 +3967,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                                                                                      $('.dataTables_filter input').attr('placeholder','Buscar..');
                                                                                      $("#legaj_nom_ape").val("");
+                                                                                     $("#ap_paterno").val("");
+                                                                                     $("#ap_materno").val("");
                                                                                      $("#legaj_domici").val("");
                                                                                      $("#serv_ape_pat").val("");
                                                                                      $("#lega_tel").val("");
@@ -3983,7 +4007,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                              var beneficio=$("#beneficio").val();
 
                                                              self.model.get("editdatosfamiliares").set({
-                                                                 "cargfamnom": $("#legaj_nom_ape").val(),
+                                                                 "cargfamnom": $("#ap_paterno").val()+" "+$("#ap_materno").val()+" "+$("#legaj_nom_ape").val(),
                                                                  "cargfampar": $("#leg_tip_parent").val(),
                                                                  "cargfamdir": $("#legaj_domici").val(),
                                                                  "cargfamdoc": $("#leg_tip_document").val(),
@@ -4047,6 +4071,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                                                                              $('.dataTables_filter input').attr('placeholder','Buscar..');
                                                                              $("#legaj_nom_ape").val("");
+                                                                             $("#ap_paterno").val("");
+                                                                             $("#ap_materno").val("");
                                                                              $("#legaj_domici").val("");
                                                                              $("#serv_ape_pat").val("");
                                                                              $("#lega_tel").val("");
