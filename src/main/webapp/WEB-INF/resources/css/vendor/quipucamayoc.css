@@ -33,6 +33,9 @@
     background-color:#fbec88 ;
 
 }
+.buscador_desc{
+    float: left;
+}
 
 #table-descansos-totales .table > tbody > tr{
     cursor: pointer;

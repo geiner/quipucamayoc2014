@@ -19,7 +19,9 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 servidoresSeleccionados: [],
                 idDescMed:null,
                 cant_mat:0,
+                aux_mat:0,
                 cant_enf:0,
+                aux_enf:0,
 
                 regions:{
                    listServ:"#list_serv_reg",
@@ -78,7 +80,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     var  clickedElement=$(ev.currentTarget);
 
                     if($("#select-all").is(':checked')){
-                           //alert("seleccionado");
+
                         var parent=$('.check-all').prop('checked',true);
                         $(".estatic_desc").addClass("color_row");
                         $(".estatic_desc>td>input").prop("checked",true);
@@ -221,7 +223,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     var anioF=parseInt($("#fech_fin_med").val().substring(6,10));
                     var fechaFin=365*anioF+30*mesF+diaF;
 
-                    var tiempo=(fechaFin-fechaInic)+" dias";
+                    var tiempo=(fechaFin-fechaInic+1)+" dias";
 
                     if( $("#citt").val()!="" && $("#fech_ini_med").val()!="" && $("#fech_fin_med").val()!=""){
 
@@ -258,16 +260,22 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                                             $("#table-descansos-servidor").dataTable();
                                             $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                            $("#table-descansos-servidor_filter").append("<div  style='float: left;width: 79%;' id='div_dias'> <div style='float: left;margin-left: 21%;'><label class=' control-label'>Maternidad  dias:</label><span id='text_mat'></span></div><div  style='float: left;margin-left: 31%;'><label class='control-label'>Enfermedad  dias:</label><span id='text_enf'></span></div></div>");
+                                            $("#table-descansos-servidor_filter>label").addClass("buscador_desc");
                                             $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                             $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                             $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                                             if($("#tipo_lic option:selected").html()=="MATERNIDAD"){
+                                                self.cant_mat=self.cant_mat-self.aux_mat;
+                                                self.cant_enf=self.cant_enf-self.aux_enf;
                                                 var tmp_mat=tiempo.split(" ");
                                                 self.cant_mat=self.cant_mat+parseInt(tmp_mat[0]);
 
                                             }
                                             if($("#tipo_lic option:selected").html()=="ENFERMEDAD"){
+                                                self.cant_enf=self.cant_enf-self.aux_enf;
+                                                self.cant_mat=self.cant_mat-self.aux_mat;
                                                 var tmp_enf=tiempo.split(" ");
                                                 self.cant_enf=self.cant_enf+parseInt(tmp_enf[0]);
 
@@ -332,11 +340,15 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                     if(tip_lic=="ENFERMEDAD"){
                         idTip=1;
-                        this.cant_enf=this.cant_enf-parseInt(aux[0]);
+                        this.aux_enf=parseInt(aux[0]);
+                        this.aux_mat=0;
+                        //this.cant_enf=this.cant_enf-parseInt(aux[0]);
                     }
                     if(tip_lic=="MATERNIDAD"){
                         idTip=2;
-                        this.cant_mat=this.cant_mat-parseInt(aux[0]);
+                        this.aux_mat=parseInt(aux[0]);
+                        this.aux_enf=0;
+                       // this.cant_mat=this.cant_mat-parseInt(aux[0]);
                     }
                     $("#citt").val(ciit);
                     $("#fech_ini_med").val(fech_ini);
@@ -390,15 +402,21 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
 
                         if(self.descansosServ.collection.length!=0){
 
+
+
                           //console.log(self.cant_mat+" "+self.cant_enf);
-                            $("#div_dias").show();
-                            $("#text_mat").text(self.cant_mat);
-                            $("#text_enf").text(self.cant_enf);
+
+
+
                             $("#table-descansos-servidor").dataTable();
                             $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                            $("#table-descansos-servidor_filter").append("<div  style='float: left;width: 79%;' id='div_dias'> <div style='float: left;margin-left: 21%;'><label class=' control-label'>Maternidad  dias:</label><span id='text_mat'></span></div><div  style='float: left;margin-left: 31%;'><label class='control-label'>Enfermedad  dias:</label><span id='text_enf'></span></div></div>");
+                            $("#table-descansos-servidor_filter>label").addClass("buscador_desc");
                             $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                             $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                             $('.dataTables_filter input').attr('placeholder','Buscar..');
+                            $("#text_mat").text(self.cant_mat);
+                            $("#text_enf").text(self.cant_enf);
 
 
 
@@ -446,7 +464,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     var anioF=parseInt($("#fech_fin_med").val().substring(6,10));
                     var fechaFin=365*anioF+30*mesF+diaF;
 
-                    var tiempo=(fechaFin-fechaInic)+" dias";
+                    var tiempo=(fechaFin-fechaInic+1)+" dias";
 
 
                    // alert(tiempo);
@@ -488,6 +506,8 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                                  if(self.descansosServ.collection.length!=0){
                                  $("#table-descansos-servidor").dataTable();
                                  $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                 $("#table-descansos-servidor_filter").append("<div  style='float: left;width: 79%;' id='div_dias'> <div style='float: left;margin-left: 21%;'><label class=' control-label'>Maternidad  dias:</label><span id='text_mat'>0</span></div><div  style='float: left;margin-left: 31%;'><label class='control-label'>Enfermedad  dias:</label><span id='text_enf'>365</span></div></div>");
+                                 $("#table-descansos-servidor_filter>label").addClass("buscador_desc");
                                  $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                  $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                  $('.dataTables_filter input').attr('placeholder','Buscar..');
@@ -547,7 +567,26 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                 },
                 fun_eliminar:function(e){
                     var clickedElement= $(e.currentTarget);
+                    var tmp_dias=clickedElement.parent().parent().children(':nth-child(5)').text();
+                    var tip_lic=clickedElement.parent().parent().children(':nth-child(2)').text();
+
                     this.idDescMed=clickedElement.parent().parent().attr("id");
+                    var aux=tmp_dias.split(" ");
+
+
+
+                    if(tip_lic=="ENFERMEDAD"){
+
+                        this.aux_enf=parseInt(aux[0]);
+                        this.aux_mat=0;
+                        //this.cant_enf=this.cant_enf-parseInt(aux[0]);
+                    }
+                    if(tip_lic=="MATERNIDAD"){
+
+                        this.aux_mat=parseInt(aux[0]);
+                        this.aux_enf=0;
+                        // this.cant_mat=this.cant_mat-parseInt(aux[0]);
+                    }
 
                 },
                 fun_delete_descMed:function(){
@@ -555,6 +594,10 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                     var self = this;
                     var idDescMedico=self.idDescMed;
                     var url='rest/descansos/deleteDescansoMed/'+idDescMedico;
+
+                    self.cant_enf=self.cant_enf-self.aux_enf;
+                    self.cant_mat=self.cant_mat-self.aux_mat;
+
 
                     $.ajax({
                         type: 'DELETE',
@@ -570,9 +613,14 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                                 if(self.descansosServ.collection.length!=0){
                                     $("#table-descansos-servidor").dataTable();
                                     $('#table-descansos-servidor_wrapper').append("<div id='footer-table'></div>");
+                                    $("#table-descansos-servidor_filter").append("<div  style='float: left;width: 79%;' id='div_dias'> <div style='float: left;margin-left: 21%;'><label class=' control-label'>Maternidad  dias:</label><span id='text_mat'>0</span></div><div  style='float: left;margin-left: 31%;'><label class='control-label'>Enfermedad  dias:</label><span id='text_enf'>365</span></div></div>");
+                                    $("#table-descansos-servidor_filter>label").addClass("buscador_desc");
                                     $('#table-descansos-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#table-descansos-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                     $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+                                    $("#text_mat").text(self.cant_mat);
+                                    $("#text_enf").text(self.cant_enf);
                                 }
                             })
                             self.regiontabladescansos.show(self.descansosServ)
