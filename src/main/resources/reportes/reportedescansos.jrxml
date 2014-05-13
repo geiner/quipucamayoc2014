@@ -36,7 +36,7 @@ FECHA_INICIO,
 FECHA_FIN,
 SER_COD,
 TIPO_LIC from DATAPERLIQU.desc_medicos dm,DATAPERSUEL.lista_servidor se
-where (to_char(fecha_inicio, 'mm')=$P{mes} or to_char(fecha_fin, 'mm')=$P{mes})
+where (to_char(fecha_inicio, 'mm')=$P{mes} or to_char(fecha_fin, 'mm')=$P{mes} or $P{mes} BETWEEN to_char(fecha_inicio, 'mm') and to_char(fecha_fin, 'mm') )
 and (to_char(fecha_inicio, 'yyyy')=$P{anio} or to_char(fecha_fin, 'yyyy')=$P{anio})
 and trim(dm.id_serv)=trim(se.ser_cod)
 and se.NUM_SEREST=1

@@ -69,7 +69,7 @@
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[OFICINA GENERAL DE PERSONAL]]></text>
+				<text><![CDATA[OFICINA GENERAL DE RECURSOS HUMANOS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement  key="staticText-7" x="412" y="16" width="34" height="13"/>
