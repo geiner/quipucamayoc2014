@@ -805,7 +805,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                            }
                        };
 
-                        if($("#rpe").val()=="4" & $('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!="" & !isNaN($('#num_sis_pri_pen').val())){
+                        if($("#rpe").val()=="4" & $('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!=""){
                             if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
                                 if($('#cond_pla').val()!="999"){
                                     if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
@@ -828,7 +828,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                     }
                                 }
                             }
-                        }else{alert("el campo numero sistema privado no acepta caracter")};
+                        }else{alert("ingresar el numero del sistema privado de pensiones")};
 
                        if($("#rpe").val()=="2" || $("#rpe").val()=="3" || $("#rpe").val()=="1"){
                            if($('#ent_aseg').val()!="999"){
@@ -931,7 +931,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         var d = date.getDate();
                         var m = date.getMonth() + 1;
                         var y = date.getFullYear();
-                        return '' + (d <= 9 ? '0' + d : d) + '-' + (m <= 9 ? '0' + m : m) + '-' + y;
+                        return '' + (d <= 9 ? '0' + d : d) + '/' + (m <= 9 ? '0' + m : m) + '/' + y;
                     }
 
                     fetch_s.done(function () {

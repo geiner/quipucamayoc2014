@@ -189,6 +189,9 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos','apps/
                         clickedElement.button('reset');
                         self.listServ.show(self.listaServView);
 
+                        for(var i=0;i<self.listaServView.collection.length;i++){
+
+                        }
                         if(self.listaServView.collection.length!=0){
                             $("#table-servidor").dataTable();
                             $('#table-servidor_wrapper').append("<div id='footer-table'></div>");

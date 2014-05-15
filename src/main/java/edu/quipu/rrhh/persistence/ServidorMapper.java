@@ -21,7 +21,7 @@ public interface ServidorMapper {
             "  ser_tip_doc_id_act AS tipDocId, " +
             "  ser_doc_id_act     AS docId, " +
             "  ser_sexo           AS sex, " +
-            "  ser_fech_nac       AS nac, " +
+            "  to_char(ser_fech_nac,'dd/mm/yyyy')       AS nac, " +
             "  ser_ubi_pais_nac   AS paisnac, " +
             "  ser_ubi_dept_nac   AS deptnac, " +
             "  ser_ubi_prov_nac   AS provnac, " +
@@ -33,7 +33,7 @@ public interface ServidorMapper {
             "  SER_DOM            AS lugdom, " +
             "  ser_num_hij        AS hij, " +
             "  ser_num_ruc        AS ruc, " +
-            "  ser_fech_in_unmsm  AS ingUnmsm, " +
+            "  to_char(ser_fech_in_unmsm,'dd/mm/yyyy')  AS ingUnmsm, " +
             "  ser_tit_cta_ban    AS titCueBan, " +
             "  ser_telef          AS tel, " +
             "  SER_TELEF_CELL     AS celul, " +
