@@ -207,7 +207,7 @@ public class LegajosController {
         while(dni.length()<10){
             dni=dni+" ";
         }
-        //System.out.println("salio:"+dni.length());
+        System.out.println("salio:"+dni.length());
         return legajosService.cargaFamiliar(dni);
     }
 
@@ -215,8 +215,15 @@ public class LegajosController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String save(@RequestBody LegajosCargaFamiliar datosfamiliares){
+        System.out.println(datosfamiliares.getCargfamnom()+"-"+datosfamiliares.getCargfampar()+"-"+datosfamiliares.getCargfamdir()+"-"+
+                datosfamiliares.getCargfamdoc()+"-"+datosfamiliares.getCargfamnumdoc()+"-"+datosfamiliares.getCargfamsex()+"-"+datosfamiliares.getCargfamfechnac()+"-"+
+                datosfamiliares.getCargfamtel()+"-"+datosfamiliares.getCargfamrestciv()+"-"+datosfamiliares.getCargfamben()+"-"+datosfamiliares.getCargfamnumessal()+"-"+
+                datosfamiliares.getCargfamdep()+"-"+datosfamiliares.getCargfamcodser());
+        String valor=datosfamiliares.getCargfamsex();
+        System.out.println(datosfamiliares.getCargfamsex()+"sds");
+
         legajosService.addDatosFamiliares(datosfamiliares.getCargfamnom(),datosfamiliares.getCargfampar(),datosfamiliares.getCargfamdir(),
-                datosfamiliares.getCargfamdoc(),datosfamiliares.getCargfamnumdoc(),datosfamiliares.getCargfamsex(),datosfamiliares.getCargfamfechnac(),
+                datosfamiliares.getCargfamdoc(),datosfamiliares.getCargfamnumdoc(),valor,datosfamiliares.getCargfamfechnac(),
                 datosfamiliares.getCargfamtel(),datosfamiliares.getCargfamrestciv(),datosfamiliares.getCargfamben(),datosfamiliares.getCargfamnumessal(),
                 datosfamiliares.getCargfamdep(),datosfamiliares.getCargfamcodser());
 
@@ -282,11 +289,11 @@ public class LegajosController {
         while(serv.length()<10){
             serv=serv+" ";
         }
-        while(dni.length()<8){
+        /*while(dni.length()<8){
             dni=dni+" ";
-        }
+        }*/
         System.out.println("nene"+dni+"cania");
-        String idFamiliar= ""+legajosService.idFamiliar(dni,serv);
+        String idFamiliar= ""+legajosService.idFamiliar(beneficiarios.getCargfamnom(),serv);
         System.out.println("Esta Nuloo");
         System.out.println("id familiar"+idFamiliar);
 

@@ -19,9 +19,9 @@ public interface LegajosMapper {
             "  tip.PORHORAS                        AS TIPOXHORAS, " +
             "  ps.PAIDES                           AS PAIS, " +
             "  TRAESTCENEST                        AS CENTROESTUDIO , " +
-            "  TO_CHAR(TRAESTFECINI,'DD-MM-YYYY' ) AS FINICIO, " +
-            "  TO_CHAR(TRAESTFECFIN, 'DD-MM-YYYY') AS FFIN, " +
-            "  TO_CHAR(TRAESTFECEXP, 'DD-MM-YYYY') AS FEXP, " +
+            "  TO_CHAR(TRAESTFECINI,'DD/MM/YYYY' ) AS FINICIO, " +
+            "  TO_CHAR(TRAESTFECFIN, 'DD/MM/YYYY') AS FFIN, " +
+            "  TO_CHAR(TRAESTFECEXP, 'DD/MM/YYYY') AS FEXP, " +
             "  TRAESTNOMESP                        AS ESPECIALIDAD, " +
             "  TRAESTNROCOL                        AS NROCOLEGIATURA, " +
             "  TRAESTNROTIT                        AS NROTITULACION, " +
@@ -109,7 +109,7 @@ public interface LegajosMapper {
     })
     List<Legajos> nivelEstudio(@Param("tipo") String tipo);
 
-    @Select(value = "SELECT paicod AS COD,paides AS DES FROM DATAPERLIQU.pais")
+    @Select(value = "SELECT paicod AS COD,paides AS DES FROM DATAPERLIQU.pais ORDER BY des")
     @Results(value = {
             @Result(javaType = Legajos.class),
             @Result(property = "codpais",column = "COD"),
@@ -352,7 +352,7 @@ public interface LegajosMapper {
 
     @Select(value = "select carfamnom AS NOMAPE,carfamsec AS IDFAMILIAR,tipo_beneficio AS TIPBENEFICIO,cod_resol AS CODRESOL, titularcuent AS TITUTCUEN,carfamtel AS TELEF,tipopago AS TIPOPAGO,carfamben AS BENEF,numcuent AS NUMCUENT,TO_CHAR(carfamfecnac,'DD/MM/YYYY' ) AS FAMFECH,carfamdep AS DEP,carfarestciv AS ESTADOCIVIL,carfamnumessal AS NUMSEGU,carfamdocid as TIPDOC,carfampar AS IDPARENT,carfamdir AS DIREC,desc_paren AS PARENT,des_doc_id AS DOC," +
             "carfamdni AS NUMDOC,carfamsex AS SEX " +
-            "from(( ( DATAPERLIQU.tb_carga_familiar inner join  DATAPERLIQU.tipo_parentesco on( dataperliqu.tb_carga_familiar.carfampar =dataperliqu.tipo_parentesco.cod_paren))inner join DATAPERSUEL.doc_identidad on dataperliqu.tb_carga_familiar.carfamdocid= datapersuel.doc_identidad.cod_doc_id)left join DATAPERLIQU.tb_beneficiario on carfamsec=codbenf)where CARFAMCODSER=#{dni}")
+            "from(( ( DATAPERLIQU.tb_carga_familiar inner join  DATAPERLIQU.tipo_parentesco on( dataperliqu.tb_carga_familiar.carfampar =dataperliqu.tipo_parentesco.cod_paren))left join DATAPERSUEL.doc_identidad on dataperliqu.tb_carga_familiar.carfamdocid= datapersuel.doc_identidad.cod_doc_id)left join DATAPERLIQU.tb_beneficiario on carfamsec=codbenf)where CARFAMCODSER=#{dni}")
     @Results(value = {
 
             @Result(javaType = LegajosCargaFamiliar.class),
@@ -390,7 +390,7 @@ public interface LegajosMapper {
     public  void  addBeneficiarios(@Param("tipopago") String tipopago,@Param("numcuenta") int numcuenta,@Param("titularcuenta") String titularcuenta,@Param("idfamily") String idfamily,@Param("codResol") String codResol,@Param("tipBenef") int tipBenef ) throws DataAccessException;
 
 
-    @Select(value = "SELECT carfamsec AS IDFAM FROM DATAPERLIQU.tb_carga_familiar WHERE CARFAMDNI=#{dni} and CARFAMCODSER=#{serv}")
+    @Select(value = "SELECT carfamsec AS IDFAM FROM DATAPERLIQU.tb_carga_familiar WHERE CARFAMNOM=#{dni} and CARFAMCODSER=#{serv}")
     @Results(value = {
             @Result(javaType = LegajosCargaFamiliar.class),
             @Result(property = "cargfamsec",column = "IDFAM")
