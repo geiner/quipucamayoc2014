@@ -987,7 +987,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#serv_cel").val(self.model.get("servidor").get("celular"));
 
                         $("#serv_correo").val(self.model.get("servidor").get("correo"));
-                        $("#serv_est_civ").val(self.model.get("servidor").get("estCiv"));
+
+                        $("#serv_est_civil").val(self.model.get("servidor").get("estCiv"));
                     });
 
                     fetch_s.fail(function () {
@@ -1005,7 +1006,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     fetch_l.done(function () {
 
                         var temp_reg_pen = self.model.get("servidorlaboral").get("regPen");
-
                         self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
                                 if (self.entidadesAseguradoraView.collection.length == 0)
                                     $("#row_reg_pen").hide();
