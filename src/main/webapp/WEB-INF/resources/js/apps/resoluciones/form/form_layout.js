@@ -868,17 +868,17 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
                     if(this.btnasignar==3){
                         $('#desc-servidor').text(nombre);
                         self.rep_nomb_serv=nombre;
-                        self.rep_cod_serv=dni;
+                        self.rep_cod_serv=dni_repot;
                         self.rep_numserest_serv=estado;
 
                         $("#cod_ant").text(codAnti);
                         $("#dni_report").text(dni_repot);
                         $("#est_report").text(est_report);
                         $("#block-descr").show();
-                        self.resolAsocServidor.fetchResolucionesasociadas(dni, estado, function(){
-                            $('#codigo').val(dni);
+                        self.resolAsocServidor.fetchResolucionesasociadas(dni_repot, estado, function(){
+                            $('#codigo').val(dni_repot);
                             $('#usuario').val($('#email').text());
-                            $('#cod_serv').val(dni);
+                            $('#cod_serv').val(dni_repot);
                             $('#nom_serv').val(nombre);
                             $('#numserest').val(estado);
                             $('#form_reporte').show();

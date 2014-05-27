@@ -234,28 +234,32 @@ public interface ResolucionesMapper {
     })
     List<TrabajadorResolucion> contarServidores(@Param("resol")String resol, @Param("dni")String dni, @Param("numser")int numser);
 
-    @Select(value ="SELECT RESTRANUM                  AS RESID, " +
-            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY') AS FECHA , " +
-            "  re.tiprescod                    AS TIPCOD, " +
-            "  mo.TIPRESMOTDES                 AS MOTDESC, " +
-            "  RESTRADES1                      AS DESCR " +
-            "FROM DATAPERLIQU.tb_trabajador_resolucion_id tr , " +
+    @Select(value ="SELECT td.restranum               AS RESID , " +
+            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY')        AS FRINI , " +
+            "  TO_CHAR(re.restrafecejec,'DD-MM-YYYY') AS FRFIN, " +
+            "  re.tiprescod                           AS TIPO_RE, " +
+            "  mo.tipresmotdes                        AS MOT_TRAB, " +
+            "  TO_CHAR(td.restrafecini,'DD-MM-YYYY')  AS FECINIMOT, " +
+            "  TO_CHAR(td.restrafecfin,'DD-MM-YYYY')  AS FECFINMOT, " +
+            "  td.restrades                           AS DESMOT " +
+            "FROM DATAPERLIQU.resol_trabajador_detalle_id td, " +
             "  DATAPERLIQU.resolucion_id re, " +
             "  DATAPERLIQU.tipores_motivo mo , " +
             "  DATAPERLIQU.tipo_resolucion tipo " +
-            "WHERE trim(tr.dni)         =#{codigo} " +
-            "AND tr.num_ser_estado=#{numserest} " +
-            "AND re.restranum     =tr.cod_resol " +
-            "AND re.tipresmotcod  =mo.tipresmotcod " +
-            "AND re.tiprescod     =tipo.tiprescod")
+            "WHERE trim(td.ser_cod)=#{codigo}" +
+            "AND TRIM(td.restranum)=TRIM(re.restranum) " +
+            "AND td.tipresmotcod   =mo.tipresmotcod " +
+            "AND re.tiprescod      =tipo.tiprescod")
     @Results(value = {
             @Result(javaType = Resoluciones.class),
             @Result(property = "resid",column = "RESID"),
-            @Result(property = "fecha",column = "FECHA"),
-            @Result(property = "tipcod",column = "TIPCOD"),
-            @Result(property = "motdesc",column = "MOTDESC"),
-            @Result(property = "descr",column = "DESCR")
-
+            @Result(property = "frini",column = "FRINI"),
+            @Result(property = "frfin",column = "FRFIN"),
+            @Result(property = "tipo_re",column = "TIPO_RE"),
+            @Result(property = "mot_trab",column = "MOT_TRAB"),
+            @Result(property = "fecinimot",column = "FECINIMOT"),
+            @Result(property = "fecfinmot",column = "FECFINMOT"),
+            @Result(property = "desmot",column = "DESMOT")
     })
     List<Resoluciones> buscar_resoluciones_asociados(@Param("codigo")String codigo, @Param("numserest") int numserest);
 }

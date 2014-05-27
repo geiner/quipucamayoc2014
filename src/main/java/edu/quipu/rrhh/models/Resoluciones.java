@@ -31,10 +31,13 @@ public class Resoluciones {
     //para servidores asociados
 
     private String resid;
-    private String fecha;
-    private String tipcod;
-    private String motdesc;
-    private String descr;
+    private String frini;
+    private String frfin;
+    private String tipo_re;
+    private String mot_trab;
+    private String fecinimot;
+    private String fecfinmot;
+    private String desmot;
     //para reportes
     private String codigo;
     private String numserest;
@@ -42,12 +45,60 @@ public class Resoluciones {
     private String cod_serv;
     private String usuario;
 
-    public String getTipcod() {
-        return tipcod;
+    public String getFrini() {
+        return frini;
     }
 
-    public void setTipcod(String tipcod) {
-        this.tipcod = tipcod;
+    public void setFrini(String frini) {
+        this.frini = frini;
+    }
+
+    public String getFrfin() {
+        return frfin;
+    }
+
+    public void setFrfin(String frfin) {
+        this.frfin = frfin;
+    }
+
+    public String getTipo_re() {
+        return tipo_re;
+    }
+
+    public void setTipo_re(String tipo_re) {
+        this.tipo_re = tipo_re;
+    }
+
+    public String getMot_trab() {
+        return mot_trab;
+    }
+
+    public void setMot_trab(String mot_trab) {
+        this.mot_trab = mot_trab;
+    }
+
+    public String getFecinimot() {
+        return fecinimot;
+    }
+
+    public void setFecinimot(String fecinimot) {
+        this.fecinimot = fecinimot;
+    }
+
+    public String getFecfinmot() {
+        return fecfinmot;
+    }
+
+    public void setFecfinmot(String fecfinmot) {
+        this.fecfinmot = fecfinmot;
+    }
+
+    public String getDesmot() {
+        return desmot;
+    }
+
+    public void setDesmot(String desmot) {
+        this.desmot = desmot;
     }
 
     public String getCodigo() {
@@ -96,38 +147,6 @@ public class Resoluciones {
 
     public void setResid(String resid) {
         this.resid = resid;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getTipocod() {
-        return tipcod;
-    }
-
-    public void setTipocod(String tipocod) {
-        this.tipcod = tipocod;
-    }
-
-    public String getMotdesc() {
-        return motdesc;
-    }
-
-    public void setMotdesc(String motdesc) {
-        this.motdesc = motdesc;
-    }
-
-    public String getDescr() {
-        return descr;
-    }
-
-    public void setDescr(String descr) {
-        this.descr = descr;
     }
 
     public String getRes_fecha_resol_dfl() {
