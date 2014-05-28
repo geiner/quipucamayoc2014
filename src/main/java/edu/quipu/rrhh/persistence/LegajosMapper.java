@@ -29,15 +29,12 @@ public interface LegajosMapper {
             "  TRAESTNROHOR                        AS HORAS , " +
             "  TRAESTDUR                        AS DURACION , " +
             "  TRAESTNIVALC                        AS NIVALCANZADO " +
-            "FROM DATAPERSUEL.servidor se, " +
-            "  DATAPERLIQU.tb_trabajador_estudio te, " +
-            "  DATAPERLIQU.tipo_estudio tip, " +
-            "  DATAPERLIQU.pais ps " +
-            "WHERE te.traestcodser=#{dni} " +
-            "AND te.traestcodser  =se.ser_cod " +
-            "AND te.tratipestcod  =tip.tipestcod " +
-            "AND te.paicod        =ps.paicod " +
-            "ORDER BY FFIN ASC" )
+            "FROM ((DATAPERLIQU.tb_trabajador_estudio te "+
+            "INNER JOIN DATAPERSUEL.servidor se ON( te.TRAESTCODSER=se.SER_COD)"+
+            " INNER JOIN DATAPERLIQU.tipo_estudio tip ON (te.TRATIPESTCOD=tip.TIPESTCOD) )"+
+            " LEFT JOIN DATAPERLIQU.pais ps ON(te.PAICOD=ps.PAICOD))"+
+            " WHERE te.traestcodser=#{dni} "+
+            " ORDER BY FFIN ASC" )
     @Results(value = {
             @Result(javaType = Legajos.class),
             @Result(property = "paterno" , column = "PATERNO"),

@@ -729,33 +729,18 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                         $("#fam-advertencia").removeClass("alert-success");
                         $("#fam-advertencia").removeClass("alert-danger");
                         $("#fam-advertencia").addClass("alert-warning");
-                        $("#fam-advertencia").html("<strong>Seleccione el Tipo de Estudio</strong>");
+                        $("#fam-advertencia").html("<strong>Campos Obligatorios Incompletos</strong>");
 
                         $("#fam-advertencia").show();
                     }else{
                         if($("#leg_tip").val()=="001-0"|| $("#leg_tip").val()=="002-0" || $("#leg_tip").val()=="003-0"){
 
-                           if($("#centro_estudio").val()!="" && $("#especialidad").val()!="" && $("#certificado").val()!=""
-                               && $("#nro_titu").val()!="" && $("#nro_coleg").val()!="" && $("#leg_exp").val()!="" && $("#pais_est").val()!="0"){
+                           if($("#certificado").val()!="" && $("#niv_est").val()!="000"){
 
-                               if(isNaN($("#nro_titu").val())){
-                                   $("#fam-advertencia").removeClass("alert-success");
-                                   $("#fam-advertencia").removeClass("alert-danger");
-                                   $("#fam-advertencia").addClass("alert-warning");
-                                   $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                   $("#fam-advertencia").show();
-                               }else{
-                                  if(isNaN($("#nro_coleg").val())){
-                                      $("#fam-advertencia").removeClass("alert-success");
-                                      $("#fam-advertencia").removeClass("alert-danger");
-                                      $("#fam-advertencia").addClass("alert-warning");
-                                      $("#fam-advertencia").html("<strong>El Número de Colegiatura no debe tener Caracteres</strong>");
-                                      $("#fam-advertencia").show();
-                                  }
-                                   else{
+
+
                                       if($('#optionsRadios1').is(':checked')){
 
-                                          if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
 
                                               var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                               var mesI=parseInt($("#legaj_nac").val().substring(3,5));
@@ -767,7 +752,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                               var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                               var fechaFin=365*anioF+30*mesF+diaF;
 
-                                              if(fechaFin>fechaInicio){
+                                              if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
 
                                                   if(self.xfecha_xduracion==0){
                                                       self.duracion="-";
@@ -780,7 +765,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                   };
 
                                                   var tipoyxhoras=$("#leg_tip").val();
-                                                  var tipo=tipoyxhoras.substr(0,3);
+
 
 
                                                   self.espec= $("#especialidad").val();
@@ -862,28 +847,12 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
 
 
-                                          }
-                                          else{
-                                              $("#fam-advertencia").removeClass("alert-success");
-                                              $("#fam-advertencia").removeClass("alert-danger");
-                                              $("#fam-advertencia").addClass("alert-warning");
-                                              $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                              $("#fam-advertencia").show();
-
-                                          }
                                       }
                                       if($("#optionsRadios2").is(':checked')){
 
                                           if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
 
-                                              if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                                  $("#fam-advertencia").removeClass("alert-success");
-                                                  $("#fam-advertencia").removeClass("alert-danger");
-                                                  $("#fam-advertencia").addClass("alert-warning");
-                                                  $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                                  $("#fam-advertencia").show();
-                                              }
-                                              else{
+
 
                                                   if(self.xfecha_xduracion==0){
                                                       self.duracion="-";
@@ -967,7 +936,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                   $("#fam-advertencia").addClass("alert-success");
                                                   $("#fam-advertencia").html("<strong>Se registro con éxito los Datos de Estudio</strong>");
                                                   $("#fam-advertencia").show();
-                                              }
+
 
 
                                           }
@@ -980,8 +949,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                                           }
                                       }
-                                  }
-                               }
+
+
 
 
 
@@ -997,29 +966,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                         }
                         if($("#leg_tip").val()=="004-1" || $("#leg_tip").val()=="005-1" || $("#leg_tip").val()=="006-1"){
-                             if($("#centro_estudio").val()!="" && $("#especialidad").val()!="" && $("#certificado").val()!=""
-                                 && $("#nro_titu").val()!="" && $("#horas").val()!="" && $("#leg_exp").val()!="" && $("#pais_est").val()!="0"){
-
-                                  if(isNaN($("#nro_titu").val())){
-                                      $("#fam-advertencia").removeClass("alert-success");
-                                      $("#fam-advertencia").removeClass("alert-danger");
-                                      $("#fam-advertencia").addClass("alert-warning");
-                                      $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                      $("#fam-advertencia").show();
-                                  }
-                                 else{
-                                     if(isNaN($("#horas").val())){
-                                         $("#fam-advertencia").removeClass("alert-success");
-                                         $("#fam-advertencia").removeClass("alert-danger");
-                                         $("#fam-advertencia").addClass("alert-warning");
-                                         $("#fam-advertencia").html("<strong>El Número de Horas no debe tener Caracteres</strong>");
-                                         $("#fam-advertencia").show();
-                                     }
-                                      else{
+                             if($("#certificado").val()!=""){
 
 
                                          if($('#optionsRadios1').is(':checked')){
-                                             if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
 
                                                  var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                                  var mesI=parseInt($("#legaj_nac").val().substring(3,5));
@@ -1030,7 +981,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                  var mesF=parseInt($("#legaj_fin").val().substring(3,5));
                                                  var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                                  var fechaFin=365*anioF+30*mesF+diaF;
-                                                 if(fechaFin>fechaInicio){
+                                                 if(fechaFin>fechaInicio || $("#legaj_nac").val()!="" || $("#legaj_fin").val()!=""){
 
                                                      if(self.xfecha_xduracion==0){
                                                          self.duracion="-";
@@ -1042,7 +993,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                          self.duracion=$('#anio').val()+"-"+$('#mes').val()+"-"+$('#dia').val();
                                                      };
 
-                                                     var tipoyxhoras=$("#leg_tip").val();
+
 
 
 
@@ -1126,28 +1077,13 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                  }
 
 
-                                             }
-                                             else{
-                                                 $("#fam-advertencia").removeClass("alert-success");
-                                                 $("#fam-advertencia").removeClass("alert-danger");
-                                                 $("#fam-advertencia").addClass("alert-warning");
-                                                 $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                                 $("#fam-advertencia").show();
 
-                                             }
 
                                          }
                                          if($("#optionsRadios2").is(':checked')){
                                              if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
 
-                                                 if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                                     $("#fam-advertencia").removeClass("alert-success");
-                                                     $("#fam-advertencia").removeClass("alert-danger");
-                                                     $("#fam-advertencia").addClass("alert-warning");
-                                                     $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                                     $("#fam-advertencia").show();
-                                                 }
-                                                 else{
+
 
                                                      if(self.xfecha_xduracion==0){
                                                          self.duracion="-";
@@ -1230,7 +1166,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                      $("#fam-advertencia").addClass("alert-success");
                                                      $("#fam-advertencia").html("<strong>Se registro con éxito los Datos de Estudio</strong>");
                                                      $("#fam-advertencia").show();
-                                                 }
+
 
                                              }
                                              else{
@@ -1243,8 +1179,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                              }
 
                                          }
-                                     }
-                                  }
+
+
 
 
 
@@ -1260,21 +1196,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                         }
                         if($("#leg_tip").val()=="007-0"){
-                           if($("#centro_estudio").val()!="" && $("#certificado").val()!="" && $("#nro_titu").val()!="" && $("#leg_exp").val()!=""
-                               && $("#pais_est").val()!="0" && $("#idio_est").val()!="00"){
-
-                               if(isNaN($("#nro_titu").val())){
+                           if($("#niv_est").val()!="000" && $("#certificado").val()!="" && $("#idio_est").val()!="00"){
 
 
-                                   $("#fam-advertencia").removeClass("alert-success");
-                                   $("#fam-advertencia").removeClass("alert-danger");
-                                   $("#fam-advertencia").addClass("alert-warning");
-                                   $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                   $("#fam-advertencia").show();
-                               }
-                               else{
                                    if($("#optionsRadios1").is(':checked')){
-                                       if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
                                            var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                            var mesI=parseInt($("#legaj_nac").val().substring(3,5));
                                            var anioI=parseInt($("#legaj_nac").val().substring(6,10));
@@ -1285,7 +1211,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                            var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                            var fechaFin=365*anioF+30*mesF+diaF;
 
-                                           if(fechaFin>fechaInicio){
+                                           if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
 
                                                if(self.xfecha_xduracion==0){
                                                    self.duracion="-";
@@ -1297,14 +1223,17 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                    self.duracion=$('#anio').val()+"-"+$('#mes').val()+"-"+$('#dia').val();
                                                };
 
-                                               var tipoyxhoras=$("#leg_tip").val();
+
 
 
 
                                                self.espec= $("#idio_est").val();
                                                self.nro_tit= $("#nro_titu").val();
                                                self.fecha_exp=$("#leg_exp").val();
-                                               self.certif=$
+                                               self.certif=$("#certificado").val();
+                                               self.nro_coleg="-";
+                                               self.nvl_alcanz=$("#niv_est").val();
+                                               self.horas=0;
 
                                                self.model.get("addestudio").set({
                                                    "codigo": self.codigo,
@@ -1357,7 +1286,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                        });
                                                    self.tablaEstudios.show(self.tableEstudioView);
 
-                                               });("#certificado").val();
+                                               });
                                                self.nro_coleg="-";
                                                self.nvl_alcanz=$("#niv_est").val();
 
@@ -1375,25 +1304,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                $("#fam-advertencia").show();
                                            }
 
-                                       }else{
-                                           $("#fam-advertencia").removeClass("alert-success");
-                                           $("#fam-advertencia").removeClass("alert-danger");
-                                           $("#fam-advertencia").addClass("alert-warning");
-                                           $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                           $("#fam-advertencia").show();
 
-                                       }
                                    }
                                    if($("#optionsRadios2").is(':checked')){
                                        if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
-                                           if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                               $("#fam-advertencia").removeClass("alert-success");
-                                               $("#fam-advertencia").removeClass("alert-danger");
-                                               $("#fam-advertencia").addClass("alert-warning");
-                                               $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                               $("#fam-advertencia").show();
-                                           }
-                                           else{
+
 
 
                                                if(self.xfecha_xduracion==0){
@@ -1475,7 +1390,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                $("#fam-advertencia").addClass("alert-success");
                                                $("#fam-advertencia").html("<strong>Se registro con éxito los Datos de Estudio</strong>");
                                                $("#fam-advertencia").show();
-                                           }
+
 
 
                                        }
@@ -1488,7 +1403,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                                        }
                                    }
-                               }
+
 
 
                            }
@@ -1502,10 +1417,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                            }
                         }
                         if($("#leg_tip").val()=="008-0" || $("#leg_tip").val()=="009-0"){
-                            if($("#centro_estudio").val()!="" && $("#pais_est").val()!="0"){
+
+                            if($("#niv_est").val()!="000"){
 
                                 if($("#optionsRadios1").is(':checked')){
-                                    if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
                                         var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                         var mesI=parseInt($("#legaj_nac").val().substring(3,5));
                                         var anioI=parseInt($("#legaj_nac").val().substring(6,10));
@@ -1515,7 +1431,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                         var mesF=parseInt($("#legaj_fin").val().substring(3,5));
                                         var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                         var fechaFin=365*anioF+30*mesF+diaF;
-                                       if(fechaFin>fechaInicio){
+                                       if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
 
                                            if(self.xfecha_xduracion==0){
                                                self.duracion="-";
@@ -1598,7 +1514,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                            $("#fam-advertencia").addClass("alert-success");
                                            $("#fam-advertencia").html("<strong>Se registro con éxito los Datos de Estudio</strong>");
                                            $("#fam-advertencia").show();
-                                       }else{
+                                       }
+                                       else{
                                            $("#fam-advertencia").removeClass("alert-success");
                                            $("#fam-advertencia").removeClass("alert-danger");
                                            $("#fam-advertencia").addClass("alert-warning");
@@ -1606,15 +1523,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                            $("#fam-advertencia").show();
                                        }
 
-                                    }
-                                    else{
-                                        $("#fam-advertencia").removeClass("alert-success");
-                                        $("#fam-advertencia").removeClass("alert-danger");
-                                        $("#fam-advertencia").addClass("alert-warning");
-                                        $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                        $("#fam-advertencia").show();
 
-                                    }
                                 }
                                 if($("#optionsRadios2").is(':checked')){
                                     if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
@@ -1760,14 +1669,19 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                     error: function(){
                         self.tableEstudioView.fetchEstudios(self.codigo,
                             function () {
-                                $("#table-estudios-servidor").dataTable();
-                                $('#table-estudios-servidor_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-estudios-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-estudios-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                if(self.tableEstudioView.collection.length!=0){
+                                    $("#table-estudios-servidor").dataTable();
+                                    $('#table-estudios-servidor_wrapper').append("<div id='footer-table'></div>");
+                                    $('#table-estudios-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#table-estudios-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                                $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                }
+
                             });
                         self.tablaEstudios.show(self.tableEstudioView);
+
+                        $("#fam-advertencia").hide();
 
                     }
                 });
@@ -1818,6 +1732,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             fun_cargar_estudio:function(ev){
 
                 this.cargar=1;
+                $("#fam-advertencia").hide();
                  $('#leg_tip > #'+this.tipo).removeAttr("selected");
                 var element = $(ev.currentTarget);
                 this.id = element.parent().parent().attr('id');
@@ -1879,33 +1794,17 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                     $("#fam-advertencia").removeClass("alert-success");
                     $("#fam-advertencia").removeClass("alert-danger");
                     $("#fam-advertencia").addClass("alert-warning");
-                    $("#fam-advertencia").html("<strong>Seleccione el Tipo de Estudio</strong>");
+                    $("#fam-advertencia").html("<strong>Campos Obligatorios Incompletos</strong>");
 
                     $("#fam-advertencia").show();
                 }else{
                     if($("#leg_tip").val()=="001-0"|| $("#leg_tip").val()=="002-0" || $("#leg_tip").val()=="003-0"){
 
-                        if($("#centro_estudio").val()!="" && $("#especialidad").val()!="" && $("#certificado").val()!=""
-                            && $("#nro_titu").val()!="" && $("#nro_coleg").val()!="" && $("#leg_exp").val()!="" && $("#pais_est").val()!="0"){
+                        if($("#certificado").val()!="" && $("#niv_est").val()!="000"){
 
-                            if(isNaN($("#nro_titu").val())){
-                                $("#fam-advertencia").removeClass("alert-success");
-                                $("#fam-advertencia").removeClass("alert-danger");
-                                $("#fam-advertencia").addClass("alert-warning");
-                                $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                $("#fam-advertencia").show();
-                            }
-                            else{
-                                if(isNaN($("#nro_coleg").val())){
-                                    $("#fam-advertencia").removeClass("alert-success");
-                                    $("#fam-advertencia").removeClass("alert-danger");
-                                    $("#fam-advertencia").addClass("alert-warning");
-                                    $("#fam-advertencia").html("<strong>El Número de Colegiatura no debe tener Caracteres</strong>");
-                                    $("#fam-advertencia").show();
-                                }
-                                else{
+
                                     if($('#optionsRadios1').is(':checked')){
-                                        if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
                                             var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                             var mesI=parseInt($("#legaj_nac").val().substring(3,5));
                                             var anioI=parseInt($("#legaj_nac").val().substring(6,10));
@@ -1916,9 +1815,9 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                             var fechaFin=365*anioF+30*mesF+diaF;
 
-                                            if(fechaFin>fechaInicio){
+                                            if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
                                                 this.cargar=0;
-                                                var tipoyxhoras=$("#leg_tip").val();
+
 
 
                                                 if(this.xfecha_xduracion==0){
@@ -2008,24 +1907,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                 $("#fam-advertencia").html("<strong>La Fecha de Inicio no debe ser mayor o igual a la Fecha Fin</strong>");
                                                 $("#fam-advertencia").show();
                                             }
-                                        }
-                                        else{
-                                            $("#fam-advertencia").removeClass("alert-success");
-                                            $("#fam-advertencia").removeClass("alert-danger");
-                                            $("#fam-advertencia").addClass("alert-warning");
-                                            $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                            $("#fam-advertencia").show();
-                                        }
+
                                     }
                                     if($("#optionsRadios2").is(':checked')){
                                         if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
-                                            if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                                $("#fam-advertencia").removeClass("alert-success");
-                                                $("#fam-advertencia").removeClass("alert-danger");
-                                                $("#fam-advertencia").addClass("alert-warning");
-                                                $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                                $("#fam-advertencia").show();
-                                            } else{
+
                                                 this.cargar=0;
                                                 var tipoyxhoras=$("#leg_tip").val();
 
@@ -2109,7 +1995,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                 $("#fam-advertencia").html("<strong>Se actualizo con éxito los Datos de Estudio</strong>");
                                                 $("#fam-advertencia").show();
 
-                                            }
+
                                         } else{
                                             $("#fam-advertencia").removeClass("alert-success");
                                             $("#fam-advertencia").removeClass("alert-danger");
@@ -2118,10 +2004,10 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             $("#fam-advertencia").show();
                                         }
                                     }
-                                }
 
 
-                            }
+
+
 
                         }else{
                             $("#fam-advertencia").removeClass("alert-success");
@@ -2133,25 +2019,12 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                     }
                     if($("#leg_tip").val()=="004-1" || $("#leg_tip").val()=="005-1" || $("#leg_tip").val()=="006-1"){
-                        if($("#centro_estudio").val()!="" && $("#especialidad").val()!="" && $("#certificado").val()!=""
-                            && $("#nro_titu").val()!="" && $("#horas").val()!="" && $("#leg_exp").val()!="" && $("#pais_est").val()!="0"){
-                            if(isNaN($("#nro_titu").val())){
-                                $("#fam-advertencia").removeClass("alert-success");
-                                $("#fam-advertencia").removeClass("alert-danger");
-                                $("#fam-advertencia").addClass("alert-warning");
-                                $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                $("#fam-advertencia").show();
-                            }else{
-                                if(isNaN($("#horas").val())){
-                                    $("#fam-advertencia").removeClass("alert-success");
-                                    $("#fam-advertencia").removeClass("alert-danger");
-                                    $("#fam-advertencia").addClass("alert-warning");
-                                    $("#fam-advertencia").html("<strong>El Número de Horas no debe tener Caracteres</strong>");
-                                    $("#fam-advertencia").show();
-                                }else{
+                        if($("#certificado").val()!=""){
+
+
 
                                     if($('#optionsRadios1').is(':checked')){
-                                        if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
                                             var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                             var mesI=parseInt($("#legaj_nac").val().substring(3,5));
                                             var anioI=parseInt($("#legaj_nac").val().substring(6,10));
@@ -2162,9 +2035,9 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                             var fechaFin=365*anioF+30*mesF+diaF;
 
-                                            if(fechaFin>fechaInicio){
+                                            if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
                                                 this.cargar=0;
-                                                var tipoyxhoras=$("#leg_tip").val();
+
 
 
 
@@ -2253,24 +2126,10 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             }
 
 
-                                        }else{
-                                            $("#fam-advertencia").removeClass("alert-success");
-                                            $("#fam-advertencia").removeClass("alert-danger");
-                                            $("#fam-advertencia").addClass("alert-warning");
-                                            $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                            $("#fam-advertencia").show();
-                                        }
                                     }
                                     if($("#optionsRadios2").is(':checked')){
                                         if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
-                                            if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                                $("#fam-advertencia").removeClass("alert-success");
-                                                $("#fam-advertencia").removeClass("alert-danger");
-                                                $("#fam-advertencia").addClass("alert-warning");
-                                                $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                                $("#fam-advertencia").show();
-                                            }
-                                            else{
+
                                                 this.cargar=0;
                                                 var tipoyxhoras=$("#leg_tip").val();
 
@@ -2352,7 +2211,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                 $("#fam-advertencia").addClass("alert-success");
                                                 $("#fam-advertencia").html("<strong>Se actualizo con éxito los Datos de Estudio</strong>");
                                                 $("#fam-advertencia").show();
-                                            }
+
                                         }else{
                                             $("#fam-advertencia").removeClass("alert-success");
                                             $("#fam-advertencia").removeClass("alert-danger");
@@ -2361,8 +2220,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             $("#fam-advertencia").show();
                                         }
                                     }
-                                }
-                            }
+
+
                         } else{
                             $("#fam-advertencia").removeClass("alert-success");
                             $("#fam-advertencia").removeClass("alert-danger");
@@ -2372,21 +2231,11 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                         }
                     }
                     if($("#leg_tip").val()=="007-0"){
-                        if($("#centro_estudio").val()!="" && $("#certificado").val()!="" && $("#nro_titu").val()!="" && $("#leg_exp").val()!=""
-                            && $("#pais_est").val()!="0" && $("#idio_est").val()!="00"){
-                            if(isNaN($("#nro_titu").val())){
+                        if($("#niv_est").val()!="000" && $("#certificado").val()!="" && $("#idio_est").val()!="00"){
 
-
-                                $("#fam-advertencia").removeClass("alert-success");
-                                $("#fam-advertencia").removeClass("alert-danger");
-                                $("#fam-advertencia").addClass("alert-warning");
-                                $("#fam-advertencia").html("<strong>El Número de Titulación no debe tener Caracteres</strong>");
-                                $("#fam-advertencia").show();
-                            }
-                            else{
                                 if($("#optionsRadios1").is(':checked')){
 
-                                    if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+
                                         var diaI=parseInt($("#legaj_nac").val().substring(0,2));
                                         var mesI=parseInt($("#legaj_nac").val().substring(3,5));
                                         var anioI=parseInt($("#legaj_nac").val().substring(6,10));
@@ -2397,10 +2246,10 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                         var anioF=parseInt($("#legaj_fin").val().substring(6,10));
                                         var fechaFin=365*anioF+30*mesF+diaF;
 
-                                        if(fechaFin>fechaInicio){
+                                        if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
                                             this.cargar=0;
                                             var tipoyxhoras=$("#leg_tip").val();
-                                            var tipo=tipoyxhoras.substr(0,3);
+
 
 
                                             if(this.xfecha_xduracion==0){
@@ -2478,30 +2327,19 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             $("#fam-advertencia").addClass("alert-success");
                                             $("#fam-advertencia").html("<strong>Se actualizo con éxito los Datos de Estudio</strong>");
                                             $("#fam-advertencia").show();
-                                        }else{
+                                        }
+                                        else{
                                             $("#fam-advertencia").removeClass("alert-success");
                                             $("#fam-advertencia").removeClass("alert-danger");
                                             $("#fam-advertencia").addClass("alert-warning");
                                             $("#fam-advertencia").html("<strong>La Fecha de Inicio no debe ser mayor o igual a la Fecha Fin</strong>");
                                             $("#fam-advertencia").show();
                                         }
-                                    }else{
-                                        $("#fam-advertencia").removeClass("alert-success");
-                                        $("#fam-advertencia").removeClass("alert-danger");
-                                        $("#fam-advertencia").addClass("alert-warning");
-                                        $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
-                                        $("#fam-advertencia").show();
-                                    }
+
                                 }
                                 if($("#optionsRadios2").is(':checked')){
                                     if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
-                                        if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                            $("#fam-advertencia").removeClass("alert-success");
-                                            $("#fam-advertencia").removeClass("alert-danger");
-                                            $("#fam-advertencia").addClass("alert-warning");
-                                            $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                            $("#fam-advertencia").show();
-                                        }else{
+
                                             this.cargar=0;
                                             var tipoyxhoras=$("#leg_tip").val();
                                             var tipo=tipoyxhoras.substr(0,3);
@@ -2581,7 +2419,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                             $("#fam-advertencia").addClass("alert-success");
                                             $("#fam-advertencia").html("<strong>Se registro con éxito los Datos de Estudio</strong>");
                                             $("#fam-advertencia").show();
-                                        }
+
                                     }else{
                                         $("#fam-advertencia").removeClass("alert-success");
                                         $("#fam-advertencia").removeClass("alert-danger");
@@ -2591,7 +2429,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                     }
                                 }
 
-                            }
+
                         }else{
                             $("#fam-advertencia").removeClass("alert-success");
                             $("#fam-advertencia").removeClass("alert-danger");
@@ -2601,12 +2439,23 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                         }
                     }
                     if($("#leg_tip").val()=="008-0" || $("#leg_tip").val()=="009-0"){
-                        if($("#centro_estudio").val()!="" && $("#pais_est").val()!="0"){
+                        if($("#niv_est").val()!="000"){
+
                             if($("#optionsRadios1").is(':checked')){
-                                if($('#legaj_nac').val()!="" &&  $("#legaj_fin").val()!=""){
+                                var diaI=parseInt($("#legaj_nac").val().substring(0,2));
+                                var mesI=parseInt($("#legaj_nac").val().substring(3,5));
+                                var anioI=parseInt($("#legaj_nac").val().substring(6,10));
+                                var fechaInicio=365*anioI+30*mesI+diaI;
+
+                                var diaF=parseInt($("#legaj_fin").val().substring(0,2));
+                                var mesF=parseInt($("#legaj_fin").val().substring(3,5));
+                                var anioF=parseInt($("#legaj_fin").val().substring(6,10));
+                                var fechaFin=365*anioF+30*mesF+diaF;
+
+                                if(fechaFin>fechaInicio || $("#legaj_nac").val()=="" || $("#legaj_fin").val()==""){
                                     this.cargar=0;
                                     var tipoyxhoras=$("#leg_tip").val();
-                                    var tipo=tipoyxhoras.substr(0,3);
+
 
 
                                     if(this.xfecha_xduracion==0){
@@ -2684,25 +2533,21 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                     $("#fam-advertencia").addClass("alert-success");
                                     $("#fam-advertencia").html("<strong>Se actualizo con éxito los Datos de Estudio</strong>");
                                     $("#fam-advertencia").show();
-
                                 }else{
                                     $("#fam-advertencia").removeClass("alert-success");
                                     $("#fam-advertencia").removeClass("alert-danger");
                                     $("#fam-advertencia").addClass("alert-warning");
-                                    $("#fam-advertencia").html("<strong>Ingrese Fecha de Estudio</strong>");
+                                    $("#fam-advertencia").html("<strong>La Fecha de Inicio no debe ser mayor o igual a la Fecha Fin</strong>");
                                     $("#fam-advertencia").show();
                                 }
+
+
+
+
                             }
                             if($("#optionsRadios2").is(':checked')){
                                 if($("#anio").val()!="" && $("#mes").val()!="" && $("#dia").val()!=""){
-                                    if(isNaN($("#anio").val()) || isNaN($("#mes").val()) || isNaN($("#dia").val())){
-                                        $("#fam-advertencia").removeClass("alert-success");
-                                        $("#fam-advertencia").removeClass("alert-danger");
-                                        $("#fam-advertencia").addClass("alert-warning");
-                                        $("#fam-advertencia").html("<strong>El Tiempo de Duración de Estudio no debe tener Caracteres</strong>");
-                                        $("#fam-advertencia").show();
-                                    }
-                                    else{
+
                                         this.cargar=0;
                                         var tipoyxhoras=$("#leg_tip").val();
                                         var tipo=tipoyxhoras.substr(0,3);
@@ -2785,7 +2630,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                         $("#fam-advertencia").html("<strong>Se actualizo con éxito los Datos de Estudio</strong>");
                                         $("#fam-advertencia").show();
 
-                                    }
+
                                 }
                                 else{
                                     $("#fam-advertencia").removeClass("alert-success");
@@ -2795,7 +2640,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                     $("#fam-advertencia").show();
                                 }
                             }
-                        }else{
+                        }
+                        else{
                             $("#fam-advertencia").removeClass("alert-success");
                             $("#fam-advertencia").removeClass("alert-danger");
                             $("#fam-advertencia").addClass("alert-warning");
@@ -4689,12 +4535,15 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                         self.tableFamiliarView.fetchFamiliares(self.codigo,
                             function () {
-                                $("#table-familiare-servidor").dataTable();
-                                $('#table-familiare-servidor_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-familiare-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-familiare-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                if(self.tableFamiliarView.collection.length!=0){
+                                    $("#table-familiare-servidor").dataTable();
+                                    $('#table-familiare-servidor_wrapper').append("<div id='footer-table'></div>");
+                                    $('#table-familiare-servidor_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#table-familiare-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                                $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                }
+
                             });
                         self.tablefamily.show(self.tableFamiliarView);
 
@@ -4704,12 +4553,13 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             },
             bvmodal:function(e){
                 var clickedElement=$(e.currentTarget);
+                $("#fam-advertencia").hide();
                 this.id_familiar=clickedElement.parent().parent().attr('dataid');
 
             },
             avmodal:function(ev){
 
-
+                $("#fam-advertencia").hide();
                 var element = $(ev.currentTarget);
                 this.id_est_delete =element.parent().parent().attr('id');
 
