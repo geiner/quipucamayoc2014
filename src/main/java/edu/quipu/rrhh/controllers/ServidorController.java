@@ -60,6 +60,14 @@ public class ServidorController {
        //servidor = servidorService.findByCod(servidor).get(0);
         return "save";
     }
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json",produces = "application/json",value = "/updateservidor")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String updateServidor(@RequestBody Servidor servidor){
+        servidorService.updateServidor(servidor);
+        return "";
+    }
+
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/servidor/save")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -79,6 +87,15 @@ public class ServidorController {
         servidorService.saveLaboral2(servidorLaboral);
 
         return servidorLaboral;
+    }
+
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json",produces = "application/json",value = "/updateservidorlaboral")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String updateServidoLaboral(@RequestBody ServidorLaboral servidorLaboral){
+        servidorService.updateServidorLaboral(servidorLaboral);
+        servidorService.updateServidorLaboral2(servidorLaboral);
+        return "";
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/tiposdocumento")

@@ -18,6 +18,7 @@ public class DescansoServiceImpl implements DescansoService {
     @Override
     public void addDescanso(DescansoMedico descansomedico) {
         descansoMapper.addDescanso(descansomedico.getId_serv(),descansomedico.getNumserest(),descansomedico.getCitt(),descansomedico.getF_inicio(),descansomedico.getF_fin(),descansomedico.getTipo_lic(),descansomedico.getTiempo());
+//        descansoMapper.addDescansoHistorial();
     }
 
     @Override

@@ -34,6 +34,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 prov_act: null,
                 distr_act: null,
                 cod_paisNac: 120,
+                guar_o_actu:0,//0 guarda - 1 actualiza I.General
+                guar_o_actu2:0,//guarda o actualiza I.laboral
                 regions: {
                     div_estados_civiles: "#serv_est_civ",
                     div_nac_paises: "#serv_nac_paises",
@@ -404,18 +406,33 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      });
 
                      }
+                    console.log(self.guar_o_actu+"estoooooooooooo")
+                     if(self.guar_o_actu==0){
+                         self.model.get("servidor").url = "rest/cas/serv/servidor";
+                         var self_s = self.model.get("servidor").save({}, { wait: true});
 
-                     self.model.get("servidor").url = "rest/cas/serv/servidor";
-                     var self_s = self.model.get("servidor").save({}, { wait: true});
+                         self_s.done(function(){
+                             $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                             $('#serv_save').show()
+                         });
+                         self_s.fail(function(){
+                             $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                             $('#serv_save').show()
+                         });
+                     }else{
+                         self.model.get("servidor").url = "rest/cas/serv/updateservidor";
+                         var self_s = self.model.get("servidor").save({}, { wait: true});
 
-                     self_s.done(function(){
-                         $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
-                         $('#serv_save').show()
-                     });
-                     self_s.fail(function(){
-                         $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
-                         $('#serv_save').show()
-                     });
+                         self_s.done(function(){
+                             $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
+                             $('#serv_save').show()
+                         });
+                         self_s.fail(function(){
+                             $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
+                             $('#serv_save').show()
+                         });
+                     }
+
                 },
                 serv_save_servidor:function () {
                     var self = this;
@@ -734,33 +751,60 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "tipocupuni": $("#serv_tip_ocup").val(),
                         "sindic": $("#serv_sind").val()
                     });
-
-                    self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
-
-
-                    var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
-
-                    self_l.done(function () {
-
-                        var temp_serv_save = $("#serv_save");
-
-                        temp_serv_save.show();
-                        temp_serv_save.text("Datos laborales registrados!");
+                    if(self.guar_o_actu2==0){
+                        self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
 
 
-                    });
+                        var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
 
-                    self_l.fail(function () {
+                        self_l.done(function () {
 
-                        var temp_serv_cod = $("#serv_cod");
+                            var temp_serv_save = $("#serv_save");
 
-                        temp_serv_cod.removeClass('alert-warning');
-                        temp_serv_cod.addClass('alert-danger');
-                        temp_serv_cod.show();
-                        temp_serv_cod.text("Error de registro laboral.!");
+                            temp_serv_save.show();
+                            temp_serv_save.text("Datos laborales registrados!");
 
 
-                    });
+                        });
+
+                        self_l.fail(function () {
+
+                            var temp_serv_cod = $("#serv_cod");
+
+                            temp_serv_cod.removeClass('alert-warning');
+                            temp_serv_cod.addClass('alert-danger');
+                            temp_serv_cod.show();
+                            temp_serv_cod.text("Error de registro laboral.!");
+
+
+                        });
+                    }else{
+                        self.model.get("servidorlaboral").url = "rest/cas/serv/updateservidorlaboral";
+
+
+                        var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
+
+                        self_l.done(function () {
+
+                            var temp_serv_cod = $("#serv_cod");
+
+                            temp_serv_cod.removeClass('alert-warning');
+                            temp_serv_cod.addClass('alert-danger');
+                            temp_serv_cod.show();
+                            temp_serv_cod.text("Error en la actualizacion laboral.!");
+                        });
+
+                        self_l.fail(function () {
+
+                            var temp_serv_save = $("#serv_save");
+
+                            temp_serv_save.show();
+                            temp_serv_save.text("Datos laborales actualizados!");
+
+
+                        });
+                    }
+
                 },
                 save_serv_lab: function () {
                     var self = this;
@@ -896,6 +940,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             $("#block-descr_serv").show();
                             $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
                             $('#desc_serv_lab').text(nom_completo)
+                            self.fun_search_servidor();
                         });
                         fetch_s.fail(function () {
                             $("#block-descr_serv").hide();
@@ -935,7 +980,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }
 
                     fetch_s.done(function () {
-
+                        self.guar_o_actu=1;
                         $("#codigo").val(self.model.get("servidor").get("codigo"));
                         $("#serv_ape_mat").val(self.model.get("servidor").get("materno"));
                         $("#serv_ape_pat").val(self.model.get("servidor").get("paterno"));
@@ -992,7 +1037,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     });
 
                     fetch_s.fail(function () {
-
+                        self.guar_o_actu=0;
                         var temp_help = $("#serv_cod");
 
                         temp_help.show();
@@ -1004,9 +1049,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     });
 
                     fetch_l.done(function () {
-
+                        console.log("done")
+                        self.guar_o_actu2=1;
                         var temp_reg_pen = self.model.get("servidorlaboral").get("regPen");
                         self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
+                                console.log(self.guar_o_actu2+" valorrrrrrrrrrr")
                                 if (self.entidadesAseguradoraView.collection.length == 0)
                                     $("#row_reg_pen").hide();
                                 else
@@ -1075,7 +1122,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     });
 
                     fetch_l.fail(function () {
-
+                        console.log("fail")
+                        self.guar_o_actu2=0;
                         $("#reg_lab").val(null);
 
                         self.servidoresEstadoView.initialize();
@@ -1104,6 +1152,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 var temp_reg_pen = self.regimenesPensionesView.collection.at(0).get("cod");
 
                                 self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
+
+                                        console.log(self.guar_o_actu2+" valorrrrrrrrrrr")
                                         if (self.entidadesAseguradoraView.collection.length == 0)
                                             $("#row_reg_pen").hide();
                                         else
@@ -1135,7 +1185,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         );
 
                     });
-
                     return false;
                 }
 

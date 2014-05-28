@@ -31,4 +31,10 @@ public interface ServidorService {
     public List<Servidor> todosServidores();
     void saveLaboral2(ServidorLaboral servidorLaboral);
     public List<Pais> nacimientoPaises();
+
+    void updateServidor(Servidor servidor);
+
+    void updateServidorLaboral(ServidorLaboral servidorLaboral);
+
+    void updateServidorLaboral2(ServidorLaboral servidorLaboral);
 }

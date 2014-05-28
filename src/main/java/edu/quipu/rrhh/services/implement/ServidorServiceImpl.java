@@ -32,6 +32,24 @@ public class ServidorServiceImpl implements ServidorService {
     }
 
     @Override
+    public void updateServidor(Servidor servidor) {
+        System.out.println("aka en actualizar");
+        servidorMapper.updateServidor(servidor);
+    }
+
+    @Override
+    public void updateServidorLaboral(ServidorLaboral servidorLaboral) {
+        System.out.println("aka en actualizar laboral");
+        servidorMapper.updateServidorLaboral(servidorLaboral);
+    }
+
+    @Override
+    public void updateServidorLaboral2(ServidorLaboral servidorLaboral) {
+        System.out.println("aka en actualizar laboral2");
+        servidorMapper.updateServidorLaboral2(servidorLaboral);
+    }
+
+    @Override
     public List<Servidor> findByCod(Servidor servidor) {
         return servidorMapper.findByCod(servidor);  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -156,6 +174,8 @@ public class ServidorServiceImpl implements ServidorService {
     public List<Pais> nacimientoPaises() {
         return servidorMapper.nacimientoPaises();
     }
+
+
 }
 /* @Override
      public List<ServidorTipo> findbyTipo(@Param("tipGen") ServidorGenerico tipGen) {

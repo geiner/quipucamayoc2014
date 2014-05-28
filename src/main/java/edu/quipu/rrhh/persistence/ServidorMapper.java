@@ -83,9 +83,9 @@ public interface ServidorMapper {
             "  ser_tip_act         AS tip, " +
             "  ser_tip_pag_act     AS tipPag, " +
             "  ser_cta_ban_act     AS cueBan, " +
-            "  TO_CHAR(ser_fech_reg_lab,'DD-MM-YYYY' )    AS regLab, " +
+            "  TO_CHAR(ser_fech_reg_lab,'DD/MM/YYYY' )    AS regLab, " +
             "  ser_num_sis_pri_pen AS numPen ," +
-            "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD-MM-YYYY' ) AS insregpen,"+
+            "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen,"+
             "  SER_ORI_TIP_OCUPUNIV AS tipocupuni, " +
             "  SER_ORI_SINDICATO AS sindic " +
             "  FROM datapersuel.servidor_estado se ," +
@@ -133,6 +133,12 @@ public interface ServidorMapper {
             "  )")
     void saveLaboral2(@Param("ser") ServidorLaboral servidorLaboral);
 
+    @Update(value ="UPDATE DATAPERSUEL.Servidor_Origen SET " +
+            "    Ser_Ori_Tip_Ocupuniv=#{ser.tipocupuni}, " +
+            "    Ser_Ori_Fech_Insc_Regpen=TO_DATE(#{ser.insregpen},'DD/MM/YY'), " +
+            "    Ser_Ori_Sindicato=#{ser.sindic}" +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateServidorLaboral2( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Insert(value ="INSERT " +
             "INTO DATAPERSUEL.SERVIDOR_ESTADO " +
@@ -171,6 +177,21 @@ public interface ServidorMapper {
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
 
+    @Update(value ="UPDATE DATAPERSUEL.SERVIDOR_ESTADO SET " +
+            "    ser_est_act=#{ser.estLab}, " +
+            "    ser_cat_act=#{ser.cat}, " +
+            "    ser_tip_act=#{ser.tip}, " +
+            "    ser_rpe_act=#{ser.regPen}, " +
+            "    ser_cta_ban_act=#{ser.cueBan}, " +
+            "    ser_tip_pag_act=#{ser.tipPag}, " +
+            "    ser_con_pla_act=#{ser.conPla}, " +
+            "    ser_ent_aseg=#{ser.entAse}, " +
+            "    ser_tip_ser_gen=#{ser.tipGen}, " +
+            "    ser_num_sis_pri_pen=#{ser.numPen}, " +
+            "    ser_est_afp=#{ser.estAfp}, " +
+            "    ser_fech_reg_lab=TO_DATE(#{ser.regLab},'DD/MM/YY') " +
+            " WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateServidorLaboral(@Param("ser") ServidorLaboral servidorLaboral);
     //fin de metodos de servidorLABORAL
 
 
@@ -441,7 +462,27 @@ public interface ServidorMapper {
             "#{ser.discapacidad},#{ser.fechaInUnmsm},#{ser.titCueBan},#{ser.telefono},#{ser.celular},#{ser.correo})")
     public void saveServidor(@Param("ser") Servidor servidor);
 
-
+    @Update(value ="UPDATE DATAPERSUEL.SERVIDOR SET " +
+            "SER_FECH_NAC = TO_DATE(#{ser.nacimiento},'DD/MM/YY'), " +
+            "SER_TELEF= #{ser.telefono}, " +
+            "SER_SEXO= #{ser.sexo}, " +
+            "SER_DOC_ID_ACT=#{ser.numDoc},  " +
+            "SER_NUM_HIJ= #{ser.hij}, " +
+            "SER_NUM_RUC= #{ser.ruc}, " +
+            "SER_MAIL= #{ser.correo}, " +
+            "SER_EST_VIT_ACT= #{ser.estVit}, " +
+            "SER_TIT_CTA_BAN= #{ser.titCueBan}, " +
+            "SER_DISCAP= #{ser.discapacidad}, " +
+            "SER_TIP_DOC_ID_ACT= #{ser.tipoDoc}, " +
+            "SER_FECH_IN_ENT_PUB=TO_DATE(#{ser.fechaInUnmsm},'DD/MM/YY'),  " +
+            "SER_UBI_PAIS_DOM= #{ser.paisDomcilio}, " +
+            "SER_UBI_DEPT_DOM= #{ser.codDepartamento}, " +
+            "SER_UBI_PROV_DOM= #{ser.codProvincia}, " +
+            "SER_UBI_DIST_DOM= #{ser.codDistrito}, " +
+            "SER_DOM= #{ser.domicilio}, " +
+            "SER_ECV_ACT=  #{ser.estCiv} " +
+            "WHERE trim(SER_COD)=trim(#{ser.codigo})")
+    void updateServidor(@Param("ser") Servidor servidor);
 
 
 
@@ -484,6 +525,9 @@ public interface ServidorMapper {
     })
 
     List<Pais> nacimientoPaises();
+
+
+
 }
 
 
