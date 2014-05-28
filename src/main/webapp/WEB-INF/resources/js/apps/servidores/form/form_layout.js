@@ -81,7 +81,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "change #serv_act_pais":"fun_camb_pais_resid",
                     "click .tab_a":"fun_camb_tab_a",
                     "click .tab_b":"fun_camb_tab_b",
-                    "keyup :input#codigo":"fun_validar_codigo"
+                    "keyup :input#codigo":"fun_validar_codigo",
+                    "click #cancel_servidor":"cancelar_inf_gen",
+                    "click #cancel_laboral":"cancelar_inf_gen"
 
 
                 },
@@ -264,6 +266,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 limipiar_fecha_nac: function () {
                     $("#serv_nac").val("");
+                },
+                cancelar_inf_gen:function(){
+                  $('#codigo').val("");
+                  this.initialFetch();
+                  $("#block-descr_serv").hide();
+
+//                    this.fun_validar_codigo();
                 },
                 serv_actprovincia: function () {
                     var self = this;
@@ -872,7 +881,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                     }
                                 }
                             }
-                        }else{alert("ingresar el numero del sistema privado de pensiones")};
+                        }else{
+                            $('#advertencia').addClass("alert-warning");
+                            $('#advertencia').html('<strong>Ingresar numero del Sistema privado de pensiones</strong>')
+                            $('#advertencia').show();
+                        };
 
                        if($("#rpe").val()=="2" || $("#rpe").val()=="3" || $("#rpe").val()=="1"){
                            if($('#ent_aseg').val()!="999"){
@@ -902,7 +915,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                        }
 
                     }else{
-                        alert("los datos ingresados son incorrectos")
+                        $('#advertencia').addClass("alert-warning");
+                        $('#advertencia').html('<strong>Los datos ingresados son incorrectos</strong>')
+                        $('#advertencia').show();
                     }
 
                 },
@@ -915,6 +930,15 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if(this.tab==1 & ($("#codigo").val().length >7 || $("#codigo").val().length==0)){
                        this.fun_camb_tab_b();
                     };
+                    if(this.tab==1 && $("#codigo").val().length < 7 && $("#codigo").val().length > 0){
+
+                        $("#block-descr_serv").hide();
+                        var temp_help = $("#serv_cod");
+                        temp_help.removeClass('alert-warning');
+                        temp_help.addClass('alert-danger')
+                        temp_help.show();
+                        temp_help.text("No existe registro!");
+                    }
                 },
                 fun_camb_tab_b:function(){
                     this.tab=1;
