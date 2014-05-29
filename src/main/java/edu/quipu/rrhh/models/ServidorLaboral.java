@@ -16,12 +16,21 @@ public class ServidorLaboral {
     Integer tipGen;
     Integer tip;
     Integer tipPag;
+    Integer titcueBan;
     String cueBan;
     String regLab;
     String numPen;
     String insregpen;
     Integer tipocupuni;
     Integer sindic;
+
+    public Integer getTitcueBan() {
+        return titcueBan;
+    }
+
+    public void setTitcueBan(Integer titcueBan) {
+        this.titcueBan = titcueBan;
+    }
 
     public String getInsregpen() {
         return insregpen;

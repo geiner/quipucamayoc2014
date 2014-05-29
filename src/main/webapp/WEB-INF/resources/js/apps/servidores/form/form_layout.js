@@ -370,7 +370,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "espfdom":$("#serv_espf_dom").val(),
                      "discapacidad":$("#serv_disc").val(),
                      "fechaInUnmsm":$("#serv_ing_unmsm").val(),
-                     "titCueBan":$("#serv_tit_ban").val(),
                      "telefono":$("#serv_tel").val(),
                      "celular":$("#serv_cel").val(),
                      "correo":$("#serv_correo").val()
@@ -406,7 +405,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "espfdom":$("#serv_espf_dom").val(),
                      "discapacidad":$("#serv_disc").val(),
                      "fechaInUnmsm":$("#serv_ing_unmsm").val(),
-                     "titCueBan":$("#serv_tit_ban").val(),
                      "telefono":$("#serv_tel").val(),
                      "celular":$("#serv_cel").val(),
                      "correo":$("#serv_correo").val()
@@ -685,13 +683,18 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 fun_cue_ban: function (ev) {
 
                     var temp_cue_ban = $("#cta_ban");
+                    var tem_tit_ban=$('#serv_tit_ban');
 
                     temp_cue_ban.val(null);
 
-                    if ($("#tip_pag").val() == 1)
+                    if ($("#tip_pag").val() == 1){
                         temp_cue_ban.parent().parent().show();
-                    else
+                        tem_tit_ban.parent().parent().show();
+                    }
+                    else{
                         temp_cue_ban.parent().parent().hide();
+                        tem_tit_ban.parent().parent().hide();
+                    }
                 },
                 fun_reg_pen_show: function () {
                     var temp_reg_pen = $('#reg_pen');
@@ -754,6 +757,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "numPen": $("#num_sis_pri_pen").val(),
                         "tipPag": $("#tip_pag").val(),
                         "cueBan": $("#cta_ban").val(),
+                        "titcueBan": $("#serv_tit_ban").val(),
                         "conPla": $("#cond_pla").val(),
                         "regLab": $("#reg_lab").val(),
                         "insregpen": $("#reg_pen").val(),
@@ -1006,50 +1010,48 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     fetch_s.done(function () {
                         self.guar_o_actu=1;
                         $("#codigo").val(self.model.get("servidor").get("codigo"));
+
                         $("#serv_ape_mat").val(self.model.get("servidor").get("materno"));
+
                         $("#serv_ape_pat").val(self.model.get("servidor").get("paterno"));
+
                         $("#serv_nom").val(self.model.get("servidor").get("nombre"));
-                        console.log(self.model.get("servidor").get("estCiv")+" akaaaaaaaaaaaa")
 
                         $("#serv_tip_docu").val(self.model.get("servidor").get("tipoDoc"));
 
                         $("#num_document").val(self.model.get("servidor").get("numDoc"));
+
                         $("#serv_sexo").val(self.model.get("servidor").get("sexo"));
 
                         $("#serv_nac").val(dateToDMY(new Date(self.model.get("servidor").get("nacimiento"))));
+
                         $("#autocomple").val(self.model.get("servidor").get("paisNac"));
 
                         $("#nacdepartamento").val(self.model.get("servidor").get("codNacdepart"));
-
-
 
                         $("#serv_nac_provincia").val(self.model.get("servidor").get("codNacprov"));
 
                         $("#serv_nac_distrito").val(self.model.get("servidor").get("codNacditr"));
 
-
                         $("#serv_act_pais").val(self.model.get("servidor").get("paisDomcilio"));
-
-
 
                         prov_act = self.model.get("servidor").get("codProvincia");
 
                         distr_act = self.model.get("servidor").get("codDistrito");
+
                         $("#actdepartamento").val(self.model.get("servidor").get("codDepartamento"));
 
                         $("#actdepartamento").trigger("change");
 
-
                         $("#ser_act_domi").val(self.model.get("servidor").get("domicilio"));
 
                         $("#serv_car_fam").val(self.model.get("servidor").get("hij"));
+
                         $("#serv_ruc").val(self.model.get("servidor").get("ruc"));
 
                         $("#serv_disc").val(self.model.get("servidor").get("discapacidad"));
 
                         $("#serv_ing_unmsm").val(dateToDMY(new Date(self.model.get("servidor").get("fechaInUnmsm"))));
-
-                        $("#serv_tit_ban").val(self.model.get("servidor").get("titCueBan"));
 
                         $("#serv_tel").val(self.model.get("servidor").get("telefono"));
 
@@ -1068,8 +1070,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         temp_help.removeClass('alert-warning');
                         temp_help.addClass('alert-danger');
                         temp_help.text("No existe registro!");
-
-
                     });
 
                     fetch_l.done(function () {
@@ -1114,11 +1114,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             temp_num_sis_pri_pen.parent().parent().parent().hide();
 
                         var temp_cue_ban = $("#cta_ban");
+                        var tem_tit_ban=$('#serv_tit_ban');
 
-                        if (self.model.get("servidorlaboral").get("tipPag") == 1)
+
+                        if (self.model.get("servidorlaboral").get("tipPag") == 1){
                             temp_cue_ban.parent().parent().show();
-                        else
+                            tem_tit_ban.parent().parent().show();
+                        }
+                        else{
                             temp_cue_ban.parent().parent().hide();
+                            tem_tit_ban.parent().parent().hide();
+                        }
 
                         $("#serv_est").val(self.model.get("servidorlaboral").get("estLab"));
                         $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
@@ -1132,6 +1138,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#serv_sind").val(self.model.get("servidorlaboral").get("sindic"));
 
                         temp_cue_ban.val(self.model.get("servidorlaboral").get("cueBan"));
+                        $('#serv_tit_ban').val(self.model.get("servidorlaboral").get("titcueBan"))
                         temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
 
                         //render result
