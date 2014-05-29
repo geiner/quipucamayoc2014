@@ -14,6 +14,7 @@
         <th>Descripción</th>
         <th>Eliminar</th>
         <th>Motivo</th>
+        <th>Editar</th>
 
 
     </tr>
@@ -30,8 +31,8 @@
             <td>{{fec_fin_mot}}</td>
             <td>{{desc_mot}}</td>
             <td><button type="button" id="AVModal" data-toggle="modal"  data-target="#serv-table-modal7"  href="#" class="btn btn-danger btn-xs" data1='{{codigo}}' data2='{{nroResol}}' data3='{{serEstado}}' data4='{{cod_motivo}}'><span  class="glyphicon glyphicon-trash"></span></button></td>
-
             <td><button type="button" id="agregar-motivo-trabajador" href="#" class="btn btn-warning btn-xs" data5={{codigo}} data6={{serEstado}}><span class="glyphicon glyphicon-plus-sign"></span></button></td>
+            <td><button type="button" id="editar-motivo-trabajador" href="#" class="btn btn-warning btn-xs" data5={{codigo}} data6={{serEstado}}><span class="glyphicon glyphicon-pencil"></span></button></td>
 
     </tr>
     {{else}}

@@ -156,7 +156,8 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
                     "dblclick #tablaAddMotivo > tbody >tr":"selec_save_MotivoTraba",
 
                     "click .tab-c":"fun_camb_c",
-                    "click #reporte_resolasoc":"reporte_resol_asoc"
+                    "click #reporte_resolasoc":"reporte_resol_asoc",
+                    "click #editar-motivo-trabajador":"editar_motivos"
 
 
 //
@@ -207,7 +208,9 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
 
 
                 },
-
+                editar_motivos:function(){
+                   alert("ya stas en editar")
+                },
                 buscarporanio:function(){
 
                     $('#div_busc_fecha').hide();
