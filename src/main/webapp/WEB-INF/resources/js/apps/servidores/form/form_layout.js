@@ -4,8 +4,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
     'apps/servidores/form/view/servidorEstado-view', 'apps/servidores/form/view/categoriaServidor-view', 'apps/servidores/form/view/servidorgenericos-view', 'apps/servidores/form/view/servidorTipo-view',
     'apps/servidores/form/view/regimenPensionario-view', 'apps/servidores/form/view/entidadAseguradora-view', 'apps/servidores/form/view/estadosAFP-view',
     'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view', 'apps/servidores/form/view/tiposOcupaciones_view', "apps/servidores/form/model/servidor",
-    'apps/servidores/form/model/servidorLaboral', "lib/bootstrap-datepicker", "lib/typeahead.min", "bootstrap"],
-    function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView, provNacimientoView, distrNacimientoView, deptActualView, provActualView, distrActualView, servidorEstadoView, categoriaServidorView, servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView, tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral) {
+    'apps/servidores/form/model/servidorLaboral','apps/resoluciones/form/view/servidor-view', "lib/bootstrap-datepicker", "lib/typeahead.min","lib/jquery.dataTables.min", "bootstrap"],
+    function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView, provNacimientoView, distrNacimientoView, deptActualView,
+              provActualView, distrActualView, servidorEstadoView, categoriaServidorView, servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView,
+              tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral,listaServView) {
         ErzaManager.module('ServidoresApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
@@ -29,6 +31,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 tipoPago: new tipoPagoView(),
                 CondicionPlanView: new condicionPlanillaView(),
                 tipoOcupacionView: new tipoOcupacionView(),
+                listaServView: new listaServView(),
 
                 tab:0,
                 prov_act: null,
@@ -55,7 +58,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     div_estado_apf: "#div_est_afp",
                     div_tipo_pago: "#div_tip_pag",
                     div_condicion_plan: "#div_cond_pla",
-                    div_tipos_ocupaciones: "#div_tip_ocup"
+                    div_tipos_ocupaciones: "#div_tip_ocup",
+                    listServ: "#list_servidores"
 
                 },
                 events: {
@@ -76,14 +80,16 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #reg_pen_show": "fun_reg_pen_show",
                     "click #reg_lab_clos": "fun_reg_lab_clos",
                     "click #reg_lab_show": "fun_reg_lab_show",
-                    "click #cod_sea": "fun_search_servidor",
+                    "click #cod_sea": "lista_servidor",
+//                    "click #cod_sea": "fun_search_servidor",
                     "click #save_laborales": "save_serv_lab",
                     "change #serv_act_pais":"fun_camb_pais_resid",
                     "click .tab_a":"fun_camb_tab_a",
                     "click .tab_b":"fun_camb_tab_b",
                     "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
-                    "click #cancel_laboral":"cancelar_inf_gen"
+                    "click #cancel_laboral":"cancelar_inf_gen",
+                    "click #table-servidor > tbody >tr": "hide_lista_serv"
 
 
                 },
@@ -128,6 +134,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 initialFetch: function () {
                     var self = this;
+                    this.listaServView.fetchServidores();
                     this.estadosCivilesView.fetchEstCivil();
                     this.tiposDocumentoView.fetchTipoDocument();
                     this.paisNacimientoView.fetchNacPais(function () {
@@ -934,7 +941,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if(this.tab==1 & ($("#codigo").val().length >7 || $("#codigo").val().length==0)){
                        this.fun_camb_tab_b();
                     };
-                    if(this.tab==1 && $("#codigo").val().length < 7 && $("#codigo").val().length > 0){
+                    if(this.tab==1 && $("#codigo").val().length <= 8 && $("#codigo").val().length > 0){
 
                         $("#block-descr_serv").hide();
                         var temp_help = $("#serv_cod");
@@ -942,6 +949,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         temp_help.addClass('alert-danger')
                         temp_help.show();
                         temp_help.text("No existe registro!");
+                    };
+                    if(this.tab==0 && $("#codigo").val().length <= 8 && $("#codigo").val().length > 0){
+                        this.fun_search_servidor();
                     }
                 },
                 fun_camb_tab_b:function(){
@@ -956,6 +966,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         temp_help.addClass('alert-warning')
                         temp_help.show();
                         temp_help.text("debe ingresar el codigo de la persona a la que desea ingresar sus datos laborales!");
+                        $('#cancel_laboral').click();
                     }else{
                         $("#serv_cod").hide();
                         self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
@@ -983,6 +994,40 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
 
                 },
+                lista_servidor: function (ev) {
+                    var self = this;
+                    var clickedElement = $(ev.currentTarget);
+
+                    clickedElement.button('loading');
+
+                    setTimeout(function (e) {
+
+                        clickedElement.button('reset');
+                        self.listServ.show(self.listaServView);
+
+                        if (self.listaServView.collection.length != 0) {
+                            $("#table-servidor").dataTable();
+                            $('#table-servidor_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-servidor_next').html("<i class='glyphicon glyphicon-forward'></i>");
+                            $('#table-servidor_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                            $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+                        }
+
+                        $("#list_servidores").modal();
+
+                    }, 2000);
+
+
+                },
+                hide_lista_serv:function(e){
+                    var self = this;
+                    var clickedElement = $(e.currentTarget);
+                    var dni_serv = clickedElement.children(':nth-child(2)').text();
+                    $("#codigo").val(dni_serv);
+                    this.fun_search_servidor();
+                    $("#list_servidores").modal("hide");
+                },
                 fun_search_servidor: function (ev) {
 
                     var codigo = $("#codigo").val();
@@ -1008,6 +1053,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }
 
                     fetch_s.done(function () {
+                        var temp_help = $("#serv_cod");
+
+                        temp_help.hide();
                         self.guar_o_actu=1;
                         $("#codigo").val(self.model.get("servidor").get("codigo"));
 
@@ -1148,7 +1196,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             temp_help.show();
                             temp_help.text("Sin registro CAS");
                         }
-
+                        var nom_completo=self.model.get("servidor").get("paterno")+' '+self.model.get("servidor").get("materno")+' '+self.model.get("servidor").get("nombre");
+                        $("#block-descr_serv").show();
+                        $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
+                        $('#desc_serv_lab').text(nom_completo)
 
                     });
 
