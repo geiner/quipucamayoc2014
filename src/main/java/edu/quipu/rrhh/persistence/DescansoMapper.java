@@ -18,9 +18,10 @@ public interface DescansoMapper {
             "    TO_DATE(#{f_inicio},'DD/MM/YY'), " +
             "    TO_DATE(#{f_fin},'DD/MM/YY'), " +
             "    #{tipo_lic}, " +
-            "    #{tiempo} "+
+            "    #{tiempo}, "+
+            "    #{num_citt} " +
             "  )")
-    void addDescanso(@Param("id_serv") String id_serv, @Param("numserest") int numserest, @Param("citt") String citt, @Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tipo_lic") String tipo_lic,@Param("tiempo") String tiempo);
+    void addDescanso(@Param("id_serv") String id_serv, @Param("numserest") int numserest, @Param("citt") String citt, @Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tipo_lic") String tipo_lic,@Param("tiempo") String tiempo,@Param("num_citt") int num_citt);
 
     @Select(value ="SELECT ID_DESC_MED , " +
             "  CITT, " +
@@ -86,4 +87,33 @@ public interface DescansoMapper {
             @Result(property = "id_desc_med" , column = "ID_DESC_MED")
     })
     List<DescansoMedico> listarDescansos(@Param("mes")String mes, @Param("anio")String anio);
+
+
+    @Select(value ="SELECT tiempo FROM DATAPERLIQU.hist_desc_medicos WHERE TRIM(ID_SERV)=TRIM(#{id_serv}) AND NUM_SEREST=#{numserest} ")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "tiempo" , column = "TIEMPO")
+    })
+    List<DescansoMedico> traerHistDescansos(@Param("id_serv") String id_serv,@Param("numserest") int numserest);
+
+    @Insert(value = "INSERT " +
+            "INTO DATAPERLIQU.HIST_DESC_MEDICOS VALUES " +
+            "  ( " +
+            "    HIST_DESC_MED.NEXTVAL, " +
+            "    #{id_serv}, " +
+            "    #{numserest}, " +
+            "    TO_DATE(#{f_inicio},'DD/MM/YY'), " +
+            "    TO_DATE(#{f_fin},'DD/MM/YY'), " +
+            "    #{tiempo} ,"+
+            "    #{citt}," +
+            " #{num_citt} " +
+            "  )")
+    void addDescansoHistorial(@Param("id_serv") String id_serv,@Param("numserest") int numserest,@Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tiempo") String tiempo,@Param("citt") String citt,@Param("num_citt") int num_citt);
+
+    @Select(value ="SELECT NVL(MAX(NUM_CITT),1) AS NUM_CITT FROM DATAPERLIQU.desc_medicos")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "num_citt" , column = "NUM_CITT")
+    })
+    DescansoMedico traernumcittdescansos();
 }

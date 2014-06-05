@@ -11,12 +11,21 @@ public class DescansoMedico {
     private String f_fin;
     private String tipo_lic;
     private String tiempo;
+    private int num_citt;
 
     private String dni;
     private String desc_est;
     private String ser_ape_pat;
     private String ser_ape_mat;
     private String ser_nom;
+
+    public int getNum_citt() {
+        return num_citt;
+    }
+
+    public void setNum_citt(int num_citt) {
+        this.num_citt = num_citt;
+    }
 
     public String getDni() {
         return dni;
