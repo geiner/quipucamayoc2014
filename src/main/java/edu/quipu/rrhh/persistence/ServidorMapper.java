@@ -34,7 +34,6 @@ public interface ServidorMapper {
             "  ser_num_hij        AS hij, " +
             "  ser_num_ruc        AS ruc, " +
             "  to_char(ser_fech_in_unmsm,'dd/mm/yyyy')  AS ingUnmsm, " +
-            "  ser_tit_cta_ban    AS titCueBan, " +
             "  ser_telef          AS tel, " +
             "  SER_TELEF_CELL     AS celul, " +
             "  ser_mail           AS correo " +
@@ -62,7 +61,6 @@ public interface ServidorMapper {
             @Result(property = "hij", column = "hij"),
             @Result(property = "ruc", column = "ruc"),
             @Result(property = "fechaInUnmsm", column = "ingUnmsm"),
-            @Result(property = "titCueBan", column = "titCueBan"),
             @Result(property = "telefono", column = "tel"),
             @Result(property = "celular", column = "celul"),
             @Result(property = "correo", column = "correo")
@@ -83,6 +81,7 @@ public interface ServidorMapper {
             "  ser_tip_act         AS tip, " +
             "  ser_tip_pag_act     AS tipPag, " +
             "  ser_cta_ban_act     AS cueBan, " +
+            "  SER_TIT_CTA_BAN     as titcueBan, "+
             "  TO_CHAR(ser_fech_reg_lab,'DD/MM/YYYY' )    AS regLab, " +
             "  ser_num_sis_pri_pen AS numPen ," +
             "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen,"+
@@ -107,6 +106,7 @@ public interface ServidorMapper {
             @Result(column = "tip", property = "tip"),
             @Result(column = "tipPag", property = "tipPag"),
             @Result(column = "cueBan", property = "cueBan"),
+            @Result(column = "titcueBan", property = "titcueBan"),
             @Result(column = "regLab", property = "regLab"),
             @Result(column = "numPen", property = "numPen"),
             @Result(column = "insregpen", property = "insregpen"),
@@ -156,7 +156,8 @@ public interface ServidorMapper {
             "    ser_tip_ser_gen, " +
             "    ser_num_sis_pri_pen, " +
             "    ser_est_afp, " +
-            "    ser_fech_reg_lab " +
+            "    ser_fech_reg_lab, " +
+            "    SER_TIT_CTA_BAN " +
             "  ) " +
             "  VALUES " +
             "  ( " +
@@ -173,7 +174,8 @@ public interface ServidorMapper {
             "    #{ser.tipGen}, " +
             "    #{ser.numPen}, " +
             "    #{ser.estAfp}, " +
-            "    #{ser.regLab} " +
+            "    #{ser.regLab}, " +
+            "    #{ser.titcueBan} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
 
@@ -184,6 +186,7 @@ public interface ServidorMapper {
             "    ser_rpe_act=#{ser.regPen}, " +
             "    ser_cta_ban_act=#{ser.cueBan}, " +
             "    ser_tip_pag_act=#{ser.tipPag}, " +
+            "    SER_TIT_CTA_BAN=#{ser.titcueBan}, " +
             "    ser_con_pla_act=#{ser.conPla}, " +
             "    ser_ent_aseg=#{ser.entAse}, " +
             "    ser_tip_ser_gen=#{ser.tipGen}, " +
@@ -455,11 +458,11 @@ public interface ServidorMapper {
             "ser_cod, ser_ape_pat, ser_ape_mat, ser_nom,ser_ecv_act,ser_tip_doc_id_act,ser_doc_id_act, ser_sexo," +
             "ser_fech_nac,SER_UBI_PAIS_NAC,SER_UBI_DEPT_NAC,SER_UBI_PROV_NAC,SER_UBI_DIST_NAC,SER_ESPF_LUGAR," +
             "SER_UBI_PAIS_DOM,SER_UBI_DEPT_DOM,SER_UBI_PROV_DOM,SER_UBI_DIST_DOM,SER_DOM,SER_NUM_HIJ,SER_NUM_RUC," +
-            "SER_EST_VIT_ACT,SER_DISCAP,SER_FECH_IN_UNMSM,SER_TIT_CTA_BAN,SER_TELEF,SER_TELEF_CELL,SER_MAIL) " +
+            "SER_EST_VIT_ACT,SER_DISCAP,SER_FECH_IN_UNMSM,SER_TELEF,SER_TELEF_CELL,SER_MAIL) " +
             "VALUES (#{ser.codigo}, #{ser.paterno},#{ser.materno}, #{ser.nombre},#{ser.estCiv},#{ser.tipoDoc},#{ser.numDoc},#{ser.sexo}" +
-            ",#{ser.nacimiento},#{ser.paisNac},#{ser.codNacdepart},#{ser.codNacprov},#{ser.codNacditr},#{ser.espfdom},#{ser.paisDomcilio}," +
+            ",to_date(#{ser.nacimiento},'dd/mm/yyyy'),#{ser.paisNac},#{ser.codNacdepart},#{ser.codNacprov},#{ser.codNacditr},#{ser.espfdom},#{ser.paisDomcilio}," +
             "#{ser.codDepartamento},#{ser.codProvincia},#{ser.codDistrito},#{ser.domicilio},#{ser.hij},#{ser.ruc},#{ser.estVit}," +
-            "#{ser.discapacidad},#{ser.fechaInUnmsm},#{ser.titCueBan},#{ser.telefono},#{ser.celular},#{ser.correo})")
+            "#{ser.discapacidad},to_date(#{ser.fechaInUnmsm},'dd/mm/yyyy'),#{ser.telefono},#{ser.celular},#{ser.correo})")
     public void saveServidor(@Param("ser") Servidor servidor);
 
     @Update(value ="UPDATE DATAPERSUEL.SERVIDOR SET " +
@@ -471,7 +474,6 @@ public interface ServidorMapper {
             "SER_NUM_RUC= #{ser.ruc}, " +
             "SER_MAIL= #{ser.correo}, " +
             "SER_EST_VIT_ACT= #{ser.estVit}, " +
-            "SER_TIT_CTA_BAN= #{ser.titCueBan}, " +
             "SER_DISCAP= #{ser.discapacidad}, " +
             "SER_TIP_DOC_ID_ACT= #{ser.tipoDoc}, " +
             "SER_FECH_IN_ENT_PUB=TO_DATE(#{ser.fechaInUnmsm},'DD/MM/YY'),  " +

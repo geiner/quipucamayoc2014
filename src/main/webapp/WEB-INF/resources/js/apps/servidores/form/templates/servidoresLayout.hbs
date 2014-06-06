@@ -291,16 +291,13 @@
             </div>
         </div>
         <div class="col-md-6">
-            <label class="control-label col-md-5" for="serv_disc">Titular Cuenta Bancaria</label>
+            <label class="control-label col-md-5">Cuenta Correo</label>
 
             <div class="col-md-7">
-                <select id="serv_tit_ban" class="form-control">
-                    <option value="1">Si</option>
-                    <option value="0">No</option>
-                </select>
+                <input type="text" id="serv_correo" class="form-control">
             </div>
-
         </div>
+
     </div>
 
     <div class="row form-group">
@@ -316,15 +313,6 @@
 
             <div class="col-md-7">
                 <input type="text" id="serv_cel" class="form-control">
-            </div>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-6">
-            <label class="control-label col-md-5">Cuenta Correo</label>
-
-            <div class="col-md-7">
-                <input type="text" id="serv_correo" class="form-control">
             </div>
         </div>
     </div>
@@ -399,9 +387,23 @@
             </div>
         </div>
         <div class="row form-group">
+            <div class="col-md-6" style="display: none;">
+
+                <label class="control-label col-md-5" for="serv_disc">Titular Cuenta Bancaria</label>
+
+                <div class="col-md-7">
+                    <select id="serv_tit_ban" class="form-control">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+            </div>
             <div class="col-md-6" id="div_cond_pla">
 
             </div>
+        </div>
+        <div class="row control-group">
             <div class="col-md-6">
                 <label class="control-label col-md-5" for="reg_lab">Fecha de Registro Laboral <span
                         style="color:red;">*</span></label>
@@ -422,8 +424,6 @@
                          style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
                 </div>
             </div>
-        </div>
-        <div class="row control-group">
             <div class="col-md-6">
                 <label class="control-label col-md-5" for="reg_pen">Fecha de Inscripción de Registro Pensionario<span
                         style="color:red;">*</span></label>
@@ -492,7 +492,9 @@
 </div>
 
 </fieldset>
+<div id="list_servidores" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
+</div>
 <style type="text/css">
     .month {
         font-size: 12px;

@@ -18,24 +18,26 @@ public interface DescansoMapper {
             "    TO_DATE(#{f_inicio},'DD/MM/YY'), " +
             "    TO_DATE(#{f_fin},'DD/MM/YY'), " +
             "    #{tipo_lic}, " +
-            "    #{tiempo} "+
+            "    #{tiempo}, "+
+            "    #{num_citt} " +
             "  )")
-    void addDescanso(@Param("id_serv") String id_serv, @Param("numserest") int numserest, @Param("citt") String citt, @Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tipo_lic") String tipo_lic,@Param("tiempo") String tiempo);
+    void addDescanso(@Param("id_serv") String id_serv, @Param("numserest") int numserest, @Param("citt") String citt, @Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tipo_lic") String tipo_lic,@Param("tiempo") String tiempo,@Param("num_citt") int num_citt);
 
     @Select(value ="SELECT ID_DESC_MED , " +
             "  CITT, " +
-            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO, " +
+            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INI, " +
             "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
             "  TIPO_LIC, " +
-            "  TIEMPO "+
+            "  TIEMPO ," +
+            " FECHA_INICIO "+
             "FROM DATAPERLIQU.DESC_MEDICOS " +
             "WHERE trim(id_serv) =trim(#{codigo}) " +
-            "AND num_serest=#{numserest}")
+            "AND num_serest=#{numserest} ORDER BY FECHA_INICIO")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
             @Result(property = "id_desc_med" , column = "ID_DESC_MED"),
             @Result(property = "citt" , column = "CITT"),
-            @Result(property = "f_inicio" , column = "FECHA_INICIO"),
+            @Result(property = "f_inicio" , column = "FECHA_INI"),
             @Result(property = "f_fin" , column = "FECHA_FIN"),
             @Result(property = "tipo_lic" , column = "TIPO_LIC"),
             @Result(property = "tiempo" , column = "TIEMPO"),
@@ -62,16 +64,17 @@ public interface DescansoMapper {
             "  SER_NOM, " +
             "  ID_SERV, " +
             "  CITT, " +
-            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO, " +
+            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INI, " +
             "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
-            "  TIPO_LIC " +
+            "  TIPO_LIC," +
+            " dm.NUM_CITT, " +
+            " dm.FECHA_INICIO " +
             "FROM DATAPERLIQU.desc_medicos dm, " +
             "  DATAPERSUEL.lista_servidor se " +
-            "WHERE (TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
-            "OR TO_CHAR(fecha_fin, 'mm')       =#{mes} OR #{mes} BETWEEN to_char(fecha_inicio, 'mm') and to_char(fecha_fin, 'mm')) " +
-            "AND (TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
-            "OR TO_CHAR(fecha_fin, 'yyyy')     =#{anio}) " +
-            "AND trim(dm.id_serv)              =trim(se.ser_cod)")
+            "WHERE TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
+            "AND TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
+            "AND trim(dm.id_serv)=trim(se.ser_cod)" +
+            " and tiempo<>'0' ORDER BY FECHA_INICIO ")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
             @Result(property = "desc_est" , column = "DESC_EST"),
@@ -80,10 +83,39 @@ public interface DescansoMapper {
             @Result(property = "ser_nom" , column = "SER_NOM"),
             @Result(property = "dni" , column = "ID_SERV"),
             @Result(property = "citt" , column = "CITT"),
-            @Result(property = "f_inicio" , column = "FECHA_INICIO"),
+            @Result(property = "f_inicio" , column = "FECHA_INI"),
             @Result(property = "f_fin" , column = "FECHA_FIN"),
             @Result(property = "tipo_lic" , column = "TIPO_LIC"),
             @Result(property = "id_desc_med" , column = "ID_DESC_MED")
     })
     List<DescansoMedico> listarDescansos(@Param("mes")String mes, @Param("anio")String anio);
+
+
+    @Select(value ="SELECT tiempo FROM DATAPERLIQU.hist_desc_medicos WHERE TRIM(ID_SERV)=TRIM(#{id_serv}) AND NUM_SEREST=#{numserest} ")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "tiempo" , column = "TIEMPO")
+    })
+    List<DescansoMedico> traerHistDescansos(@Param("id_serv") String id_serv,@Param("numserest") int numserest);
+
+    @Insert(value = "INSERT " +
+            "INTO DATAPERLIQU.HIST_DESC_MEDICOS VALUES " +
+            "  ( " +
+            "    HIST_DESC_MED.NEXTVAL, " +
+            "    #{id_serv}, " +
+            "    #{numserest}, " +
+            "    TO_DATE(#{f_inicio},'DD/MM/YY'), " +
+            "    TO_DATE(#{f_fin},'DD/MM/YY'), " +
+            "    #{tiempo} ,"+
+            "    #{citt}," +
+            " #{num_citt} " +
+            "  )")
+    void addDescansoHistorial(@Param("id_serv") String id_serv,@Param("numserest") int numserest,@Param("f_inicio") String f_inicio, @Param("f_fin") String f_fin, @Param("tiempo") String tiempo,@Param("citt") String citt,@Param("num_citt") int num_citt);
+
+    @Select(value ="SELECT NVL(MAX(NUM_CITT),1) AS NUM_CITT FROM DATAPERLIQU.desc_medicos")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "num_citt" , column = "NUM_CITT")
+    })
+    DescansoMedico traernumcittdescansos();
 }
