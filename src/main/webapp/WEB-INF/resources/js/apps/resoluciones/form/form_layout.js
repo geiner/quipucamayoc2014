@@ -504,6 +504,9 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
 
                     var motivo=clickedElement.parent().parent().children(':nth-child(5)').text();
 
+                    var fech_inicio=clickedElement.parent().parent().children(':nth-child(6)').text();
+                    var fech_final=clickedElement.parent().parent().children(':nth-child(7)').text();
+                    var desc_obliga=clickedElement.parent().parent().children(':nth-child(8)').text();
                     if(motivo==""){
 
                         this.faltaAddMotivo.fetchEditMotivos(function(){
@@ -513,7 +516,9 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
                         $("#serv-table-modal13").modal();
                     }else{
                         this.editarTrabaMotivo.fetchEditMotivos(function(){
-
+                             $("#show_text_fech").val(fech_inicio);
+                             $("#show_text_fin").val(fech_final);
+                            $("#descrip_motivo").val(desc_obliga);
                             $('#tablaEditMotivo').dataTable();
                             $('#tablaEditMotivo_wrapper').append("<div id='footer-table'></div>");
                             $('#tablaEditMotivo_next').html("<i  class='glyphicon glyphicon-forward'></i>");
