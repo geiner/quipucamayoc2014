@@ -68,7 +68,17 @@ public class ResolucionesController {
         resolucionesService.addServidor(traba);
         return "save";
     }
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json", produces = "application/json",value = "/addServidors")
+    //@ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String AgregarServidors(@RequestBody TrabajadorResolucion traba){
 
+        System.out.println("llegue aqui,agregando servidores");
+        System.out.println(traba.getDni()+" "+traba.getCodAntiguo()+" "+traba.getNroResol()+" "+traba.getSerEstado()+" "+traba.getCod_motivo()+" "+traba.getFec_ini_mot()+" "+traba.getFec_fin_mot());
+        resolucionesService.addServidor(traba);
+        resolucionesService.addMotivoTrab(traba);
+        return "save";
+    }
     @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/findResolucion/{anio}")
     @ResponseBody
     public List<Resolucion> ResolucionPorAnio(@PathVariable(value="anio") String anio){
@@ -111,15 +121,13 @@ public class ResolucionesController {
         return resolucionesService.validarExisteResolucion(restranum);
     }
 
-
-//
-//    @RequestMapping(method = RequestMethod.GET,produces = "application/json",value = "/updateResolucion/{numResol}/{fechaExpedi}/{fechaIni}/{descriOb}/{descriOp}/{tipoResol}/{nroMotivo}/{fechaFin}/{numResolindicado}")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public void updateResolucion(@PathVariable(value= "numResol") String numResol, @PathVariable(value= "fechaExpedi") String fechaExpedi, @PathVariable(value= "fechaIni") String fechaIni, @PathVariable(value= "descriOb") String descriOb, @PathVariable(value= "descriOp") String descriOp, @PathVariable(value= "tipoResol") String tipoResol, @PathVariable(value= "nroMotivo") String nroMotivo, @PathVariable(value= "fechaFin") String fechaFin, @PathVariable(value= "numResolindicado") String numResolindicado){
-//        resolucionesService.updateResolucion(numResol,fechaExpedi,fechaIni,descriOb,descriOp, tipoResol,nroMotivo+" ",fechaFin,numResolindicado);
-//
-//    }
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/validarUpdateResol/{idResol}/{descrResol}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public List<Resolucion> validarUpdateResol(@PathVariable(value = "idResol") String idResol,@PathVariable(value = "descrResol") String descResol) {
+        System.out.println();
+        return resolucionesService.validarUpdateResol(idResol,descResol);
+    }
 
     @RequestMapping(method = RequestMethod.POST,consumes = "application/json", produces = "application/json",value = "/updateResolucion")
     //@ResponseStatus(HttpStatus.CREATED)
@@ -129,7 +137,17 @@ public class ResolucionesController {
         resolucionesService.updateResolucion(reso);
 
     }
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json", produces = "application/json",value = "/editMotivoTrabajador")
+    //@ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void updateMotivoTraba(@RequestBody MotivoTrabajador editMotivo){
+        System.out.println("Editando Trabajadores"+editMotivo.getCodTraba()+" "+editMotivo.getResolucion());
 
+        resolucionesService.updateMotivoTraba(editMotivo);
+
+       // resolucionesService.updateResolucion(reso);
+
+    }
     @RequestMapping(method = RequestMethod.POST,produces = "application/json",consumes = "application/json", value="/deleteServidor")
     @ResponseBody
     public void eliminarTrabajador( @RequestBody TrabajadorResolucion reso) {
@@ -220,6 +238,7 @@ public class ResolucionesController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void updateResoServi(@PathVariable(value= "nuevaR")String nuevaR, @PathVariable (value= "resol") String resol){
+        System.out.println("editando resolucion trabajador"+resol+" ,"+nuevaR);
         resolucionesService.actualizarResoServi(nuevaR,resol);
     }
 
@@ -227,6 +246,7 @@ public class ResolucionesController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void updateResoMoti(@PathVariable(value= "nuevaR")String nuevaR, @PathVariable (value= "resol") String resol){
+        System.out.println("editando resolucion motivo");
         resolucionesService.actualizarResoMoti(nuevaR,resol);
     }
 

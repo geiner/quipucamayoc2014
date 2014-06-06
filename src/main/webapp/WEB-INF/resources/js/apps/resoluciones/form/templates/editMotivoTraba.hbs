@@ -1,0 +1,86 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Editar Motivo</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <label class="col-md-4 control-label">Fecha Inicial</label>
+
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control"  id="show_text_fech"  placeholder="Ejm. 11/05/2004"  readonly>
+                                <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="show_calent"><span class="glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="clear_calent"><span class="glyphicon glyphicon-refresh"></span></button>
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <label class="col-md-4 control-label">Fecha Final</label>
+
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control"  id="show_text_fin"  placeholder="Ejm. 11/05/2004"  readonly>
+                                <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="show_calent_fin"><span class="glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="clear_calent_fin"><span class="glyphicon glyphicon-refresh"></span></button>
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                        <div class="col-md-12">
+                            <label class="col-md-5 control-label " style="margin-left: -8%;">Descripci&oacuten Obligatoria<span id="descr_obli" style="color:red;">*</span></label>
+                            <div class="col-md-7">
+                                <input class="form-control" type="text" placeholder="Escriba la descripción que es obligatoria" id="descrip_motivo">
+                            </div>
+                        </div>
+
+                </div>
+                <div id="edit_motivo" class='alert alert-warning'
+                     style="text-align:center;display:none;">
+                </div>
+            </div>
+
+            <table id="tablaEditMotivo" class="table  table-bordered table-hover" style="font-size: 12px;">
+
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th>Nro motivo</th>
+                    <th>Descripción</th>
+
+                </tr>
+                </thead>
+                <tbody class="body-table " id="edit_body">
+                {{#each items}}
+                    <tr id="{{motivoId}}" class="">
+                        <td>{{motivoId}}</td>
+                        <td>{{descriMotivo}}</td>
+
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen motivos</td>
+                {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
