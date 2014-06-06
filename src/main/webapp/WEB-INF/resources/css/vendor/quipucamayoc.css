@@ -798,3 +798,43 @@
     -webkit-border-radius: 15px;
     border-radius: 5px;
 }
+
+#tablaEditMotivo_length{
+    display:none;
+}
+
+#tablaEditMotivo_paginate{
+    position: absolute;
+    margin-top: -17px;
+    left: 52%;
+}
+#tablaEditMotivo_info{
+    float: left;
+    margin-top: -12px;
+    margin-left: 18px;
+    font-size: 10px;
+    color: rgb(2, 2, 2);
+}
+#edit_body>tr{
+    cursor: pointer;
+}
+
+#tablaEditMotivo_previous{
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}
+#tablaEditMotivo_next{
+    cursor: pointer;
+    margin-left: 19px;
+    display: inline-block;
+    padding: 3px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    border-radius: 5px;
+}

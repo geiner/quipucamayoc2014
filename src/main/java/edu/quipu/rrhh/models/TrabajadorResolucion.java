@@ -3,6 +3,7 @@ package edu.quipu.rrhh.models;
 public class TrabajadorResolucion {
     private static final long serialVersionUID = 3159033005313632895L;
     private String idTrabajadorResolucion;
+    private String idTrabaDetalle;
     private String nombre;
     private String paterno;
     private String materno;
@@ -18,6 +19,14 @@ public class TrabajadorResolucion {
     private String desc_est;
     private String cod_motivo;
     private int contador;
+
+    public String getIdTrabaDetalle() {
+        return idTrabaDetalle;
+    }
+
+    public void setIdTrabaDetalle(String idTrabaDetalle) {
+        this.idTrabaDetalle = idTrabaDetalle;
+    }
 
     public String getDesc_est() {
         return desc_est;

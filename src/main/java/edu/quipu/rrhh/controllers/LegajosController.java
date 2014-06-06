@@ -280,10 +280,7 @@ public class LegajosController {
     @ResponseBody
     public String beneficiarios(@RequestBody LegajosCargaFamiliar beneficiarios){
 
-        System.out.println("dni individual:"+beneficiarios.getCargfamnumdoc());
-        System.out.println("codigo servidor:"+beneficiarios.getCargfamcodser());
-        System.out.println("resolucion:"+beneficiarios.getCodresol());
-        System.out.println("tipo beneficio:"+beneficiarios.getTipbeneficio());
+
         String dni=beneficiarios.getCargfamnumdoc();
         String serv=beneficiarios.getCargfamcodser();
         while(serv.length()<10){

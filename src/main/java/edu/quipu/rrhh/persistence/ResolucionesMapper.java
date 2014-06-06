@@ -109,7 +109,8 @@ public interface ResolucionesMapper {
             "  TIPRESMOTDES, " +
             "  TO_CHAR(Restrafecini,'DD/MM/YYYY') AS Restrafecini, " +
             "  TO_CHAR(Restrafecfin,'DD/MM/YYYY') AS Restrafecfin, " +
-            "  RESTRADES " +
+            "  RESTRADES, " +
+            "  Di.IDRETRABA "+
             "FROM ( (Dataperliqu.Tb_Trabajador_Resolucion_Id Tb " +
             "INNER JOIN Datapersuel.LISTA_SERVIDOR Se " +
             "ON Tb.Dni = Se.Ser_Cod AND Tb.NUM_SER_ESTADO = Se.NUM_SEREST) " +
@@ -122,6 +123,7 @@ public interface ResolucionesMapper {
             "WHERE Cod_Resol LIKE (#{resol})")
     @Results(value={ @Result(javaType = TrabajadorResolucion.class),
             @Result(property = "idTrabajadorResolucion", column = "IDTRABAJADOR_RESOLUCION"),
+
             @Result(property = "nroResol", column = "cod_resol"),
             @Result(property = "codigo", column = "SER_COD"),
             @Result(property = "dni", column = "dni"),
@@ -135,7 +137,8 @@ public interface ResolucionesMapper {
             @Result(property = "fec_fin_mot", column = "Restrafecfin"),
             @Result(property = "nombre_motivo", column = "TIPRESMOTDES"),
             @Result(property = "cod_motivo", column = "TIPRESMOTCOD"),
-            @Result(property = "desc_mot", column = "RESTRADES")
+            @Result(property = "desc_mot", column = "RESTRADES"),
+            @Result(property = "idTrabaDetalle", column = "IDRETRABA")
     } )
     List<TrabajadorResolucion> trabaPorResol(@Param("resol") String resol);
 
@@ -262,4 +265,29 @@ public interface ResolucionesMapper {
             @Result(property = "desmot",column = "DESMOT")
     })
     List<Resoluciones> buscar_resoluciones_asociados(@Param("codigo")String codigo, @Param("numserest") int numserest);
+
+    @Insert(value="insert into DATAPERLIQU.resol_trabajador_detalle_id values( ID_RESOL_TRAB.nextval,#{resol},#{codSer},#{numSer},#{numMoti},TO_DATE(#{fechIni},'DD/MM/YY'),TO_DATE(#{fechFin},'DD/MM/YY'),#{descri})")
+    void addMotivoTrab(@Param("resol") String resolucion, @Param("codSer") String codServ,@Param("numSer") int estado,@Param("numMoti") String numMoti,@Param("fechIni") String fechIni,@Param("fechFin") String fechFin,@Param("descri") String descrip);
+
+    @Update(value="update DATAPERLIQU.resol_trabajador_detalle_id set TIPRESMOTCOD=#{nroMot} ,RESTRAFECINI=#{fechaInic},RESTRAFECFIN=#{fechaFin},RESTRADES=#{descrip} where IDRETRABA=#{idMotivo} ")
+    void updateMotivoTraba(@Param("idMotivo") String idMotivo, @Param("resol") String resolucion,@Param("codTraba") String codTraba,@Param("descrip") String descrip,@Param("servEstado") int serviEstado,@Param("fechaInic") String fechaIni,@Param("fechaFin") String fechaFin,@Param("nroMot") String nroMotivo);
+
+
+    @Select(value = "SELECT * FROM DATAPERLIQU.Resolucion_Id WHERE Restranum=#{descrResol} and IDRESTRANUM!=#{idResol}")
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "idResolucion",column = "idrestranum"),
+            @Result(property = "numero_resol",column = "RESTRANUM"),
+            @Result(property = "fecha_expedicion",column = "FECINI"),
+            @Result(property = "obliga",column = "RESTRADES1"),
+            @Result(property = "cod_resol",column = "TIPRESCOD"),
+            @Result(property = "fecha_inicio",column = "FECEJEC"),
+            @Result(property = "adicional",column = "RESTRADES2"),
+            @Result(property = "motivo",column = "TIPRESMOTCOD") ,
+            @Result(property = "motivodesc",column = "TIPRESMOTDES") ,
+            @Result(property = "fecha_fin",column = "FECFIN")
+
+    })
+    List<Resolucion> validarUpdateResol(@Param("idResol") String idresol,@Param("descrResol") String descResol);
+
 }

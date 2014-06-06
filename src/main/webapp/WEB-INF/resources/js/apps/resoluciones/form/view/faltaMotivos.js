@@ -1,12 +1,12 @@
-define([ 'jquery', 'backbone', 'marionette','hbs!apps/resoluciones/form/templates/addMotivos', 'apps/resoluciones/form/collection/motivos'],
+define([ 'jquery', 'backbone', 'marionette','hbs!apps/resoluciones/form/templates/faltaMotivos', 'apps/resoluciones/form/collection/motivos'],
     function ($, Backbone, Marionette, motivoTemplate, motiC) {
 
         var TodosMotivoView = Backbone.Marionette.ItemView.extend({
             template: motivoTemplate,
             collection: new motiC(),
 
-            fetchAddMotivos: function(callback){
-                console.log("collection todos motivos")
+            fetchEditMotivos: function(callback){
+
 
                 this.collection.setUrlMotiv();
 
@@ -17,4 +17,3 @@ define([ 'jquery', 'backbone', 'marionette','hbs!apps/resoluciones/form/template
         return TodosMotivoView;
     }
 );
-

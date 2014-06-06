@@ -70,7 +70,10 @@ public class ResolucionesServiceImpl implements ResolucionesService{
     public void updateResolucion(Resolucion reso) {
         resolucionesMapper.updateResolucion(reso.getNumero_resol(), reso.getFecha_expedicion(), reso.getFecha_inicio(), reso.getObliga(),reso.getAdicional(),reso.getCod_resol(),reso.getMotivo(),reso.getFecha_fin(),reso.getIdResolucion());
     }
-
+    @Override
+    public void updateMotivoTraba(MotivoTrabajador editMotivo){
+        resolucionesMapper.updateMotivoTraba(editMotivo.getIdMotivoTraba(),editMotivo.getResolucion(),editMotivo.getCodTraba(),editMotivo.getDescrip(),editMotivo.getServiEstado(),editMotivo.getFechaIni(),editMotivo.getFechaFin(),editMotivo.getNroMotivo());
+    }
     @Override
     public List<TrabajadorResolucion> auxDniServidor(String reso) {
         return resolucionesMapper.auxDniServidor(reso);  //To change body of implemented methods use File | Settings | File Templates.
@@ -116,7 +119,10 @@ public class ResolucionesServiceImpl implements ResolucionesService{
     public List<Resolucion> validarExisteResolucion(String restranum) {
         return resolucionesMapper.validarExisteResolucion(restranum);
     }
-
+    @Override
+    public List<Resolucion> validarUpdateResol(String idResol,String descResol) {
+        return resolucionesMapper.validarUpdateResol(idResol,descResol);
+    }
     @Override
     public void removeResolucion(String numero) {
         resolucionesMapper.deleteResolucion(numero);
@@ -135,6 +141,12 @@ public class ResolucionesServiceImpl implements ResolucionesService{
     @Override
     public List<Resoluciones> buscar_resoluciones_asociados(String codigo, int numserest) {
        return resolucionesMapper.buscar_resoluciones_asociados(codigo,numserest);
+    }
+
+    @Override
+    public void addMotivoTrab(TrabajadorResolucion traba) {
+        System.out.println(traba.getNroResol()+" "+traba.getDni()+" "+traba.getSerEstado()+" "+traba.getCod_motivo()+" "+traba.getFec_ini_mot()+" "+traba.getFec_fin_mot()+" "+traba.getDesc_mot());
+        resolucionesMapper.addMotivoTrab(traba.getNroResol(),traba.getDni(),traba.getSerEstado(),traba.getCod_motivo(),traba.getFec_ini_mot(),traba.getFec_fin_mot(),traba.getDesc_mot());
     }
 
 
