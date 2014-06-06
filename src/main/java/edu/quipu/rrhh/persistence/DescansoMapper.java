@@ -68,11 +68,10 @@ public interface DescansoMapper {
             "  TIPO_LIC " +
             "FROM DATAPERLIQU.desc_medicos dm, " +
             "  DATAPERSUEL.lista_servidor se " +
-            "WHERE (TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
-            "OR TO_CHAR(fecha_fin, 'mm')       =#{mes} OR #{mes} BETWEEN to_char(fecha_inicio, 'mm') and to_char(fecha_fin, 'mm')) " +
-            "AND (TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
-            "OR TO_CHAR(fecha_fin, 'yyyy')     =#{anio}) " +
-            "AND trim(dm.id_serv)              =trim(se.ser_cod)")
+            "WHERE TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
+            "AND TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
+            "AND trim(dm.id_serv)=trim(se.ser_cod)" +
+            " and tiempo<>'0'")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
             @Result(property = "desc_est" , column = "DESC_EST"),
