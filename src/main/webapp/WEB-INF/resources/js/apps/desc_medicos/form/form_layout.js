@@ -466,20 +466,20 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                 comprobar_fecha_descmedico: function (fechIni, fechFin) {
                     console.log(fechIni+"*****************"+fechFin);
                     function dateToDMY(date) {
-                        var d = date.getDate();
-                        var m = date.getMonth() + 1;
+                        var m = date.getDate();
+                        var d = date.getMonth() + 1;
                         var y = date.getFullYear();
                         return '' + (d <= 9 ? '0' + d : d) + '/' + (m <= 9 ? '0' + m : m) + '/' + y;
                     }
 
-                    var f_ini_ingr = new Date(fechIni);
-                    var f_fin_ingr = new Date(fechFin);
+                    var f_ini_ingr = dateToDMY(new Date(fechIni)) ;
+                    var f_fin_ingr = dateToDMY(new Date(fechFin));
                     console.log("antes de enttrar"+f_ini_ingr+"--"+f_fin_ingr)
                     if(this.fechas_iniciales.length!=0){
                         for (var i = 0; i < this.fechas_iniciales.length; i++) {
-                            var f_ini_tabla = new Date(this.fechas_iniciales[i]);
-                            var f_fin_tabla = new Date(this.fechas_finales[i]);
-                            console.log("----"+f_ini_tabla+"-----"+f_fin_ingr);
+                            var f_ini_tabla = dateToDMY(new Date(this.fechas_iniciales[i]));
+                            var f_fin_tabla = dateToDMY(new Date(this.fechas_finales[i]));
+                            console.log("----"+f_ini_tabla+"-----"+f_fin_tabla);
                             if ((f_ini_tabla <= f_ini_ingr && f_ini_ingr <= f_fin_tabla) || (f_ini_tabla <= f_fin_ingr && f_fin_ingr <= f_fin_tabla)
                                 || (f_ini_ingr <= f_ini_tabla && f_ini_tabla <= f_fin_ingr) || (f_ini_ingr <= f_fin_tabla && f_fin_tabla <= f_fin_ingr)) {
                                 return (false)

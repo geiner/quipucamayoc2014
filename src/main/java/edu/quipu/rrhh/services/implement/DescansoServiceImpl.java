@@ -37,7 +37,7 @@ public class DescansoServiceImpl implements DescansoService {
                 diasdelmes=28;
             else
                 diasdelmes=31;
-
+        //mandar el año por parametro para traer solo los de ese año
         List<DescansoMedico> Histservidor= descansoMapper.traerHistDescansos(descansomedico.getId_serv(),descansomedico.getNumserest());
         DescansoMedico num_citt=descansoMapper.traernumcittdescansos();
         System.out.println(Histservidor.size()+" este numero select");

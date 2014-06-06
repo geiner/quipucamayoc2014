@@ -25,18 +25,19 @@ public interface DescansoMapper {
 
     @Select(value ="SELECT ID_DESC_MED , " +
             "  CITT, " +
-            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO, " +
+            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INI, " +
             "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
             "  TIPO_LIC, " +
-            "  TIEMPO "+
+            "  TIEMPO ," +
+            " FECHA_INICIO "+
             "FROM DATAPERLIQU.DESC_MEDICOS " +
             "WHERE trim(id_serv) =trim(#{codigo}) " +
-            "AND num_serest=#{numserest}")
+            "AND num_serest=#{numserest} ORDER BY FECHA_INICIO")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
             @Result(property = "id_desc_med" , column = "ID_DESC_MED"),
             @Result(property = "citt" , column = "CITT"),
-            @Result(property = "f_inicio" , column = "FECHA_INICIO"),
+            @Result(property = "f_inicio" , column = "FECHA_INI"),
             @Result(property = "f_fin" , column = "FECHA_FIN"),
             @Result(property = "tipo_lic" , column = "TIPO_LIC"),
             @Result(property = "tiempo" , column = "TIEMPO"),
@@ -63,15 +64,17 @@ public interface DescansoMapper {
             "  SER_NOM, " +
             "  ID_SERV, " +
             "  CITT, " +
-            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INICIO, " +
+            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INI, " +
             "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
-            "  TIPO_LIC " +
+            "  TIPO_LIC," +
+            " dm.NUM_CITT, " +
+            " dm.FECHA_INICIO " +
             "FROM DATAPERLIQU.desc_medicos dm, " +
             "  DATAPERSUEL.lista_servidor se " +
             "WHERE TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
             "AND TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
             "AND trim(dm.id_serv)=trim(se.ser_cod)" +
-            " and tiempo<>'0'")
+            " and tiempo<>'0' ORDER BY FECHA_INICIO ")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
             @Result(property = "desc_est" , column = "DESC_EST"),
@@ -80,7 +83,7 @@ public interface DescansoMapper {
             @Result(property = "ser_nom" , column = "SER_NOM"),
             @Result(property = "dni" , column = "ID_SERV"),
             @Result(property = "citt" , column = "CITT"),
-            @Result(property = "f_inicio" , column = "FECHA_INICIO"),
+            @Result(property = "f_inicio" , column = "FECHA_INI"),
             @Result(property = "f_fin" , column = "FECHA_FIN"),
             @Result(property = "tipo_lic" , column = "TIPO_LIC"),
             @Result(property = "id_desc_med" , column = "ID_DESC_MED")
