@@ -226,5 +226,10 @@ public class DescansoServiceImpl implements DescansoService {
         return descansoMapper.listarDescansos(mes,anio);
     }
 
+    @Override
+    public List<DescansoMedico> buscarAcumulado(String codigo, Integer numserest) {
+        return descansoMapper.buscarAcumulado(codigo,numserest);
+    }
+
 
 }

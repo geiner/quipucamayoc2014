@@ -36,6 +36,14 @@ public class DescansoMedicoController {
         System.out.println(numserest);
         return descansoservice.buscarDescansos(codigo, numserest);
     }
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/acumulado/codigo/{cod}/numserest/{num}")
+    @ResponseBody
+    public List<DescansoMedico> buscarAcumulado(@PathVariable(value = "cod") String codigo,@PathVariable(value = "num") Integer numserest){
+        System.out.println("controller acumulado");
+        System.out.println(codigo+"-");
+        System.out.println(numserest);
+        return descansoservice.buscarAcumulado(codigo, numserest);
+    }
 
     @RequestMapping(method = RequestMethod.DELETE, /*consumes = "application/json",*/produces = "application/json", value = "/deleteDescansoMed/{idDesc}")
     @ResponseStatus(HttpStatus.ACCEPTED)

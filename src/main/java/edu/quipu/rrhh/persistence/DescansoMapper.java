@@ -118,4 +118,15 @@ public interface DescansoMapper {
             @Result(property = "num_citt" , column = "NUM_CITT")
     })
     DescansoMedico traernumcittdescansos();
+
+    @Select(value ="SELECT  " +
+            "  TIEMPO " +
+            "FROM DATAPERLIQU.HIST_DESC_MEDICOS " +
+            "WHERE trim(id_serv) =trim(#{codigo}) " +
+            "AND num_serest=#{numserest}")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "tiempo" , column = "TIEMPO"),
+    })
+    List<DescansoMedico> buscarAcumulado(@Param("codigo") String codigo,@Param("numserest") Integer numserest);
 }
