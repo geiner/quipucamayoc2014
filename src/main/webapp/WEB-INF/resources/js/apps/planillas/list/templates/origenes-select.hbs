@@ -1,7 +1,7 @@
-<label class="control-label" for="select-origenes">Origen :</label>
+<label class="col-md-4 control-label" for="select-origenes">Origen </label>
 
-<div class="controls">
-    <select id="select-origenes">
+<div class="col-md-8">
+    <select id="select-origenes" class="form-control">
         {{#each items}}
             <option value="{{origenCodigo}}">{{origenCodigo}} - {{origenDescripcion}}</option>
         {{/each}}

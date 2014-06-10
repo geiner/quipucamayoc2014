@@ -3,33 +3,33 @@
     <legend>Informacion de Planillas CAS</legend>
 
     <form class="form-horizontal well" id="form_planillasCAS">
-        <div class="row control-group">
-            <div class="span8">
-                <button id="a-modal" class="btn btn-info " style="height:30px;margin-left: 109px;" type="button"> Unidad <i class="icon-search icon-white"></i></button>
+        <div class="row form-group">
+            <div class="col-md-9">
+                <button id="a-modal" class="btn btn-info " style="margin-left: 32%;" type="button"> Unidad <span class="glyphicon glyphicon-search"></span></button>
 
                 <div id="desc-unidad" class="help-inline"></div>
             </div>
-            <div class="span4" id="crear_nueva_planilla">
-                <button id="apertura_planilla" class="btn btn-info btn-small" type="button" style="width: 203px;margin-left: 167px;">Crear Nueva Planilla</button>
+            <div class="col-md-3" id="crear_nueva_planilla">
+                <button id="apertura_planilla" class="btn btn-info btn-small" type="button" >Crear Nueva Planilla</button>
             </div>
         </div>
-        <div class="row control-group">
-            <div class="span4" id="origenes">
+        <div class="row form-group">
+            <div class="col-md-6" id="origenes">
 
             </div>
-            <div class="span4" id="planillas">
+            <div class="col-md-3" id="planillas">
 
             </div>
-            <div class="span4" id="crear_nueva_planilla">
-                <button class="btn btn-info btn-small" type="button" style="width: 203px;margin-left: 167px;">Agregar Servidor a Planilla</button>
+            <div class="col-md-3" id="crear_nueva_planilla">
+                <button class="btn btn-info btn-small" type="button" >Agregar Servidor a Planilla</button>
             </div>
         </div>
 
-        <div class="row control-group">
-            <div class="span4">
-                <label class="control-label" for="select-anio">Año :</label>
-                <div class="controls">
-                    <select id="select-anio">
+        <div class="row form-group">
+            <div class="col-md-6">
+                <label class="col-md-4 control-label" for="select-anio">Año :</label>
+                <div class="col-md-4">
+                    <select id="select-anio" class="form-control">
                         <option value="0">Seleccione un año</option>
                         <option value="2010">2010</option>
                         <option value="2011">2011</option>
@@ -39,10 +39,10 @@
                     </select>
                 </div>
             </div>
-            <div class="span4">
-                <label class="control-label" for="select-mes">Mes :</label>
-                <div class="controls">
-                    <select id="select-mes">
+            <div class="col-md-3">
+                <label class="col-md-4 control-label" for="select-mes">Mes </label>
+                <div class="col-md-8">
+                    <select id="select-mes" class="form-control">
                         <option value="0">Seleccione un mes</option>
                         <option value="1">Enero</option>
                         <option value="2" selected="">Febrero</option>
@@ -59,16 +59,16 @@
                     </select>
                 </div>
             </div>
-            <div class="span4" id="crear_nueva_planilla">
-                <button class="btn btn-info btn-small" type="button" style="width: 203px;margin-left: 167px;">Ver Todas las Planillas</button>
+            <div class="col-md-3" id="crear_nueva_planilla">
+                <button class="btn btn-info btn-small" type="button" >Ver Todas las Planillas</button>
             </div>
         </div>
 
-        <div class="row control-group">
-            <div class="span2" style="margin-left: 1040px;height: 10px;margin-bottom: 5px;"><p style="font-size: 12px;"><button id="no" class="btn btn-small" disabled="true"></button>  No Asignados a Planilla</p></div>
-            <div class="span2" style="margin-left: 1040px;height: 10px;margin-bottom: 5px;"><p style="font-size: 12px;"><button id="dev" class="btn btn-small btn-danger" disabled="true"></button>  Devueltos</p></div>
-            <div class="span2" style="margin-left: 1040px;height: 10px;margin-bottom: 5px;"><p style="font-size: 12px;"><button id="cp" class="btn btn-small btn-success" disabled="true"></button> En Control Previo</p></div>
-            <div class="span2" style="margin-left: 1040px;height: 0px;margin-bottom: 5px;"><p style="font-size: 12px;"><button id="rh" class="btn btn-small btn-info" disabled="true"></button> en RRHH</p></div>
+        <div class="row form-group">
+            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="no" class="btn btn-small" disabled="true"></button>  No Asignados a Planilla</p></div>
+            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="dev" class="btn btn-small btn-danger" disabled="true"></button>  Devueltos</p></div>
+            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="cp" class="btn btn-small btn-success" disabled="true"></button> En Control Previo</p></div>
+            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="rh" class="btn btn-small btn-info" disabled="true"></button> en RRHH</p></div>
         </div>
 
     </form>
@@ -77,11 +77,11 @@
 
         </div>
     </form>
-    <div class="row control-group">
-        <div class="span3" style="margin-left: 174px;">
+    <div class="row form-group">
+        <div class="col-md-3" style="margin-left: 174px;">
             <button id="boton-enviar-control-previo" class="btn btn-success" type="button" style="width: 231px;">Enviar a control previo</button>
         </div>
-        <div class="span3" style="height: 32px;">
+        <div class="col-md-3" style="height: 32px;">
             <form action="/rest/reportes/planillasCAS/reporteConformidadPagos/pdf" method="post" id="form_pago">
                 <input type="hidden" style="display: none" id="anio_pago" name="anio" >
                 <input type="hidden" style="display: none" id="mes_pago" name="mes" >
@@ -92,7 +92,7 @@
                 <button id="boton-reporte-pagos" class="btn btn-warning" type="submit">Reporte de pagos y tardanzas</button>
             </form>
         </div>
-        <div class="span3" style="height: 32px;">
+        <div class="col-md-3" style="height: 32px;">
             <form action="/rest/reportes/planillasCAS/reporteConformidad/pdf" method="POST" id="form">
                 <input type="hidden" style="display: none" id="anio" name="anio" >
                 <input type="hidden" style="display: none" id="mes" name="mes" >
