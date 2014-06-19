@@ -14,7 +14,7 @@ public interface UnidadMapper {
             "  dep.nivunicod nivel, " +
             "  dep.ud_dsc dsc " +
             "FROM qprodataquipu.uni_dep dep " +
-            "WHERE dep.nivunicod IN (1,2,3,4) " +
+            "WHERE dep.nivunicod IN (1,2,3,4,5,6,7) " +
             "ORDER BY dep.ud_cod")
     @Results(value = {@Result(javaType = Unidad.class),
             @Result(property = "udId", column = "udid"),

@@ -1,11 +1,14 @@
 package edu.quipu.rrhh.controllers;
 
+import edu.quipu.rrhh.services.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import edu.quipu.rrhh.services.ReportService;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -87,5 +90,14 @@ public class ReportsController {
     }
 
 
+
+
+    @RequestMapping(method = RequestMethod.POST, value ="/cuadroNominalDependencia/pdf")
+    public void mostrarReporteCuadroNominal(HttpServletResponse response,String codigoDependencia,String usuarioCN ,String nom_depen) {
+        System.out.println("entro a reporte: "+codigoDependencia);
+        System.out.println("porsiacaso");
+        reportsService.cargarReporteCuadroNominal(response, codigoDependencia,usuarioCN,nom_depen);
+
+    }
 
 }

@@ -28,10 +28,14 @@ public class UnidadServiceImpl implements UnidadService {
     @Override
     public Unidad findAll() {
 
+
         List<Unidad> nvl1 = new ArrayList<>();
         List<Unidad> nvl2 = new ArrayList<>();
         List<Unidad> nvl3 = new ArrayList<>();
         List<Unidad> nvl4 = new ArrayList<>();
+        List<Unidad> nvl5 = new ArrayList<>();
+        List<Unidad> nvl6 = new ArrayList<>();
+        List<Unidad> nvl7 = new ArrayList<>();
 
         Unidad unmsm = new Unidad();
         unmsm.setDsc("UNMSM");
@@ -52,10 +56,37 @@ public class UnidadServiceImpl implements UnidadService {
                 unidad.setUnidades(nvl4);
             } else if (unidad.getNivel() == 4) {
                 nvl4.add(unidad);
+                nvl5 = new ArrayList<>();
+                unidad.setUnidades(nvl5);
+
+            }else  if (unidad.getNivel() == 5)    {
+
+                nvl5.add(unidad);
+                nvl6 = new ArrayList<>();
+                unidad.setUnidades(nvl6);
+
+            }else    if (unidad.getNivel() == 6)   {
+
+
+                nvl6.add(unidad);
+                nvl7 = new ArrayList<>();
+                unidad.setUnidades(nvl7);
+
+            }  else    if (unidad.getNivel() == 7)  {
+
+
+                nvl7.add(unidad);
+
             }
+
+
+
+
         }
 
         return unmsm;
+
+
     }
 
     @Override

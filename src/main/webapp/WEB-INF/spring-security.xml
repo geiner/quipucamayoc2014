@@ -25,6 +25,7 @@
         <security:intercept-url pattern="/rest/reportes/**" access="hasAnyRole('ADMIN3','USUDE3')" />
         <security:intercept-url pattern="/api/servidoresCAS/**" access="hasAnyRole('ADMIN3','USUDE3')"/>
         <security:intercept-url pattern="/rest/cas/plazas/**" access="hasAnyRole('ADMIN4','USUDE4')"/>
+        <security:intercept-url pattern="/api/cuadro_nominal/**" access="hasAnyRole('ADMIN20','USUDE20')"/>
         <security:intercept-url pattern="/rest/cas/serv/**" access="hasAnyRole('ADMIN5','ADMIN4','ADMIN20','USUDE4','USUDE5','USUDE20')"/>
         <security:intercept-url pattern="/api/legajos/**" access="hasAnyRole('ADMIN6','USUDE6')"/>
         <security:intercept-url pattern="/api/estado_condicion/**" access="hasAnyRole('ADMIN7','USUDE7')" />

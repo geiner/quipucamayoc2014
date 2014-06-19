@@ -722,6 +722,52 @@
     display:none;
 }
 
+#head-resol th:nth-child(1){
+    width: 8% !important;
+}
+#head-resol th:nth-child(2){
+    width: 20% !important;
+}
+#head-resol th:nth-child(3){
+    width: 7% !important;
+}
+#head-resol th:nth-child(4){
+    width: 7% !important;
+}
+#head-resol th:nth-child(5){
+    width: 7% !important;
+}
+#head-resol th:nth-child(6){
+    width: 22% !important;
+}
+#head-resol th:nth-child(7){
+    width: 32% !important;
+}
+
+#tabla_resol_asociados thead th:nth-child(1){
+     width: 13% !important;
+}
+#tabla_resol_asociados thead th:nth-child(2){
+    width: 7% !important;
+}
+#tabla_resol_asociados thead th:nth-child(3){
+    width: 7% !important;
+}
+#tabla_resol_asociados thead th:nth-child(4){
+    width: 5% !important;
+}
+#tabla_resol_asociados thead th:nth-child(5){
+    width: 19% !important;
+}
+#tabla_resol_asociados thead th:nth-child(6){
+    width: 8% !important;
+}
+#tabla_resol_asociados thead th:nth-child(7){
+    width: 7% !important;
+}
+#tabla_resol_asociados thead th:nth-child(8){
+    width: 35% !important;
+}
 #table-descansos-servidor_paginate{
     position: absolute;
     margin-top: -17px;

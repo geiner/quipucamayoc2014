@@ -7,9 +7,15 @@
 
 <div class="tabbable tabs-left" id="tabLegajos">
 <ul class="nav nav-tabs" id="navLegajos">
-    <li class="active"><a href="#lA" data-toggle="tab">Datos de estudio</a></li>
-    <li class=""><a href="#lB" data-toggle="tab">Datos familiares</a></li>
-    <li class=""><a href="#lC" data-toggle="tab">T y R de Servicio</a></li>
+    <li class="active"><a href="#lA" data-toggle="tab">Datos Personales</a></li>
+    <li class=""><a href="#lB" data-toggle="tab">Datos de estudio</a></li>
+    <li class=""><a href="#lC" data-toggle="tab">Datos familiares</a></li>
+    <li class=""><a href="#lE" data-toggle="tab">Carrera Laboral</a></li>
+    <li class=""><a href="#lF" data-toggle="tab">Beneficios</a></li>
+    <li class=""><a href="#lG" data-toggle="tab">Licencias</a></li>
+    <li class=""><a href="#lI" data-toggle="tab">Inves. y Publics.</a></li>
+    <li class=""><a href="#lH" data-toggle="tab">Méritos y Deméritos</a></li>
+    <li class=""><a href="#lD" data-toggle="tab">T y R de Servicio</a></li>
 
     <button id="search" class="btn btn-primary pull-right"  type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
 </ul>
@@ -33,7 +39,133 @@
 
          <br>
      </div>
-    <div class="tab-pane active" id="lA">
+      <div class="tab-pane active" id="lA">
+          <label id="idPersonal" style="display: none;"></label>
+          <form class="form-horizontal well" id="datos_personales" sav_legaj_lab="" onSubmit="return false">
+              <div class="row form-group">
+                  <div class="col-md-12" id="div_serv_est_pers">
+                      <label class="col-md-2 control-label" for="serv_ape_pat" style="margin-left: 3.5%;">Apellidos y Nombres </label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="legaj_nom_ape_per" class="form-control">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6">
+                      <label class="col-md-5 control-label">Tipo de Documento de Identidad </label>
+                      <div class="col-md-7">
+                          <input type="text" id="dni_per" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label class="col-md-5 control-label">Nº de Documento</label>
+                      <div class="col-md-7">
+                          <input type="text" id="nro_dni_per" class="form-control">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6">
+                      <label class="col-md-5 control-label">Sexo </label>
+                      <div class="col-md-7">
+                          <input type="text" id="sex_per" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label class="col-md-5 control-label">Estado Civil</label>
+                      <div class="col-md-7">
+                          <input type="text" id="est_civ_per" class="form-control">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="legaj_naci_per">Fecha de Nacimiento</label>
+
+                      <div class="col-md-7">
+                          <div class="input-group">
+                              <input  type="text" value="" class="form-control" id="legaj_naci_per" placeholder="Ejm. 11/05/2004"  readonly="">
+                                <span class="input-group-btn">
+                                </span>
+
+                          </div>
+
+                      </div>
+                  </div>
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="serv_ape_pat">País de Nacimiento</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="pais_nac_per" class="form-control"  >
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="depar_nac_per">Departamento de nacimiento</label>
+                      <div class="col-md-7">
+                          <input type="text" id="depar_nac_per" class="form-control"  >
+                      </div>
+                  </div>
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="prov_nac_per">Provincia de nacimiento</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="prov_nac_per" class="form-control"  >
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="dist_nac_per">Distrito de nacimiento</label>
+                      <div class="col-md-7">
+                          <input type="text" id="dist_nac_per" class="form-control"  >
+                      </div>
+                  </div>
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="domi_per">Domicilio</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="domi_per" class="form-control"  >
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="fono_per">Telefono</label>
+                      <div class="col-md-7">
+                          <input type="text" id="fono_per" class="form-control"  >
+                      </div>
+                  </div>
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="cel_per">Celular</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="cel_per" class="form-control"  >
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_serv_est_per">
+                      <label class="col-md-5 control-label" for="email_per">E-mail</label>
+                      <div class="col-md-7">
+                          <input type="text" id="email_per" class="form-control"  >
+                      </div>
+                  </div>
+
+              </div>
+
+          </form>
+      </div>
+    <div class="tab-pane" id="lB">
 
 
     <form class="form-horizontal well" id="form_dat_estud" onsubmit="return false">
@@ -216,7 +348,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="lB">
+    <div class="tab-pane" id="lC">
        <label id="idfamiliar" style="display: none;"></label>
         <form class="form-horizontal well" id="datos_familiares" sav_legaj_lab="" onSubmit="return false">
             <div class="row form-group">
@@ -399,7 +531,7 @@
         </form>
     </div>
 
-    <div class="tab-pane" id="lC">
+    <div class="tab-pane" id="lD">
 
 
         <form class="form-horizontal" id="">
@@ -570,6 +702,146 @@
         </form>
 
     </div>
+      <div class="tab-pane" id="lE">
+          <form class="form-horizontal well" id="carrera_laboral" sav_legaj_lab="" onSubmit="return false">
+
+              <div class="row form-group">
+                  <div class="col-md-12" id="div_depen_carre">
+                      <label class="col-md-2 control-label" for="depen_carr" style="margin-left: 0.5%;">Dependencia</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="depen_carr" class="form-control">
+                      </div>
+                  </div>
+              </div>
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_period_carre">
+                      <label class="col-md-4 control-label" for="perio_carr">Periodo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <input type="text" id="perio_carr" class="form-control"  >
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_resol_carre">
+                      <label class="col-md-4 control-label" for="resolu_carr">Resolutivo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <!--para este textarea: style="width: 611px;" o style="width: 217%";-->
+                          <textarea type="text" id="resolu_carr" class="form-control" rows="4" style="width: 217%;"></textarea>
+                      </div>
+                  </div>
+
+              </div>
+
+          </form>
+          <form class="form-horizontal" id="form_tabla_carreLab_per">
+              <div id="tabla_carreLab_per">
+
+              </div>
+          </form>
+      </div>
+      <div class="tab-pane" id="lF">
+
+          <form class="form-horizontal" id="form_tabla_benefic_per">
+              <div id="tabla_benefic_per">
+
+              </div>
+          </form>
+      </div>
+
+      <div class="tab-pane" id="lG">
+
+          <form class="form-horizontal" id="form_tabla_lic_per">
+              <div id="tabla_lic_per">
+
+              </div>
+          </form>
+      </div>
+
+      <div class="tab-pane" id="lI">
+          <form class="form-horizontal well" id="inves" sav_legaj_lab="" onSubmit="return false">
+
+              <div class="row form-group">
+                  <div class="col-md-12" id="div_depen_inves">
+                      <label class="col-md-2 control-label" for="depen_inves" style="margin-left: 0.5%;">Dependencia</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="depen_inves" class="form-control">
+                      </div>
+                  </div>
+              </div>
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_period_inves">
+                      <label class="col-md-4 control-label" for="perio_inves">Periodo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <input type="text" id="perio_inves" class="form-control"  >
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_resol_inves">
+                      <label class="col-md-4 control-label" for="resolu_inves">Resolutivo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <!--para este textarea: style="width: 611px;" o style="width: 217%";-->
+                          <textarea type="text" id="resolu_inves" class="form-control" rows="4" style="width: 217%;"></textarea>
+                      </div>
+                  </div>
+
+              </div>
+
+          </form>
+          <form class="form-horizontal" id="form_tabla_inves_per">
+              <div id="tabla_inves_per">
+
+              </div>
+          </form>
+      </div>
+
+      <div class="tab-pane" id="lH">
+          <form class="form-horizontal well" id="meritos_demeritos" sav_legaj_lab="" onSubmit="return false">
+
+              <div class="row form-group">
+                  <div class="col-md-12" id="div_depen_meriDeme">
+                      <label class="col-md-2 control-label" for="depen_meriDeme" style="margin-left: 0.5%;">Dependencia</label>
+
+                      <div class="col-md-7">
+                          <input type="text" id="depen_meriDeme" class="form-control">
+                      </div>
+                  </div>
+              </div>
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_period_meriDeme">
+                      <label class="col-md-4 control-label" for="perio_meriDeme">Periodo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <input type="text" id="perio_meriDeme" class="form-control"  >
+                      </div>
+                  </div>
+
+              </div>
+
+              <div class="row form-group">
+                  <div class="col-md-6" id="div_resol_meriDeme">
+                      <label class="col-md-4 control-label" for="resolu_carr">Resolutivo</label>
+                      <div class="col-md-7" style="margin-left: 1.9%;">
+                          <!--para este textarea: style="width: 611px;" o style="width: 217%";-->
+                          <textarea type="text" id="resolu_meriDeme" class="form-control" rows="4" style="width: 217%;"></textarea>
+                      </div>
+                  </div>
+
+              </div>
+
+          </form>
+          <form class="form-horizontal" id="form_tabla_meriDeme_per">
+              <div id="tabla_meriDeme_per">
+
+              </div>
+          </form>
+      </div>
+
 
 </div>
 </div>

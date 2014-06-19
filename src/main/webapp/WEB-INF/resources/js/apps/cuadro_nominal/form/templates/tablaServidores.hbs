@@ -1,0 +1,159 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Servidor</h4>
+        </div>
+
+        <div class="modal-body">
+
+            <div class=" form-horizontal well-small" >
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="col-md-4 control-label" for="fechaInicial">Fecha Inicial<span id="descr_obli" style="color:red;">*</span></label>
+
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" value="" id="fechaInicial" placeholder="Ejm. 11/05/2004"  readonly>
+                                            <span class="input-group-btn">
+                                                 <button class="btn btn-default" type="button" id="botonMostrarFechaInicial"><span class="glyphicon glyphicon-calendar"></span></button>
+                                            <button class="btn btn-default" type="button" id="botonLimpiarFechaInicial"><span class="glyphicon glyphicon-refresh"></span></button>
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="col-md-4 control-label" for="fechaFinal">Fecha Final</label>
+
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <input type="text" value="" class="form-control" id="fechaFinal" placeholder="Ejm. 11/05/2004"  readonly>
+                                            <span class="input-group-btn">
+                                              <button class="btn btn-default" type="button" id="botonMostrarFechaFinal"><span class="glyphicon glyphicon-calendar"></span> </button>
+                                            <button class="btn btn-default" type="button" id="botonLimpiarFechaFinal"><span class="glyphicon glyphicon-refresh"></span></button>
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row form-group">
+                                <div class="col-md-12"  id="id_modalidad">
+
+
+                                 <label class="col-md-5 control-label " style="margin-left: -8%;">Modalidad<span id="descr_obli" style="color:red;">*</span></label>
+
+                                     <div class="col-md-7">
+                                     <select id="modalidad" class="form-control">
+                                       <!--<option value="99">Seleccione una opción</option>-->
+                                       <option value="1">Concurso</option>
+                                       <option value="2">Designación</option>
+                                       <option value="3">Nombramiento</option>
+                                     </select>
+
+
+
+                                </div>
+
+
+                            </div>
+
+                            </div>
+                            <div id="advertenciaFechaInicial" class='alert alert-warning' style="text-align:center;display:none;">
+                            </div>
+             </div>
+
+
+
+
+            <table id="table-servidores_asis" class="table  table-bordered table-hover" style="font-size: 12px;">
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th>codigo</th>
+                    <th>N° Servidor</th>
+                    <th>Ape. Pat</th>
+                    <th>Ape. Mat</th>
+                    <th>Nombres</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody class="body-table" id="fam_content">
+                {{#each items}}
+                    <tr id="{{codigo}}" class="">
+                        <td >{{codigo}}</td>
+                         <td>{{descestado}}</td>
+                        <td>{{paterno}}  </td>
+                        <td>{{materno}}</td>
+                        <td>{{nombre}}</td>
+
+                    </tr>
+                {{else}}
+                    <td colspan="6" id="SinElementos" >No existen servidores para esta dependencia</td>
+                {{/each}}
+                </tbody>
+
+
+            </table>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
+
+
+<style type="text/css">
+    #table-servidores_asis_length{
+        display:none;
+    }
+
+  #table-servidores_asis_paginate{
+        position: absolute;
+        margin-top: -17px;
+        left: 52%;
+    }
+    #table-servidores_asis_info{
+        float: left;
+        margin-top: -12px;
+        margin-left: 18px;
+        font-size: 10px;
+        color: rgb(2, 2, 2);
+    }
+    #table-servidores_asis tr{
+        cursor: pointer;
+    }
+
+
+    #table-servidores_asis_previous{
+        cursor: pointer;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+    #table-servidores_asis_next{
+        cursor: pointer;
+        margin-left: 19px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+</style>

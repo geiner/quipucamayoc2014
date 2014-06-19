@@ -1,0 +1,76 @@
+<!-- <legend id="desc">Dependencia: <span id="nom_depen"></span> </legend>   -->
+<legend id="desc33">Plazas asignadas a este Servidor<span id="nom_depen33"></span> </legend>
+<table   id="tabla_plazas" class="table  table-bordered table-hover " style="font-size: 10px;">
+
+            <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                   <tr>
+                                       <th>Cod Plaza</th>
+
+                                       <th>Nombre de la  Plaza</th>
+                                       <th>Dependencia Inicial</th>
+                                       <th>Fecha Asignación</th>
+
+
+
+                   </tr>
+            </thead>
+            <tbody   class="body-table ">
+            {{#each items}}
+                                <tr id="{{idCuadroNominal}}" class="">
+
+                                      <td>{{cod_plaza}}</td>
+                                      <td>{{nom_estruc}}</td>
+                                      <td> {{subDep}}  </td>
+                                      <td>{{fech_ing}}</td>
+                                        
+
+
+                                </tr>
+                            {{else}}
+                                <td colspan="2"  disabled>No existen plazas asignadas a este servidor</td>
+                            {{/each}}
+            </tbody>
+
+</table>
+<style type="text/css">
+    #table-servidores_asis_length{
+        display:none;
+    }
+
+  #tabla_plazas_paginate{
+        position: absolute;
+        margin-top: -17px;
+        left: 52%;
+    }
+    #tabla_plazas_info{
+        float: left;
+        margin-top: -12px;
+        margin-left: 18px;
+        font-size: 10px;
+        color: rgb(2, 2, 2);
+    }
+    #tabla_plazas tr{
+        cursor: pointer;
+    }
+
+
+    #tabla_plazas_previous{
+        cursor: pointer;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+    #tabla_plazas_next{
+        cursor: pointer;
+        margin-left: 19px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+</style>

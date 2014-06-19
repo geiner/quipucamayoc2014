@@ -1,11 +1,11 @@
 package edu.quipu.rrhh.services.implement;
 
+import edu.quipu.rrhh.services.ReportService;
+import edu.quipu.rrhh.util.ReportDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.quipu.rrhh.services.ReportService;
-import edu.quipu.rrhh.util.ReportDownloader;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -105,6 +105,28 @@ public class ReportServiceImpl implements ReportService {
         try {
             reportDownloader.downloadPDF(response, rutaReporte, "reportedescansos.pdf", params);
         } catch (Exception e) {
+            logger.error("No se pudo descargar el reporte: "+rutaReporte);
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void cargarReporteCuadroNominal(HttpServletResponse response ,String codDep,String usuarioCN, String nom_depen) {
+        String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
+        HashMap params = new HashMap();
+        params.put("codDep", codDep);
+        params.put("usuarioCN", usuarioCN);
+        params.put("nom_depen", nom_depen);
+
+
+        System.out.println(params);
+        try {
+            System.out.println("download");
+            reportDownloader.downloadPDF(response, rutaReporte, "reporteCN.pdf", params);
+        } catch (Exception e) {
+            System.out.println("catch");
             logger.error("No se pudo descargar el reporte: "+rutaReporte);
             e.printStackTrace();
         }

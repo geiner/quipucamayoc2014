@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Conformidad" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Conformidad" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
 	<property name="ireport.zoom" value="2.2000000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -36,7 +36,8 @@
             AND td.tipresmotcod   =mo.tipresmotcod
             AND re.tiprescod      =tipo.tiprescod
           	  AND  trim(td.ser_cod)=trim(se.ser_cod)
-	  AND se.SER_COD_DEP_ACT=ud.UD_COD]]>
+	  AND se.SER_COD_DEP_ACT=ud.UD_COD
+            ORDER BY RESTRAFEC]]>
 	</queryString>
 	<field name="RESID" class="java.lang.String"/>
 	<field name="EMISION" class="java.lang.String"/>
@@ -82,40 +83,40 @@
 			<staticText>
 				<reportElement  key="staticText-7" x="412" y="16" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Usuario:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy   h:mm a" isBlankWhenNull="false">
 				<reportElement  key="textField-18" x="448" y="3" width="83" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{fecha}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-19" x="448" y="16" width="83" height="13"/>
+				<reportElement  key="textField-19" x="448" y="16" width="83" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement  key="staticText-8" x="412" y="3" width="34" height="13"/>
+				<reportElement key="staticText-8" x="412" y="3" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
-					<font size="6"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-9" x="4" y="66" width="59" height="14"/>
+				<reportElement key="staticText-9" x="4" y="66" width="59" height="14"/>
 				<textElement textAlignment="Left">
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[INTERESADO :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-21" x="116" y="66" width="138" height="14"/>
+				<reportElement key="textField-21" x="116" y="66" width="138" height="14"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -129,54 +130,54 @@
 				<text><![CDATA[Oficina de gestion y escalafon]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-22" x="63" y="66" width="53" height="14"/>
+				<reportElement key="textField-22" x="63" y="66" width="53" height="14"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{cod_serv}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement  key="staticText-11" x="4" y="87" width="93" height="12"/>
+				<reportElement  key="staticText-11" x="4" y="87" width="109" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Nº RESOLUCION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-13" x="139" y="87" width="27" height="12"/>
+				<reportElement  key="staticText-13" x="175" y="87" width="27" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-14" x="169" y="87" width="123" height="12"/>
+				<reportElement key="staticText-14" x="202" y="87" width="105" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MOTIVO ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-15" x="381" y="87" width="132" height="12"/>
+				<reportElement key="staticText-15" x="412" y="87" width="119" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DESCRIPCION DEL MOTIVO]]></text>
 			</staticText>
 			<line>
-				<reportElement key="line-1" x="3" y="107" width="550" height="1"/>
+				<reportElement  key="line-1" x="3" y="107" width="550" height="1"/>
 			</line>
 			<staticText>
-				<reportElement  key="staticText-12" x="292" y="87" width="42" height="12"/>
+				<reportElement key="staticText-12" x="307" y="87" width="42" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[F.INI MOT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-12" x="336" y="87" width="42" height="12"/>
+				<reportElement  key="staticText-12" x="358" y="87" width="42" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[F.FIN MOT]]></text>
 			</staticText>
@@ -188,7 +189,7 @@
 				<text><![CDATA[DEPENDENCIA :]]></text>
 			</staticText>
 			<textField>
-				<reportElement  x="444" y="66" width="100" height="14"/>
+				<reportElement  x="444" y="66" width="109" height="21"/>
 				<textElement>
 					<font size="7" isBold="true"/>
 				</textElement>
@@ -202,16 +203,16 @@
 				<text><![CDATA[COD. ANTIGUO :]]></text>
 			</staticText>
 			<textField>
-				<reportElement  x="312" y="66" width="75" height="14"/>
+				<reportElement x="312" y="66" width="75" height="14"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CODANTIGUO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement  key="staticText-12" x="97" y="87" width="42" height="12"/>
+				<reportElement key="staticText-12" x="113" y="87" width="47" height="12"/>
 				<textElement>
-					<font size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[F. EMISION]]></text>
 			</staticText>
@@ -223,51 +224,51 @@
 	<detail>
 		<band height="41" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement  x="4" y="6" width="93" height="11"/>
+				<reportElement  x="4" y="6" width="109" height="11"/>
 				<textElement>
-					<font size="6" isBold="false"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{RESID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="139" y="6" width="10" height="11"/>
+				<reportElement  x="176" y="6" width="16" height="11"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{TIPO_RE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="172" y="6" width="120" height="22"/>
+				<reportElement  x="202" y="6" width="105" height="22"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{MOT_TRAB}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="294" y="6" width="42" height="11"/>
+				<reportElement  x="307" y="6" width="51" height="11"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{FECINIMOT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="336" y="6" width="42" height="11"/>
+				<reportElement  x="358" y="6" width="54" height="11"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{FECFINMOT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="381" y="6" width="163" height="35"/>
+				<reportElement x="412" y="6" width="141" height="35"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DESMOT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement  x="97" y="6" width="42" height="11"/>
+				<reportElement  x="113" y="6" width="63" height="11"/>
 				<textElement>
-					<font size="6"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{EMISION}]]></textFieldExpression>
 			</textField>
@@ -279,28 +280,28 @@
 	<pageFooter>
 		<band height="19" splitType="Stretch">
 			<staticText>
-				<reportElement  key="staticText-16" x="4" y="5" width="288" height="11"/>
+				<reportElement key="staticText-16" x="4" y="5" width="288" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-23" x="431" y="5" width="44" height="11"/>
+				<reportElement key="textField-23" x="431" y="5" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement  key="textField-24" x="475" y="5" width="34" height="11"/>
+				<reportElement key="textField-24" x="475" y="5" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" de  "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement  key="line-2" x="3" y="3" width="550" height="1"/>
+				<reportElement key="line-2" x="3" y="3" width="550" height="1"/>
 			</line>
 		</band>
 	</pageFooter>
@@ -314,7 +315,7 @@
 				<text><![CDATA[Sistema Integral de Recursos Humanos - Quipucamayoc]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField-25" x="431" y="14" width="44" height="11"/>
+				<reportElement key="textField-25" x="431" y="14" width="44" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>

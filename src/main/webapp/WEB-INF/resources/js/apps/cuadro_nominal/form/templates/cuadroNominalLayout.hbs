@@ -1,0 +1,99 @@
+<fieldset>
+
+  <legend>Cuadro Nominal</legend>
+
+ <div class="btn-group col-md-2 pull-right">
+
+       <form  action="rest/reportes/cuadroNominalDependencia/pdf"  method="POST" id="form_reporteCN"  style="display: none">
+
+              <input type="hidden" style="display: none" id="codigoDependencia" name="codigoDependencia" >
+              <input type="hidden" style="display: none" id="usuarioCN" name="usuarioCN" >
+              <input type="hidden" style="display: none" id="nom_depen" name="nom_depen" >
+
+              <button id="botonReporteCVN" class="btn btn-warning" type="submit">Descargar Reporte</button>
+
+       </form>
+
+ </div>
+
+
+  <div class="row form-group">
+            <div class="col-md-12" id="div">
+                 <label class="col-md-2 control-label" for="origen" >Buscar Plazas:
+                    <span style="color:red;">*
+                    </span>
+                 </label>
+                 <div class="col-md-2">
+                     <div class="input-group">
+                           <input class="form-control" type="text" id="origen" disabled="disabled">
+                           <span class="input-group-btn">
+                              <button class="btn btn-default" type="button" id="botonMostrarArbolDeDependencias">
+                                 <span class="glyphicon glyphicon-search">
+                                 </span>
+                              </button>
+                           </span>
+                     </div>
+                 </div>
+            </div>
+  </div>
+
+
+
+</br>
+
+
+<!--
+<form class="form-horizontal">
+     <div class="col-md-12" >
+
+           <strong style="font-size: 18px;">Dependencia:
+           </strong>
+
+           <strong  id="nom_depen1" style="font-size: 16px; color: #00585f;">
+           </strong>
+     </div>
+</form>
+
+-->
+
+
+
+</br>
+
+
+  <form class="form-horizontal" id="form_tabla_plazas">
+
+        <div id="tablaPlazas">
+
+        </div>
+  </form>
+
+
+
+
+
+    <div id="modalServidores" class="modal fade" tabindex="-1"  role="dialog"  aria-labelledby="myModalLabel"  aria-hidden="true">
+
+    </div>
+
+
+    <div   id="modalDependencias"  class="modal fade"  tabindex="-1"   role="dialog"  aria-labelledby="myModalLabel"   aria-hidden="true">
+
+    </div>
+
+
+
+    <div id="advertenciaInconsistenciaAgregarAsignacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    </div>
+
+
+    <div id="advertenciaInconsistenciaEliminarAsignacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    </div>
+
+    <div id="modalEliminarAsignacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    </div>
+
+</fieldset>

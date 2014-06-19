@@ -1,0 +1,158 @@
+<legend id="desc">Plaza: <span id="nombre-plaza"></span> </legend>
+
+
+<form class="form-horizontal well" id="primerForm">
+
+
+
+
+                           <div class="row form-group">
+                                <div class="col-md-12" id="div">
+                                       <label class="col-md-2 control-label" for="textDestino" style="margin-left:3.6%;">Destino<span style="color:red;">*</span>
+                                       </label>
+                                       <div class="col-md-8">
+                                           <div class="input-group">
+                                                   <input class="form-control" type="text" id="textDestino"  disabled="disabled" >
+                                                   <span class="input-group-btn">
+                                                         <button class="btn btn-default" type="button" id="bus_dep"><span class="glyphicon glyphicon-search"></span></button>
+                                                   </span>
+                                           </div>
+                                       </div>
+
+                                </div>
+                           </div>
+
+                           <div class="row form-group">
+                                 <div class="col-md-6">
+                                       <label class="col-md-5 control-label" for="fechaR">Fecha
+                                            <span  style="color:red;">*</span>
+                                       </label>
+                                       <div class="col-md-7">
+                                            <div class="input-group">
+                                                 <input  type="text" value="" id="fechaRotacion" class="form-control" placeholder="Ejm. 11/05/2004"  readonly>
+                                                 <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button" id="btnMostrarFechaRotacion"><span class=" glyphicon glyphicon-calendar"></span></button>
+                                                    <button class="btn btn-default" type="button" id="btnLimpiarFechaRotacion" ><span class="glyphicon glyphicon-refresh"></span></button>
+                                                 </span>
+                                            </div>
+                                       </div>
+                                 </div>
+                           </div>
+
+
+                           <div class="row form-group">
+                                                    <div class="col-md-12" id="div">
+                                                           <label class="col-md-2 control-label" for="textDestino" style="margin-left:3.6%;">Resolucion:<span style="color:red;">*</span>
+                                                           </label>
+                                                           <div class="col-md-4">
+                                                               <div class="input-group">
+                                                                       <input class="form-control" type="text" id="textResolRotPlaza"  disabled="disabled" >
+
+                                                                       <span class="input-group-btn">
+                                                                             <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                                                                       </span>
+                                                               </div>
+                                                           </div>
+
+                                                    </div>
+                                               </div>
+
+                           </div>
+
+
+               </div>
+                   <div id="advCamposHistorial" class='alert alert-warning' style="text-align:center;display:none;">
+
+               </div>
+
+
+
+    </form>
+
+
+
+
+
+
+
+<table   id="tabla_plazas1" class="table  table-bordered table-hover " style="font-size: 10px;">
+  <a class="btn btn-success pull-right" id="botonClearItemHistorialPlaza" data-target=".bs-example-modal-lg">Cancelar</a>
+  <a class="btn btn-primary pull-right" id="botonAddItemHistorialPlaza" data-target=".bs-example-modal-lg" >Añadir rotacion</a>
+
+
+            <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                   <tr>
+                                       <th>Dependencia de Rotación</th>
+                                       <th>Fecha de Rotación</th>
+                                       <th>Nro Documento</th>
+                                       <th>Eliminar</th>
+
+
+                   </tr>
+            </thead>
+            <tbody   class="body-table ">
+            {{#each items}}
+                                <tr id="{{idHistorialPlaza}}" class="">
+
+                                      <td>{{depActual}}</td>
+                                      <td>{{fechaRotacion}}</td>
+                                      <td>{{nroDocu}}</td>
+
+                                       <td>
+
+                                           <button  id="botonMostrarModalEliminacion"    class="btn btn-danger btn-xs"  type="button"  dataIdRotacion={{idHistorialPlaza}}  >
+                                                 <span  class="glyphicon glyphicon-trash"></span>
+                                           </button>
+
+                                       </td>
+
+
+                                </tr>
+                            {{else}}
+                                <td colspan="5">No existe historial para esta plaza</td>
+                            {{/each}}
+            </tbody>
+
+</table>
+<style type="text/css">
+    #tabla_plazas1_length{
+        display:none;
+    }
+
+  #tabla_plazas1_paginate{
+        position: absolute;
+        margin-top: -17px;
+        left: 52%;
+    }
+    #tabla_plazas1_info{
+        float: left;
+        margin-top: -12px;
+        margin-left: 18px;
+        font-size: 10px;
+        color: rgb(2, 2, 2);
+    }
+    #tabla_plazas1 tr{
+        cursor: pointer;
+    }
+
+
+    #tabla_plazas1_previous{
+        cursor: pointer;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+    #tabla_plazas1_next{
+        cursor: pointer;
+        margin-left: 19px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+</style>

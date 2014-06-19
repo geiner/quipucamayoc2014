@@ -150,7 +150,7 @@ public interface ResolucionesMapper {
                           @Param("adicional") String descriOp, @Param("cod_resol") String tipoResol, @Param("motivo") String nroMotivo, @Param("fecha_fin") String fechaFin, @Param("codR") String resolIndicada);
 
     @Delete(value="DELETE FROM DATAPERLIQU.tb_trabajador_resolucion_id WHERE cod_resol=#{resol} and trim(dni)=trim(#{dni}) and NUM_SER_ESTADO=#{numser} ")
-    void removeResoluTrabaja(@Param("resol") String resol, @Param("dni") String dni,@Param("numser") int numser);
+    void removeResoluTrabaja(@Param("resol") String resol, @Param("dni") String dni, @Param("numser") int numser);
 
     @Select(value="select dni from DATAPERLIQU.tb_trabajador_resolucion where cod_resol=#{codR}")
     @Results(value={ @Result(javaType = TrabajadorResolucion.class),
@@ -173,7 +173,7 @@ public interface ResolucionesMapper {
     void borrarMotivo(@Param("serCod") String serCod, @Param("nroMoti") String nroMoti);
 
     @Delete(value="delete DATAPERLIQU.resol_trabajador_detalle_id where trim(ser_cod)=trim(#{serCod}) and RESTRANUM=#{resol} and NUM_SEREST=#{numser} and TIPRESMOTCOD=#{cod_motivo}")
-    void borrarServidorConMotivo(@Param("serCod") String serCod,@Param("resol") String resol,@Param("numser") int numser,@Param("cod_motivo") String cod_motivo);
+    void borrarServidorConMotivo(@Param("serCod") String serCod, @Param("resol") String resol, @Param("numser") int numser, @Param("cod_motivo") String cod_motivo);
 
     @Update(value="update DATAPERLIQU.tb_trabajador_resolucion_id set cod_resol=#{nuevaR} where cod_resol=#{resol}")
     void actualizarResoServi(@Param("nuevaR") String nuevaR, @Param("resol") String resol) ;
@@ -182,11 +182,11 @@ public interface ResolucionesMapper {
     void actualizarResoMoti(@Param("nuevaR") String nuevaR, @Param("resol") String resol);
 
     @Select(value = "SELECT idrestranum,RESTRANUM, " +
-            "TO_CHAR(RESTRAFEC,'DD-MM-YYYY') AS FECINI,RESTRADES1,TIPRESCOD," +
-            " TO_CHAR(RESTRAFECEJEC,'DD-MM-YYYY') AS FECEJEC,RESTRADES2,m.TIPRESMOTCOD," +
-            "TO_CHAR(RESTRAFECFIN,'DD-MM-YYYY') AS FECFIN,m.TIPRESMOTDES " +
+            "TO_CHAR(RESTRAFEC,'DD/MM/YYYY') AS FECINI,RESTRADES1,TIPRESCOD," +
+            " TO_CHAR(RESTRAFECEJEC,'DD/MM/YYYY') AS FECEJEC,RESTRADES2,m.TIPRESMOTCOD," +
+            "TO_CHAR(RESTRAFECFIN,'DD/MM/YYYY') AS FECFIN,m.TIPRESMOTDES " +
             "FROM DATAPERLIQU.resolucion_id r, DATAPERLIQU.tipores_motivo m " +
-            " WHERE TO_CHAR(RESTRAFECEJEC,'DD-MM-YYYY') LIKE(#{inicio}) and TO_CHAR(RESTRAFECFIN,'DD-MM-YYYY') LIKE(#{fin}) and r.tipresmotcod = m.tipresmotcod")
+            " WHERE TO_CHAR(RESTRAFECEJEC,'DD/MM/YYYY') LIKE(#{inicio}) and TO_CHAR(RESTRAFECFIN,'DD/MM/YYYY') LIKE(#{fin}) and r.tipresmotcod = m.tipresmotcod")
     @Results(value = {
             @Result(javaType = Resolucion.class),
             @Result(property = "idResolucion",column = "idrestranum"),
@@ -235,15 +235,15 @@ public interface ResolucionesMapper {
             @Result(javaType = TrabajadorResolucion.class),
             @Result(property = "nroResol",column = "restranum")
     })
-    List<TrabajadorResolucion> contarServidores(@Param("resol")String resol, @Param("dni")String dni, @Param("numser")int numser);
+    List<TrabajadorResolucion> contarServidores(@Param("resol") String resol, @Param("dni") String dni, @Param("numser") int numser);
 
     @Select(value ="SELECT td.restranum               AS RESID , " +
-            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY')        AS FRINI , " +
-            "  TO_CHAR(re.restrafecejec,'DD-MM-YYYY') AS FRFIN, " +
+            "  TO_CHAR(RESTRAFEC,'DD/MM/YYYY')        AS FRINI , " +
+            "  TO_CHAR(re.restrafecejec,'DD/MM/YYYY') AS FRFIN, " +
             "  re.tiprescod                           AS TIPO_RE, " +
             "  mo.tipresmotdes                        AS MOT_TRAB, " +
-            "  TO_CHAR(td.restrafecini,'DD-MM-YYYY')  AS FECINIMOT, " +
-            "  TO_CHAR(td.restrafecfin,'DD-MM-YYYY')  AS FECFINMOT, " +
+            "  TO_CHAR(td.restrafecini,'DD/MM/YYYY')  AS FECINIMOT, " +
+            "  TO_CHAR(td.restrafecfin,'DD/MM/YYYY')  AS FECFINMOT, " +
             "  td.restrades                           AS DESMOT " +
             "FROM DATAPERLIQU.resol_trabajador_detalle_id td, " +
             "  DATAPERLIQU.resolucion_id re, " +
@@ -264,13 +264,13 @@ public interface ResolucionesMapper {
             @Result(property = "fecfinmot",column = "FECFINMOT"),
             @Result(property = "desmot",column = "DESMOT")
     })
-    List<Resoluciones> buscar_resoluciones_asociados(@Param("codigo")String codigo, @Param("numserest") int numserest);
+    List<Resoluciones> buscar_resoluciones_asociados(@Param("codigo") String codigo, @Param("numserest") int numserest);
 
     @Insert(value="insert into DATAPERLIQU.resol_trabajador_detalle_id values( ID_RESOL_TRAB.nextval,#{resol},#{codSer},#{numSer},#{numMoti},TO_DATE(#{fechIni},'DD/MM/YY'),TO_DATE(#{fechFin},'DD/MM/YY'),#{descri})")
-    void addMotivoTrab(@Param("resol") String resolucion, @Param("codSer") String codServ,@Param("numSer") int estado,@Param("numMoti") String numMoti,@Param("fechIni") String fechIni,@Param("fechFin") String fechFin,@Param("descri") String descrip);
+    void addMotivoTrab(@Param("resol") String resolucion, @Param("codSer") String codServ, @Param("numSer") int estado, @Param("numMoti") String numMoti, @Param("fechIni") String fechIni, @Param("fechFin") String fechFin, @Param("descri") String descrip);
 
     @Update(value="update DATAPERLIQU.resol_trabajador_detalle_id set TIPRESMOTCOD=#{nroMot} ,RESTRAFECINI=#{fechaInic},RESTRAFECFIN=#{fechaFin},RESTRADES=#{descrip} where IDRETRABA=#{idMotivo} ")
-    void updateMotivoTraba(@Param("idMotivo") String idMotivo, @Param("resol") String resolucion,@Param("codTraba") String codTraba,@Param("descrip") String descrip,@Param("servEstado") int serviEstado,@Param("fechaInic") String fechaIni,@Param("fechaFin") String fechaFin,@Param("nroMot") String nroMotivo);
+    void updateMotivoTraba(@Param("idMotivo") String idMotivo, @Param("resol") String resolucion, @Param("codTraba") String codTraba, @Param("descrip") String descrip, @Param("servEstado") int serviEstado, @Param("fechaInic") String fechaIni, @Param("fechaFin") String fechaFin, @Param("nroMot") String nroMotivo);
 
 
     @Select(value = "SELECT * FROM DATAPERLIQU.Resolucion_Id WHERE Restranum=#{descrResol} and IDRESTRANUM!=#{idResol}")
@@ -288,6 +288,6 @@ public interface ResolucionesMapper {
             @Result(property = "fecha_fin",column = "FECFIN")
 
     })
-    List<Resolucion> validarUpdateResol(@Param("idResol") String idresol,@Param("descrResol") String descResol);
+    List<Resolucion> validarUpdateResol(@Param("idResol") String idresol, @Param("descrResol") String descResol);
 
 }

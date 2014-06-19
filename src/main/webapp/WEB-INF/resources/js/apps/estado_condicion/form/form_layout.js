@@ -6,11 +6,17 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
     "apps/estado_condicion/form/view/tabla_dep","apps/estado_condicion/form/view/tabla_cond_pla", "apps/estado_condicion/form/model/Guardar_Cond_Lab","apps/estado_condicion/form/model/Guardar_Alert",
     "apps/estado_condicion/form/model/Guardar_Cond_Aseg", "apps/estado_condicion/form/model/Guardar_Dependencia", "apps/estado_condicion/form/model/Guardar_Cond_Banco", "apps/estado_condicion/form/model/Guardar_Cond_Pla",
     "apps/estado_condicion/form/view/categoria_prof","apps/planillas/list/view/unidades-dialog",
+        "apps/estado_condicion/form/view/tablaPlazasAsignadas",
+        "apps/estado_condicion/form/view/tablaHistorialPlazas",
+        "apps/estado_condicion/form/view/modalEliminacionItemHistorial",
+        "apps/estado_condicion/form/model/eliminarHistorialPlaza",
+        "apps/estado_condicion/form/model/addHistorialPlaza",
+
     "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/jquery.numeric","bootstrap"],
 
     function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView, TipoView, EstadoView, RegimenView,
               EntidadView, EstadoAfpView, TipoPagoView, CondPlaView, Tabla_Cond_LabView, Tabla_Pago_BancoView,Tabla_Cond_AsegView, Tabla_DepView,Tabla_Cond_PlaView, Guardar_CondLabModel,
-              Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView) {
+              Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView,tablaPlazasAsignadasView, historialPlazaView, modalEliminacionItemHistorialView,  eliminarHistorialPlazaModel,addHistorialPlazaModel) {
         ErzaManager.module('EstadoCondicionApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
 
@@ -37,6 +43,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 unidadesDialog: new UnidadesDialogView(),
                 Tabla_Cond_PlaView: new Tabla_Cond_PlaView(),
 
+                tablaPlazasAsignadasView: new tablaPlazasAsignadasView(),
+                historialPlazaView: new historialPlazaView(),
+                modalEliminacionItemHistorialView: new modalEliminacionItemHistorialView(),
+
 
                 // Variables,
                 codigo: null,
@@ -53,6 +63,11 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
                 },
 
+
+
+                idPlaza:0,//mio
+                nombreDep:"Ninguno",//Mio
+                idRotacionPlaza:0,
 
 
                 regions:{
@@ -72,7 +87,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     TCPReg: "#table-condpla",
                     CategoriaProfReg: "#div_categ_prof",
                     DocenteReg: "div_docente",
-                    unidadesModalReg: "#modal-unidades"
+                    unidadesModalReg: "#modal-unidades",
+
+
+                    "tabla_plazas_asignadasHtml":"#tabla_plazas_asignadas",
+                    "tabla_historial_plazaHtml":"#tabla_historial_plaza",
+                    "modalEliminacionItemHistorialHtml":"#modalEliminacionItemHistorial"
 
 
                 },
@@ -102,7 +122,16 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     "click #bus_dep":"llamarModalUnidades",
                     "click #boton-unidad":"seleccionarunidad",
                     //"click #nomb_fech_show":"mostrarcalendarionomb", // cuando se hace clic en el boton fecha nombramiento...
-                    "click #cese_fech_show":"mostrarcalendariocese" //  cuando se hace clic en el boton fecha cese...
+                    "click #cese_fech_show":"mostrarcalendariocese", //  cuando se hace clic en el boton fecha cese...
+
+
+                    "click #btnMostrarFechaRotacion": "mostrarFechaRotacion",//Mio
+                    "click #btnLimpiarFechaRotacion": "limpiarFechaRotacion",//Mio
+                    "dblclick #tabla_plazas > tbody > tr ": "seleccionarHistorialPlaza",
+                    "click #botonMostrarModalEliminacion":"mostrarModalEliminacion",
+                    "click #botonItemHistorialPlaza":"eliminarItemHistorialPlaza",
+                    "click #botonAddItemHistorialPlaza":"agregarItemHistorialPlaza",
+                    "click #botonClearItemHistorialPlaza":"limpiarFormularioAddItem"
 
 
 
@@ -136,7 +165,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         "guardarcondaseg": new Guardar_CondAsegModel(),
                         "guardardependencia": new Guardar_DependenciaModel(),
                         "guardarpagobanco": new Guardar_PagoBancoModel(),
-                        "guardarcondpla": new Guardar_CondPlaModel()
+                        "guardarcondpla": new Guardar_CondPlaModel(),
+
+
+
+                        eliminarHistorialPlazaModel: new eliminarHistorialPlazaModel(),
+                        addHistorialPlazaModel: new addHistorialPlazaModel()
 
                     });
                 },
@@ -199,15 +233,21 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                 seleccionarunidad:function(){
+
+
+
                     $('#modal-unidades').modal('hide');
                     this.unidadSelected = this.unidadesDialog.unidadClicked;
 
-
-
+                    console.log("Cambio unidad: "+this.unidadSelected.unidadDesc);
+                    console.log("Cambio unidad: "+this.unidadSelected.unidadId);
 
                     this.udcod= this.unidadSelected.unidadDesc.substr(0,5);
 
                     $('#nom_dep').text(this.unidadSelected.unidadDesc);
+
+
+                    $('#textDestino').val(this.unidadSelected.unidadDesc);//mio
                 },
 
 
@@ -528,6 +568,31 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     self.TCPReg.show(self.Tabla_Cond_PlaView);
 
 
+
+
+
+
+
+
+                    this.tablaPlazasAsignadasView.mostrarPlazasAsignadasSegunDependencias(this.codigo,function () {
+                        console.log("Entro 28/05/14!!!");
+                        if(self.tablaPlazasAsignadasView.collection.length!=0){
+                            $("#tabla_plazas").dataTable();
+                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                            $('.dataTables_filter input').addClass('buscador');
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+                        }
+                        //$('#nom_depen').text(self.unidadSelected.unidadDesc);
+
+                    });
+
+                    this.tabla_plazas_asignadasHtml.show(this.tablaPlazasAsignadasView) ;
+                    $("#tabla_historial_plaza").hide();
+
+
+
                 },
 
                 seleccionarResolucion: function(e){
@@ -538,6 +603,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $('#numresol_dep').val(this.numresol);
                     $('#numresol_aseg').val(this.numresol);
                     $('#numresol_pla').val(this.numresol);
+
+
+                    $('#textResolRotPlaza').val(this.numresol);//Mio
+
                     $('#numresol').attr('disabled','disabled');
                     $('#listar_resol_modal').modal('hide');
 
@@ -1246,7 +1315,405 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $("div_categ_prof").show();
                     });
                     this.CategoriaProfReg.show(this.CategoriaProfView);
+                },
+
+
+
+
+
+                /*
+                 *
+                 *
+                 *
+                 *
+                 *
+                 */
+
+
+
+
+                mostrarFechaRotacion:function(ev){
+                    var formatoFecha= $('#fechaRotacion');
+
+                    formatoFecha.datepicker({
+                        format: 'dd/mm/yyyy',
+                        viewMode: 2
+                    });
+
+                    formatoFecha.datepicker('show');
+                } ,
+
+
+
+                limpiarFechaRotacion:function(ev){
+
+                    $("#fechaRotacion").val("");
+                },
+
+
+                seleccionarHistorialPlaza: function(e){
+
+                    var self=this;
+                    var clickedElement=$(e.currentTarget);
+                    var cod=clickedElement.children(':nth-child(1)').text();
+                    this.idPlaza=cod;
+                    var nom=clickedElement.children(':nth-child(2)').text();
+                    this.nombreDep=nom;
+
+
+
+                    //$("#tabla_historial_plaza").show();
+
+                    console.log("Mensaje:"+this.idPlaza);
+
+                    if(this.idPlaza!="No existen plazas asignadas a este servidor"){
+
+                        $("#tabla_historial_plaza").show();
+
+                        this.historialPlazaView.mostrarHistorialPlaza(this.idPlaza, function () {
+                                if (self.historialPlazaView.collection.length != 0) {
+
+                                    $("#tabla_plazas1").dataTable();
+                                    $('#tabla_plazas1_wrapper').append("<div id='footer-table'></div>");
+                                    $('#tabla_plazas1_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#tabla_plazas1_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('.dataTables_filter input').addClass('buscador');
+                                    $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+                                }
+
+                                $('#nombre-plaza').text(self.idPlaza+"-"+self.nombreDep);
+                                // $('#nombre-plaza').text(self.nombreDep);
+                                // $('#desc-resolucion').text(nroResol);
+
+                            }
+                        )
+
+                        self.tabla_historial_plazaHtml.show(self.historialPlazaView);
+
+                    }else{
+
+                        $("#tabla_historial_plaza").hide();
+
+                    }
+
+                },
+
+
+                mostrarModalEliminacion: function(ev){
+                    var self = this;
+                    var clickedElement=$(ev.currentTarget);
+                    this.idRotacionPlaza=clickedElement.attr('dataIdRotacion');
+
+                    console.log("Hoy 2 de Junio ingrese"+this.idRotacionPlaza);
+                    // console.log("Hoy 2 de Junio ingrese");
+                    self.modalEliminacionItemHistorialHtml.show(self.modalEliminacionItemHistorialView);
+                    $('#modalEliminacionItemHistorial').modal("show");
+
+                    console.log("11-06-2014:"+this.idRotacionPlaza);
+
+                },
+
+
+
+                eliminarItemHistorialPlaza:function(){
+                    console.log("Aqui adentro es:"+this.idRotacionPlaza);
+                    var self=this;
+                    this.model.get("eliminarHistorialPlazaModel").set({
+
+                        "idHistorialPlaza": this.idRotacionPlaza,
+                        "codPlaza": 999999,
+                        "fechaRotacion": "01/01/1900",
+                        "depActual": "Ninguno",
+                        "nroDocu": "Ninguno"
+                    });
+                    console.log("Antes del  url");
+
+                    this.model.get("eliminarHistorialPlazaModel").url = "api/rotaciones/deleteHistorialPlaza";
+
+                    console.log("Ya pase el url");
+
+                    var self_s = this.model.get("eliminarHistorialPlazaModel").save({}, {wait: true});
+
+                    self_s.done(function(){
+
+                    });
+
+                    self_s.fail(function(){
+                        console.log("Aqui adentro fail es:"+this.idPlaza);
+                        self.historialPlazaView.mostrarHistorialPlaza(self.idPlaza,function(){
+                                if(self.historialPlazaView.collection.length!=0){
+
+                                    $("#tabla_plazas1").dataTable();
+                                    $('#tabla_plazas1_wrapper').append("<div id='footer-table'></div>");
+                                    $('#tabla_plazas1_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#tabla_plazas1_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('.dataTables_filter input').addClass('buscador');
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                }
+                                // $('#nombre-plaza').text(self.idPlaza);
+                                //$('#nombre-plaza').text(self.nombreDep);
+                                $('#nombre-plaza').text(self.idPlaza+"-"+self.nombreDep);
+                                // $('#desc-resolucion').text(nroResol);
+
+                            }
+
+                        )
+
+                        self.tabla_historial_plazaHtml.show(self.historialPlazaView);
+
+                    }) ;
+
+                    Avgrund.hide();
+                },
+
+
+
+
+
+
+
+                agregarItemHistorialPlaza: function () {
+
+                    var self=this;
+
+
+
+
+                    //var cod  =this.codigo;
+                    //var numest=this.numserest;
+
+
+
+                    if( $('#textResolRotPlaza').val()!="" && $('#fechaRotacion').val()!="" && $('#textDestino').val()!=""  ){
+
+
+
+
+                        console.log("Importante: "+this.unidadSelected.unidadId);
+
+                        self.model.get("addHistorialPlazaModel").set({
+
+                            "idHistorialPlaza": 0,
+                            "codPlaza": this.idPlaza,
+                            "fechaRotacion": $('#fechaRotacion').val(),
+                            "depActual":  this.unidadSelected.unidadId,
+                            "nroDocu": $('#textResolRotPlaza').val()
+                        });
+
+                        this.model.get("addHistorialPlazaModel").url = "api/rotaciones/addItemHistorialPlaza";
+
+                        var self_s = this.model.get("addHistorialPlazaModel").save({}, {wait: true});
+
+                        self_s.done(function(){
+
+
+                        });
+
+                        self_s.fail(function(){
+                                self.historialPlazaView.mostrarHistorialPlaza(self.idPlaza,function(){
+                                    if(self.historialPlazaView.collection.length!=0){
+
+                                        $("#tabla_plazas1").dataTable();
+                                        $('#tabla_plazas1_wrapper').append("<div id='footer-table'></div>");
+                                        $('#tabla_plazas1_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                        $('#tabla_plazas1_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                        $('.dataTables_filter input').addClass('buscador');
+                                        $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                    }
+                                    //$('#nombre-plaza').text(self.idPlaza);
+                                    // $('#nombre-plaza').text(self.nombreDep);
+                                    $('#nombre-plaza').text(self.idPlaza+"-"+self.nombreDep);
+                                    // $('#desc-resolucion').text(nroResol);
+                                })
+
+                            }
+
+                        );
+
+
+
+
+                        var email= $('#email').text();//
+
+                        var codigo= this.codigo;//
+                        var numserest= this.numserest;//
+                        var udcod= this.udcod;//
+
+
+                        console.log("Datos:"+this.codigo+" "+this.numserest+" "+this.udcod+" "+this.email);
+
+
+                        this.model.get("guardardependencia").set({
+
+                            "codigo":codigo,
+                            "numserest":numserest,
+                            "numres1":$('#textResolRotPlaza').val(),
+                            "udcod":udcod
+
+
+                        })
+
+                        this.model.get("guardardependencia").url='api/estado_condicion/adddep';
+                        var self_s= this.model.get("guardardependencia").save({},{wait:true});
+                        //var self= this;
+                        self_s.done(function(){
+
+                        });
+
+                        self_s.fail(function(){
+
+                        });
+
+
+
+
+                        //Aqui se inserta en alertas pendientes
+
+                        this.model.get("guardaralertpend").set({
+                            "codigo": codigo,
+                            "numserest": numserest,
+                            "tipalert":2,
+                            "email": email
+
+                        })
+
+                        this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
+
+                        var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
+
+                        //var self = this;
+
+                        self_s.done(function () {
+
+                        });
+
+                        self_s.fail(function () {
+
+                        });
+
+
+
+
+
+
+
+
+
+                    }else{
+
+
+                        console.log("Estamos dentro de la validacion");
+
+                        $('#advCamposHistorial').html("<strong>Por favor, ingrese los campos solicitados</strong>");
+                        $('#advCamposHistorial').show();
+
+
+
+                    }
+                },
+
+
+
+
+
+
+
+
+
+
+
+
+
+                limpiarFormularioAddItem: function(){
+                    $('#textResolRotPlaza').val("");
+                    $('#fechaRotacion').val("");
+                    $('#textDestino').val("");
+
                 }
+
+
+
+
+                /*
+
+                 agregarItemHistorialPlaza: function () {
+
+                 var self=this;
+
+                 if( $('#textResolRotPlaza').val()!="" && $('#fechaRotacion').val()!="" && $('#textDestino').val()!=""  ){
+
+
+
+
+                 console.log("Importante: "+this.unidadSelected.unidadId);
+
+                 self.model.get("addHistorialPlazaModel").set({
+
+                 "idHistorialPlaza": 0,
+                 "codPlaza": this.idPlaza,
+                 "fechaRotacion": $('#fechaRotacion').val(),
+                 "depActual":  this.unidadSelected.unidadId,
+                 "nroDocu": $('#textResolRotPlaza').val()
+                 });
+
+                 this.model.get("addHistorialPlazaModel").url = "api/rotaciones/addItemHistorialPlaza";
+
+                 var self_s = this.model.get("addHistorialPlazaModel").save({}, {wait: true});
+
+                 self_s.done(function(){
+
+
+                 });
+
+                 self_s.fail(function(){
+                 self.historialPlazaView.mostrarHistorialPlaza(self.idPlaza,function(){
+                 if(self.historialPlazaView.collection.length!=0){
+
+                 $("#tabla_plazas1").dataTable();
+                 $('#tabla_plazas1_wrapper').append("<div id='footer-table'></div>");
+                 $('#tabla_plazas1_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                 $('#tabla_plazas1_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                 $('.dataTables_filter input').addClass('buscador');
+                 $('.dataTables_filter input').attr('placeholder','Buscar..');
+                 }
+                 //$('#nombre-plaza').text(self.idPlaza);
+                 // $('#nombre-plaza').text(self.nombreDep);
+                 $('#nombre-plaza').text(self.idPlaza+"-"+self.nombreDep);
+                 // $('#desc-resolucion').text(nroResol);
+                 })
+
+                 }
+
+                 );
+
+                 }else{
+
+
+                 console.log("Estamos dentro de la validacion");
+
+                 $('#advCamposHistorial').html("<strong>Por favor, ingrese los campos solicitados</strong>");
+                 $('#advCamposHistorial').show();
+
+
+
+                 }
+                 },
+
+                 limpiarFormularioAddItem: function(){
+                 $('#textResolRotPlaza').val("");
+                 $('#fechaRotacion').val("");
+                 $('#textDestino').val("");
+
+                 }
+
+                 */
+
+
+
+
+
+
+
 
 
             });

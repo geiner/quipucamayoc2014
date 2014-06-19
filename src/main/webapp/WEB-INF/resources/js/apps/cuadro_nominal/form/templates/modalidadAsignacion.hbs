@@ -1,0 +1,10 @@
+<label class="control-label col-md-5" for="modalidad">Modalidad</label>
+
+<div class="col-md-7">
+    <select id="modalidad" class="form-control">
+        <option value="99">Seleccione modalidad</option>
+        {{#each items}}
+            <option value="{{idModAsig}}">{{descripcion}}</option>
+        {{/each}}
+    </select>
+</div>

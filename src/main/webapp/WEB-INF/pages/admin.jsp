@@ -94,6 +94,9 @@
                         <sec:authorize access="hasAnyRole('${userAccess}7')">
                         <li><a href="#estado_condicion">Estado y Condicion</a></li>
                         </sec:authorize>
+                        <sec:authorize access="hasAnyRole('${userAccess}7')">
+                            <li><a href="#cuadro_nominal">Cuadro Nominal</a></li>
+                        </sec:authorize>
 
                     </ul>
                 </li>

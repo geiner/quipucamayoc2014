@@ -1,0 +1,105 @@
+<legend id="desc">Dependencia: <span id="nom_depen2"></span> </legend>
+
+
+
+
+<table   id="tabla_plazas" class="table  table-bordered table-hover " style="font-size: 10px;">
+
+            <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                   <tr>
+                                       <th>Cod Plaza</th>
+                                       <th>Cargo</th>
+
+
+                                        <th>Sub. Dependencia</th>
+                                       <th>Est. Plaza</th>
+
+                                       <th>Cod Servidor</th>
+                                       <th>Ape. Pat</th>
+                                       <th>Ape. Mat</th>
+                                       <th>Nombre</th>
+                                       <th>Fecha Ingreso</th>
+                                       <th>Fecha Salida</th>
+                                       <th>Modalidad</th>
+                                       <th>Eliminar</th>
+                                       <th>Asignar</th>
+                   </tr>
+            </thead>
+            <tbody   class="body-table ">
+            {{#each items}}
+                                <tr id="{{cod_dep}}" class="">
+
+                                      <td>{{cod_plaza}}</td>
+                                      <td>{{nom_estruc}}</td>
+                                      <td> {{subDep}}   </td>
+
+                                      <td>{{est_plaza}}</td>
+
+                                      <td>{{cod_servidor}}</td>
+                                      <td>{{ape_pat}}</td>
+                                      <td>{{ape_mat}} </td>
+                                      <td>{{nom_ser}} </td>
+                                      <td>{{fech_ing}} </td>
+                                      <td>{{fech_sal}} </td>
+                                      <td> {{ser_mod}}</td>
+                                      <td>
+                                         <button  id="botonCapturarDatosParaEliminarPlazaAsignada"    class="btn btn-danger btn-xs"  type="button"  data5={{cod_plaza}}  data7={{est_plaza}}>
+                                              <span  class="glyphicon glyphicon-trash"></span>
+                                         </button>
+
+                                      </td>
+
+                                      <td>
+                                         <button id="botonBuscarServidores" class="btn btn-primary btn-xs" type="button"  data5={{cod_plaza}}   data6={{nom_estruc}}   data7={{est_plaza}}   >
+                                             <span class="glyphicon glyphicon-search"></span>
+                                         </button>
+                                      </td>
+                                </tr>
+                            {{else}}
+                                <td colspan="6">No existen plazas en esta dependencia</td>
+                            {{/each}}
+            </tbody>
+
+</table>
+<style type="text/css">
+    #table-servidores_asis_length{
+        display:none;
+    }
+
+  #tabla_plazas_paginate{
+        position: absolute;
+        margin-top: -17px;
+        left: 52%;
+    }
+    #tabla_plazas_info{
+        float: left;
+        margin-top: -12px;
+        margin-left: 18px;
+        font-size: 10px;
+        color: rgb(2, 2, 2);
+    }
+    #tabla_plazas tr{
+        cursor: pointer;
+    }
+
+
+    #tabla_plazas_previous{
+        cursor: pointer;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+    #tabla_plazas_next{
+        cursor: pointer;
+        margin-left: 19px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+</style>
