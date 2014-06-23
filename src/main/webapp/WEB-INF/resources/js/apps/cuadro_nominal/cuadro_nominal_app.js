@@ -12,7 +12,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             cuadroNominal: function(){
-                if($('#id_rol').text().indexOf(7)>0){
+                if($('#id_rol').text().indexOf(26)>0){
                     require(["apps/cuadro_nominal/form/form_controller"], function(CuadroNominalController){
                         CuadroNominalController.CuadroNominalController();
                     });

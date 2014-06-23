@@ -91,7 +91,6 @@ public interface AsistenciaAdministrativoMapper {
     @Results(value = {
             @Result(javaType = Asistencia.class),
             @Result(property = "codigo_hor",column = "COD_HORARIO"),
-
             @Result(property = "descripcion_hor",column = "DESCRIPCION")
     })
     List<Asistencia> buscarHorarios( @Param("codigo")String codigo, @Param("tol")int tol, @Param("lac")String lac);

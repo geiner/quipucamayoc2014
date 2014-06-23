@@ -88,8 +88,8 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
                                 if($('#f_inicio_cambio').val()!="" & $('#f_final_cambio').val()!=""){
                                    if($('#tipo_doc').val()!="000" & $('#num_doc').val()!="" & $('#tipo_doc').val()!="" & $('#num_exp').val()!="000" & $('#fec_doc').val()!=""){
                                         if($('#origen').val()!="" & $('#destino').val()!="" & $('#origen').val()!=$('#destino').val()){
-                                            if($('#asunto')){
-
+                                            if($('#asunto').val()!=""){
+                                                alert("aca es donde se inserta la asociacion!");
                                             }else{
                                                 alert("Ingrese asunto")
                                             }
@@ -642,12 +642,10 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
 
                             if ($('#inlineCheckbox1').is(':checked')) {
                                 tolerancia = 1;
-                            }
-                            ;
+                            };
                             if ($('#inlineCheckbox2').is(':checked')) {
                                 lactancia = 1;
-                            }
-                            ;
+                            };
 
                             if ($("input[name='optionsRadios']:checked").val() == "nocturno") {
                                 if (self.validar_horario_nocturno()) {
@@ -741,7 +739,7 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
                         $('#f_final_act').val(self.model.get("horarioactual").get("fecha_fin_actual"));
                     });
                     fetch_h.fail(function(){
-                        alert("fail")
+                        alert("la persona no tiene asignado un horario")
                     });
 
                     $('#desc-servidor_asis').text(this.nombre);

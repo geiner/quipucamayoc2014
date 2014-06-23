@@ -15,24 +15,24 @@
     <security:global-method-security jsr250-annotations="enabled" pre-post-annotations="enabled" secured-annotations="enabled"/>
 
     <security:http use-expressions="true">
-        <security:intercept-url pattern="/admin/**" access="hasAnyRole('ADMIN8','USUDE8')"/>
+        <security:intercept-url pattern="/admin/**" access="hasAnyRole('ADMIN8','USUDE8','JPFAC8')"/>
         <security:intercept-url pattern="/rest/cas/worker/**" access="hasAnyRole('USUPERF9','ADMIN9','USUDE9')"/>
         <security:intercept-url pattern="/rest/resoluciones/**" access="hasAnyRole('ADMIN20','USUDE20')"/>
         <security:intercept-url pattern="/api/solicitudes/**" access="hasAnyRole('ADMIN1')"/>
         <security:intercept-url pattern="/rest/cas/profile/**" access="hasAnyRole('ADMIN2')" />
         <security:intercept-url pattern="/rest/cas/roles/**" access="hasAnyRole('ADMIN2')" />
         <security:intercept-url pattern="/api/planillasCAS/**" access="hasAnyRole('ADMIN3','USUDE3')"/>
-        <security:intercept-url pattern="/rest/reportes/**" access="hasAnyRole('ADMIN3','USUDE3')" />
+        <security:intercept-url pattern="/rest/reportes/**" access="hasAnyRole('ADMIN3','USUDE3','JPFAC26')" />
         <security:intercept-url pattern="/api/servidoresCAS/**" access="hasAnyRole('ADMIN3','USUDE3')"/>
         <security:intercept-url pattern="/rest/cas/plazas/**" access="hasAnyRole('ADMIN4','USUDE4')"/>
-        <security:intercept-url pattern="/api/cuadro_nominal/**" access="hasAnyRole('ADMIN20','USUDE20')"/>
+        <security:intercept-url pattern="/api/cuadro_nominal/**" access="hasAnyRole('ADMIN26','JPFAC26')"/>
         <security:intercept-url pattern="/rest/cas/serv/**" access="hasAnyRole('ADMIN5','ADMIN4','ADMIN20','USUDE4','USUDE5','USUDE20')"/>
         <security:intercept-url pattern="/api/legajos/**" access="hasAnyRole('ADMIN6','USUDE6')"/>
         <security:intercept-url pattern="/api/estado_condicion/**" access="hasAnyRole('ADMIN7','USUDE7')" />
         <security:intercept-url pattern="/api/unidades/**" access="permitAll"/>
 
         <!--<security:intercept-url pattern="/perfil/**" access="hasRole('userperfil')"/>-->
-        <security:intercept-url pattern="/perfil/**" access="hasAnyRole('USUPERF9','ADMIN9','USUDE9')"/>
+        <security:intercept-url pattern="/perfil/**" access="hasAnyRole('USUPERF9','ADMIN9','USUDE9','JPFAC9')"/>
         <security:intercept-url pattern="/**" access="permitAll"/>
         <!--<security:form-login /> para login default-->
 
