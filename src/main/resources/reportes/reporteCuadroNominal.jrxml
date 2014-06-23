@@ -4,11 +4,11 @@
 <jasperReport
 		 name="reporteCuadroNominal"
 		 columnCount="1"
-		 printOrder="Vertical"
-		 orientation="Portrait"
-		 pageWidth="595"
-		 pageHeight="842"
-		 columnWidth="535"
+		 printOrder="Horizontal"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -49,7 +49,7 @@
 	</parameter>
 	<parameter name="codDependencia" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="codDep" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["11290"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["10047"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="usuarioCN" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["Erick"]]></defaultValueExpression>
@@ -162,7 +162,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="33"
+						x="37"
 						y="10"
 						width="44"
 						height="14"
@@ -175,7 +175,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="140"
+						x="233"
 						y="10"
 						width="40"
 						height="14"
@@ -188,7 +188,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="188"
+						x="306"
 						y="10"
 						width="39"
 						height="14"
@@ -201,7 +201,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="234"
+						x="362"
 						y="10"
 						width="27"
 						height="14"
@@ -214,7 +214,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="268"
+						x="401"
 						y="10"
 						width="39"
 						height="14"
@@ -227,7 +227,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="314"
+						x="487"
 						y="10"
 						width="46"
 						height="14"
@@ -240,7 +240,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="365"
+						x="575"
 						y="10"
 						width="39"
 						height="14"
@@ -253,7 +253,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="410"
+						x="643"
 						y="10"
 						width="47"
 						height="14"
@@ -266,7 +266,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="464"
+						x="708"
 						y="10"
 						width="65"
 						height="14"
@@ -279,7 +279,7 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="83"
+						x="132"
 						y="10"
 						width="50"
 						height="14"
@@ -309,8 +309,8 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 			<band height="70"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
-						y="41"
+						x="187"
+						y="39"
 						width="368"
 						height="14"
 						key="textField-1"
@@ -323,8 +323,8 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</textField>
 				<staticText>
 					<reportElement
-						x="54"
-						y="3"
+						x="244"
+						y="0"
 						width="285"
 						height="14"
 						key="staticText-3"/>
@@ -336,9 +336,9 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="54"
-						y="17"
-						width="304"
+						x="251"
+						y="14"
+						width="256"
 						height="15"
 						key="staticText-4"/>
 					<box></box>
@@ -349,53 +349,53 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="383"
-						y="18"
+						x="634"
+						y="12"
 						width="34"
 						height="13"
 						key="staticText-5"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Usuario:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy   h:mm a" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="417"
-						y="5"
+						x="670"
+						y="0"
 						width="113"
 						height="13"
 						key="textField-2"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$V{fecha}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="417"
-						y="18"
+						x="670"
+						y="12"
 						width="113"
 						height="13"
 						key="textField-3"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{usuarioCN}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="383"
-						y="5"
+						x="634"
+						y="-1"
 						width="34"
 						height="13"
 						key="staticText-6"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Fecha: ]]></text>
 				</staticText>
@@ -406,122 +406,122 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="68"  isSplitAllowed="true" >
+			<band height="72"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(true)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="33"
+						x="36"
 						y="7"
-						width="44"
+						width="87"
 						height="49"
 						key="textField-8"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMESTRUC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="140"
+						x="233"
 						y="7"
-						width="40"
-						height="9"
+						width="49"
+						height="18"
 						key="textField-9"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ESTPLAZA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="188"
+						x="306"
 						y="7"
-						width="39"
-						height="9"
+						width="45"
+						height="17"
 						key="textField-10"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COD_SER}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="234"
+						x="361"
 						y="7"
 						width="26"
-						height="9"
+						height="18"
 						key="textField-11"/>
 					<box></box>
-					<textElement>
-						<font size="5"/>
+					<textElement textAlignment="Center">
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{NUMSEREST}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="268"
+						x="400"
 						y="7"
-						width="39"
-						height="21"
+						width="77"
+						height="49"
 						key="textField-12"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERPAT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="313"
+						x="488"
 						y="7"
-						width="46"
-						height="21"
+						width="74"
+						height="49"
 						key="textField-13"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERMAT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="365"
+						x="574"
 						y="7"
-						width="38"
+						width="54"
 						height="21"
 						key="textField-14"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERNOM}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="410"
+						x="642"
 						y="7"
 						width="45"
-						height="9"
+						height="19"
 						key="textField-15"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FECH_ING}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="464"
+						x="702"
 						y="7"
-						width="64"
-						height="9"
+						width="70"
+						height="17"
 						key="textField-16"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MODALIDAD}]]></textFieldExpression>
 				</textField>
@@ -529,25 +529,25 @@ WHERE (dep.ud_id like $P{codDep})))))]]></queryString>
 					<reportElement
 						x="7"
 						y="7"
-						width="19"
-						height="9"
+						width="25"
+						height="20"
 						key="textField-17"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{CODPLAZA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
+						x="132"
 						y="7"
-						width="50"
+						width="87"
 						height="49"
 						key="textField-19"/>
 					<box></box>
 					<textElement>
-						<font size="5"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DEPENDENCIA}]]></textFieldExpression>
 				</textField>

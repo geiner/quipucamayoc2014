@@ -13,28 +13,33 @@ public interface CuadroNominalMapper {
 
 
 
-    @Select(value = "SELECT  plaza.C_COD_PLAZA AS CODPLAZA     ,cargoE.T_NOM_CARGO_ESTR as NOMESTRUC ,dependencia.UD_DSC  AS DEPENDENCIA   ,estado.T_DES_ESTADO AS ESTPLAZA     ,nominal.SER_COD AS COD_SER       ,nominal.NUM_SEREST AS NUMSEREST      ,servidor.SER_APE_PAT AS SERPAT      ,servidor.SER_APE_MAT AS SERMAT      ,servidor.SER_NOM AS SERNOM     ,TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING       ,TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')   AS FECH_SAL        ,serModalidad.SER_MOD_DESC AS MODALIDAD\n" +
-            "FROM  ( (((QPRODATAPLANI.TB_CARGO cargo\n" +
-            "INNER JOIN QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
-            "INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
-            "INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID)\n" +
-            "LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
-            "INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA AND (estado.T_DES_ESTADO like 'VACANTE'  or  estado.T_DES_ESTADO like 'OCUPADO') )\n" +
-            "INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)\n" +
-            "LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
-            "LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD \n" +
-            "WHERE (cargo.N_UD_ID  in (SELECT  dependencia1.ud_id \n" +
-            "FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
-            "WHERE (SUBSTR(dependencia1.ud_cod,1, (SELECT  length(dep.ud_cod)\n" +
-            "FROM qprodataquipu.uni_dep dep\n" +
-            "WHERE (dep.ud_id like (#{codDependencia}))\n" +
-            "))  like  (SELECT  dep.ud_cod\n" +
-            "FROM qprodataquipu.uni_dep dep\n" +
-            "WHERE (dep.ud_id like (#{codDependencia}))))))")
+    @Select(value = "SELECT  plaza.C_COD_PLAZA AS CODPLAZA     ,cargoE.T_NOM_CARGO_ESTR as NOMESTRUC ,dependencia.UD_ID  AS DEPENDENCIACODD,dependencia.UD_DSC  AS DEPENDENCIA   ,estado.T_DES_ESTADO AS ESTPLAZA    \n" +
+            ",nominal.SER_COD AS COD_SER       ,nominal.NUM_SEREST AS NUMSEREST      ,servidor.SER_APE_PAT AS SERPAT      ,servidor.SER_APE_MAT AS SERMAT      ,servidor.SER_NOM AS SERNOM  \n" +
+            ",TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING       ,TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')   AS FECH_SAL        ,serModalidad.SER_MOD_DESC AS MODALIDAD\n" +
+            "\n" +
+            "            FROM  ( (((QPRODATAPLANI.TB_CARGO cargo\n" +
+            "            INNER JOIN QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
+            "            INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
+            "            INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID)\n" +
+            "            LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
+            "            INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA AND (estado.T_DES_ESTADO like 'VACANTE'  or  estado.T_DES_ESTADO like 'OCUPADO') )\n" +
+            "            INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)\n" +
+            "            LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
+            "            LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD \n" +
+            "            WHERE (cargo.N_UD_ID  in (SELECT  dependencia1.ud_id \n" +
+            "            FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
+            "            WHERE (SUBSTR(dependencia1.ud_cod,1, (SELECT  length(dep.ud_cod)\n" +
+            "            FROM qprodataquipu.uni_dep dep\n" +
+            "            WHERE (dep.ud_id like (#{codDependencia}))\n" +
+            "            ))  like  (SELECT  dep.ud_cod\n" +
+            "            FROM qprodataquipu.uni_dep dep\n" +
+            "            WHERE (dep.ud_id like (#{codDependencia}))))))\n" +
+            "            ORDER BY NOMESTRUC ")
     @Results(value = {
             @Result(javaType = PlazaCAP.class),
             @Result(property = "cod_plaza",column = "CODPLAZA"),
             @Result(property = "nom_estruc",column = "NOMESTRUC"),
+            @Result(property = "id_depend",column = "DEPENDENCIACODD"),
             @Result(property = "subDep",column = "DEPENDENCIA"),
             @Result(property = "est_plaza",column = "ESTPLAZA"),
             @Result(property = "cod_servidor",column = "COD_SER"),
@@ -43,6 +48,7 @@ public interface CuadroNominalMapper {
             @Result(property = "nom_ser",column = "SERNOM"),
             @Result(property = "fech_ing",column = "FECH_ING"),
             @Result(property = "fech_sal",column = "FECH_SAL"),
+
             @Result(property = "ser_mod",column = "MODALIDAD"),
     })
     List<PlazaCAP> plazasPorDepen(@Param("codDependencia") String codDependencia);

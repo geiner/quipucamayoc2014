@@ -7,6 +7,8 @@ public class PlazaCAP {
 
 
     private Integer cod_plaza;//
+
+    private Integer id_depend;
     private String est_plaza;//
     private String nom_estruc;//
     private String cod_servidor;//
@@ -21,6 +23,13 @@ public class PlazaCAP {
 
     private String subDep;
 
+    public Integer getId_depend() {
+        return id_depend;
+    }
+
+    public void setId_depend(Integer id_depend) {
+        this.id_depend = id_depend;
+    }
 
     public Integer getCod_plaza() {
         return cod_plaza;

@@ -299,12 +299,23 @@ define(['app',
                     var self=this;
                     this.plazasCAPView.mostrarPlazasSegunDependencias( this.unidadSelected.unidadId,function () {
                         if(self.plazasCAPView.collection.length!=0){
-
-                            $("#tabla_plazas").dataTable();
+                                 console.log(self.plazasCAPView.collection.at(1).get('nom_estruc'));
+                                 console.log(self.plazasCAPView.collection.at(2).get('nom_estruc'));
+                           /* $("#tabla_plazas").dataTable();
                             $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                             $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                             $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                            $('.dataTables_filter input').addClass('buscador');
+
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');*/
+
+                            $("#tabla_plazas").dataTable();
+
+
+                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+
                             $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                         }
