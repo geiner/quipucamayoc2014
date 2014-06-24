@@ -11,7 +11,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             listServidores: function(){
-                if($('#id_rol').text().indexOf(5)>0){
+                if($('#id_rol').text().indexOf(55)>0){
                     require(["apps/servidores/form/form_controller"], function(FormController){
                         FormController.formServidores();
                     });

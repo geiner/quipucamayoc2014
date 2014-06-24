@@ -49,10 +49,10 @@
                             <ul class="dropdown-menu">
                                 <li><a href="#">Ayuda</a></li>
                                 <li><a href="#">Configuracion</a></li>
-                                <sec:authorize access="hasAnyRole('${userAccess}1')">
+                                <sec:authorize access="hasAnyRole('${userAccess}51')">
                                     <li><a href="#solicitudes">Solicitudes pendientes</a></li>
                                 </sec:authorize>
-                                <sec:authorize access="hasAnyRole('${userAccess}2')">
+                                <sec:authorize access="hasAnyRole('${userAccess}52')">
                                     <li><a href="#roles">Gestion de Roles</a></li>
                                 </sec:authorize>
                                 <li><a href="j_spring_security_logout">Cerrar Sesion</a></li>
@@ -82,25 +82,25 @@
                 <li id="gest_pers" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>GESTIÓN PERSONAL</strong><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <sec:authorize access="hasAnyRole('${userAccess}5')">
+                        <sec:authorize access="hasAnyRole('${userAccess}55')">
                         <li><a  href="#servidores">Servidores</a></li>
                         </sec:authorize>
-                        <sec:authorize access="hasAnyRole('${userAccess}6')">
+                        <sec:authorize access="hasAnyRole('${userAccess}56')">
                         <li><a href="#legajos">Legajos</a></li>
                         </sec:authorize>
-                        <sec:authorize access="hasAnyRole('${userAccess}20')">
+                        <sec:authorize access="hasAnyRole('${userAccess}60')">
                         <li><a  href="#resoluciones">Resoluciones</a></li>
                         </sec:authorize>
-                        <sec:authorize access="hasAnyRole('${userAccess}7')">
+                        <sec:authorize access="hasAnyRole('${userAccess}57')">
                         <li><a href="#estado_condicion">Estado y Condicion</a></li>
                         </sec:authorize>
-                        <sec:authorize access="hasAnyRole('${userAccess}26')">
+                        <sec:authorize access="hasAnyRole('${userAccess}61')">
                             <li><a href="#cuadro_nominal">Cuadro Nominal</a></li>
                         </sec:authorize>
 
                     </ul>
                 </li>
-                <sec:authorize access="hasAnyRole('${userAccess}7')">
+                <sec:authorize access="hasAnyRole('${userAccess}57')">
                 <li id="gest_timp_pers" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>GESTIÓN TIEMPO PERSONAL</strong><b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -111,19 +111,21 @@
                     </ul>
                 </li>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('${userAccess}3')">
+                <sec:authorize access="hasAnyRole('${userAccess}53')">
                 <li id="planilla"><a  href="#planillas"><strong>PLANILLAS</strong></a></li>
                 </sec:authorize>
-                <sec:authorize access="hasAnyRole('${userAccess}4')">
+                <sec:authorize access="hasAnyRole('${userAccess}54')">
                 <li id="contrat"><a href="#contratos"><strong>CONTRATOS</strong></a></li>
                 </sec:authorize>
                 <li id="capacitacion"> <a class="" href="#"><strong>CAPACITACIÓN</strong></a></li>
+                <sec:authorize access="hasAnyRole('${userAccess}62')">
                 <li id="tit_beneficio" class="dropdown">
                     <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>BENEFICIO</strong><b class="caret"></b></a>
                  <ul class="dropdown-menu">
                      <li><a  href="#desc_med">Descansos Médicos</a></li>
                  </ul>
                 </li>
+                </sec:authorize>
 
             </ul>
         </div>

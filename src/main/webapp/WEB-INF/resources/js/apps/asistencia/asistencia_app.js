@@ -12,7 +12,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             Asistencia_administrativo: function(){
-                if($('#id_rol').text().indexOf(7)>0){
+                if($('#id_rol').text().indexOf(57)>0){
                     require(["apps/asistencia/administrativo/administrativo_controller"], function(AdministrativoController){
                         AdministrativoController.AdministrativoController();
                     });

@@ -10,7 +10,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             listSolicitudes: function(){
-                if($('#id_rol').text().indexOf(1)>0){
+                if($('#id_rol').text().indexOf(51)>0){
                     require(["apps/solicitudes/table/table_controller"], function(TableController){
                         TableController.tableSolicitudes();
                     });

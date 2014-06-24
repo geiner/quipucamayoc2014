@@ -11,7 +11,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             listPlanillas: function(){
-                if($('#id_rol').text().indexOf(3)>0){
+                if($('#id_rol').text().indexOf(53)>0){
                     require(["apps/planillas/list/list_controller"], function(ListController){
                         ListController.listPlanillas();
                     });

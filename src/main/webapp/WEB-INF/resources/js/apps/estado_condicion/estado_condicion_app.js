@@ -11,7 +11,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             EstadoCondicion: function(){
-                if($('#id_rol').text().indexOf(7)>0){
+                if($('#id_rol').text().indexOf(57)>0){
                     require(["apps/estado_condicion/form/form_controller"], function(FormController){
                         FormController.formEstadoCondicion();
                     });

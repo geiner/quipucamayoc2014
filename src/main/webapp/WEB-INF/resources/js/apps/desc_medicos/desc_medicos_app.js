@@ -11,7 +11,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             DescansoMedico: function(){
-                if($('#id_rol').text().indexOf(7)>0){
+                if($('#id_rol').text().indexOf(62)>0){
                     require(["apps/desc_medicos/form/form_controller"], function(FormController){
                         FormController.formDescanMedico();
                     });

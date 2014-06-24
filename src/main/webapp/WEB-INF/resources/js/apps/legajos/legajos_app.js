@@ -11,7 +11,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             Legajos: function(){
-                if($('#id_rol').text().indexOf(6)>0){
+                if($('#id_rol').text().indexOf(56)>0){
                     require(["apps/legajos/form/form_controller"], function(FormController){
                         FormController.formLegajos();
                     });

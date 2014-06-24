@@ -10,7 +10,7 @@ define(["app"], function(ErzaManager){
 
 		var API = {
             Adendas: function(){
-                if($('#id_rol').text().indexOf(4)>0){
+                if($('#id_rol').text().indexOf(54)>0){
                     require(["apps/contratos/adendas/adendas_controller"], function(AdendasController){
                         AdendasController.listAdendas();
                     });

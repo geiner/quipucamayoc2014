@@ -10,7 +10,7 @@ define(["app"], function(ErzaManager){
 
         var API = {
             formResoluciones: function(){
-                if($('#id_rol').text().indexOf(20)>0){
+                if($('#id_rol').text().indexOf(60)>0){
                     require(["apps/resoluciones/form/form_controller"], function(FormController){
                         FormController.formResoluciones();
                     });
