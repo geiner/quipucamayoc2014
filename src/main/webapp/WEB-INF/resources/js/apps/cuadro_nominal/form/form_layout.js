@@ -4,7 +4,6 @@ define(['app',
         "apps/cuadro_nominal/form/view/advAgregarAsignacion",
         "apps/cuadro_nominal/form/view/advEliminarAsignacion",
         "apps/cuadro_nominal/form/view/eliminarAsignacion",
-
         "apps/cuadro_nominal/form/model/guardarPlazaTrabajador",
         "apps/cuadro_nominal/form/model/borrarPlazaTrabajador",
         "apps/cuadro_nominal/form/view/tablaPlazasCAP",
