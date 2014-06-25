@@ -10,4 +10,9 @@ public interface UnidadService {
     Unidad findAll();
 
     List<Origen> buscarOrigenes(int udId);
+
+
+
+
+    Unidad listarUnidadesSegunUsuario(String codDependencia, String perfil);
 }

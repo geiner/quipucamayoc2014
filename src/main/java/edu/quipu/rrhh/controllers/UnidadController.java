@@ -31,4 +31,19 @@ public class UnidadController {
         return unidadService.buscarOrigenes(unidadId);
     }
 
+
+
+
+
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value= "/segunUsuario/{codDependencia}/{perfil}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public Unidad listarUnidadesSegunUsuario(@PathVariable(value="codDependencia") String codDependencia,  @PathVariable(value="perfil") String perfil) {
+
+
+
+        return unidadService.listarUnidadesSegunUsuario(codDependencia,perfil);
+    }
+
 }

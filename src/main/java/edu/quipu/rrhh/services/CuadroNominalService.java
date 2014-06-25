@@ -1,9 +1,6 @@
 package edu.quipu.rrhh.services;
 
-import edu.quipu.rrhh.models.AsigCuadroNominal;
-import edu.quipu.rrhh.models.ModalidadAsignacion;
-import edu.quipu.rrhh.models.PlazaCAP;
-import edu.quipu.rrhh.models.Servidor;
+import edu.quipu.rrhh.models.*;
 
 import java.util.List;
 
@@ -29,6 +26,11 @@ public interface CuadroNominalService {
 
 
     List<ModalidadAsignacion> allModalidad();
+
+
+
+
+    List<Origen> obtenerDependenciaUsuario(String emailUsuario);
 
 
 

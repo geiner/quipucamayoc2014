@@ -1,9 +1,6 @@
 package edu.quipu.rrhh.controllers;
 
-import edu.quipu.rrhh.models.AsigCuadroNominal;
-import edu.quipu.rrhh.models.ModalidadAsignacion;
-import edu.quipu.rrhh.models.PlazaCAP;
-import edu.quipu.rrhh.models.Servidor;
+import edu.quipu.rrhh.models.*;
 import edu.quipu.rrhh.services.CuadroNominalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +92,21 @@ public class CuadroNominalController {
         System.out.print("Aqui");
         return modalidades;
     }
+
+
+
+
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/origenUsuario/{emailUsuario}")
+    @ResponseBody
+    public List<Origen> obtenerDependenciaUsuario(@PathVariable(value="emailUsuario") String emailUsuario){
+        List<Origen> origen=cuadroNominalService.obtenerDependenciaUsuario( "%"+emailUsuario);
+        System.out.print("Par Controller: "+emailUsuario);
+        return origen;
+    }
+
+
+
+
 
 
 

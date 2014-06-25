@@ -4,11 +4,14 @@ define(['app',
         "apps/cuadro_nominal/form/view/advAgregarAsignacion",
         "apps/cuadro_nominal/form/view/advEliminarAsignacion",
         "apps/cuadro_nominal/form/view/eliminarAsignacion",
-        "apps/planillas/list/view/unidades-dialog",
+
         "apps/cuadro_nominal/form/model/guardarPlazaTrabajador",
         "apps/cuadro_nominal/form/model/borrarPlazaTrabajador",
         "apps/cuadro_nominal/form/view/tablaPlazasCAP",
 
+        "apps/cuadro_nominal/form/view/unidades-dialog",
+
+        "apps/cuadro_nominal/form/view/depenUsuario",
 
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
@@ -20,10 +23,22 @@ define(['app',
               advIncAddAsignacion,
               advIncEliAsignacion,
               eliminarAsignacionView,
-              TablaModalDependencias,
+
+
+            //  TablaModalDependencias,
+
+
+
               addAsignacion,
               deleteAsignacion,
               plazasView,
+
+
+              UnidadesDialogView,
+
+
+              depenUsuarioView,
+
 
               datePicker) {
         ErzaManager.module('CuadroNominalApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
@@ -33,11 +48,24 @@ define(['app',
                 template: layoutTpl,
 
                 modalServidoresPorDependenciaView: new TablaModalServidores(),
-                arbolDependenciasView:new TablaModalDependencias(),
+
+
+                //arbolDependenciasView:new TablaModalDependencias(),
+
+
+
                 plazasCAPView: new plazasView(),
                 modalAdverIncAddView: new advIncAddAsignacion(),
                 modalAdverInconsistenciaEliminarAsigView: new advIncEliAsignacion(),
                 modalEliminarAsignacionView: new eliminarAsignacionView(),
+
+
+
+                unidadesDialog: new UnidadesDialogView(),
+
+
+                depenUsuarioView: new depenUsuarioView(),
+
 
 
 
@@ -55,6 +83,10 @@ define(['app',
                 numserest:0,
 
 
+                depUsuario:"Ninguno",
+                perfilUsuario:"Ninguno",
+
+
                 estadoPlaza:"ninguno",
 
                 regions: {
@@ -68,7 +100,7 @@ define(['app',
 
 
 
-
+                    unidadesModal: "#modal-unidadesMio"
 
 
 
@@ -79,13 +111,22 @@ define(['app',
                     "dblclick #table-servidores_asis > tbody > tr ": "seleccionarServidor",
                     "click #botonBuscarServidores": "mostrarServidoresPorDependencia",
                     "click #botonCapturarDatosParaEliminarPlazaAsignada": "capturarDatosParaEliminarPlazaAsignada",
-                    "click #botonMostrarArbolDeDependencias":"mostrarArbolDependencias",
-                    "click #boton-unidad":"seleccionarUnidad",//************
+
+
+                   // "click #botonMostrarArbolDeDependencias":"mostrarArbolDependencias",
+
+
+
+                    "click #boton-unidadMio":"seleccionarUnidad",//************
                     "click #botonMostrarFechaInicial": "mostrarFechaInicial",
                     "click #botonLimpiarFechaInicial": "limpiarFechaInicial",
                     "click #botonAceptarEliminarPlazaAsignada": "eliminarPlazaAsignada",
                     "click #botonMostrarFechaFinal": "mostrarFechaFinal",
-                    "click #botonLimpiarFechaFinal": "limpiarFechaFinal"
+                    "click #botonLimpiarFechaFinal": "limpiarFechaFinal",
+
+
+
+                    "click #a-modalMio":"invokeModalMio"
 
                 },
 
@@ -94,7 +135,6 @@ define(['app',
                     this.initialFetch();
 
                   //  this.modalidadAsignacionAHtml.show(this.modalidadAsignacionView);
-
 
                 },
 
@@ -109,6 +149,7 @@ define(['app',
 
                     });
 
+
                 },
 
 
@@ -116,6 +157,48 @@ define(['app',
                   // this.tablaModalServidoresVista.TodosServidores(); ORIGINAL
 
 
+                },
+
+
+
+
+                //funcionalidades del layout
+                invokeModalMio: function(e){
+
+                    //var codDep="F0620";
+
+                    var emailUsuario=$('#email').text();
+                    console.log("Este es el usuario:"+emailUsuario);
+                    var rolUsuario=$('#id_rol').text();
+                    console.log("Este es el usuario:"+rolUsuario);
+
+
+                    var self=this;
+                    this.depenUsuarioView.mostrarDependenciaUsuario(emailUsuario,function () {
+                        if(self.depenUsuarioView.collection.length!=0){
+
+                            var valor= self.depenUsuarioView.collection.at(0).get("origenCodigo");
+                            var valor2= self.depenUsuarioView.collection.at(0).get("origenDescripcion");
+
+                           // console.log("Este es el valor dentro del bucle: "+valor);
+                            this.depUsuario=valor;
+                            this.perfilUsuario=valor2;
+
+                           // console.log("Este es el valor dentro del constructor de variable global: "+this.depUsuario);
+
+                        }
+
+                        //console.log("Este es el valor dentro del constructor de variable global: "+this.depUsuario);
+
+                        self.unidadesDialog.initialize(this.depUsuario,this.perfilUsuario);
+
+                    });
+
+                 //  console.log("Este es el valor en el metodo: "+this.depUsuario);
+
+                    //this.unidadesDialog.initialize(codDep);
+                    this.unidadesModal.show(this.unidadesDialog);
+                    $('#modal-unidadesMio').modal();
 
 
                 },
@@ -123,6 +206,7 @@ define(['app',
 
 
 
+               /*
                 mostrarArbolDependencias:function(){
 
                     this.arbolDependenciasHtml.show(this.arbolDependenciasView);
@@ -130,6 +214,8 @@ define(['app',
 
                 },
 
+
+                */
 
 
 
@@ -281,6 +367,48 @@ define(['app',
 
                 seleccionarUnidad:function(){
 
+                    $('  #modal-unidadesMio').modal('hide');
+
+                    this.unidadSelected = this.unidadesDialog.unidadClicked;
+                    $('#nom_depen1').text(this.unidadSelected.unidadId);
+
+                    $('#codigoDependencia').val(this.unidadSelected.unidadId);
+                    $('#usuarioCN').val($('#email').text());
+                    $('#nom_depen').val(this.unidadSelected.unidadDesc);
+
+                    $('#form_reporteCN').show();
+
+
+                    console.log("Este es el usuario:"+$('#email').text());
+                    console.log("Este es el usuario:"+$('#id_rol').text());
+
+
+
+                    var self=this;
+                    this.plazasCAPView.mostrarPlazasSegunDependencias( this.unidadSelected.unidadId,function () {
+                        if(self.plazasCAPView.collection.length!=0){
+
+                            $("#tabla_plazas").dataTable();
+                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                            $('.dataTables_filter input').addClass('buscador');
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+                        }
+                        $('#nom_depen2').text(self.unidadSelected.unidadDesc);
+
+                    });
+
+
+
+                    this.tablaPlazasHtml.show(this.plazasCAPView) ;
+                },
+
+
+                /*
+                seleccionarUnidad:function(){
+
                     $('#modalDependencias').modal('hide');
                     this.unidadSelected = this.arbolDependenciasView.unidadClicked;
                     $('#nom_depen1').text(this.unidadSelected.unidadId);
@@ -306,7 +434,7 @@ define(['app',
                             $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                             $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                            $('.dataTables_filter input').attr('placeholder','Buscar..');*/
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                             $("#tabla_plazas").dataTable();
 
@@ -324,6 +452,15 @@ define(['app',
                     });
                     this.tablaPlazasHtml.show(this.plazasCAPView) ;
                 },
+
+
+*/
+
+
+
+
+
+
 
 
 

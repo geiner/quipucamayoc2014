@@ -1,6 +1,7 @@
 package edu.quipu.rrhh.persistence;
 
 import edu.quipu.rrhh.models.ModalidadAsignacion;
+import edu.quipu.rrhh.models.Origen;
 import edu.quipu.rrhh.models.PlazaCAP;
 import edu.quipu.rrhh.models.Servidor;
 import org.apache.ibatis.annotations.*;
@@ -153,5 +154,41 @@ public interface CuadroNominalMapper {
 
 
 
+    @Select(value = "SELECT dependencia2.UD_COD AS UD_COD, dependencia3.PERF_DESC  AS PERFIL\n" +
+            "FROM ((QPRODATAQUIPU.TB_HIST_USU_PERF  historialUsuario\n" +
+            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia ON dependencia.UD_ID=historialUsuario.UD_ID)\n" +
+            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia2 ON dependencia2.UD_ID=dependencia.UNIDEPCALDEP)\n" +
+            "INNER  JOIN  QPRODATAQUIPU.TB_PERFIL  dependencia3 ON dependencia3.PERF_COD=historialUsuario.PERF_COD\n" +
+            "WHERE (  substr(historialUsuario.T_MAIL,1,(length(historialUsuario.T_MAIL)-3)    )  LIKE   #{emailUsuario})")
+    @Results(value = {
+            @Result(javaType = Origen.class),
+            @Result(property = "origenCodigo",column = "UD_COD"),
+            @Result(property = "origenDescripcion",column = "PERFIL")
+    })
+    List<Origen> obtenerDependenciaUsuario(@Param("emailUsuario") String emailUsuario);
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

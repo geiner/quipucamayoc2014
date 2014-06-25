@@ -1,9 +1,6 @@
 package edu.quipu.rrhh.services.implement;
 
-import edu.quipu.rrhh.models.AsigCuadroNominal;
-import edu.quipu.rrhh.models.ModalidadAsignacion;
-import edu.quipu.rrhh.models.PlazaCAP;
-import edu.quipu.rrhh.models.Servidor;
+import edu.quipu.rrhh.models.*;
 import edu.quipu.rrhh.persistence.CuadroNominalMapper;
 import edu.quipu.rrhh.services.CuadroNominalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +61,11 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
         System.out.print("llego");
         return cuadroNominalMapper.allModalidad();
 
+    }
+
+
+    @Override
+    public List<Origen> obtenerDependenciaUsuario(String emailUsuario) {
+        return cuadroNominalMapper.obtenerDependenciaUsuario(emailUsuario);
     }
 }
