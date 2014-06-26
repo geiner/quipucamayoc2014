@@ -89,7 +89,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
                     "click #cancel_laboral":"cancelar_inf_gen",
-                    "click #table-servidor > tbody >tr": "hide_lista_serv"
+                    "click #table-servidor > tbody >tr": "hide_lista_serv",
+                    "click .day":"ocultar"
 
 
                 },
@@ -264,6 +265,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.CondicionPlanView.initialize();
                     this.tipoOcupacionView.initialize();
 
+                },
+                ocultar:function(){
+                    alert("sgrfs")
+                    console.log("hola")
+                    $('.datepicker').hide();
                 },
                 limpiar_ing_unmsm: function () {
                     $("#serv_ing_unmsm").val("");
@@ -1071,7 +1077,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         $("#serv_sexo").val(self.model.get("servidor").get("sexo"));
 
-                        $("#serv_nac").val(dateToDMY(new Date(self.model.get("servidor").get("nacimiento"))));
+                        $("#serv_nac").val(self.model.get("servidor").get("nacimiento"));
 
                         $("#autocomple").val(self.model.get("servidor").get("paisNac"));
 
@@ -1099,7 +1105,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         $("#serv_disc").val(self.model.get("servidor").get("discapacidad"));
 
-                        $("#serv_ing_unmsm").val(dateToDMY(new Date(self.model.get("servidor").get("fechaInUnmsm"))));
+                        $("#serv_ing_unmsm").val(self.model.get("servidor").get("fechaInUnmsm"));
 
                         $("#serv_tel").val(self.model.get("servidor").get("telefono"));
 
@@ -1179,7 +1185,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#cond_pla").val(self.model.get("servidorlaboral").get("conPla"));
                         $("#serv_gen").val(self.model.get("servidorlaboral").get("tipGen"));
                         $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag"));
-                        $("#reg_lab").val(dateToDMY(new Date(self.model.get("servidorlaboral").get("regLab"))));
+                        $("#reg_lab").val(self.model.get("servidorlaboral").get("regLab"));
                         $("#rpe").val(self.model.get("servidorlaboral").get("regPen"));
                         $("#reg_pen").val(self.model.get("servidorlaboral").get("insregpen"));
                         $("#serv_tip_ocup").val(self.model.get("servidorlaboral").get("tipocupuni"));
