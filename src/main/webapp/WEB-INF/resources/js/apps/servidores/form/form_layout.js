@@ -76,6 +76,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "change #serv_gen": "fun_serv_tip",
                     "change #rpe": "fun_lis_ent_aseg",
                     "change #tip_pag": "fun_cue_ban",
+                    "change #serv_est": "fun_serv_est",
                     "change #serv_tip": "fun_cambiar_categoria",
                     "click #reg_pen_show": "fun_reg_pen_show",
                     "click #reg_lab_clos": "fun_reg_lab_clos",
@@ -172,6 +173,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                             $("#autocom").keyup(function () {
 
+
+
                                 for (var i = 0; i < 272; i++) {
 
 
@@ -183,6 +186,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         $("#div_nac").show();
 
                                         for (var i = 0; i < 272; i++) {
+                                            console.log(paises)
                                             if (paises[i] == $("#autocom").val()) {
 
                                                 $("#autocom").attr("data", codpaises[i]);
@@ -208,7 +212,33 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
 
                             });
+
+                            $(".tt-dropdown-menu").click(function(){
+
+
+                                for (var i = 0; i < 272; i++) {
+                                    console.log(paises)
+                                    if (paises[i] == $("#autocom").val()) {
+
+                                        $("#autocom").attr("data", codpaises[i]);
+                                    }
+                                }
+
+                                if($("#autocom").val()=="PERÚ"){
+
+                                    $("#div_domic").hide();
+                                    $("#div_nac").show();
+
+                                }else{
+                                    $("#div_domic").show();
+                                    $("#div_nac").hide();
+                                }
+
+
+                            });
                         }
+
+
                     });
                     this.deptNacimientoView.fetchNacDepart();
                     this.deptActualView.fetchActDepart();
@@ -286,6 +316,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                   $("#block-descr_serv").hide();
 
 //                    this.fun_validar_codigo();
+                },
+                fun_serv_est:function(){
+                    if($('#serv_est').val()==7){
+                        $('#div_ruc').show();
+                    }else{
+                        $('#serv_ruc').val("");
+                        $('#div_ruc').hide();
+                    }
                 },
                 serv_actprovincia: function () {
                     var self = this;
@@ -379,7 +417,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "domicilio":$("#ser_act_domi").val(),
                      "estVit":$("#serv_est_vit").val(),
                      "hij":$("#serv_car_fam").val(),
-                     "ruc":$("#serv_ruc").val(),
                      "espfdom":$("#serv_espf_dom").val(),
                      "discapacidad":$("#serv_disc").val(),
                      "fechaInUnmsm":$("#serv_ing_unmsm").val(),
@@ -426,7 +463,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      });
 
                      }
-                    console.log(self.guar_o_actu+"estoooooooooooo")
+                    console.log(self.guar_o_actu+" estoooooooooooo")
                      if(self.guar_o_actu==0){
                          self.model.get("servidor").url = "rest/cas/serv/servidor";
                          var self_s = self.model.get("servidor").save({}, { wait: true});
@@ -476,7 +513,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 if($('#autocom').val()=="PERÚ"){
                                     if($('#nacdepartamento').val()!="99"){
                                         if($('#serv_act_pais').val()=="101" & $('#ser_act_domi').val()!=""){
-                                            if($('#serv_car_fam').val()!="" & $('#serv_ruc').val()!=""){
+                                            if($('#serv_car_fam').val()!=""){
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
@@ -491,7 +528,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             }
                                         }else
                                         if($('#serv_act_pais').val()=="100" & $('#ser_act_domi').val()!="" & $('#actdepartamento').val()!="99"){
-                                            if($('#serv_car_fam').val()!="" & $('#serv_ruc').val()!=""){
+                                            if($('#serv_car_fam').val()!=""){
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
@@ -518,7 +555,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 }else{
                                     if($('#serv_espf_dom').val()!=""){
                                         if($('#serv_act_pais').val()=="101" & $('#ser_act_domi').val()!=""){
-                                            if($('#serv_car_fam').val()!="" & $('#serv_ruc').val()!=""){
+                                            if($('#serv_car_fam').val()!=""){
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
@@ -533,7 +570,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             }
                                         }else
                                         if($('#serv_act_pais').val()=="100" & $('#ser_act_domi').val()!="" & $('#serv_act_provincia').val()!=""){
-                                            if($('#serv_car_fam').val()!="" & $('#serv_ruc').val()!=""){
+                                            if($('#serv_car_fam').val()!=""){
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
@@ -775,7 +812,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "regLab": $("#reg_lab").val(),
                         "insregpen": $("#reg_pen").val(),
                         "tipocupuni": $("#serv_tip_ocup").val(),
-                        "sindic": $("#serv_sind").val()
+                        "sindic": $("#serv_sind").val(),
+                        "ruc":$("#serv_ruc").val()
                     });
                     if(self.guar_o_actu2==0){
                         self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
@@ -875,33 +913,36 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                            }
                        };
 
-                        if($("#rpe").val()=="4" & $('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!=""){
-                            if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
-                                if($('#cond_pla').val()!="999"){
-                                    if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                        if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                            if($('#serv_tip_ocup').val()!="999"){
-                                                self.ingresar_datos_laborales();
+                        if($("#rpe").val()=="4"){
+                            if($('#ent_aseg').val()!="999" & $('#est_afp').val()!="999" & $('#num_sis_pri_pen').val()!=""){
+                                if($('#tip_pag').val()=="1" & $('#cta_ban').val()!="" ){
+                                    if($('#cond_pla').val()!="999"){
+                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                                if($('#serv_tip_ocup').val()!="999"){
+                                                    self.ingresar_datos_laborales();
+                                                }
+                                            }
+                                        }
+                                    }
+                                };
+                                if($('#tip_pag').val()=="2" ){
+                                    if($('#cond_pla').val()!="999"){
+                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
+                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
+                                                if($('#serv_tip_ocup').val()!="999"){
+                                                    self.ingresar_datos_laborales();
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            };
-                            if($('#tip_pag').val()=="2" ){
-                                if($('#cond_pla').val()!="999"){
-                                    if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
-                                        if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
-                                            if($('#serv_tip_ocup').val()!="999"){
-                                                self.ingresar_datos_laborales();
-                                            }
-                                        }
-                                    }
-                                }
+                            }else{
+                                $('#advertencia').addClass("alert-warning");
+                                $('#advertencia').html('<strong>Ingresar numero del Sistema privado de pensiones</strong>')
+                                $('#advertencia').show();
                             }
-                        }else{
-                            $('#advertencia').addClass("alert-warning");
-                            $('#advertencia').html('<strong>Ingresar numero del Sistema privado de pensiones</strong>')
-                            $('#advertencia').show();
+
                         };
 
                        if($("#rpe").val()=="2" || $("#rpe").val()=="3" || $("#rpe").val()=="1"){
@@ -1079,7 +1120,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         $("#serv_nac").val(self.model.get("servidor").get("nacimiento"));
 
-                        $("#autocomple").val(self.model.get("servidor").get("paisNac"));
+                        $("#autocom").val(self.model.get("servidor").get("paisNac"));
 
                         $("#nacdepartamento").val(self.model.get("servidor").get("codNacdepart"));
 
@@ -1181,6 +1222,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         }
 
                         $("#serv_est").val(self.model.get("servidorlaboral").get("estLab"));
+                        if(self.model.get("servidorlaboral").get("estLab")==7){
+                            $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"));
+                            $('#div_ruc').show();
+                        }
                         $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
                         $("#cond_pla").val(self.model.get("servidorlaboral").get("conPla"));
                         $("#serv_gen").val(self.model.get("servidorlaboral").get("tipGen"));

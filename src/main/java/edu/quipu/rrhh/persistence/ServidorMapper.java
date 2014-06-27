@@ -82,6 +82,7 @@ public interface ServidorMapper {
             "  ser_tip_pag_act     AS tipPag, " +
             "  ser_cta_ban_act     AS cueBan, " +
             "  SER_TIT_CTA_BAN     as titcueBan, "+
+            "  SER_NUM_RUC         as ruc, "+
             "  TO_CHAR(ser_fech_reg_lab,'DD/MM/YYYY' )    AS regLab, " +
             "  ser_num_sis_pri_pen AS numPen ," +
             "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen,"+
@@ -112,6 +113,7 @@ public interface ServidorMapper {
             @Result(column = "insregpen", property = "insregpen"),
             @Result(column = "tipocupuni", property = "tipocupuni"),
             @Result(column = "sindic", property = "sindic"),
+            @Result(column = "ruc", property = "ruc"),
     })
     public List<ServidorLaboral> findByCodLab(@Param("servidorLaboral") ServidorLaboral servidorLaboral);
 
@@ -157,7 +159,8 @@ public interface ServidorMapper {
             "    ser_num_sis_pri_pen, " +
             "    ser_est_afp, " +
             "    ser_fech_reg_lab, " +
-            "    SER_TIT_CTA_BAN " +
+            "    SER_TIT_CTA_BAN ," +
+            "    SER_NUM_RUC " +
             "  ) " +
             "  VALUES " +
             "  ( " +
@@ -175,7 +178,8 @@ public interface ServidorMapper {
             "    #{ser.numPen}, " +
             "    #{ser.estAfp}, " +
             "    #{ser.regLab}, " +
-            "    #{ser.titcueBan} " +
+            "    #{ser.titcueBan}, " +
+            "    #{ser.ruc} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
 
@@ -457,11 +461,11 @@ public interface ServidorMapper {
     @Insert(value="INSERT INTO DATAPERSUEL.SERVIDOR (" +
             "ser_cod, ser_ape_pat, ser_ape_mat, ser_nom,ser_ecv_act,ser_tip_doc_id_act,ser_doc_id_act, ser_sexo," +
             "ser_fech_nac,SER_UBI_PAIS_NAC,SER_UBI_DEPT_NAC,SER_UBI_PROV_NAC,SER_UBI_DIST_NAC,SER_ESPF_LUGAR," +
-            "SER_UBI_PAIS_DOM,SER_UBI_DEPT_DOM,SER_UBI_PROV_DOM,SER_UBI_DIST_DOM,SER_DOM,SER_NUM_HIJ,SER_NUM_RUC," +
+            "SER_UBI_PAIS_DOM,SER_UBI_DEPT_DOM,SER_UBI_PROV_DOM,SER_UBI_DIST_DOM,SER_DOM,SER_NUM_HIJ," +
             "SER_EST_VIT_ACT,SER_DISCAP,SER_FECH_IN_UNMSM,SER_TELEF,SER_TELEF_CELL,SER_MAIL) " +
             "VALUES (#{ser.codigo}, #{ser.paterno},#{ser.materno}, #{ser.nombre},#{ser.estCiv},#{ser.tipoDoc},#{ser.numDoc},#{ser.sexo}" +
             ",to_date(#{ser.nacimiento},'dd/mm/yyyy'),#{ser.paisNac},#{ser.codNacdepart},#{ser.codNacprov},#{ser.codNacditr},#{ser.espfdom},#{ser.paisDomcilio}," +
-            "#{ser.codDepartamento},#{ser.codProvincia},#{ser.codDistrito},#{ser.domicilio},#{ser.hij},#{ser.ruc},#{ser.estVit}," +
+            "#{ser.codDepartamento},#{ser.codProvincia},#{ser.codDistrito},#{ser.domicilio},#{ser.hij},#{ser.estVit}," +
             "#{ser.discapacidad},to_date(#{ser.fechaInUnmsm},'dd/mm/yyyy'),#{ser.telefono},#{ser.celular},#{ser.correo})")
     public void saveServidor(@Param("ser") Servidor servidor);
 

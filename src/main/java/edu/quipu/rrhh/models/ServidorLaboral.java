@@ -23,6 +23,15 @@ public class ServidorLaboral {
     String insregpen;
     Integer tipocupuni;
     Integer sindic;
+    private String ruc;
+
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
 
     public Integer getTitcueBan() {
         return titcueBan;
