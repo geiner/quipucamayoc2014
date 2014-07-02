@@ -84,6 +84,7 @@ public class ServidorController {
                 +"-"+servidorLaboral.getTipPag()+"-"+servidorLaboral.getConPla()+"-"+servidorLaboral.getEntAse()+"-"+servidorLaboral.getTipGen()+"-"+servidorLaboral.getNumPen()
                 +"-"+servidorLaboral.getEstAfp()+"-"+servidorLaboral.getRegLab()+"-"+servidorLaboral.getInsregpen()+"-"+servidorLaboral.getSindic()+"-"+servidorLaboral.getTipocupuni());
         servidorService.saveLaboral(servidorLaboral);
+        System.out.println("segundo");
         servidorService.saveLaboral2(servidorLaboral);
 
         return servidorLaboral;

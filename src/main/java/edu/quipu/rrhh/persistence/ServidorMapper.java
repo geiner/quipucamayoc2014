@@ -30,6 +30,7 @@ public interface ServidorMapper {
             "  SER_UBI_DEPT_DOM   AS deptdom, " +
             "  SER_UBI_PROV_DOM   AS provdom, " +
             "  SER_UBI_DIST_DOM   AS distdom, " +
+            "  SER_ESPF_LUGAR   AS espfdom, " +
             "  SER_DOM            AS lugdom, " +
             "  ser_num_hij        AS hij, " +
             "  ser_num_ruc        AS ruc, " +
@@ -58,6 +59,7 @@ public interface ServidorMapper {
             @Result(property = "codProvincia", column = "provdom"),
             @Result(property = "codDistrito", column = "distdom"),
             @Result(property = "domicilio", column = "lugdom"),
+            @Result(property = "espfdom", column = "espfdom"),
             @Result(property = "hij", column = "hij"),
             @Result(property = "ruc", column = "ruc"),
             @Result(property = "fechaInUnmsm", column = "ingUnmsm"),
@@ -196,6 +198,7 @@ public interface ServidorMapper {
             "    ser_tip_ser_gen=#{ser.tipGen}, " +
             "    ser_num_sis_pri_pen=#{ser.numPen}, " +
             "    ser_est_afp=#{ser.estAfp}, " +
+            "    ser_num_ruc=#{ser.ruc}, " +
             "    ser_fech_reg_lab=TO_DATE(#{ser.regLab},'DD/MM/YY') " +
             " WHERE trim(SER_COD)=trim(#{ser.cod})")
     void updateServidorLaboral(@Param("ser") ServidorLaboral servidorLaboral);
@@ -470,8 +473,17 @@ public interface ServidorMapper {
     public void saveServidor(@Param("ser") Servidor servidor);
 
     @Update(value ="UPDATE DATAPERSUEL.SERVIDOR SET " +
+            "SER_NOM=#{ser.nombre},  " +
+            "SER_APE_PAT=#{ser.paterno},  " +
+            "SER_APE_MAT=#{ser.materno},  " +
             "SER_FECH_NAC = TO_DATE(#{ser.nacimiento},'DD/MM/YY'), " +
+            "SER_UBI_PAIS_NAC=#{ser.paisNac},  " +
+            "SER_UBI_DEPT_NAC=#{ser.codNacdepart},  " +
+            "SER_UBI_PROV_NAC=#{ser.codNacprov},  " +
+            "SER_UBI_DIST_NAC=#{ser.codNacditr},  " +
+            "SER_ESPF_LUGAR=#{ser.espfdom},  " +
             "SER_TELEF= #{ser.telefono}, " +
+            "SER_TELEF_CELL= #{ser.celular}, " +
             "SER_SEXO= #{ser.sexo}, " +
             "SER_DOC_ID_ACT=#{ser.numDoc},  " +
             "SER_NUM_HIJ= #{ser.hij}, " +
@@ -480,7 +492,7 @@ public interface ServidorMapper {
             "SER_EST_VIT_ACT= #{ser.estVit}, " +
             "SER_DISCAP= #{ser.discapacidad}, " +
             "SER_TIP_DOC_ID_ACT= #{ser.tipoDoc}, " +
-            "SER_FECH_IN_ENT_PUB=TO_DATE(#{ser.fechaInUnmsm},'DD/MM/YY'),  " +
+            "SER_FECH_IN_UNMSM=TO_DATE(#{ser.fechaInUnmsm},'DD/MM/YY'),  " +
             "SER_UBI_PAIS_DOM= #{ser.paisDomcilio}, " +
             "SER_UBI_DEPT_DOM= #{ser.codDepartamento}, " +
             "SER_UBI_PROV_DOM= #{ser.codProvincia}, " +

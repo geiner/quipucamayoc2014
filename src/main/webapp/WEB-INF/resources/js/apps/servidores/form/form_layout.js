@@ -70,7 +70,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #serv_ing_unmsm_show": "serv_ingunmsm_show",
                     "click #save_servidor": "serv_save_servidor",
                     "change #nacdepartamento": "serv_nacdepartamento",
-                    "change #serv_nac_provincia": "serv_nacprovin",
+                    "change #nacprovincia": "serv_nacprovin",
                     "change #actdepartamento": "serv_actdepartamento",
                     "change #serv_act_provincia": "serv_actprovincia",
                     "change #serv_gen": "fun_serv_tip",
@@ -87,7 +87,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "change #serv_act_pais":"fun_camb_pais_resid",
                     "click .tab_a":"fun_camb_tab_a",
                     "click .tab_b":"fun_camb_tab_b",
-                    "keyup :input#codigo":"fun_validar_codigo",
+//                    "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
                     "click #cancel_laboral":"cancelar_inf_gen",
                     "click #table-servidor > tbody >tr": "hide_lista_serv",
@@ -136,7 +136,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 initialFetch: function () {
                     var self = this;
-                    this.listaServView.fetchServidores();
+                    self.listaServView.fetchServidores();
                     this.estadosCivilesView.fetchEstCivil();
                     this.tiposDocumentoView.fetchTipoDocument();
                     this.paisNacimientoView.fetchNacPais(function () {
@@ -311,6 +311,18 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $("#serv_nac").val("");
                 },
                 cancelar_inf_gen:function(){
+                    this.guar_o_actu=0;
+                    $('#autocom').val("");
+                    $('#serv_nac_dept').hide();
+                    $('#nacdepartamento').val(99);
+                    $('#serv_nac_provinc').hide();
+                    $('#nacprovincia').val("");
+                    $('#serv_nac_distr').hide();
+                    $('#nacdistrito').val("");
+
+                    $('#serv_act_prov').hide();
+                    $('#serv_act_distr').hide();
+                    $('#ser_act_domi').val("");
                   $('#codigo').val("");
                   this.initialFetch();
                   $("#block-descr_serv").hide();
@@ -394,6 +406,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 insertar_inf_per_servidor:function(){
                     $('#advertencia').hide();
                     var self=this;
+                    var cod=$("#codigo").val();
                     if($("#nacdepartamento").val()==""){
 
                      self.model.get("servidor").set({
@@ -442,8 +455,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "nacimiento":$("#serv_nac").val(),
                      "paisNac":$("#autocom").attr("data"),
                      "codNacdepart":$("#nacdepartamento").val(),
-                     "codNacprov":$("#serv_nac_provincia").val(),
-                     "codNacditr":$("#serv_nac_distrito").val(),
+                     "codNacprov":$("#nacprovincia").val(),
+                     "codNacditr":$("#nacdistrito").val(),
                      "paisDomcilio":$("#serv_act_pais").val(),
                      "codDepartamento":$("#actdepartamento").val(),
                      "codProvincia":$("#serv_act_provincia").val(),
@@ -470,11 +483,22 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                          self_s.done(function(){
                              $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
-                             $('#serv_save').show()
+                             $('#serv_save').show();
+                             $('#cancel_servidor').click();
+                             $("#codigo").val(cod)
+                             console.log(cod+"dgfsfgdhfdshehgt");
+                             setTimeout(function (e) {
+                                 $('.tab_b').click();
+                             },2000);
                          });
                          self_s.fail(function(){
                              $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
-                             $('#serv_save').show()
+                             $('#serv_save').show();
+                             $('#cancel_servidor').click();
+                             $("#codigo").val(cod)
+                             setTimeout(function (e) {
+                                 $('.tab_b').click();
+                             },2000);
                          });
                      }else{
                          self.model.get("servidor").url = "rest/cas/serv/updateservidor";
@@ -483,10 +507,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                          self_s.done(function(){
                              $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
                              $('#serv_save').show()
+                             $('#cancel_servidor').click();
                          });
                          self_s.fail(function(){
                              $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
                              $('#serv_save').show()
+                             $('#cancel_servidor').click();
                          });
                      }
 
@@ -618,7 +644,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self = this;
 
                     var act_dep = $('#nacdepartamento').val();
-                    var act_pro = $('#serv_nac_provincia').val();
+                    var act_pro = $('#nacprovincia').val();
 
 
                     self.distrNacimientoView.fetchNacDistritos(act_dep, act_pro, function () {
@@ -674,7 +700,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         else {
 
                             $("#serv_nac_provinc").show();
-                            $('#serv_nac_provincia').trigger('change');
+                            $('#nacprovincia').trigger('change');
                         }
 
                     });
@@ -695,7 +721,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 fun_serv_tip: function (ev) {
                     var self = this;
                     var temp_cod_tip_gen = $("#serv_gen").val();
-
+                    console.log(temp_cod_tip_gen+"srfg------------")
                     this.ServidorTipoView.findByTipGen(temp_cod_tip_gen, function () {
                         self.CategoriaServidorView.fetchCategoria(self.ServidorTipoView.collection.at(0).get("cod"));
                     });
@@ -793,7 +819,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 ingresar_datos_laborales:function(){
                     var self=this;
                     var codigo = $("#codigo").val();
-
+                    if($("#ent_aseg").val()=="999"){
+                        $("#ent_aseg").val("");
+                    }
 
                     this.model.get("servidorlaboral").set({
                         "cod": codigo,
@@ -815,6 +843,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "sindic": $("#serv_sind").val(),
                         "ruc":$("#serv_ruc").val()
                     });
+                    console.log($("#serv_ruc").val()+" akaaa");
                     if(self.guar_o_actu2==0){
                         self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
 
@@ -827,6 +856,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                             temp_serv_save.show();
                             temp_serv_save.text("Datos laborales registrados!");
+                            this.initialFetch();
 
 
                         });
@@ -864,6 +894,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                             temp_serv_save.show();
                             temp_serv_save.text("Datos laborales actualizados!");
+                            $('#cancel_laboral').click();
 
 
                         });
@@ -983,6 +1014,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.tab=0;
                     $("#serv_cod").hide();
                     $("#block-descr_serv").hide();
+                    $("#block-serv_save").hide();
                 },
                 fun_validar_codigo:function(){
                     if(this.tab==1 & ($("#codigo").val().length >7 || $("#codigo").val().length==0)){
@@ -1002,8 +1034,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }
                 },
                 fun_camb_tab_b:function(){
-                    this.tab=1;
+//                    this.tab=1;
                     var self=this;
+                    $('#serv_save').hide()
                     $('advertencia').hide();
                     var codigo = $("#codigo").val();
                     if(codigo==""){
@@ -1012,10 +1045,21 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         temp_help.removeClass('alert-danger');
                         temp_help.addClass('alert-warning')
                         temp_help.show();
-                        temp_help.text("debe ingresar el codigo de la persona a la que desea ingresar sus datos laborales!");
+                        temp_help.text("Debe seleccionar a la persona que desee actualizar sus datos laborales!");
+                        setTimeout(function (e) {
+                            temp_help.hide();
+                        },2000);
                         $('#cancel_laboral').click();
                     }else{
-                        $("#serv_cod").hide();
+                        var temp_help = $("#serv_cod");
+                        temp_help.removeClass('alert-danger');
+                        temp_help.addClass('alert-warning')
+                        temp_help.show();
+                        temp_help.text("Debe Ingresar sus datos laborales a la persona para concluir el registro!");
+                        setTimeout(function (e) {
+                            temp_help.hide();
+                        },10000);
+
                         self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
                         var fetch_s = self.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
@@ -1044,6 +1088,19 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 lista_servidor: function (ev) {
                     var self = this;
                     var clickedElement = $(ev.currentTarget);
+                    $('#autocom').val("");
+                    $('#serv_nac_dept').hide();
+                    $('#nacdepartamento').val(99);
+                    $('#serv_nac_provinc').hide();
+                    $('#nacprovincia').val("");
+                    $('#serv_nac_distr').hide();
+                    $('#nacdistrito').val("");
+
+                    $('#serv_act_prov').hide();
+                    $('#serv_act_distr').hide();
+                    $('#ser_act_domi').val("");
+
+
 
                     clickedElement.button('loading');
 
@@ -1051,7 +1108,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         clickedElement.button('reset');
                         self.listServ.show(self.listaServView);
-
                         if (self.listaServView.collection.length != 0) {
                             $("#table-servidor").dataTable();
                             $('#table-servidor_wrapper').append("<div id='footer-table'></div>");
@@ -1068,6 +1124,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                 },
                 hide_lista_serv:function(e){
+                    this.guar_o_actu=1;
+                    this.guar_o_actu2=1;
                     var self = this;
                     var clickedElement = $(e.currentTarget);
                     var dni_serv = clickedElement.children(':nth-child(2)').text();
@@ -1120,23 +1178,44 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         $("#serv_nac").val(self.model.get("servidor").get("nacimiento"));
 
-                        $("#autocom").val(self.model.get("servidor").get("paisNac"));
+                        var paises = new Array();
+                        var codpaises = new Array();
 
-                        $("#nacdepartamento").val(self.model.get("servidor").get("codNacdepart"));
+                        for (var i = 0; i < 272; i++) {
+                              codpaises[i] = $("ul#lista li:nth-child(" + (i + 1) + ")").attr("id");
+                              paises[i] = $("ul#lista li:nth-child(" + (i + 1) + ")").text();
+                               if(codpaises[i]==self.model.get("servidor").get("paisNac")){
+                                   $("#autocom").val(paises[i]);
+                                   $("#autocom").attr("data", codpaises[i]);
+                                   if(paises[i]=="PERÚ"){
+                                       $("#div_nac").show();
+                                       $("#serv_nac_dept").show();
+                                       $("#nacdepartamento").val(self.model.get("servidor").get("codNacdepart")).trigger('change');
+                                       setTimeout(function(){
+                                           $("#nacprovincia").val(self.model.get("servidor").get("codNacprov")).trigger('change');
+                                           setTimeout(function(){
+                                               $("#nacdistrito").val(self.model.get("servidor").get("codNacditr"));
+                                           },1000);
 
-                        $("#serv_nac_provincia").val(self.model.get("servidor").get("codNacprov"));
-
-                        $("#serv_nac_distrito").val(self.model.get("servidor").get("codNacditr"));
+                                       },2000);
+                                   }else{
+                                        $('#div_domic').show();
+                                       $('#serv_espf_dom').val(self.model.get("servidor").get("espfdom"));
+                                   }
+                               }
+                        }
 
                         $("#serv_act_pais").val(self.model.get("servidor").get("paisDomcilio"));
-
-                        prov_act = self.model.get("servidor").get("codProvincia");
-
-                        distr_act = self.model.get("servidor").get("codDistrito");
 
                         $("#actdepartamento").val(self.model.get("servidor").get("codDepartamento"));
 
                         $("#actdepartamento").trigger("change");
+                        setTimeout(function(){
+                            $("#serv_act_provincia").val(self.model.get("servidor").get("codProvincia")).trigger('change');
+                            setTimeout(function(){
+                                $("#serv_act_distrito").val(self.model.get("servidor").get("codDistrito"));
+                            },1000);
+                        },2000);
 
                         $("#ser_act_domi").val(self.model.get("servidor").get("domicilio"));
 
@@ -1255,6 +1334,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     });
 
                     fetch_l.fail(function () {
+                        var self_ss=self;
                         console.log("fail")
                         self.guar_o_actu2=0;
                         $("#reg_lab").val(null);
@@ -1272,35 +1352,34 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                                 temp_cue_ban.val(null);
 
-                                if (self.tipoPago.collection.at(0).get("cod") == 1)
+                                if (self_ss.tipoPago.collection.at(0).get("cod") == 1)
                                     temp_cue_ban.parent().parent().show();
                                 else
                                     temp_cue_ban.parent().parent().hide();
                             }
                         );
-
                         self.regimenesPensionesView.initialize(
                             function () {
 
-                                var temp_reg_pen = self.regimenesPensionesView.collection.at(0).get("cod");
+                                var temp_reg_pen = self_ss.regimenesPensionesView.collection.at(0).get("cod");
 
-                                self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
+                                self_ss.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
 
-                                        console.log(self.guar_o_actu2+" valorrrrrrrrrrr")
-                                        if (self.entidadesAseguradoraView.collection.length == 0)
+                                        console.log(self_ss.guar_o_actu2+" valorrrrrrrrrrr")
+                                        if (self_ss.entidadesAseguradoraView.collection.length == 0)
                                             $("#row_reg_pen").hide();
                                         else
                                             $("#row_reg_pen").show();
-                                        $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
+                                        $("#ent_aseg").val(self_ss.model.get("servidorlaboral").get("entAse"));
                                     }
                                 );
 
-                                self.estadosAFP.findByRpe(temp_reg_pen, function () {
-                                        if (self.estadosAFP.collection.length == 0)
+                                self_ss.estadosAFP.findByRpe(temp_reg_pen, function () {
+                                        if (self_ss.estadosAFP.collection.length == 0)
                                             $("#div_est_afp").hide();
                                         else
                                             $("#div_est_afp").show();
-                                        $("#est_afp").val(self.model.get("servidorlaboral").get("estAfp"));
+                                        $("#est_afp").val(self_ss.model.get("servidorlaboral").get("estAfp"));
                                     }
                                 );
 
@@ -1309,7 +1388,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                                 temp_num_sis_pri_pen.val(null);
 
-                                if (self.regimenesPensionesView.collection.at(0).get("cod") == 4)
+                                if (self_ss.regimenesPensionesView.collection.at(0).get("cod") == 4)
                                     temp_num_sis_pri_pen.parent().parent().parent().show();
                                 else
                                     temp_num_sis_pri_pen.parent().parent().parent().hide();

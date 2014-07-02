@@ -18,10 +18,10 @@
     <li class=""><a href="#lB" data-toggle="tab" class="tab_b">I. Laboral</a></li>
 
     <div class="input-group col-md-3 pull-right">
-        <input type="text" id="codigo" placeholder="Ingrese Codigo Servidor" class="form-control">
-             <span class="input-group-btn">
-                 <button id="cod_sea" class="btn btn-default" type=""><i class="glyphicon glyphicon-search icon-white"></i></button>
-             </span>
+        <a class="btn btn-primary pull-right" id="cod_sea" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
+             <!--<span class="input-group-btn">-->
+                 <!--<button id="cod_sea" class="btn btn-default" type=""><i class="glyphicon glyphicon-search icon-white"></i></button>-->
+             <!--</span>-->
     </div>
 
 
@@ -59,6 +59,17 @@
     <br/>
     <legend>Informacion Principal</legend>
 
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label class="control-label col-md-5" for="codigo">Codigo <span
+                    style="color:red;">*</span></label>
+
+            <div class="controls col-md-7">
+                <input type="text" id="codigo" placeholder="Ingrese Codigo Servidor" class="form-control pull-right">
+            </div>
+        </div>
+
+    </div>
     <div class="row form-group">
         <div class="col-md-6">
             <label class="control-label col-md-5" for="serv_ape_pat">Apellido Paterno <span
@@ -107,7 +118,7 @@
 
         </div>
         <div class="col-md-6">
-            <label class="control-label col-md-5" for="serv_disc">N° de Documento</label>
+            <label class="control-label col-md-5" for="serv_disc">N° de Documento <span style="color:red;">*</span></label>
 
             <div class="col-md-7">
                 <input type="text" id="num_document" class="form-control"/>
@@ -474,7 +485,7 @@
             <br/>
         <div class="row control-group" id="div_ruc" style="display: none;">
             <div class="col-md-6">
-                <label class="control-label col-md-5">RUC</label>
+                <label class="control-label col-md-5">RUC <span style="color:red;">*</span></label>
 
                 <div class="col-md-7">
                     <input type="text" id="serv_ruc" class="form-control">
@@ -489,7 +500,6 @@
         </div>
     </form>
 </div>
-
 
 </div>
 </div>
