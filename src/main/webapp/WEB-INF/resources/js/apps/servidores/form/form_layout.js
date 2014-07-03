@@ -4,7 +4,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
     'apps/servidores/form/view/servidorEstado-view', 'apps/servidores/form/view/categoriaServidor-view', 'apps/servidores/form/view/servidorgenericos-view', 'apps/servidores/form/view/servidorTipo-view',
     'apps/servidores/form/view/regimenPensionario-view', 'apps/servidores/form/view/entidadAseguradora-view', 'apps/servidores/form/view/estadosAFP-view',
     'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view', 'apps/servidores/form/view/tiposOcupaciones_view', "apps/servidores/form/model/servidor",
-    'apps/servidores/form/model/servidorLaboral','apps/resoluciones/form/view/servidor-view', "lib/bootstrap-datepicker", "lib/typeahead.min","lib/jquery.dataTables.min", "bootstrap"],
+    'apps/servidores/form/model/servidorLaboral','apps/resoluciones/form/view/servidor-view',"lib/core/validXtrem", "lib/bootstrap-datepicker", "lib/typeahead.min","lib/jquery.dataTables.min", "bootstrap"],
     function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView, provNacimientoView, distrNacimientoView, deptActualView,
               provActualView, distrActualView, servidorEstadoView, categoriaServidorView, servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView,
               tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral,listaServView) {
@@ -328,6 +328,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                   $('#codigo').val("");
                   this.initialFetch();
                   $("#block-descr_serv").hide();
+
+                  $('.tab_a').click();
+                  setTimeout(function(){
+                      $('#cancel_servidor').click();
+                  },1000);
 
 //                    this.fun_validar_codigo();
                 },
@@ -1161,25 +1166,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var codigo = $("#codigo").val();
                     if(codigo==""){
                         $("#block-descr_serv").hide();
-                        var temp_help = $("#serv_cod");
-                        temp_help.removeClass('alert-danger');
-                        temp_help.addClass('alert-warning')
-                        temp_help.show();
-                        temp_help.text("Debe seleccionar a la persona que desee actualizar sus datos laborales!");
-                        setTimeout(function (e) {
-                            temp_help.hide();
-                        },2000);
                         $('#cancel_laboral').click();
                     }else{
-                        var temp_help = $("#serv_cod");
-                        temp_help.removeClass('alert-danger');
-                        temp_help.addClass('alert-warning')
-                        temp_help.show();
-                        temp_help.text("Debe Ingresar sus datos laborales a la persona para concluir el registro!");
-                        setTimeout(function (e) {
-                            temp_help.hide();
-                        },10000);
-
                         self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
                         var fetch_s = self.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
