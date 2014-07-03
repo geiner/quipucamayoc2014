@@ -183,6 +183,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                                         $("#autocom").val("PERÚ");
                                         $("#div_domic").hide();
+                                        $('#serv_espf_dom').val("");
                                         $("#div_nac").show();
 
                                         for (var i = 0; i < 272; i++) {
@@ -313,13 +314,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 cancelar_inf_gen:function(){
                     this.guar_o_actu=0;
                     $('#autocom').val("");
-                    $('#serv_nac_dept').hide();
+                    $("#div_nac").hide();
                     $('#nacdepartamento').val(99);
-                    $('#serv_nac_provinc').hide();
-                    $('#nacprovincia').val("");
-                    $('#serv_nac_distr').hide();
-                    $('#nacdistrito').val("");
 
+
+                    $('#serv_nac_provinc').hide();
+                    this.div_nac_prov.reset();
+                    $('#serv_nac_distr').hide();
+                    this.div_nac_distr.reset();
                     $('#serv_act_prov').hide();
                     $('#serv_act_distr').hide();
                     $('#ser_act_domi').val("");
@@ -331,10 +333,21 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 fun_serv_est:function(){
                     if($('#serv_est').val()==7){
+                        $('#serv_gen').val("999");
+                        $('#serv_tip').val("999");
                         $('#div_ruc').show();
+                        $('#serv_gen  > option'). eq(2).hide();
+                        $('#serv_gen  > option'). eq(4).hide();
+                        $('#serv_gen  > option'). eq(5).hide();
                     }else{
+                        $('#serv_gen  > option'). eq(2).show();
+                        $('#serv_gen  > option'). eq(4).show();
+                        $('#serv_gen  > option'). eq(5).show();
                         $('#serv_ruc').val("");
                         $('#div_ruc').hide();
+                        $('#serv_gen').val("999");
+                        $('#serv_tip').val("999");
+                        $('#serv_gen').trigger('change');
                     }
                 },
                 serv_actprovincia: function () {
@@ -407,7 +420,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#advertencia').hide();
                     var self=this;
                     var cod=$("#codigo").val();
-                    if($("#nacdepartamento").val()==""){
+                    if($("#serv_tel").val()==""){
+                        console.log("vaciooooooooooooooooooooooooooooooooooooooo")
+                        $("#serv_tel").val(0);
+                    };
+                    if($("#serv_cel").val()==""){
+                        $("#serv_cel").val(0);
+                    };
+                    if($("#serv_correo").val()==""){
+                        $("#serv_correo").val(" ");
+                    };
+                    if($("#nacdepartamento").val()=="99"){
 
                      self.model.get("servidor").set({
                      "codigo":$("#codigo").val(),
@@ -433,10 +456,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "espfdom":$("#serv_espf_dom").val(),
                      "discapacidad":$("#serv_disc").val(),
                      "fechaInUnmsm":$("#serv_ing_unmsm").val(),
-                     "telefono":$("#serv_tel").val(),
-                     "celular":$("#serv_cel").val(),
+                     "telefono":parseInt($("#serv_tel").val()),
+                     "celular":parseInt($("#serv_cel").val()),
                      "correo":$("#serv_correo").val()
-
 
                      });
 
@@ -464,12 +486,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                      "domicilio":$("#ser_act_domi").val(),
                      "estVit":$("#serv_est_vit").val(),
                      "hij":$("#serv_car_fam").val(),
-                     "ruc":$("#serv_ruc").val(),
                      "espfdom":$("#serv_espf_dom").val(),
                      "discapacidad":$("#serv_disc").val(),
                      "fechaInUnmsm":$("#serv_ing_unmsm").val(),
-                     "telefono":$("#serv_tel").val(),
-                     "celular":$("#serv_cel").val(),
+                     "telefono":parseInt($("#serv_tel").val()),
+                     "celular":parseInt($("#serv_cel").val()),
                      "correo":$("#serv_correo").val()
 
 
@@ -510,6 +531,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                              $('#cancel_servidor').click();
                          });
                          self_s.fail(function(){
+                             console.log("fail")
                              $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
                              $('#serv_save').show()
                              $('#cancel_servidor').click();
@@ -543,11 +565,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
+                                                    $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
                                                     $('#advertencia').html('<strong>La fecha de ingreso a la universidad  esta mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
+                                                $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
                                                 $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
                                                 $('#advertencia').show();
@@ -558,22 +582,26 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
+                                                    $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
                                                     $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
+                                                $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
                                                 $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else{
+                                            $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
                                             $('#advertencia').html('<strong>Datos del lugar de Residencia incorrectos</strong>')
                                             $('#advertencia').show();
                                         };
 
                                     }else{
+                                        $('#serv_save').hide();
                                         $('#advertencia').addClass("alert-warning");
                                         $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
                                         $('#advertencia').show();
@@ -585,11 +613,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
+                                                    $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
                                                     $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
+                                                $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
                                                 $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
                                                 $('#advertencia').show();
@@ -600,27 +630,32 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
+                                                    $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
                                                     $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
+                                                $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
                                                 $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else{
+                                            $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
                                             $('#advertencia').html('<strong>Datos del lugar de Residencia incorrectos</strong>')
                                             $('#advertencia').show();
                                         };
                                     }else{
+                                        $('#serv_save').hide();
                                         $('#advertencia').addClass("alert-warning");
                                         $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
                                         $('#advertencia').show();
                                     }
                                 }
                             } else {
+                                $('#serv_save').hide();
                                 $('#advertencia').addClass("alert-warning");
                                 $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
                                 $('#advertencia').show();
@@ -628,11 +663,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
 
                         } else {
+                            $('#serv_save').hide();
                             $('#advertencia').addClass("alert-warning");
                             $('#advertencia').html('<strong>La Informacion principal esta mal ingresada</strong>')
                             $('#advertencia').show();
                         }
                     }else{
+                        $('#serv_save').hide();
                         $('#advertencia').addClass("alert-warning");
                         $('#advertencia').html('<strong>Debe Ingresar el codigo del servidor</strong>')
                         $('#advertencia').show();
@@ -723,6 +760,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var temp_cod_tip_gen = $("#serv_gen").val();
                     console.log(temp_cod_tip_gen+"srfg------------")
                     this.ServidorTipoView.findByTipGen(temp_cod_tip_gen, function () {
+                        if(temp_cod_tip_gen==2 && $('#serv_est').val()=="7"){
+                            $('#serv_tip > option').eq(1).hide();
+                        }else{
+                            if(temp_cod_tip_gen==1 && $('#serv_est').val()=="7"){
+                                $('#serv_tip > option').eq(2).hide();
+                            }
+                        }
                         self.CategoriaServidorView.fetchCategoria(self.ServidorTipoView.collection.at(0).get("cod"));
                     });
 
@@ -740,9 +784,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     });
 
                     this.estadosAFP.findByRpe(reg_pen, function () {
-                        if (self.estadosAFP.collection.length == 0)
+                        /*if (self.estadosAFP.collection.length == 0)
                             $("#div_est_afp").hide();
-                        else
+                        else*/
                             $("#div_est_afp").show();
                     });
 
@@ -803,7 +847,22 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 fun_cambiar_categoria: function () {
                     var tem_tipo = $('#serv_tip').val();
 
-                    this.CategoriaServidorView.fetchCategoria(tem_tipo);
+                    this.CategoriaServidorView.fetchCategoria(tem_tipo,function(){
+                        if(tem_tipo==2 && $('#serv_est').val()==7){
+                            for(var i=1;i<=23;i++){
+                                if(i!=17){
+                                    $('#serv_cat > option').eq(i).hide();
+                                }
+                            }
+                        }else{
+                            if(tem_tipo==1 && $('#serv_est').val()==7){
+                                for(var i=1;i<=115;i++){
+                                    $('#serv_cat > option').eq(i).hide();
+                                }
+                            }
+                        }
+
+                    });
                 },
                 serv_ingunmsm_show: function () {
 
@@ -818,6 +877,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 ingresar_datos_laborales:function(){
                     var self=this;
+                    $('#advertencia').hide();
                     var codigo = $("#codigo").val();
                     if($("#ent_aseg").val()=="999"){
                         $("#ent_aseg").val("");
@@ -856,7 +916,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                             temp_serv_save.show();
                             temp_serv_save.text("Datos laborales registrados!");
-                            this.initialFetch();
+                            self.initialFetch();
 
 
                         });
@@ -924,7 +984,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                if($('#serv_tip_ocup').val()!="999"){
-                                                   self.ingresar_datos_laborales();
+                                                   if($('#serv_est').val()!=7){
+                                                       self.ingresar_datos_laborales();
+                                                   }else{
+                                                       if($('#serv_ruc').val()!=""){
+                                                           self.ingresar_datos_laborales();
+                                                       }else{
+                                                           $('#advertencia').addClass("alert-warning");
+                                                           $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                           $('#advertencia').show();
+                                                       }
+                                                   }
                                                }
                                            }
                                        }
@@ -935,7 +1005,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                if($('#serv_tip_ocup').val()!="999"){
-                                                   self.ingresar_datos_laborales();
+                                                   if($('#serv_est').val()!=7){
+                                                       self.ingresar_datos_laborales();
+                                                   }else{
+                                                       if($('#serv_ruc').val()!=""){
+                                                           self.ingresar_datos_laborales();
+                                                       }else{
+                                                           $('#advertencia').addClass("alert-warning");
+                                                           $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                           $('#advertencia').show();
+                                                       }
+                                                   }
                                                }
                                            }
                                        }
@@ -951,7 +1031,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                             if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                 if($('#serv_tip_ocup').val()!="999"){
-                                                    self.ingresar_datos_laborales();
+                                                    if($('#serv_est').val()!=7){
+                                                        self.ingresar_datos_laborales();
+                                                    }else{
+                                                        if($('#serv_ruc').val()!=""){
+                                                            self.ingresar_datos_laborales();
+                                                        }else{
+                                                            $('#advertencia').addClass("alert-warning");
+                                                            $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                            $('#advertencia').show();
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -962,7 +1052,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                             if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                 if($('#serv_tip_ocup').val()!="999"){
-                                                    self.ingresar_datos_laborales();
+                                                    if($('#serv_est').val()!=7){
+                                                        self.ingresar_datos_laborales();
+                                                    }else{
+                                                        if($('#serv_ruc').val()!=""){
+                                                            self.ingresar_datos_laborales();
+                                                        }else{
+                                                            $('#advertencia').addClass("alert-warning");
+                                                            $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                            $('#advertencia').show();
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -983,7 +1083,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                if($('#serv_tip_ocup').val()!="999"){
-                                                   self.ingresar_datos_laborales();
+                                                   if($('#serv_est').val()!=7){
+                                                       self.ingresar_datos_laborales();
+                                                   }else{
+                                                       if($('#serv_ruc').val()!=""){
+                                                           self.ingresar_datos_laborales();
+                                                       }else{
+                                                           $('#advertencia').addClass("alert-warning");
+                                                           $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                           $('#advertencia').show();
+                                                       }
+                                                   }
                                                }
                                            }
                                        }
@@ -994,7 +1104,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val()) ) {
                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val()) ) {
                                                if($('#serv_tip_ocup').val()!="999"){
-                                                   self.ingresar_datos_laborales();
+                                                   if($('#serv_est').val()!=7){
+                                                       self.ingresar_datos_laborales();
+                                                   }else{
+                                                       if($('#serv_ruc').val()!=""){
+                                                           self.ingresar_datos_laborales();
+                                                       }else{
+                                                           $('#advertencia').addClass("alert-warning");
+                                                           $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                           $('#advertencia').show();
+                                                       }
+                                                   }
                                                }
                                            }
                                        }
@@ -1037,7 +1157,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 //                    this.tab=1;
                     var self=this;
                     $('#serv_save').hide()
-                    $('advertencia').hide();
+                    $('#advertencia').hide();
                     var codigo = $("#codigo").val();
                     if(codigo==""){
                         $("#block-descr_serv").hide();
@@ -1089,13 +1209,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self = this;
                     var clickedElement = $(ev.currentTarget);
                     $('#autocom').val("");
-                    $('#serv_nac_dept').hide();
+                    $("#div_nac").hide();
                     $('#nacdepartamento').val(99);
-                    $('#serv_nac_provinc').hide();
-                    $('#nacprovincia').val("");
-                    $('#serv_nac_distr').hide();
-                    $('#nacdistrito').val("");
 
+                    $('#serv_nac_provinc').hide();
+                    this.div_nac_prov.reset();
+                    $('#serv_nac_distr').hide();
+                    this.div_nac_distr.reset();
                     $('#serv_act_prov').hide();
                     $('#serv_act_distr').hide();
                     $('#ser_act_domi').val("");
@@ -1200,7 +1320,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                        },2000);
                                    }else{
                                         $('#div_domic').show();
-                                       $('#serv_espf_dom').val(self.model.get("servidor").get("espfdom"));
+                                        $('#serv_espf_dom').val(self.model.get("servidor").get("espfdom"));
                                    }
                                }
                         }
@@ -1220,8 +1340,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#ser_act_domi").val(self.model.get("servidor").get("domicilio"));
 
                         $("#serv_car_fam").val(self.model.get("servidor").get("hij"));
-
-                        $("#serv_ruc").val(self.model.get("servidor").get("ruc"));
 
                         $("#serv_disc").val(self.model.get("servidor").get("discapacidad"));
 
@@ -1251,12 +1369,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         self.guar_o_actu2=1;
                         var temp_reg_pen = self.model.get("servidorlaboral").get("regPen");
                         self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
-                                console.log(self.guar_o_actu2+" valorrrrrrrrrrr")
                                 if (self.entidadesAseguradoraView.collection.length == 0)
                                     $("#row_reg_pen").hide();
                                 else
                                     $("#row_reg_pen").show();
-                                $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
+                                    $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
                             }
                         );
 
@@ -1266,16 +1383,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 else
                                     $("#div_est_afp").show();
                                 $("#est_afp").val(self.model.get("servidorlaboral").get("estAfp"));
-                            }
-                        );
-
-                        var temp_cod_tip_gen = self.model.get("servidorlaboral").get("tipGen");
-
-                        self.ServidorTipoView.findByTipGen(temp_cod_tip_gen, function () {
-                                $("#serv_tip").val(self.model.get("servidorlaboral").get("tip"));
-                                self.CategoriaServidorView.fetchCategoria(self.model.get("servidorlaboral").get("tip"), function () {
-                                    $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
-                                });
                             }
                         );
 
@@ -1300,14 +1407,18 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             tem_tit_ban.parent().parent().hide();
                         }
 
-                        $("#serv_est").val(self.model.get("servidorlaboral").get("estLab"));
-                        if(self.model.get("servidorlaboral").get("estLab")==7){
-                            $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"));
-                            $('#div_ruc').show();
-                        }
-                        $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
+                        $("#serv_est").val(self.model.get("servidorlaboral").get("estLab")).trigger('change');
+                        setTimeout(function(){
+                            $("#serv_gen").val(self.model.get("servidorlaboral").get("tipGen")).trigger('change');
+                            setTimeout(function(){
+                                $("#serv_tip").val(self.model.get("servidorlaboral").get("tip")).trigger('change');
+                                setTimeout(function(){
+                                    $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
+                                },1000);
+                            },1000);
+                        },1000);
+
                         $("#cond_pla").val(self.model.get("servidorlaboral").get("conPla"));
-                        $("#serv_gen").val(self.model.get("servidorlaboral").get("tipGen"));
                         $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag"));
                         $("#reg_lab").val(self.model.get("servidorlaboral").get("regLab"));
                         $("#rpe").val(self.model.get("servidorlaboral").get("regPen"));
@@ -1317,6 +1428,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         temp_cue_ban.val(self.model.get("servidorlaboral").get("cueBan"));
                         $('#serv_tit_ban').val(self.model.get("servidorlaboral").get("titcueBan"))
+                        $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"))
                         temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
 
                         //render result

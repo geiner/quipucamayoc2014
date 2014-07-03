@@ -21,7 +21,7 @@ public class EstadoAFPServiceOImpl implements EstadoAFPService{
 
     @Override
     public List<EstadoAfp> FindAllAfp(RegimenPensionario regimenPensionario) {
-        List<EstadoAfp> estadoAfp= estadoAfpMapper.findByRpe(regimenPensionario);
+        List<EstadoAfp> estadoAfp= estadoAfpMapper.findAll();
         return estadoAfp;
 
     }

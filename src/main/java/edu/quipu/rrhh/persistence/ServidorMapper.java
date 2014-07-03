@@ -192,7 +192,7 @@ public interface ServidorMapper {
             "    ser_rpe_act=#{ser.regPen}, " +
             "    ser_cta_ban_act=#{ser.cueBan}, " +
             "    ser_tip_pag_act=#{ser.tipPag}, " +
-            "    SER_TIT_CTA_BAN=#{ser.titcueBan}, " +
+            "    ser_tit_cta_ban=#{ser.titcueBan}, " +
             "    ser_con_pla_act=#{ser.conPla}, " +
             "    ser_ent_aseg=#{ser.entAse}, " +
             "    ser_tip_ser_gen=#{ser.tipGen}, " +
@@ -487,7 +487,6 @@ public interface ServidorMapper {
             "SER_SEXO= #{ser.sexo}, " +
             "SER_DOC_ID_ACT=#{ser.numDoc},  " +
             "SER_NUM_HIJ= #{ser.hij}, " +
-            "SER_NUM_RUC= #{ser.ruc}, " +
             "SER_MAIL= #{ser.correo}, " +
             "SER_EST_VIT_ACT= #{ser.estVit}, " +
             "SER_DISCAP= #{ser.discapacidad}, " +

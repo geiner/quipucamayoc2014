@@ -54,7 +54,7 @@ public class ServidorController {
         System.out.println(servidor.getCodigo()+"-"+servidor.getPaterno()+"-"+servidor.getMaterno()+"-"+servidor.getNombre()+"-"+servidor.getEstCiv()+
         "-"+servidor.getTipoDoc()+"-"+servidor.getNumDoc()+"-"+servidor.getSexo()+"-"+ servidor.getNacimiento()+"-"+servidor.getPaisNac()+"-"+servidor.getCodNacdepart()+"-"+servidor.getCodNacprov()+"-"+servidor.getCodNacditr()+"-"+servidor.getEspfdom()+
         "-"+servidor.getPaisDomcilio()+"-"+servidor.getCodDepartamento()+"-"+servidor.getCodProvincia()+"-"+servidor.getCodDistrito()+"-"+servidor.getDomicilio()+"-"+servidor.getHij()+"-"+servidor.getRuc()+
-        "-"+servidor.getEstVit()+"-"+servidor.getDiscapacidad()+"-"+servidor.getFechaInUnmsm()+"-"+servidor.getTitCueBan()+"-"+servidor.getTelefono()+"-"+servidor.getCelular()+"-"+servidor.getCorreo());
+        "-"+servidor.getEstVit()+"-"+servidor.getDiscapacidad()+"-"+servidor.getFechaInUnmsm()+"-"+"-"+servidor.getTelefono()+"-"+servidor.getCelular()+"-"+servidor.getCorreo()+" fin");
         //logger.info(servidor.toString());
         servidorService.saveServidor(servidor);
        //servidor = servidorService.findByCod(servidor).get(0);
@@ -64,6 +64,7 @@ public class ServidorController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String updateServidor(@RequestBody Servidor servidor){
+        System.out.println(servidor.getEspfdom()+"/"+servidor.getPaisNac());
         servidorService.updateServidor(servidor);
         return "";
     }
@@ -94,6 +95,7 @@ public class ServidorController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String updateServidoLaboral(@RequestBody ServidorLaboral servidorLaboral){
+        System.out.println(servidorLaboral.getRuc()+"!!!!!!!!!!!!!!!!!!!");
         servidorService.updateServidorLaboral(servidorLaboral);
         servidorService.updateServidorLaboral2(servidorLaboral);
         return "";
