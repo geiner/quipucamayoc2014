@@ -209,6 +209,7 @@ public class ServidorController {
     @ResponseBody
     public Servidor findByCod(@PathVariable(value = "codigo") String codigo) {
         Servidor servidor = new Servidor();
+        System.out.println("codigooooo!!!"+codigo);
         servidor.setCodigo(codigo);
         List<Servidor> servidores = servidorService.findByCod(servidor);
         if (servidores.size() == 0)

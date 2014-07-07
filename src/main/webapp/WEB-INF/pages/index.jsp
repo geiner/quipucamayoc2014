@@ -61,10 +61,10 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-primary btn-lg" href="http://quipucamayoc.unmsm.edu.pe/oauth/authlocal" style="margin-left: 33%;font-size: 13px;">INICIAR SESION GOOGLE</a>
+                    <a class="btn btn-primary btn-lg" href="http://quipucamayoc.unmsm.edu.pe/oauth/authprueba" style="margin-left: 33%;font-size: 13px;">INICIAR SESION GOOGLE</a>
                     <p></p>
                     <br>
-                    <a class="btn btn-primary btn-lg" href="http://quipucamayoc.unmsm.edu.pe/oauth/callperfillocal" style="margin-left: 33%;width: 54.6%;font-size: 13px;">SOLICITAR PERFIL</a>
+                    <a class="btn btn-primary btn-lg" href="http://quipucamayoc.unmsm.edu.pe/oauth/callperfilprueba" style="margin-left: 33%;width: 54.6%;font-size: 13px;">SOLICITAR PERFIL</a>
                 </div>
                 </div>
             </div>

@@ -89,7 +89,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click .tab_b":"fun_camb_tab_b",
 //                    "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
-                    "click #cancel_laboral":"cancelar_inf_gen",
+                    "click #cancel_laboral":"cancelar_inf_gen2",
                     "click #table-servidor > tbody >tr": "hide_lista_serv",
                     "click .day":"ocultar"
 
@@ -136,7 +136,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 initialFetch: function () {
                     var self = this;
-                    self.listaServView.fetchServidores();
+                    this.listaServView.fetchServidores();
                     this.estadosCivilesView.fetchEstCivil();
                     this.tiposDocumentoView.fetchTipoDocument();
                     this.paisNacimientoView.fetchNacPais(function () {
@@ -316,8 +316,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#autocom').val("");
                     $("#div_nac").hide();
                     $('#nacdepartamento').val(99);
-
-
                     $('#serv_nac_provinc').hide();
                     this.div_nac_prov.reset();
                     $('#serv_nac_distr').hide();
@@ -326,13 +324,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#serv_act_distr').hide();
                     $('#ser_act_domi').val("");
                   $('#codigo').val("");
-                  this.initialFetch();
-                  $("#block-descr_serv").hide();
+//                    this.fun_validar_codigo();
+                },
+                cancelar_inf_gen2:function(){
+                    this.guar_o_actu=0;
+                    $('#codigo').val("");
+                    $("#block-descr_serv").hide();
 
-                  $('.tab_a').click();
-                  setTimeout(function(){
-                      $('#cancel_servidor').click();
-                  },1000);
+                    $('.tab_a').click();
+                    setTimeout(function(){
+                        $('#cancel_servidor').click();
+                    },1000);
 
 //                    this.fun_validar_codigo();
                 },
@@ -397,7 +399,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             }
                             else {
                                 if (parseInt(xMonth) == parseInt(yMonth)) {
-                                    if (parseInt(xDay) > parseInt(yDay))
+                                    if (parseInt(xDay) >= parseInt(yDay))
                                         return(true);
                                     else
                                         return(false);
@@ -426,7 +428,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self=this;
                     var cod=$("#codigo").val();
                     if($("#serv_tel").val()==""){
-                        console.log("vaciooooooooooooooooooooooooooooooooooooooo")
                         $("#serv_tel").val(0);
                     };
                     if($("#serv_cel").val()==""){
@@ -508,17 +509,19 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                          var self_s = self.model.get("servidor").save({}, { wait: true});
 
                          self_s.done(function(){
-                             $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                             $('#serv_save').html('<strong>Error en el registro</strong>')
                              $('#serv_save').show();
-                             $('#cancel_servidor').click();
+                             /*$('#cancel_servidor').click();
                              $("#codigo").val(cod)
                              console.log(cod+"dgfsfgdhfdshehgt");
+                             console.log("funciona");
                              setTimeout(function (e) {
                                  $('.tab_b').click();
-                             },2000);
+                             },2000);*/
                          });
                          self_s.fail(function(){
-                             $('#serv_save').html('<strong>la Informacion General se guardo correctamente</strong>')
+                             console.log("no funciona");
+                             $('#serv_save').html('<strong>la Información General se guardó correctamente</strong>')
                              $('#serv_save').show();
                              $('#cancel_servidor').click();
                              $("#codigo").val(cod)
@@ -526,20 +529,27 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                  $('.tab_b').click();
                              },2000);
                          });
-                     }else{
+                     }
+                     else{
                          self.model.get("servidor").url = "rest/cas/serv/updateservidor";
                          var self_s = self.model.get("servidor").save({}, { wait: true});
 
                          self_s.done(function(){
-                             $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
+                             $('#serv_save').html('<strong>la Información General se actualizó correctamente</strong>')
                              $('#serv_save').show()
                              $('#cancel_servidor').click();
+                             setTimeout(function(){
+                                 $('#serv_save').hide();
+                             },2000);
                          });
                          self_s.fail(function(){
                              console.log("fail")
-                             $('#serv_save').html('<strong>la Informacion General se actualizo correctamente</strong>')
+                             $('#serv_save').html('<strong>la Información General se actualizó correctamente</strong>')
                              $('#serv_save').show()
                              $('#cancel_servidor').click();
+                             setTimeout(function(){
+                                 $('#serv_save').hide();
+                             },2000);
                          });
                      }
 
@@ -558,8 +568,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }
                     var currentDate = dia + "/" + mes + "/" + anio;
                     console.log(currentDate)
-                    if($('#codigo').val() != "" & !isNaN($('#codigo').val())){
-                        if ($('#serv_ape_pat').val() != "" & $('#serv_ape_mat').val() != "" & $('#serv_nom').val() != "" &
+                    if($('#codigo').val() != "" && !isNaN($('#codigo').val())){
+                        if ($('#serv_ape_pat').val() != "" && $('#serv_ape_mat').val() != "" && $('#serv_nom').val() != "" &
                             $('#serv_est_civil').val() != "99" & $('#serv_tip_docu').val() != "99" & $('#num_document').val() != "" & $('#serv_sexo').val() != "99") {
 
                             if ($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_nac').val()) & $('#autocom').val()!="") {
@@ -572,97 +582,97 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la universidad  esta mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad  esta mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else
-                                        if($('#serv_act_pais').val()=="100" & $('#ser_act_domi').val()!="" & $('#actdepartamento').val()!="99"){
+                                        if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#actdepartamento').val()!="99"){
                                             if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else{
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
-                                            $('#advertencia').html('<strong>Datos del lugar de Residencia incorrectos</strong>')
+                                            $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
                                             $('#advertencia').show();
                                         };
 
                                     }else{
                                         $('#serv_save').hide();
                                         $('#advertencia').addClass("alert-warning");
-                                        $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
+                                        $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos de Nacimiento </strong>')
                                         $('#advertencia').show();
                                     }
                                 }else{
                                     if($('#serv_espf_dom').val()!=""){
-                                        if($('#serv_act_pais').val()=="101" & $('#ser_act_domi').val()!=""){
+                                        if($('#serv_act_pais').val()=="101" && $('#ser_act_domi').val()!=""){
                                             if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else
-                                        if($('#serv_act_pais').val()=="100" & $('#ser_act_domi').val()!="" & $('#serv_act_provincia').val()!=""){
+                                        if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#serv_act_provincia').val()!=""){
                                             if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
                                                     self.insertar_inf_per_servidor();
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la universidad esta mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Existen datos obligatorios en Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                 $('#advertencia').show();
                                             }
                                         }else{
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
-                                            $('#advertencia').html('<strong>Datos del lugar de Residencia incorrectos</strong>')
+                                            $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
                                             $('#advertencia').show();
                                         };
                                     }else{
                                         $('#serv_save').hide();
                                         $('#advertencia').addClass("alert-warning");
-                                        $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
+                                        $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
                                         $('#advertencia').show();
                                     }
                                 }
                             } else {
                                 $('#serv_save').hide();
                                 $('#advertencia').addClass("alert-warning");
-                                $('#advertencia').html('<strong>Datos de nacimiento incorrectos</strong>')
+                                $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
                                 $('#advertencia').show();
                             }
 
@@ -670,13 +680,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         } else {
                             $('#serv_save').hide();
                             $('#advertencia').addClass("alert-warning");
-                            $('#advertencia').html('<strong>La Informacion principal esta mal ingresada</strong>')
+                            $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección de Información Principal</strong>')
                             $('#advertencia').show();
                         }
                     }else{
                         $('#serv_save').hide();
                         $('#advertencia').addClass("alert-warning");
-                        $('#advertencia').html('<strong>Debe Ingresar el codigo del servidor</strong>')
+                        $('#advertencia').html('<strong>Debe Ingresar el código del servidor</strong>')
                         $('#advertencia').show();
                     }
 
@@ -920,10 +930,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             var temp_serv_save = $("#serv_save");
 
                             temp_serv_save.show();
-                            temp_serv_save.text("Datos laborales registrados!");
+                            temp_serv_save.text("Se completaron satisfactoriamente los datos del servidor!");
+                            $('#cancel_laboral').click();
                             self.initialFetch();
-
-
                         });
 
                         self_l.fail(function () {
@@ -960,8 +969,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             temp_serv_save.show();
                             temp_serv_save.text("Datos laborales actualizados!");
                             $('#cancel_laboral').click();
-
-
                         });
                     }
 
@@ -1130,7 +1137,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                     }else{
                         $('#advertencia').addClass("alert-warning");
-                        $('#advertencia').html('<strong>Los datos ingresados son incorrectos</strong>')
+                        $('#advertencia').html('<strong>Falta ingresar campos obligatorios</strong>')
                         $('#advertencia').show();
                     }
 
@@ -1163,11 +1170,17 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self=this;
                     $('#serv_save').hide()
                     $('#advertencia').hide();
+
                     var codigo = $("#codigo").val();
                     if(codigo==""){
                         $("#block-descr_serv").hide();
-                        $('#cancel_laboral').click();
-                    }else{
+//                        $('#cancel_laboral').click();
+                        $('#sav_serv_lab').each (function(){
+                            this.reset();
+                        });
+
+                    }
+                    else{
                         self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
                         var fetch_s = self.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
@@ -1236,7 +1249,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.guar_o_actu2=1;
                     var self = this;
                     var clickedElement = $(e.currentTarget);
-                    var dni_serv = clickedElement.children(':nth-child(2)').text();
+                    var dni_serv = clickedElement.children(':nth-child(8)').text();
                     $("#codigo").val(dni_serv);
                     this.fun_search_servidor();
                     $("#list_servidores").modal("hide");
