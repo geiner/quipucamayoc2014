@@ -1,9 +1,7 @@
 package edu.quipu.rrhh.persistence;
 
 import edu.quipu.rrhh.models.PlanillaCAS;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.*;
 import org.springframework.dao.DataAccessException;
 
 import java.util.List;
@@ -47,10 +45,10 @@ public interface PlanillaCASMapper {
     List<PlanillaCAS> findSinServidores(@Param("udid") int udid, @Param("anio") int anio, @Param("mes") int mes) throws DataAccessException;*/
 
 
-//    @Select(value = "SELECT apanio AS anio,apnum AS numero,apmes AS mes,oricod AS codigoOrigen, ud_id AS unidadDescripcion, apfecha AS fecha, apmonto AS monto, apest AS estado from QPRODATACONTA.APERTURA_PLANILLA WHERE APNUM IN (\n" +
-//            "    SELECT distinct APNUM FROM QPRODATACONTA.DETALLE_PLANILLA WHERE APANIO=#{anio} AND UD_ID IN (#{udid}, #{udid}+1) and APNUM like 'P%') AND APANIO = #{anio} AND APMES=#{mes}\n" +
-//            "    UNION\n" +
-//            "    SELECT apanio AS anio,apnum AS numero,apmes AS mes,oricod AS codigoOrigen, ud_id AS unidadDescripcion, apfecha AS fecha, apmonto AS monto, apest AS estado FROM QPRODATACONTA.apertura_planilla WHERE apanio=#{anio} AND apmes=#{mes} AND aptipo='P' AND ud_id=#{udid}")
+    @Select(value = "SELECT apanio AS anio,apnum AS numero,apmes AS mes,oricod AS codigoOrigen, ud_id AS unidadDescripcion, apfecha AS fecha, apmonto AS monto, apest AS estado from QPRODATACONTA.APERTURA_PLANILLA WHERE APNUM IN (\n" +
+            "    SELECT distinct APNUM FROM QPRODATACONTA.DETALLE_PLANILLA WHERE APANIO=#{anio} AND UD_ID IN (#{udid}, #{udid}+1) and APNUM like 'P%') AND APANIO = #{anio} AND APMES=#{mes}\n" +
+           "    UNION\n" +
+           "    SELECT apanio AS anio,apnum AS numero,apmes AS mes,oricod AS codigoOrigen, ud_id AS unidadDescripcion, apfecha AS fecha, apmonto AS monto, apest AS estado FROM QPRODATACONTA.apertura_planilla WHERE apanio=#{anio} AND apmes=#{mes} AND aptipo='P' AND ud_id=#{udid}")
     @Results(value = {@Result(javaType = PlanillaCAS.class),
             @Result(property = "anio", column = "anio"),
             @Result(property = "numero", column = "numero"),

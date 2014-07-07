@@ -14,7 +14,11 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
                 selectHorarios:new TablaHor(),
                 horariosNocturno:new HorariosNocturno(),
 
-
+                unidadClicked: {
+                    unidadId:10002,
+                    unidadDesc:"UNMSM"
+                },
+                elementoClickeado: null,
                 codigo: null,
                 nombre: null,
                 diasSeleccionados: [],
@@ -38,6 +42,7 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
                 },
                 events: {
                     "click #buscar_horarios":"buscar_horarios",
+                    "click .tree li": "clickUnidad",
                     "click #cancel_horario":"limpiar_campos",
                     "click #evaluar_horas": "update_horas",
                     "click #save_horario": "guardar_horario",
@@ -135,23 +140,48 @@ define(['app', 'hbs!apps/asistencia/administrativo/templates/administrativoLayou
                 },
                 unidades_dep:function(){
 
-                    $('#modal-unidades').modal('hide');
-                    this.unidadSelected = this.tablaDependencias.unidadClicked;
+                    $('#show_origen').modal('hide');
+                    this.unidadSelected = this.unidadClicked;
 
 
 
+                    var aux=this.unidadSelected.unidadDesc.split("-");
+                    this.udcod=aux[0].trim();
 
-                    this.udcod= this.unidadSelected.unidadDesc.substr(0,5);
 
                    // $('#nom_dep').text(this.unidadSelected.unidadDesc);
                     //tablaDependencias
                     if(this.cambio==1){
-                        $("#origen").val(this.unidadSelected.unidadDesc.substr(7));
+                        $("#origen").val(aux[1].trim());
                     }
                     if(this.cambio==2){
-                        $("#destino").val(this.unidadSelected.unidadDesc.substr(7));
+                        $("#destino").val(aux[1].trim());
                     }
 
+                },
+
+                clickUnidad:function(e){
+
+                    if(this.elementoClickeado){
+                        $(this.elementoClickeado).css({
+                            "background": "",
+                            "color": "",
+                            "border": ""
+                        });
+                    }
+                    var clickedElement=$(e.currentTarget);
+                    var children = clickedElement.find('> ul > li');
+                    if (children.is(":visible")) children.hide('fast');
+                    else children.show('fast');
+                    e.stopPropagation();
+                    this.unidadClicked.unidadId=clickedElement.find('input:first').val();
+                    this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
+                    console.log(this.unidadClicked);
+                    this.elementoClickeado=$(e.currentTarget).find('a:first').css({
+                        "background": "#c8e4f8",
+                        "color": "#000",
+                        "border": "1px solid #94a0b4"
+                    });
                 },
                 clickTipoHor:function(){
                     var self=this;

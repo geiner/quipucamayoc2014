@@ -4,21 +4,16 @@ define([ 'backbone', 'marionette','hbs!apps/planillas/list/templates/unidades-mo
         var UnidadesDialog = Backbone.Marionette.ItemView.extend({
             template: unidadesModalTemplate,
             collection: new Unidades(),
-            unidadClicked: {
-                unidadId:10002,
-                unidadDesc:"UNMSM"
-            },
-            elementoClickeado: null,
-            events: {
-                "click .tree li": "clickUnidad"
-            },
 
             initialize: function(){
+
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch({ data: { page: 'no'} });
-            },
+            }
 
-            clickUnidad : function(e){
+            /*clickUnidad : function(e){
+
+                alert("elemt click"+this.elementoClickeado);
                 if(this.elementoClickeado){
                     $(this.elementoClickeado).css({
                         "background": "",
@@ -39,7 +34,7 @@ define([ 'backbone', 'marionette','hbs!apps/planillas/list/templates/unidades-mo
                     "color": "#000",
                     "border": "1px solid #94a0b4"
                 });
-            }
+            }*/
 
         });
         return UnidadesDialog;

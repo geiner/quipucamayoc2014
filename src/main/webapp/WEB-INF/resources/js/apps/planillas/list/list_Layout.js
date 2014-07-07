@@ -23,6 +23,12 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
                 unidadId:10225,
                 unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
             },
+            unidadClicked: {
+                unidadId:10002,
+                unidadDesc:"UNMSM"
+            },
+            elementoClickeado: null,
+
             planillaCASSelected: null,
 
             //regiones para los view
@@ -36,6 +42,7 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
             //eventos dentro de layout
             events: {
                 "click #a-modal":"invokeModal",
+                "click .tree li": "clickUnidades",
                 "click #boton-unidad":"cambioUnidad",
                 "click #select-all":"seleccionarTodosLosServidores",
                 "click .table > tbody > tr ": "clickServidorRow",
@@ -45,8 +52,8 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
                 "click #boton-reporte-conformidad":"enviarServidoresParaReporteConformidad",
                 "click #boton-reporte-pagos":"enviarServidoresParaReportePagos",
                 "click #apertura_planilla":"crearNuevaPlanilla",
-                "click #boton-enviar-control-previo":"enviaracontrolprevio",
-                "click #apertura_planilla":"crearNuevaPlanilla"
+                "click #boton-enviar-control-previo":"enviaracontrolprevio"
+
             },
 
             //inicializa el layout
@@ -81,7 +88,8 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
 
 
                 var self=this;
-                this.origenesSelectView.fetchOrigenes(this.unidadSelected.unidadId);
+               // alert("id:"+this.unidadSelected.unidadId);
+               /* this.origenesSelectView.fetchOrigenes(this.unidadSelected.unidadId);
                 var fetch=this.planillasCASSelectView.fetchPlanillasCAS(this.anio, this.mes, this.unidadSelected.unidadId);
                 fetch.done(function(){
                     self.planillaCASSelected= $("#select-planillasCAS").val();
@@ -104,15 +112,39 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
 
                         };
                     });
-                })
+                })*/
             },
 
             //funcionalidades del layout
             invokeModal: function(e){
+               // this.unidadesModal.reset();
                 this.unidadesModal.show(this.unidadesDialog);
                 console.log("entrando");
                 $('#modal-unidades').modal();
                 console.log("saliendo");
+            },
+
+            clickUnidades:function(e){
+                if(this.elementoClickeado){
+                    $(this.elementoClickeado).css({
+                        "background": "",
+                        "color": "",
+                        "border": ""
+                    });
+                }
+                var clickedElement=$(e.currentTarget);
+                var children = clickedElement.find('> ul > li');
+                if (children.is(":visible")) children.hide('fast');
+                else children.show('fast');
+                e.stopPropagation();
+                this.unidadClicked.unidadId=clickedElement.find('input:first').val();
+                this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
+                console.log(this.unidadClicked);
+                this.elementoClickeado=$(e.currentTarget).find('a:first').css({
+                    "background": "#c8e4f8",
+                    "color": "#000",
+                    "border": "1px solid #94a0b4"
+                });
             },
 
             habilitarydeshabilitarReportes:function(){
@@ -125,17 +157,18 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
                };
             },
 
-            cambioUnidad: function(e){
+          cambioUnidad: function(e){
+
                 this.servidoresSeleccionados= [];
                 var self=this;
-                this.unidadSelected = this.unidadesDialog.unidadClicked;
+                this.unidadSelected = this.unidadClicked;
                 console.log("Cambio unidad: "+this.unidadSelected.unidadDesc);
-                this.origenesSelectView.fetchOrigenes(this.unidadSelected.unidadId,function(){
+                /*this.origenesSelectView.fetchOrigenes(this.unidadSelected.unidadId,function(){
                     console.log(self.origenesSelectView.collection);
                     $("#origen").val(self.origenesSelectView.collection.at(0).get("origenCodigo"));
                     $("#origen_pago").val(self.origenesSelectView.collection.at(0).get("origenCodigo"));
-                });
-                var fetch=this.planillasCASSelectView.fetchPlanillasCAS(this.anio, this.mes, this.unidadSelected.unidadId);
+                });*/
+                /*var fetch=this.planillasCASSelectView.fetchPlanillasCAS(this.anio, this.mes, this.unidadSelected.unidadId);
                 fetch.done(function(){
                     self.planillaCASSelected= $("#select-planillasCAS").val();
                     $("#anio").val($('#select-anio').val());
@@ -163,14 +196,14 @@ define(["app", "hbs!apps/planillas/list/templates/planillasLayout","apps/planill
 
                         };
                     });
-                });
+                });*/
                 $('#modal-unidades').modal('hide');
                 $('#desc-unidad').text(this.unidadSelected.unidadDesc);
                 $("#uddesc").val(this.unidadSelected.unidadDesc);
                 $("#uddesc_pago").val(this.unidadSelected.unidadDesc);
                 $("#unidadId").val(this.unidadSelected.unidadId);
                 $("#unidadId_pago").val(this.unidadSelected.unidadId);
-                this.habilitarydeshabilitarReportes();
+               // this.habilitarydeshabilitarReportes();
             },
 
             seleccionarTodosLosServidores:function(){

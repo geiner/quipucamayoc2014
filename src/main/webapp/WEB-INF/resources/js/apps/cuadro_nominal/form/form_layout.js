@@ -277,7 +277,7 @@ define(['app',
 
                                     }
 
-                                    $('#nom_depen').text(self.unidadSelected.unidadDesc);
+                                    $('#nom_depen2').text(self.unidadSelected.unidadDesc);
                                 })
 
                             });
@@ -519,7 +519,7 @@ define(['app',
 
                                 }
 
-                                $('#nom_depen').text(self.unidadSelected.unidadDesc);
+                                $('#nom_depen2').text(self.unidadSelected.unidadDesc);
                             } )
 
                         }) ;
