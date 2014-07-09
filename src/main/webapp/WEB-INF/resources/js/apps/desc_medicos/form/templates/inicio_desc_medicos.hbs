@@ -88,7 +88,8 @@
                     <hr>
                     <div class="form-actions" id="footer_med" style="text-align:center;display:none;">
                         <button type="submit" class="btn btn-primary left" id="save_med">Guardar</button>
-                        <button type="reset" class="btn btn-default left" id="cancel_med">Cancelar</button>
+                        <button type="reset" class="btn btn-default left" id="cancel_med">Limpiar</button>
+                        <button type="button" class="btn btn-default left" id="nuevo_med">Nuevo</button>
                     </div>
                     <div class="form-actions" id="act_med" style="text-align:center;display:none;">
                         <button type="submit" class="btn btn-primary left" id="update_med">Actualizar</button>
@@ -291,3 +292,8 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    $(function(){
+        $("#citt").validXtrem('-abcdefghijklmnñopqrstuvwxyzáéiou1234567890');
+    });
+</script>
