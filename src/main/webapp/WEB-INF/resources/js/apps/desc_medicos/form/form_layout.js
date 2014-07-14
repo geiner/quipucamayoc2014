@@ -154,6 +154,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                     var dnis = "";
                     if (this.servidoresSeleccionados.length == 0) {
                         $("#descMed_message").removeClass("alert-success");
+                        $("#descMed_message").removeClass("alert-danger");
                         $("#descMed_message").addClass("alert-warning");
                         $("#descMed_message").html("<strong>debe seleccionar al menos un DNI</strong>");
                         $("#descMed_message").show();
@@ -248,6 +249,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
 
                             if ($("#tipo_lic").val() ==0) {
                                 $("#descMed_message").removeClass("alert-success");
+                                $("#descMed_message").removeClass("alert-danger");
                                 $("#descMed_message").addClass("alert-warning");
                                 $("#descMed_message").html("<strong>Seleccione Tipo de Licencia</strong>");
                                 $("#descMed_message").show();
@@ -313,12 +315,14 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                                     $("#act_med").hide();
 
                                     $("#descMed_message").removeClass("alert-warning");
+                                    $("#descMed_message").removeClass("alert-danger");
                                     $("#descMed_message").addClass("alert-success");
                                     $("#descMed_message").html("<strong>Se actualizó con éxito el Descanso Médico</strong>");
                                     $("#descMed_message").show();
 
                                 } else {
                                     $("#descMed_message").removeClass("alert-success");
+                                    $("#descMed_message").removeClass("alert-danger");
                                     $("#descMed_message").addClass("alert-warning");
                                     $("#descMed_message").html("<strong>Fechas Incorrectas</strong>");
                                     $("#descMed_message").show();
@@ -326,6 +330,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                             }
                         }else {
                             $("#descMed_message").removeClass("alert-success");
+                            $("#descMed_message").removeClass("alert-danger");
                             $("#descMed_message").addClass("alert-warning");
                             $("#descMed_message").html("<strong>Campos Obligatorios Incompletos</strong>");
                             $("#descMed_message").show();
@@ -333,6 +338,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
 
                     } else {
                         $("#descMed_message").removeClass("alert-warning");
+                        $("#descMed_message").removeClass("alert-success");
                         $("#descMed_message").addClass("alert-danger");
                         $("#descMed_message").html("<strong>Las fechas ingresadas se cruzan alguna de sus licencias</strong>");
                         $("#descMed_message").show();
@@ -597,31 +603,36 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                     var fechaFin = 365 * anioF + 30 * mesF + diaF;
 
                     mesactual=mesI;
-                    while(mesactual != mesF){
-                        if (mesactual == 4 || mesactual == 6 || mesactual == 9 || mesactual == 11){
-                            diasdelmes = 30;
-                        }else{
-                            if (mesactual == 2){
-                                diasdelmes = 28;
-                            } else{
-                                diasdelmes = 31;
-                            }
-                        };
+                    if((mesF-mesI)>0){
+                        while(mesactual != mesF){
+                            if (mesactual == 4 || mesactual == 6 || mesactual == 9 || mesactual == 11){
+                                diasdelmes = 30;
+                            }else{
+                                if (mesactual == 2){
+                                    diasdelmes = 28;
+                                } else{
+                                    diasdelmes = 31;
+                                }
+                            };
 
-                        if(mesactual==mesI){
-                            tiempo=tiempo+((diasdelmes-diaI)+1);
-                        }else{
+                            if(mesactual==mesI){
+                                tiempo=tiempo+((diasdelmes-diaI)+1);
+                            }else{
                                 tiempo=tiempo+diasdelmes;
-                        };
+                            };
 
-                        if(mesactual==12){
-                            mesactual=1;
-                            anioI=anioI+1;
-                        }else{
-                            mesactual=mesactual+1;
+                            if(mesactual==12){
+                                mesactual=1;
+                                anioI=anioI+1;
+                            }else{
+                                mesactual=mesactual+1;
+                            }
                         }
+                        tiempo=tiempo+diaF;
+                    }else{
+                        tiempo=(diaF-diaI)+1;
                     }
-                    tiempo=tiempo+diaF;
+
                     console.log(tiempo+" este es el tiempo");
 
                     if ($("#citt").val() != "") {
@@ -706,18 +717,21 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
 
 
                                                         $("#descMed_message").removeClass("alert-warning");
+                                                        $("#descMed_message").removeClass("alert-danger")
                                                         $("#descMed_message").addClass("alert-success");
                                                         $("#descMed_message").html("<strong>Se registró con éxito el Descanso Médico</strong>");
                                                         $("#descMed_message").show();
                                                     }
                                                     else {
                                                         $("#descMed_message").removeClass("alert-success");
+                                                        $("#descMed_message").removeClass("alert-danger")
                                                         $("#descMed_message").addClass("alert-warning");
                                                         $("#descMed_message").html("<strong>Fechas Incorrectas</strong>");
                                                         $("#descMed_message").show();
                                                     }
                                                 }else{
                                                     $("#descMed_message").removeClass("alert-warning");
+                                                    $("#descMed_message").removeClass("alert-success")
                                                     $("#descMed_message").addClass("alert-danger");
                                                     $("#descMed_message").html("<strong>Esta permitido un maximo de 30 dias para las licencias por enfermedad</strong>");
                                                     $("#descMed_message").show();
@@ -843,18 +857,21 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                                 }
                             }else{
                                 $("#descMed_message").removeClass("alert-success");
+                                $("#descMed_message").removeClass("alert-danger");
                                 $("#descMed_message").addClass("alert-warning");
                                 $("#descMed_message").html("<strong>debe llenar la fecha final</strong>");
                                 $("#descMed_message").show();
                             }
                         }else{
                             $("#descMed_message").removeClass("alert-success");
+                            $("#descMed_message").removeClass("alert-danger");
                             $("#descMed_message").addClass("alert-warning");
                             $("#descMed_message").html("<strong>debe llenar la fecha de inicio</strong>");
                             $("#descMed_message").show();
                         }
                     }else{
                         $("#descMed_message").removeClass("alert-success");
+                        $("#descMed_message").removeClass("alert-danger");
                         $("#descMed_message").addClass("alert-warning");
                         $("#descMed_message").html("<strong>El campo obligatorio CITT no ha sido ingresado</strong>");
                         $("#descMed_message").show();
