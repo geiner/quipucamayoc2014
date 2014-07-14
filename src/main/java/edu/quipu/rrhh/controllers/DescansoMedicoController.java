@@ -74,4 +74,14 @@ public class DescansoMedicoController {
 
     }
 
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/citts/{citt}")
+    @ResponseBody
+    public List<DescansoMedico> buscarCitts(@PathVariable(value = "citt") String citt){
+        System.out.println("controller citt");
+        System.out.println(citt);
+        List<DescansoMedico> des=descansoservice.buscarCitt(citt);
+        System.out.println(des.size()+" --- ///");
+        return descansoservice.buscarCitt(citt);
+    }
+
 }

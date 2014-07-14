@@ -252,5 +252,10 @@ public class DescansoServiceImpl implements DescansoService {
         return descansoMapper.buscarAcumulado(codigo, numserest);
     }
 
+    @Override
+    public List<DescansoMedico> buscarCitt(String citt) {
+        return descansoMapper.buscarCitt(citt);
+    }
+
 
 }
