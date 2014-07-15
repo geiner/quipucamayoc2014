@@ -7,7 +7,6 @@ public class PlazaCAP {
 
 
     private Integer cod_plaza;//
-
     private Integer id_depend;
     private String est_plaza;//
     private String nom_estruc;//
@@ -19,9 +18,11 @@ public class PlazaCAP {
     private String fech_ing;//
     private String fech_sal;//
     private String ser_mod;//
-
-
+    private Integer año;
     private String subDep;
+    private Integer cod_est_plaza;
+
+
 
     public Integer getId_depend() {
         return id_depend;
@@ -119,14 +120,29 @@ public class PlazaCAP {
         this.ser_mod = ser_mod;
     }
 
-
-
-
     public String getSubDep() {
         return subDep;
     }
 
     public void setSubDep(String subDep) {
         this.subDep = subDep;
+    }
+
+
+    public Integer getAño() {
+        return año;
+    }
+
+    public void setAño(Integer año) {
+        this.año = año;
+    }
+
+
+    public Integer getCod_est_plaza() {
+        return cod_est_plaza;
+    }
+
+    public void setCod_est_plaza(Integer cod_est_plaza) {
+        this.cod_est_plaza = cod_est_plaza;
     }
 }

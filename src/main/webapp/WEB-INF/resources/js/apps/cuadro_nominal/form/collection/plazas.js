@@ -6,9 +6,9 @@ define( ['backbone', 'apps/cuadro_nominal/form/model/plaza'] , function (Backbon
         model: PlazaCAP,
 
 
-        setUrlPlazasPorDependencia: function(codDependencia){
+        setUrlPlazasPorDependencia: function(codDependencia,anioPlaza){
 
-            this.url= 'api/cuadro_nominal/plazas/'+codDependencia;
+            this.url= 'api/cuadro_nominal/plazas/'+codDependencia+"/"+anioPlaza;
 
         }
 

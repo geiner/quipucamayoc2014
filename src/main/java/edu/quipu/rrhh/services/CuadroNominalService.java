@@ -11,7 +11,13 @@ public interface CuadroNominalService {
 
     List<Servidor> servidoresPorDepen(String codDep);
 
+
+    List<PlazaCAP> plazasPorDepen(String codDep, Integer anioPlaza);
+
+    /*
     List<PlazaCAP> plazasPorDepen(String codDep);
+
+    */
 
     public void addPlazaNominal(AsigCuadroNominal obj);
 
@@ -28,10 +34,11 @@ public interface CuadroNominalService {
     List<ModalidadAsignacion> allModalidad();
 
 
-
-
     List<Origen> obtenerDependenciaUsuario(String emailUsuario);
 
 
+    List<PlazaCAP> añoPlazas();
+
+    List<EncabezadoDepySubDep> obtenerDepySubDep(String codDep);
 
 }

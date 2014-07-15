@@ -346,6 +346,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     alert("nombre:"+clickedElement.children(':nth-child(1)').text()+" estado:"+clickedElement.children(':nth-child(5)').text()+" categoria:"+clickedElement.attr("data"));
 */
                     this.codigo=clickedElement.attr("id");
+
+                    var codEst=clickedElement.attr("data1");
                     this.numserest=clickedElement.children(':nth-child(7)').text();
                     this.ti=clickedElement.children(':nth-child(4)').text();
 
@@ -375,6 +377,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $('#catito').val(cat);
                     $('#estito').val(est);
 
+                    $("#est").val(codEst);
                     $('#estado_condicion-modal1').modal('hide');
 
                     //$('#cargando').fadeOut("slow");

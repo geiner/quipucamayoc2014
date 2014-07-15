@@ -1,6 +1,4 @@
-<legend id="desc">Dependencia: <span id="nom_depen2"></span> </legend>
-
-
+<legend id="desc">Dependencia: <span id="nom_encabezado_plazas"></span> </legend>
 
 
 <table   id="tabla_plazas" class="table  table-bordered table-hover " style="font-size: 10px;">
@@ -43,15 +41,15 @@
                                       <td>{{fech_sal}} </td>
                                       <td> {{ser_mod}}</td>
                                       <td>
-                                         <button  id="botonCapturarDatosParaEliminarPlazaAsignada"    class="btn btn-danger btn-xs"  type="button"  data5={{cod_plaza}}  data7={{est_plaza}}>
-                                              <span  class="glyphicon glyphicon-trash"></span>
+                                         <button  id="botonCapturarDatosParaEliminarPlazaAsignada"    class="btn btn-danger btn-xs"  type="button"  codPlaza={{cod_plaza}}    cod_est_plaza={{cod_est_plaza}} >
+                                              <span  class="glyphicon glyphicon-minus-sign"></span>
                                          </button>
 
                                       </td>
 
                                       <td>
-                                         <button id="botonBuscarServidores" class="btn btn-primary btn-xs" type="button"  data5={{cod_plaza}}   data6={{nom_estruc}}   data7={{est_plaza}}   >
-                                             <span class="glyphicon glyphicon-search"></span>
+                                         <button id="botonBuscarServidores" class="btn btn-primary btn-xs" type="button"  cod_plaza={{cod_plaza}}      cod_est_plaza={{cod_est_plaza}}   >
+                                             <span class="glyphicon glyphicon-plus-sign"></span>
                                          </button>
                                       </td>
                                 </tr>

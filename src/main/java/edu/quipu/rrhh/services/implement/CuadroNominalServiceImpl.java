@@ -17,10 +17,25 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
 
 
 
+
+
+    @Override
+    public List<PlazaCAP> plazasPorDepen(String codDep,Integer anioPlaza) {//corregie aqui
+        return cuadroNominalMapper.plazasPorDepen(codDep,anioPlaza);
+    }
+
+
+/*
     @Override
     public List<PlazaCAP> plazasPorDepen(String codDep) {//corregie aqui
         return cuadroNominalMapper.plazasPorDepen(codDep);
     }
+
+    */
+
+
+
+
 
     @Override
     public List<Servidor> servidoresPorDepen(String codDep) {
@@ -67,5 +82,17 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
     @Override
     public List<Origen> obtenerDependenciaUsuario(String emailUsuario) {
         return cuadroNominalMapper.obtenerDependenciaUsuario(emailUsuario);
+    }
+
+
+    @Override
+    public List<PlazaCAP> añoPlazas() {
+        return cuadroNominalMapper.añoPlazas();
+    }
+
+
+    @Override
+    public List<EncabezadoDepySubDep> obtenerDepySubDep(String codDep) {
+        return cuadroNominalMapper.obtenerDepySubDep(codDep);
     }
 }

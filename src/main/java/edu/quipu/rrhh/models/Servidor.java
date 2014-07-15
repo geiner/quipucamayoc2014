@@ -42,6 +42,7 @@ public class Servidor implements Serializable {
     private Integer codNacprov;
     private Integer codNacditr;
     private String estado;
+    private Integer codEst;
     private String cesantia;
     private String tipoServicio;
     private String estadoTrabaActual;
@@ -49,6 +50,14 @@ public class Servidor implements Serializable {
     private String categoria;
     private String abv_est;
     private String abv_tip_ser;
+
+    public Integer getCodEst() {
+        return codEst;
+    }
+
+    public void setCodEst(Integer codEst) {
+        this.codEst = codEst;
+    }
 
     public String getAbv_est() {
         return abv_est;

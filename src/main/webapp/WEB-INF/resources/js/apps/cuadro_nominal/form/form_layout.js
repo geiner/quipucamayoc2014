@@ -12,31 +12,31 @@ define(['app',
 
         "apps/cuadro_nominal/form/view/depenUsuario",
 
+       "apps/cuadro_nominal/form/view/modalidadAsignacion",
+
+        "apps/cuadro_nominal/form/view/anioPlazas",
+
+        "apps/cuadro_nominal/form/view/DepySubDep",
+
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
         "lib/avgrund",
         "bootstrap"],
+
     function (ErzaManager,
               layoutTpl,
               TablaModalServidores,
               advIncAddAsignacion,
               advIncEliAsignacion,
               eliminarAsignacionView,
-
-
-            //  TablaModalDependencias,
-
-
-
               addAsignacion,
               deleteAsignacion,
               plazasView,
-
-
               UnidadesDialogView,
-
-
               depenUsuarioView,
+              modalidadAsignacionView,
+              anioPlazasView,
+              depySubDepView,
 
 
               datePicker) {
@@ -47,46 +47,40 @@ define(['app',
                 template: layoutTpl,
 
                 modalServidoresPorDependenciaView: new TablaModalServidores(),
-
-
-                //arbolDependenciasView:new TablaModalDependencias(),
-
-
-
                 plazasCAPView: new plazasView(),
                 modalAdverIncAddView: new advIncAddAsignacion(),
                 modalAdverInconsistenciaEliminarAsigView: new advIncEliAsignacion(),
                 modalEliminarAsignacionView: new eliminarAsignacionView(),
-
-
-
                 unidadesDialog: new UnidadesDialogView(),
-
-
                 depenUsuarioView: new depenUsuarioView(),
+                modalidadAsignacionView:new   modalidadAsignacionView(),
+                anioPlazasView: new anioPlazasView(),
+                depySubDepView: new depySubDepView(),
 
 
 
 
-
-
-                cod_Servidor:"Ninguno",
-                codPlaza:0,
 
                 unidadSelected: {
                     unidadId:10225,
                     unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
                 },
-                codDep:0,
-                codSer:0,
-                numserest:0,
 
+
+                codPlaza:0,
+                añoPlazas:0,
+
+                codDepServidores:0,
 
                 depUsuario:"Ninguno",
                 perfilUsuario:"Ninguno",
+                encabezado:"Ninguno",
 
 
-                estadoPlaza:"ninguno",
+
+
+
+
 
                 regions: {
                     "servidoresModalHtml": "#modalServidores",
@@ -95,13 +89,9 @@ define(['app',
                     "advertenciaInconsistenciaAddAsignacionHtml": "#advertenciaInconsistenciaAgregarAsignacion",
                     "advertenciaInconsistenciaDelAsignacionHtml": "#advertenciaInconsistenciaEliminarAsignacion",
                     "eliminarAsignacionHtml": "#modalEliminarAsignacion",
-
-
-
-
-                    unidadesModal: "#modal-unidadesMio"
-
-
+                    unidadesModal: "#modal-unidadesMio",
+                    modalidadAsignacionAHtml:"#id_modalidades",
+                    anioPlazasAHtml:"#anioPlazas"
 
                 },
 
@@ -110,22 +100,14 @@ define(['app',
                     "dblclick #table-servidores_asis > tbody > tr ": "seleccionarServidor",
                     "click #botonBuscarServidores": "mostrarServidoresPorDependencia",
                     "click #botonCapturarDatosParaEliminarPlazaAsignada": "capturarDatosParaEliminarPlazaAsignada",
-
-
-                   // "click #botonMostrarArbolDeDependencias":"mostrarArbolDependencias",
-
-
-
                     "click #boton-unidadMio":"seleccionarUnidad",//************
                     "click #botonMostrarFechaInicial": "mostrarFechaInicial",
                     "click #botonLimpiarFechaInicial": "limpiarFechaInicial",
                     "click #botonAceptarEliminarPlazaAsignada": "eliminarPlazaAsignada",
                     "click #botonMostrarFechaFinal": "mostrarFechaFinal",
                     "click #botonLimpiarFechaFinal": "limpiarFechaFinal",
-
-
-
-                    "click #a-modalMio":"invokeModalMio"
+                    "click #a-modalMio":"invokeModalMio",
+                    "change #anio_plazas": "cambiarAlertaAnio"
 
                 },
 
@@ -133,10 +115,10 @@ define(['app',
                 onRender: function () { //Para cargar html mas no data
                     this.initialFetch();
 
-                  //  this.modalidadAsignacionAHtml.show(this.modalidadAsignacionView);
+                    this.modalidadAsignacionAHtml.show(this.modalidadAsignacionView);
+                    this.anioPlazasAHtml.show(this.anioPlazasView);
 
                 },
-
 
 
                 initialize: function () {
@@ -148,73 +130,92 @@ define(['app',
 
                     });
 
-
                 },
 
 
                 initialFetch: function () { //Para cargar la data en la vista
-                  // this.tablaModalServidoresVista.TodosServidores(); ORIGINAL
 
-
+                    this.modalidadAsignacionView.mostrarModalidades();
+                    this.anioPlazasView.mostrarAnioPlazas();
                 },
 
 
 
 
-                //funcionalidades del layout
+
                 invokeModalMio: function(e){
 
-                    //var codDep="F0620";
+                    if ($('#anio_plazas').val() ==99) {
+                        $('#advertenciaAnioPlaza').html("<strong>Por favor, seleccione un año</strong>");
+                        $('#advertenciaAnioPlaza').show();
+                    } else {
 
-                    var emailUsuario=$('#email').text();
-                    console.log("Este es el usuario:"+emailUsuario);
-                    var rolUsuario=$('#id_rol').text();
-                    console.log("Este es el usuario:"+rolUsuario);
+                        var emailUsuario=$('#email').text();
+                        console.log("Este es el usuario:"+emailUsuario);
+                        var rolUsuario=$('#id_rol').text();
+                        console.log("Este es el usuario:"+rolUsuario);
+
+                        var self=this;
+                        this.depenUsuarioView.mostrarDependenciaUsuario(emailUsuario,function () {
+                            if(self.depenUsuarioView.collection.length!=0){
+
+                                var depUsu= self.depenUsuarioView.collection.at(0).get("origenCodigo");
+                                var perfUsu= self.depenUsuarioView.collection.at(0).get("origenDescripcion");
+
+                                self.depUsuario=depUsu;
+                                self.perfilUsuario=perfUsu;
+
+                            }
+
+                            self.unidadesDialog.initialize(self.depUsuario,self.perfilUsuario);
+                            self.unidadesModal.show(self.unidadesDialog);
+                            $('#modal-unidadesMio').modal();
+
+                        });
+
+                    }
 
 
-                    var self=this;
-                    this.depenUsuarioView.mostrarDependenciaUsuario(emailUsuario,function () {
-                        if(self.depenUsuarioView.collection.length!=0){
+                  /*
 
-                            var valor= self.depenUsuarioView.collection.at(0).get("origenCodigo");
-                            var valor2= self.depenUsuarioView.collection.at(0).get("origenDescripcion");
+                    if ($('#anio_plazas').val() ==99) {
+                        $('#advertenciaAnioPlaza').html("<strong>Por favor, seleccione un año</strong>");
+                        $('#advertenciaAnioPlaza').show();
+                    } else {
 
-                           // console.log("Este es el valor dentro del bucle: "+valor);
-                            this.depUsuario=valor;
-                            this.perfilUsuario=valor2;
+                        var emailUsuario=$('#email').text();
+                        console.log("Este es el usuario:"+emailUsuario);
+                        var rolUsuario=$('#id_rol').text();
+                        console.log("Este es el usuario:"+rolUsuario);
 
-                           // console.log("Este es el valor dentro del constructor de variable global: "+this.depUsuario);
+                        var self=this;
+                        this.depenUsuarioView.mostrarDependenciaUsuario(emailUsuario,function () {
+                            if(self.depenUsuarioView.collection.length!=0){
 
-                        }
+                                var depUsu= self.depenUsuarioView.collection.at(0).get("origenCodigo");
+                                var perfUsu= self.depenUsuarioView.collection.at(0).get("origenDescripcion");
 
-                        //console.log("Este es el valor dentro del constructor de variable global: "+this.depUsuario);
+                                this.depUsuario=depUsu;
+                                this.perfilUsuario=perfUsu;
 
-                        self.unidadesDialog.initialize(this.depUsuario,this.perfilUsuario);
+                                console.log("Perfil usuario origen:"+this.perfilUsuario);
 
-                    });
+                            }
 
-                 //  console.log("Este es el valor en el metodo: "+this.depUsuario);
+                            self.unidadesDialog.initialize(this.depUsuario,this.perfilUsuario);
+                            self.unidadesModal.show(self.unidadesDialog);
+                            $('#modal-unidadesMio').modal();
 
-                    //this.unidadesDialog.initialize(codDep);
-                    this.unidadesModal.show(this.unidadesDialog);
-                    $('#modal-unidadesMio').modal();
+                        });
+
+                    }
+
+                    */
 
 
                 },
 
 
-
-
-               /*
-                mostrarArbolDependencias:function(){
-
-                    this.arbolDependenciasHtml.show(this.arbolDependenciasView);
-                    $("#modalDependencias").modal("show");
-
-                },
-
-
-                */
 
 
 
@@ -223,50 +224,40 @@ define(['app',
                     var self=this;
                     var clickedElement=$(e.currentTarget);
                     var cod=clickedElement.children(':nth-child(1)').text();
-                    this.codSer=cod;
                     var numserest=clickedElement.children(':nth-child(2)').text();
-                    this.numserest=numserest;
-
-                    if(this.codSer!="No existen servidores para esta dependencia") {
 
 
-                        console.log("Esto:" + this.codSer);
+                    if(cod!="No existen servidores para esta dependencia") {
 
                         if ($('#fechaInicial').val() == "") {
+
                             $('#advertenciaFechaInicial').html("<strong>Por favor, ingrese la fecha inicial</strong>");
                             $('#advertenciaFechaInicial').show();
+
                         } else {
 
                             self.model.get("addServidorAPlaza").set({
-
                                 "codPlaza": this.codPlaza,
-                                "codServidor": this.codSer,
-                                "numserest": this.numserest,
+                                "codServidor": cod,
+                                "numserest": numserest,
                                 "fechIng": $('#fechaInicial').val(),
                                 "fechSal": $('#fechaFinal').val(),
                                 "modSer": $('#modalidad').val()
                             });
+
 
                             this.model.get("addServidorAPlaza").url = "api/cuadro_nominal/addSerCuadroNominal";
 
                             var self_s = this.model.get("addServidorAPlaza").save({}, {wait: true});
 
                             self_s.done(function () {
-                                self.plazasCAPView.mostrarPlazasSegunDependencias(this.unidadSelected.unidadId, function () {
-                                    if (self.plazasCAPView.collection.length != 0) {
-                                        $("#tabla_plazas").dataTable();
-                                        $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
-                                        $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                        $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                                        $('.dataTables_filter input').addClass('buscador');
-                                        $('.dataTables_filter input').attr('placeholder', 'Buscar..');
-                                    }
-                                })
+
+
                             });
 
-
                             self_s.fail(function () {
-                                self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId, function () {
+
+                                self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
                                     if (self.plazasCAPView.collection.length != 0) {
                                         $("#tabla_plazas").dataTable();
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
@@ -277,17 +268,15 @@ define(['app',
 
                                     }
 
-                                    $('#nom_depen2').text(self.unidadSelected.unidadDesc);
+                                    $('#nom_encabezado_plazas').text(self.encabezado);
+
                                 })
 
                             });
 
                             $('#modalServidores').modal("hide")
                         }
-
-
                     }
-
                 },
 
 
@@ -306,49 +295,45 @@ define(['app',
                 } ,
 
 
+
+
+
                 limpiarFechaInicial:function(ev){
 
                     $("#fechaInicial").val("");
                 } ,
 
 
-/*
-                mostrarFechaFinal:function(ev){
-                    var formatoFecha= $('#fechaFinal');
-
-                    formatoFecha.datepicker({
-                        format: 'dd/mm/yyyy',
-                        viewMode: 2
-                    });
-
-                    formatoFecha.datepicker('show');
-                } ,
-
-
-
-                limpiarFechaFinal:function(ev){
-
-                    $("#fechaFinal").val("");
-                } ,
-*/
 
 
 
                 mostrarServidoresPorDependencia: function (ev) {
+
                     var self = this;
                     var clickedElement = $(ev.currentTarget);
-                    this.codPlaza=clickedElement.attr('data5');
-                    this.cod_Servidor=clickedElement.attr('data6');
-                    this.estadoPlaza=clickedElement.attr('data7');
+                    this.codPlaza=clickedElement.attr('cod_plaza');
+                    var  cod_est_plaza=clickedElement.attr('cod_est_plaza');
 
-                    if(this.estadoPlaza=="VACANTE"){
-                        self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.unidadSelected.unidadId,function(){
+
+                    if(cod_est_plaza==3 || cod_est_plaza==5){
+
+                       // console.log("Este codigo importante: "+this.codDepServidores);
+
+                        //this.unidadSelected.unidadId
+
+                        console.log("Dependencia usuario destino:"+this.perfilUsuario);
+                        console.log("Perfil usuario destino:"+this.depUsuario);
+
+                        self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores,function(){
+
                                 $("#table-servidores_asis").dataTable();
                                 $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
                                 $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                 $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                 $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
                             }
+
                         );
 
                         self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
@@ -364,28 +349,136 @@ define(['app',
 
 
 
+
+
+
                 seleccionarUnidad:function(){
 
-                    $('  #modal-unidadesMio').modal('hide');
+                   $('#modal-unidadesMio').modal('hide');
 
-                    this.unidadSelected = this.unidadesDialog.unidadClicked;
-                    $('#nom_depen1').text(this.unidadSelected.unidadId);
+                   this.unidadSelected = this.unidadesDialog.unidadClicked;
+                   //$('#nom_depen1').text(this.unidadSelected.unidadId);// para probar
 
-                    $('#codigoDependencia').val(this.unidadSelected.unidadId);
-                    $('#usuarioCN').val($('#email').text());
-                    $('#nom_depen').val(this.unidadSelected.unidadDesc);
+                   $('#codigoDependencia').val(this.unidadSelected.unidadId);
+                   $('#usuarioCN').val($('#email').text());
+                   //$('#nom_depen').val(this.unidadSelected.unidadDesc);
+                   $('#anio').val($('#anio_plazas').val());
+                   $('#form_reporteCN').show();
 
-                    $('#form_reporteCN').show();
+                    this.añoPlazas=$('#anio_plazas').val();
 
-
-                    console.log("Este es el usuario:"+$('#email').text());
-                    console.log("Este es el usuario:"+$('#id_rol').text());
-
+                    var nombreEncabezado = " ";
+                    var codigoDependencia=" ";
 
 
                     var self=this;
-                    this.plazasCAPView.mostrarPlazasSegunDependencias( this.unidadSelected.unidadId,function () {
+
+                    this.depySubDepView.obtenerEncabezado(this.unidadSelected.unidadId,function () {
+
+                            if (self.depySubDepView.collection.length != 0  &&  self.depySubDepView.collection.length == 2) {
+
+                                //console.log("Cantidad de filas: " + self.depySubDepView.collection.length);
+
+                                var fila1_ud_id_h = self.depySubDepView.collection.at(0).get("ud_id_hijo");
+                                var fila1_ud_cod_h = self.depySubDepView.collection.at(0).get("ud_cod_hijo");
+                                var fila1_ud_dsc_h = self.depySubDepView.collection.at(0).get("ud_dsc_hijo");
+                                var fila1_ud_id_p = self.depySubDepView.collection.at(0).get("ud_id_padre");
+                                var fila1_ud_cod_p = self.depySubDepView.collection.at(0).get("ud_cod_padre");
+                                var fila1_ud_dsc_p = self.depySubDepView.collection.at(0).get("ud_dsc_padre");
+
+                                var fila2_ud_id_h = self.depySubDepView.collection.at(1).get("ud_id_hijo");
+                                var fila2_ud_cod_h = self.depySubDepView.collection.at(1).get("ud_cod_hijo");
+                                var fila2_ud_dsc_h = self.depySubDepView.collection.at(1).get("ud_dsc_hijo");
+                                var fila2_ud_id_p = self.depySubDepView.collection.at(1).get("ud_id_padre");
+                                var fila2_ud_cod_p = self.depySubDepView.collection.at(1).get("ud_cod_padre");
+                                var fila2_ud_dsc_p = self.depySubDepView.collection.at(1).get("ud_dsc_padre");
+
+                                var primerCaracter = fila1_ud_cod_h.substring(0, 1);
+                                var cantidadCaracteres = fila1_ud_cod_h.length;
+
+                                console.log("Fila 1: " + fila1_ud_id_h + " " + fila1_ud_cod_h + " " + fila1_ud_dsc_h + " " + fila1_ud_id_p + " " + fila1_ud_cod_p + " " + fila1_ud_dsc_p);
+                                console.log("Fila 2: " + fila2_ud_id_h + " " + fila2_ud_cod_h + " " + fila2_ud_dsc_h + " " + fila2_ud_id_p + " " + fila2_ud_cod_p + " " + fila2_ud_dsc_p);
+
+
+                                if (primerCaracter == "F" && cantidadCaracteres > 5) {
+
+                                    nombreEncabezado = fila1_ud_dsc_p + " - " + fila1_ud_dsc_h;
+                                    codigoDependencia=fila1_ud_id_p;
+
+
+                                }else{
+
+                                    if (primerCaracter == "F" && cantidadCaracteres == 5) {
+
+                                        nombreEncabezado = fila2_ud_dsc_h;
+                                        codigoDependencia=fila1_ud_id_p;
+
+
+
+                                    }else{
+
+                                        if (primerCaracter != "F" && cantidadCaracteres > 3) {
+
+                                            nombreEncabezado = fila2_ud_dsc_p + " - " + fila2_ud_dsc_h;
+                                            codigoDependencia=fila2_ud_id_p;
+
+                                        }
+
+                                    }
+
+                                }
+
+                                self.encabezado=nombreEncabezado;
+                                self.codDepServidores=codigoDependencia;
+
+                            }
+
+
+                           if(self.depySubDepView.collection.length != 0  &&  self.depySubDepView.collection.length == 1){
+
+                            var fila1_ud_id_h = self.depySubDepView.collection.at(0).get("ud_id_hijo");
+                            var fila1_ud_cod_h = self.depySubDepView.collection.at(0).get("ud_cod_hijo");
+                            var fila1_ud_dsc_h = self.depySubDepView.collection.at(0).get("ud_dsc_hijo");
+                            var fila1_ud_id_p = self.depySubDepView.collection.at(0).get("ud_id_padre");
+                            var fila1_ud_cod_p = self.depySubDepView.collection.at(0).get("ud_cod_padre");
+                            var fila1_ud_dsc_p = self.depySubDepView.collection.at(0).get("ud_dsc_padre");
+
+
+                            var primerCaracter = fila1_ud_cod_h.substring(0, 1);
+                            var cantidadCaracteres = fila1_ud_cod_h.length;
+
+                            console.log("Fila 1: " + fila1_ud_id_h + " " + fila1_ud_cod_h + " " + fila1_ud_dsc_h + " " + fila1_ud_id_p + " " + fila1_ud_cod_p + " " + fila1_ud_dsc_p);
+
+                            if (primerCaracter == "F" && cantidadCaracteres == 3) {
+
+                                nombreEncabezado = fila1_ud_dsc_p;
+                                codigoDependencia=fila1_ud_id_p;
+
+                            }else{
+
+                                if (primerCaracter != "F" && cantidadCaracteres == 3) {
+
+                                    nombreEncabezado = fila1_ud_dsc_p;
+                                    codigoDependencia=fila1_ud_id_p;
+
+                                }
+
+                            }
+
+                            self.encabezado=nombreEncabezado;
+                            self.codDepServidores=codigoDependencia;
+
+                        }
+
+                      $('#nom_depen').val(nombreEncabezado);
+
+                    });
+
+
+                    this.plazasCAPView.mostrarPlazasSegunDependencias(this.unidadSelected.unidadId,this.añoPlazas,function () {
                         if(self.plazasCAPView.collection.length!=0){
+
+                            //var valor= self.plazasCAPView.collection.at(0).get("nom_estruc");
 
                             $("#tabla_plazas").dataTable();
                             $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
@@ -395,69 +488,14 @@ define(['app',
                             $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                         }
-                        $('#nom_depen2').text(self.unidadSelected.unidadDesc);
+
+                        $('#nom_encabezado_plazas').text(self.encabezado);
 
                     });
 
-
-
                     this.tablaPlazasHtml.show(this.plazasCAPView) ;
+
                 },
-
-
-                /*
-                seleccionarUnidad:function(){
-
-                    $('#modalDependencias').modal('hide');
-                    this.unidadSelected = this.arbolDependenciasView.unidadClicked;
-                    $('#nom_depen1').text(this.unidadSelected.unidadId);
-
-                    $('#codigoDependencia').val(this.unidadSelected.unidadId);
-                    $('#usuarioCN').val($('#email').text());
-                    $('#nom_depen').val(this.unidadSelected.unidadDesc);
-
-                    $('#form_reporteCN').show();
-
-
-                    console.log("Este es el usuario:"+$('#email').text());
-
-
-
-                    var self=this;
-                    this.plazasCAPView.mostrarPlazasSegunDependencias( this.unidadSelected.unidadId,function () {
-                        if(self.plazasCAPView.collection.length!=0){
-                                 console.log(self.plazasCAPView.collection.at(1).get('nom_estruc'));
-                                 console.log(self.plazasCAPView.collection.at(2).get('nom_estruc'));
-                           /* $("#tabla_plazas").dataTable();
-                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
-                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                            $('.dataTables_filter input').attr('placeholder','Buscar..');
-
-                            $("#tabla_plazas").dataTable();
-
-
-                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
-                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-
-                            $('.dataTables_filter input').attr('placeholder','Buscar..');
-
-                        }
-                        $('#nom_depen2').text(self.unidadSelected.unidadDesc);
-
-                    });
-                    this.tablaPlazasHtml.show(this.plazasCAPView) ;
-                },
-
-
-*/
-
-
-
-
 
 
 
@@ -465,12 +503,14 @@ define(['app',
 
 
                 capturarDatosParaEliminarPlazaAsignada: function(ev){
+
                     var self = this;
                     var clickedElement=$(ev.currentTarget);
-                    this.codPlaza=clickedElement.attr('data5');
-                    this.estadoPlaza=clickedElement.attr('data7');
+                    this.codPlaza=clickedElement.attr('codPlaza');
+                    var  cod_est_plaza=clickedElement.attr('cod_est_plaza');
 
-                    if(this.estadoPlaza=="OCUPADO"){
+
+                    if(cod_est_plaza==4  ||  cod_est_plaza==6){
                         self.eliminarAsignacionHtml.show(self.modalEliminarAsignacionView);
                         $('#modalEliminarAsignacion').modal();
 
@@ -485,8 +525,27 @@ define(['app',
 
 
 
+
+
+                cambiarAlertaAnio: function () {
+
+                    //console.log("Entro alerta anio");
+                    $("#advertenciaAnioPlaza").hide();
+
+                   // $("#tablaPlazas").hide();
+
+                },
+
+
+
+
+
+
                 eliminarPlazaAsignada:function(){
-                    var self=this;
+
+
+                        var self=this;
+
                         this.model.get("deletePlazaAsignada").set({
 
                             "codPlaza":this.codPlaza,
@@ -496,8 +555,8 @@ define(['app',
                             "fechSal": "01/01/1900",
                             "modSer":999
 
-
                         });
+
                         this.model.get("deletePlazaAsignada").url = "api/cuadro_nominal/deleteAsignacionPlaza";
 
                         var self_s = this.model.get("deletePlazaAsignada").save({}, {wait: true});
@@ -508,7 +567,8 @@ define(['app',
 
                         self_s.fail(function(){
 
-                            self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId, function(){
+                            self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas, function(){
+
                                 if( self.plazasCAPView.collection.length!=0){
                                     $("#tabla_plazas").dataTable();
                                     $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
@@ -519,12 +579,15 @@ define(['app',
 
                                 }
 
-                                $('#nom_depen2').text(self.unidadSelected.unidadDesc);
+                                $('#nom_encabezado_plazas').text(self.encabezado);
                             } )
 
                         }) ;
+
                        Avgrund.hide();
                 }
+
+
 
 
             });

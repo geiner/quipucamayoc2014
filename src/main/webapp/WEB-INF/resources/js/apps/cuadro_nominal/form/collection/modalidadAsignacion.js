@@ -3,12 +3,9 @@ define(['backbone','apps/cuadro_nominal/form/model/modalidadAsignacion'], functi
         model: modalidad,
 
 
-        setUrlModalidades: function(){
+        // Reference to this collection's model.
 
-            this.url= 'api/cuadro_nominal/modalidad';
-
-        }
-
+        url: 'api/cuadro_nominal/modalidad'
 
 
     });

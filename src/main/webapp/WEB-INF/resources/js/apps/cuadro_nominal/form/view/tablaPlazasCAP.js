@@ -5,13 +5,24 @@ define([ 'jquery', 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templa
             template: plazasCAPTemplate,
             collection: new Plazas(),
 
-            mostrarPlazasSegunDependencias: function(codDependencia,callback){
+            mostrarPlazasSegunDependencias: function(codDependencia,anioPlaza,callback){
 
-                this.collection.setUrlPlazasPorDependencia(codDependencia)
+                this.collection.setUrlPlazasPorDependencia(codDependencia,anioPlaza)
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch().done(callback);
             }
 
+            /*
+
+             mostrarPlazasSegunDependencias: function(codDependencia,callback){
+
+             this.collection.setUrlPlazasPorDependencia(codDependencia)
+             this.collection.on("sync", this.render, this);
+             this.collection.fetch().done(callback);
+             }
+
+
+              */
         });
         return plazasCAPView;
     }

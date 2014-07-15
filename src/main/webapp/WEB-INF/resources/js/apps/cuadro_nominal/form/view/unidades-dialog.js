@@ -18,6 +18,26 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
 
 
 
+           /*
+            initialize: function(codDependencia){
+
+
+                 //this.collection.reset();// mio
+
+
+                if(this.collection.length!=0){
+
+                    console.log("Si hay elementos 30/06/2014");
+
+                }
+
+
+                this.collection.unidadesSegunUsuario(codDependencia)
+                this.collection.on("sync", this.render, this);
+                this.collection.fetch({ data: { page: 'no'} });
+
+            },*/
+
 
             initialize: function(codDependencia,perfil){
 
@@ -28,18 +48,16 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
             },
 
 
-/*
-            dependenciasSegunUsuario: function(){
-
-                this.collection.unidadesSegunUsuario("F0620")
-                this.collection.on("sync", this.render, this);
-                this.collection.fetch({ data: { page: 'no'} });
-
-            },*/
 
 
+            /*
+                        dependenciasSegunUsuario: function(){
 
+                            this.collection.unidadesSegunUsuario("F0620")
+                            this.collection.on("sync", this.render, this);
+                            this.collection.fetch({ data: { page: 'no'} });
 
+                        },*/
 
 
 

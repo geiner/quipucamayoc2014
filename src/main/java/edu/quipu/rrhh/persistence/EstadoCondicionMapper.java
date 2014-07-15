@@ -19,9 +19,11 @@ public interface EstadoCondicionMapper {
             "  DESC_CATEG         AS categoria,"+
             "  DES_TIP_SER            AS cargo, "+
             "  des_dep_cesantes            AS cesantia, "+
-            "  desc_est            AS estado, "+
-            "num_serest             as  estadoActual "+
-            "FROM DATAPERSUEL.LISTA_SERVIDOR ORDER BY SER_APE_PAT")
+            "  list_serv.desc_est            AS estado, "+
+            "  num_serest             as  estadoActual, "+
+            "  est_serv.COD_EST AS codEst "+
+            "  FROM DATAPERSUEL.LISTA_SERVIDOR list_serv INNER JOIN DATAPERSUEL.ESTADO est_serv "+
+            "  ON(list_serv.desc_est=est_serv.DESC_EST)  ORDER BY SER_APE_PAT")
     @Results(value = {
             @Result(javaType = Servidor.class),
             @Result(property = "codigo", column = "ser_cod"),
@@ -34,6 +36,7 @@ public interface EstadoCondicionMapper {
             @Result(property = "tipoServicio", column = "cargo"),
             @Result(property = "cesantia", column = "cesantia"),
             @Result(property = "estado", column = "estado") ,
+            @Result(property = "codEst", column = "codEst") ,
             @Result(property = "estadoTrabaActual", column = "estadoActual")
     })
     List<Servidor> listarServidores();
@@ -138,7 +141,7 @@ public interface EstadoCondicionMapper {
 
     //traer las resoluciones
     @Select(value = "SELECT RESTRANUM                  AS rESID, " +
-            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY') AS fECHA , " +
+            "  TO_CHAR(RESTRAFEC,'DD/MM/YYYY') AS fECHA , " +
             "  RESTRADES1                      AS dESCR, " +
             "  re.tiprescod                    AS tIPCOD, " +
             "  tipo.tipresdes                  AS tIPDESC, " +

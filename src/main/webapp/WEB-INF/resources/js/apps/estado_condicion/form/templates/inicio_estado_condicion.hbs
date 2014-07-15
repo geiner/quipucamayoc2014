@@ -38,135 +38,129 @@
     <div class="tab-pane active" id="cl">
 
         <form class="form-horizontal well">
-            <div class="row form-group">
 
-                <div class="col-md-6" >
-                    <label class="col-md-5 control-label" for="tipo">Categoria Actual</label>
-                    <div class="col-md-7">
-                        <input type="text" class="form-control" id="catito" disabled>
+            <fieldset >
+                <legend>Datos actuales</legend>
+                <div class="row form-group">
+
+                    <div class="col-md-6" >
+                        <label class="col-md-5 control-label" for="tipo">Categoria</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="catito" disabled>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label" for="tipo" >Estado</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="estito"  disabled>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+
+                    <div class="col-md-6" >
+                        <label class="col-md-5 control-label" for="tipo">Tipo</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" id="tipito"  disabled>
+                        </div>
+
                     </div>
 
                 </div>
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="tipo" >Estado Actual</label>
-                     <div class="col-md-7">
-                         <input type="text" class="form-control" id="estito"  disabled>
-                     </div>
+            </fieldset>
+
+            <br>
+            <fieldset >
+                <legend >Datos a modificar</legend>
+
+                <div class="row form-group">
+
+
+                    <div class="col-md-6" id="div_tip_est" >
+
+                    </div>
+
+
 
                 </div>
-            </div>
+                <div class="row form-group" id="div_docente" hidden="hidden">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label" for="cod_doc">Docente <span style="color:red;">*</span></label>
 
-            <div class="row form-group">
+                        <div class="col-md-7">
+                            <select id="cod_doc" class="form-control">
+                                <option value="0">Elegir Sub-tipo</option>
+                                <option value="1">PRINCIPAL</option>
+                                <option value="2">ASOCIADO</option>
+                                <option value="3">AUXILIAR</option>
+                                <option value="4">JEFE</option>
+                                <option value="5">AYUDANTIA</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" id="div_doc_mag" hidden="hidden">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label" for="cod_doc_mag">Docente de Magisterio <span style="color:red;">*</span></label>
 
-                <div class="col-md-6" >
-                    <label class="col-md-5 control-label" for="tipo">Tipo</label>
-                    <div class="col-md-7">
-                        <input type="text" class="form-control" id="tipito"  disabled>
+                        <div class="col-md-7">
+                            <select id="cod_doc_mag" class="form-control">
+                                <option value="0" >Elegir Sub-tipo</option>
+                                <option value="1">NIVEL I-II-III-IV-V</option>
+                                <option value="2">NIVEL A-B-C-D-E</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row form-group" id="div_adm_salud" hidden="hidden">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label" for="cod_adm_salud">Adm. Prof. Salud <span style="color:red;">*</span></label>
+
+                        <div class="col-md-7">
+                            <select id="cod_adm_salud" class="form-control">
+                                <option value="0">Elegir Sub-tipo</option>
+                                <option value="1">MEDICO</option>
+                                <option value="2">PROFESIONAL SALUD</option>
+
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row form-group" >
+                    <div class="col-md-6" id="div_categ_prof">
                     </div>
 
                 </div>
 
 
-                <div class="col-md-6" id="div_tip_est" >
-                </div>
-
-
-
-            </div>
-
-            <div class="row form-group" id="div_docente" hidden="hidden">
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="cod_doc">Docente <span style="color:red;">*</span></label>
-
-                    <div class="col-md-7">
-                        <select id="cod_doc" class="form-control">
-                            <option value="0">Elegir Sub-tipo</option>
-                            <option value="1">PRINCIPAL</option>
-                            <option value="2">ASOCIADO</option>
-                            <option value="3">AUXILIAR</option>
-                            <option value="4">JEFE</option>
-                            <option value="5">AYUDANTIA</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row form-group" id="div_administrativo" hidden="hidden" >
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="cod_adm">Administrativo <span style="color:red;">*</span></label>
-
-                    <div class="col-md-7">
-                        <select id="cod_adm" class="form-control">
-                            <option value="0">Elegir Sub-tipo</option>
-                            <option value="1">FUNCIONARIO</option>
-                            <option value="2">PROFESIONAL</option>
-                            <option value="3">TECNICO</option>
-                            <option value="4">AUXILIAR</option>
-                            <option value="5">SIN CATEGORIA</option>
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row form-group" id="div_doc_mag" hidden="hidden">
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="cod_doc_mag">Docente de Magisterio <span style="color:red;">*</span></label>
-
-                    <div class="col-md-7">
-                        <select id="cod_doc_mag" class="form-control">
-                            <option value="0" >Elegir Sub-tipo</option>
-                            <option value="1">NIVEL I-II-III-IV-V</option>
-                            <option value="2">NIVEL A-B-C-D-E</option>
-
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row form-group" id="div_adm_salud" hidden="hidden">
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="cod_adm_salud">Adm. Prof. Salud <span style="color:red;">*</span></label>
-
-                    <div class="col-md-7">
-                        <select id="cod_adm_salud" class="form-control">
-                            <option value="0">Elegir Sub-tipo</option>
-                            <option value="1">MEDICO</option>
-                            <option value="2">PROFESIONAL SALUD</option>
-
-                        </select>
-                    </div>
-
-                </div>
-            </div>
-
-
-            <div class="row form-group" >
-            <div class="col-md-6" id="div_categ_prof">
-            </div>
-
-            </div>
-
-
-             <div class="row form-group">
-             <div class="col-md-6">
+                <div class="row form-group">
+                    <div class="col-md-6">
                         <label class="col-md-5 control-label" for="numresol">Nro. Resolucion <span style="color:red;">*</span></label>
-                      <div class="col-md-7" >
-                        <div class="input-group">
-                            <input class="form-control" type="text" id="numresol"  disabled>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                        <div class="col-md-7" >
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="numresol"  disabled>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+
                             </div>
 
                         </div>
 
-                      </div>
 
 
+                    </div>
+                </div>
+            </fieldset>
 
-             </div>
-             </div>
+
               <hr>
             <div class="form-actions" id="form_insert" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-condlab">Guardar</button>

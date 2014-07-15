@@ -8,11 +8,19 @@ define(['backbone', 'apps/cuadro_nominal/form/model/unidad'], function (Backbone
 
         //url: 'api/unidades',
 
+       /* unidadesSegunUsuario: function(codDependencia){
+
+            this.url= 'api/unidades/segunUsuario/'+codDependencia;
+
+        }*/
+
+
         unidadesSegunUsuario: function(codDependencia,perfil){
 
             this.url= 'api/unidades/segunUsuario/'+codDependencia+'/'+perfil;
 
         }
+
 
 
 

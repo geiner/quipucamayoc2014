@@ -41,8 +41,17 @@ public class CuadroNominalController {
 
 
 
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/plazas/{codDep}"+"/{anioPlaza}")
+    @ResponseBody
+    public List<PlazaCAP> plazasPorDepen(@PathVariable(value="codDep") String codDep, @PathVariable(value="anioPlaza") Integer anioPlaza){
+        List<PlazaCAP> plazas=cuadroNominalService.plazasPorDepen(codDep,anioPlaza);
+        //  System.out.print("Aqui");
+        return plazas;
+    }
 
 
+
+/*
     @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/plazas/{codDep}")
     @ResponseBody
     public List<PlazaCAP> plazasPorDepen(@PathVariable(value="codDep") String codDep){
@@ -51,7 +60,7 @@ public class CuadroNominalController {
         return plazas;
     }
 
-
+*/
 
 
 
@@ -107,8 +116,23 @@ public class CuadroNominalController {
 
 
 
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/anioPlazas")
+    @ResponseBody
+    public List<PlazaCAP> añoPlazas(){
+        List<PlazaCAP> años=cuadroNominalService.añoPlazas();
+        System.out.print("Aqui");
+        return años;
+    }
 
 
 
+
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/DepySubDep/{codDep}")
+    @ResponseBody
+    public List<EncabezadoDepySubDep> obtenerDepySubDep(@PathVariable(value="codDep") String codDep){
+        List<EncabezadoDepySubDep> DepySubDep=cuadroNominalService.obtenerDepySubDep( "%"+codDep);
+        //System.out.print("Par Controller: "+emailUsuario);
+        return DepySubDep;
+    }
 
 }

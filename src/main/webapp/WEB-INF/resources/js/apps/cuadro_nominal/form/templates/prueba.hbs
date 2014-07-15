@@ -1,0 +1,40 @@
+
+<div class="modal-dialog">
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Panel prueba</h4>
+        </div>
+
+        <div class="modal-body">
+
+
+              <div class="row form-group">
+                        <label class="control-label col-md-4" for="modalidad">Modalidad</label>
+
+                        <div class="col-md-7">
+                            <select id="modalidad" class="form-control">
+                                <option value="99">Seleccione modalidad</option>
+                                {{#each items}}
+                                    <option value="{{idModAsig}}">{{descripcion}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+
+
+                </div>
+
+
+        </div>
+
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
+
