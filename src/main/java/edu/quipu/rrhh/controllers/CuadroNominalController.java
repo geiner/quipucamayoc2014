@@ -51,19 +51,6 @@ public class CuadroNominalController {
 
 
 
-/*
-    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/plazas/{codDep}")
-    @ResponseBody
-    public List<PlazaCAP> plazasPorDepen(@PathVariable(value="codDep") String codDep){
-        List<PlazaCAP> plazas=cuadroNominalService.plazasPorDepen( "%"+codDep);
-      //  System.out.print("Aqui");
-        return plazas;
-    }
-
-*/
-
-
-
     @RequestMapping(method = RequestMethod.POST,consumes = "application/json", produces = "application/json",value = "/addSerCuadroNominal")
     @ResponseBody
     public String asignarPlaza(@RequestBody AsigCuadroNominal asigCuadroNominal){
@@ -75,10 +62,19 @@ public class CuadroNominalController {
     }
 
 
+     //***************************************
 
+    @RequestMapping(method = RequestMethod.POST,consumes = "application/json", produces = "application/json",value = "/addSerCuadroNominal2")
+    @ResponseBody
+    public String asignarPlaza2(@RequestBody AsigCuadroNominal asigCuadroNominal){
+        System.out.print("Aqui  nuevo controller");
+        cuadroNominalService.addPlazaNominal(asigCuadroNominal);
+        cuadroNominalService.updateEstadoPlaza(asigCuadroNominal);
 
+        return "save";
+    }
 
-
+    //*********************************************
 
     @RequestMapping(method = RequestMethod.POST,produces = "application/json",consumes = "application/json", value="/deleteAsignacionPlaza")
     @ResponseBody
@@ -86,8 +82,6 @@ public class CuadroNominalController {
 
         cuadroNominalService.deleteAsignacionPlaza(objAsignacion);
         cuadroNominalService.updateCuadroNominalVacante(objAsignacion);
-        //cuadroNominalService.deleteItemsHistorialPlaza(objAsignacion);
-
 
     }
 

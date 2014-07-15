@@ -18,6 +18,8 @@ define(['app',
 
         "apps/cuadro_nominal/form/view/DepySubDep",
 
+        "apps/cuadro_nominal/form/view/tablaModalServidores2",
+
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
         "lib/avgrund",
@@ -38,6 +40,8 @@ define(['app',
               anioPlazasView,
               depySubDepView,
 
+              TablaModalServidores2,
+
 
               datePicker) {
         ErzaManager.module('CuadroNominalApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
@@ -57,7 +61,17 @@ define(['app',
                 anioPlazasView: new anioPlazasView(),
                 depySubDepView: new depySubDepView(),
 
+                modalServidoresPorDependenciaView2: new TablaModalServidores2(),
 
+
+
+                unidadClicked: {
+
+                    unidadId:10002,
+                    unidadDesc:"UNMSM"
+                },
+
+                elementoClickeado: null,
 
 
 
@@ -65,6 +79,8 @@ define(['app',
                     unidadId:10225,
                     unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
                 },
+
+
 
 
                 codPlaza:0,
@@ -91,7 +107,10 @@ define(['app',
                     "eliminarAsignacionHtml": "#modalEliminarAsignacion",
                     unidadesModal: "#modal-unidadesMio",
                     modalidadAsignacionAHtml:"#id_modalidades",
-                    anioPlazasAHtml:"#anioPlazas"
+                    anioPlazasAHtml:"#anioPlazas",
+
+
+                    "servidoresModalHtml2": "#modalServidores2"
 
                 },
 
@@ -107,7 +126,13 @@ define(['app',
                     "click #botonMostrarFechaFinal": "mostrarFechaFinal",
                     "click #botonLimpiarFechaFinal": "limpiarFechaFinal",
                     "click #a-modalMio":"invokeModalMio",
-                    "change #anio_plazas": "cambiarAlertaAnio"
+                    "change #anio_plazas": "cambiarAlertaAnio",
+
+                    "dblclick #table-servidores_asis2 > tbody > tr ": "seleccionarServidor2",
+
+                  //  "click #jjjjjjj":"clickUnidad"
+                    "click .tree li": "clickUnidad"
+
 
                 },
 
@@ -219,7 +244,73 @@ define(['app',
 
 
 
+
                 seleccionarServidor: function (e) {
+
+                    var self=this;
+                    var clickedElement=$(e.currentTarget);
+                    var cod=clickedElement.children(':nth-child(1)').text();
+                    var numserest=clickedElement.children(':nth-child(2)').text();
+
+
+                    if(cod!="No existen servidores para esta dependencia") {
+
+                        if ($('#fechaInicial').val() == "") {
+
+                            $('#advertenciaFechaInicial').html("<strong>Por favor, ingrese la fecha inicial</strong>");
+                            $('#advertenciaFechaInicial').show();
+
+                        } else {
+
+                            self.model.get("addServidorAPlaza").set({
+                                "codPlaza": this.codPlaza,
+                                "codServidor": cod,
+                                "numserest": numserest,
+                                "fechIng": $('#fechaInicial').val(),
+                                "fechSal": $('#fechaFinal').val(),
+                                "modSer": $('#modalidad').val(),
+                                "estPlaza": $('#ModOcupado').val()
+
+
+                            });
+
+
+                            this.model.get("addServidorAPlaza").url = "api/cuadro_nominal/addSerCuadroNominal2";
+
+                            var self_s = this.model.get("addServidorAPlaza").save({}, {wait: true});
+
+                            self_s.done(function () {
+
+
+                            });
+
+                            self_s.fail(function () {
+
+                                self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
+                                    if (self.plazasCAPView.collection.length != 0) {
+                                        $("#tabla_plazas").dataTable();
+                                        $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                        $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                        $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                        $('.dataTables_filter input').addClass('buscador');
+                                        $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                    }
+
+                                    $('#nom_encabezado_plazas').text(self.encabezado);
+
+                                })
+
+                            });
+
+                            $('#modalServidores').modal("hide")
+                        }
+                    }
+                },
+
+
+
+                seleccionarServidor2: function (e) {
 
                     var self=this;
                     var clickedElement=$(e.currentTarget);
@@ -274,7 +365,7 @@ define(['app',
 
                             });
 
-                            $('#modalServidores').modal("hide")
+                            $('#modalServidores2').modal("hide")
                         }
                     }
                 },
@@ -314,30 +405,53 @@ define(['app',
                     this.codPlaza=clickedElement.attr('cod_plaza');
                     var  cod_est_plaza=clickedElement.attr('cod_est_plaza');
 
-
                     if(cod_est_plaza==3 || cod_est_plaza==5){
-
-                       // console.log("Este codigo importante: "+this.codDepServidores);
-
-                        //this.unidadSelected.unidadId
 
                         console.log("Dependencia usuario destino:"+this.perfilUsuario);
                         console.log("Perfil usuario destino:"+this.depUsuario);
 
-                        self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores,function(){
 
-                                $("#table-servidores_asis").dataTable();
-                                $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                                $('.dataTables_filter input').attr('placeholder', 'Buscar..');
 
-                            }
+                        if(this.perfilUsuario=="ADMIN"){
 
-                        );
+                            self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores,function(){
 
-                        self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
-                        $('#modalServidores').modal();
+                                    $("#table-servidores_asis").dataTable();
+                                    $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
+                                    $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                }
+
+                            );
+
+
+                            self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
+                            $('#modalServidores').modal();
+
+                        }else{
+
+                            self.modalServidoresPorDependenciaView2.TodosServidoresPorDependencia(this.codDepServidores,function(){
+
+                                    $("#table-servidores_asis2").dataTable();
+                                    $('#table-servidores_asis2_wrapper').append("<div id='footer-table'></div>");
+                                    $('#table-servidores_asis2_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#table-servidores_asis2_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                }
+
+                            );
+
+
+                            self.servidoresModalHtml2.show(self.modalServidoresPorDependenciaView2);
+                            $('#modalServidores2').modal();
+
+
+                        }
+
+
 
                     }else{
                         self.advertenciaInconsistenciaAddAsignacionHtml.show(self.modalAdverIncAddView);
@@ -356,8 +470,9 @@ define(['app',
 
                    $('#modal-unidadesMio').modal('hide');
 
-                   this.unidadSelected = this.unidadesDialog.unidadClicked;
+                    this.unidadSelected = this.unidadClicked;
                    //$('#nom_depen1').text(this.unidadSelected.unidadId);// para probar
+
 
                    $('#codigoDependencia').val(this.unidadSelected.unidadId);
                    $('#usuarioCN').val($('#email').text());
@@ -431,44 +546,57 @@ define(['app',
                                 self.encabezado=nombreEncabezado;
                                 self.codDepServidores=codigoDependencia;
 
-                            }
-
-
-                           if(self.depySubDepView.collection.length != 0  &&  self.depySubDepView.collection.length == 1){
-
-                            var fila1_ud_id_h = self.depySubDepView.collection.at(0).get("ud_id_hijo");
-                            var fila1_ud_cod_h = self.depySubDepView.collection.at(0).get("ud_cod_hijo");
-                            var fila1_ud_dsc_h = self.depySubDepView.collection.at(0).get("ud_dsc_hijo");
-                            var fila1_ud_id_p = self.depySubDepView.collection.at(0).get("ud_id_padre");
-                            var fila1_ud_cod_p = self.depySubDepView.collection.at(0).get("ud_cod_padre");
-                            var fila1_ud_dsc_p = self.depySubDepView.collection.at(0).get("ud_dsc_padre");
-
-
-                            var primerCaracter = fila1_ud_cod_h.substring(0, 1);
-                            var cantidadCaracteres = fila1_ud_cod_h.length;
-
-                            console.log("Fila 1: " + fila1_ud_id_h + " " + fila1_ud_cod_h + " " + fila1_ud_dsc_h + " " + fila1_ud_id_p + " " + fila1_ud_cod_p + " " + fila1_ud_dsc_p);
-
-                            if (primerCaracter == "F" && cantidadCaracteres == 3) {
-
-                                nombreEncabezado = fila1_ud_dsc_p;
-                                codigoDependencia=fila1_ud_id_p;
-
                             }else{
 
-                                if (primerCaracter != "F" && cantidadCaracteres == 3) {
+                                if(self.depySubDepView.collection.length != 0  &&  self.depySubDepView.collection.length == 1){
 
-                                    nombreEncabezado = fila1_ud_dsc_p;
-                                    codigoDependencia=fila1_ud_id_p;
+
+
+                                    var fila1_ud_id_h = self.depySubDepView.collection.at(0).get("ud_id_hijo");
+                                    var fila1_ud_cod_h = self.depySubDepView.collection.at(0).get("ud_cod_hijo");
+                                    var fila1_ud_dsc_h = self.depySubDepView.collection.at(0).get("ud_dsc_hijo");
+                                    var fila1_ud_id_p = self.depySubDepView.collection.at(0).get("ud_id_padre");
+                                    var fila1_ud_cod_p = self.depySubDepView.collection.at(0).get("ud_cod_padre");
+                                    var fila1_ud_dsc_p = self.depySubDepView.collection.at(0).get("ud_dsc_padre");
+
+
+                                    var primerCaracter = fila1_ud_cod_h.substring(0, 1);
+                                    var cantidadCaracteres = fila1_ud_cod_h.length;
+
+                                    console.log("Fila 1: " + fila1_ud_id_h + " " + fila1_ud_cod_h + " " + fila1_ud_dsc_h + " " + fila1_ud_id_p + " " + fila1_ud_cod_p + " " + fila1_ud_dsc_p);
+
+                                    if (primerCaracter == "F" && cantidadCaracteres == 3) {
+
+                                        nombreEncabezado = fila1_ud_dsc_p;
+                                        codigoDependencia=fila1_ud_id_p;
+
+                                    }else{
+
+                                        if (primerCaracter != "F" && cantidadCaracteres == 3) {
+
+                                            nombreEncabezado = fila1_ud_dsc_p;
+                                            codigoDependencia=fila1_ud_id_p;
+
+                                        }
+
+                                    }
+
+                                    self.encabezado=nombreEncabezado;
+                                    self.codDepServidores=codigoDependencia;
+
+
+
 
                                 }
 
+
+
                             }
 
-                            self.encabezado=nombreEncabezado;
-                            self.codDepServidores=codigoDependencia;
 
-                        }
+
+
+
 
                       $('#nom_depen').val(nombreEncabezado);
 
@@ -540,11 +668,10 @@ define(['app',
 
 
 
-
                 eliminarPlazaAsignada:function(){
 
 
-                        var self=this;
+                    var self=this;
 
                         this.model.get("deletePlazaAsignada").set({
 
@@ -585,9 +712,36 @@ define(['app',
                         }) ;
 
                        Avgrund.hide();
+                },
+
+
+
+                clickUnidad : function(e){
+
+                    if(this.elementoClickeado){
+                        $(this.elementoClickeado).css({
+                            "background": "",
+                            "color": "",
+                            "border": ""
+                        });
+                    }
+
+
+                    var clickedElement=$(e.currentTarget);
+                    var children = clickedElement.find('> ul > li');
+                    if (children.is(":visible")) children.hide('fast');
+                    else children.show('fast');
+                    e.stopPropagation();
+                    this.unidadClicked.unidadId=clickedElement.find('input:first').val();
+                    this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
+                    console.log(this.unidadClicked);
+                    this.elementoClickeado=$(e.currentTarget).find('a:first').css({
+                        "background": "#c8e4f8",
+                        "color": "#000",
+                        "border": "1px solid #94a0b4"
+                    });
+
                 }
-
-
 
 
             });
