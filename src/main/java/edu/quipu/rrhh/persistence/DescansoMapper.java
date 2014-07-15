@@ -129,4 +129,11 @@ public interface DescansoMapper {
             @Result(property = "tiempo" , column = "TIEMPO"),
     })
     List<DescansoMedico> buscarAcumulado(@Param("codigo") String codigo,@Param("numserest") Integer numserest);
+
+    @Select(value ="SELECT DISTINCT citt FROM DATAPERLIQU.desc_medicos WHERE CITT=#{citt}")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "citt" , column = "citt"),
+    })
+    List<DescansoMedico> buscarCitt(@Param("citt") String citt);
 }

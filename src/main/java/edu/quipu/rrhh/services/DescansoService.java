@@ -17,4 +17,6 @@ public interface DescansoService {
     List<DescansoMedico> listarDescansos(String anio, String mes);
 
     List<DescansoMedico> buscarAcumulado(String codigo, Integer numserest);
+
+    List<DescansoMedico> buscarCitt(String citt);
 }

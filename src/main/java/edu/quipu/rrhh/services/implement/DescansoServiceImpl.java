@@ -40,8 +40,10 @@ public class DescansoServiceImpl implements DescansoService {
         System.out.println(": "+descansomedico.getTipo_lic());
         if(descansomedico.getTipo_lic().equals("MATERNIDAD")){
             System.out.println("maternidad");
+            DescansoMedico num_citt = descansoMapper.traernumcittdescansos();
             int mesactual=mes_inicio;
-            while(mesactual!=mes_final){
+            if((mes_final-mes_inicio) > 0){
+                while(mesactual!=mes_final){
                     if (mesactual == 4 || mesactual == 6 || mesactual == 9 || mesactual == 11)
                         diasdelmes = 30;
                     else if (mesactual == 2)
@@ -50,24 +52,24 @@ public class DescansoServiceImpl implements DescansoService {
                         diasdelmes = 31;
 
                     if(mesactual==mes_inicio){
-                        DescansoMedico num_citt = descansoMapper.traernumcittdescansos();
+
                         descansoMapper.addDescanso(descansomedico.getId_serv(), descansomedico.getNumserest(), descansomedico.getCitt(), descansomedico.getF_inicio(), diasdelmes+"/"+mes_inicio+"/"+anio_inicio, descansomedico.getTipo_lic(), ((diasdelmes-dia_inicio)+1)+"", num_citt.getNum_citt() + 1);
 
                     }else{
-                            DescansoMedico num_citt = descansoMapper.traernumcittdescansos();
-                            descansoMapper.addDescanso(descansomedico.getId_serv(), descansomedico.getNumserest(), descansomedico.getCitt(), "01/"+mesactual+"/"+anio_inicio, diasdelmes+"/"+mesactual+"/"+anio_inicio, descansomedico.getTipo_lic(), diasdelmes+"", num_citt.getNum_citt() + 1);
+                        descansoMapper.addDescanso(descansomedico.getId_serv(), descansomedico.getNumserest(), descansomedico.getCitt(), "01/"+mesactual+"/"+anio_inicio, diasdelmes+"/"+mesactual+"/"+anio_inicio, descansomedico.getTipo_lic(), diasdelmes+"", num_citt.getNum_citt() + 1);
 
                     };
-                if(mesactual==12){
-                    mesactual=1;
-                    anio_inicio=anio_inicio+1;
-                }else{
-                    mesactual++;
+                    if(mesactual==12){
+                        mesactual=1;
+                        anio_inicio=anio_inicio+1;
+                    }else{
+                        mesactual++;
+                    }
                 }
-               }
-                DescansoMedico num_citt = descansoMapper.traernumcittdescansos();
                 descansoMapper.addDescanso(descansomedico.getId_serv(), descansomedico.getNumserest(), descansomedico.getCitt(), "01/"+mes_final+"/"+anio_final, descansomedico.getF_fin(), descansomedico.getTipo_lic(), dia_final+"", num_citt.getNum_citt() + 1);
-
+            }else{
+                descansoMapper.addDescanso(descansomedico.getId_serv(), descansomedico.getNumserest(), descansomedico.getCitt(), descansomedico.getF_inicio(), descansomedico.getF_fin(), descansomedico.getTipo_lic(), ((dia_final-dia_inicio)+1)+"", num_citt.getNum_citt() + 1);
+            }
 
         }else{
             List<DescansoMedico> Histservidor = descansoMapper.traerHistDescansos(descansomedico.getId_serv(), descansomedico.getNumserest());
@@ -248,6 +250,11 @@ public class DescansoServiceImpl implements DescansoService {
     @Override
     public List<DescansoMedico> buscarAcumulado(String codigo, Integer numserest) {
         return descansoMapper.buscarAcumulado(codigo, numserest);
+    }
+
+    @Override
+    public List<DescansoMedico> buscarCitt(String citt) {
+        return descansoMapper.buscarCitt(citt);
     }
 
 
