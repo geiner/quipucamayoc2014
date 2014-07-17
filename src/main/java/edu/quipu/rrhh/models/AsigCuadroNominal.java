@@ -11,6 +11,7 @@ public class AsigCuadroNominal {
     private  String fechIng;//
     private  String fechSal;//
     private  Integer modSer;//
+    private  Integer estPlaza;
 
 
 
@@ -61,5 +62,14 @@ public class AsigCuadroNominal {
 
     public void setNumserest(Integer numserest) {
         this.numserest = numserest;
+    }
+
+
+    public Integer getEstPlaza() {
+        return estPlaza;
+    }
+
+    public void setEstPlaza(Integer estPlaza) {
+        this.estPlaza = estPlaza;
     }
 }

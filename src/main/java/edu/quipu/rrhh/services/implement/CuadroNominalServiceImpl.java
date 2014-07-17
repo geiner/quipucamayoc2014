@@ -17,23 +17,10 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
 
 
 
-
-
     @Override
     public List<PlazaCAP> plazasPorDepen(String codDep,Integer anioPlaza) {//corregie aqui
         return cuadroNominalMapper.plazasPorDepen(codDep,anioPlaza);
     }
-
-
-/*
-    @Override
-    public List<PlazaCAP> plazasPorDepen(String codDep) {//corregie aqui
-        return cuadroNominalMapper.plazasPorDepen(codDep);
-    }
-
-    */
-
-
 
 
 
@@ -54,6 +41,17 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
 
     }
 
+//***********************************************
+    @Override
+    public void updateEstadoPlaza(AsigCuadroNominal obj) {
+        System.out.println("Aqui nuevo implm");
+
+        cuadroNominalMapper.updateEstadoPlaza(obj.getCodPlaza(), obj.getEstPlaza());
+
+    }
+//*****************************************************
+
+
     @Override
     public void deleteAsignacionPlaza(AsigCuadroNominal obj) {
        cuadroNominalMapper.deleteAsignacion(obj.getCodPlaza());
@@ -64,12 +62,20 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
         cuadroNominalMapper.updateCuadroNominalVacante(obj.getCodPlaza());
     }
 
+    /*
+
+
     @Override
     public void deleteItemsHistorialPlaza(AsigCuadroNominal obj) {
 
-        cuadroNominalMapper.deleteItemsHistorialPlaza(obj.getCodPlaza());
+        System.out.println("Aqui nuevo implm");
+        cuadroNominalMapper.updateEstadoPlaza(obj.getCodPlaza(),obj.getEstPlaza());
 
     }
+
+
+   */
+
 
     @Override
     public List<ModalidadAsignacion> allModalidad() {

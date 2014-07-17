@@ -1,10 +1,6 @@
 package edu.quipu.rrhh.persistence;
 
-import edu.quipu.rrhh.models.ModalidadAsignacion;
-import edu.quipu.rrhh.models.Origen;
-import edu.quipu.rrhh.models.PlazaCAP;
-import edu.quipu.rrhh.models.Servidor;
-import edu.quipu.rrhh.models.EncabezadoDepySubDep;
+import edu.quipu.rrhh.models.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -137,6 +133,12 @@ public interface CuadroNominalMapper {
     @Update(value="update QPRODATAPLANI.TB_NUM_PLAZAS set N_EST_PLAZA=4 where C_COD_PLAZA=#{codPlaza}")
     void updateCuadroNominalOcupado(@Param("codPlaza") int codigo) ;
 
+    //****************************************************************************
+
+    @Update(value="update QPRODATAPLANI.TB_NUM_PLAZAS set N_EST_PLAZA=#{estPlaza} where C_COD_PLAZA=#{codPlaza}")
+    void updateEstadoPlaza(@Param("codPlaza") int codigo, @Param("estPlaza") int estPlaza) ;
+
+   //******************************************************************************
 
 
     @Delete(value="delete from QPRODATAPLANI.TB_CUADRO_NOMINAL   where  COD_PLAZA=#{codPlaza}")
@@ -149,11 +151,11 @@ public interface CuadroNominalMapper {
     void updateCuadroNominalVacante(@Param("codPlaza") int codigo) ;
 
 
-
+/*
     @Delete(value="delete from QPRODATAPLANI.TB_ROTACION_PLAZA   where  COD_PLAZA=#{codPlaza}")
     void deleteItemsHistorialPlaza(@Param("codPlaza") int codPlaza);
 
-
+*/
 
     @Select(value = "SELECT modalidad.COD_SER_MODALIDAD as COD_MOD,modalidad.SER_MOD_DESC as DSC_MOD\n" +
             "FROM QPRODATAPLANI.TB_SERVIDOR_MODALIDAD  modalidad")

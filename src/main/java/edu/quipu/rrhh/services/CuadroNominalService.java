@@ -23,12 +23,19 @@ public interface CuadroNominalService {
 
     public void updateCuadroNominalOcupado(AsigCuadroNominal obj);
 
+    //**********************************************
+
+    public void updateEstadoPlaza(AsigCuadroNominal obj);
+
+
+    //***********************************************
+
     public void deleteAsignacionPlaza(AsigCuadroNominal obj);
 
     public void updateCuadroNominalVacante(AsigCuadroNominal obj);
 
 
-    public void deleteItemsHistorialPlaza(AsigCuadroNominal obj);
+    //public void deleteItemsHistorialPlaza(AsigCuadroNominal obj);
 
 
     List<ModalidadAsignacion> allModalidad();

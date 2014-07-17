@@ -5,6 +5,9 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
             template: unidadesModalTemplate,
             collection: new Unidades(),
 
+
+             /*
+
             unidadClicked: {
 
                 unidadId:10002,
@@ -16,6 +19,7 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
                 "click .tree li": "clickUnidad"
             },
 
+           */
 
 
            /*
@@ -45,7 +49,7 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch({ data: { page: 'no'} });
 
-            },
+            }
 
 
 
@@ -60,6 +64,11 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
                         },*/
 
 
+
+
+
+
+           /*
 
             clickUnidad : function(e){
                 if(this.elementoClickeado){
@@ -84,6 +93,9 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
                     "border": "1px solid #94a0b4"
                 });
             }
+
+             */
+
 
         });
         return UnidadesDialog;
