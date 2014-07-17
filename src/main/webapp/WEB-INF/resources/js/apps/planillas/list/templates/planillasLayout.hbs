@@ -1,16 +1,19 @@
 <fieldset>
 
-    <legend>Informacion de Planillas CAS</legend>
+    <legend>Informacion de Planillas CAS </legend>
 
     <form class="form-horizontal well" id="form_planillasCAS">
         <div class="row form-group">
             <div class="col-md-9">
-                <button id="a-modal" class="btn btn-info " style="margin-left: 32%;" type="button"> Unidad <span class="glyphicon glyphicon-search"></span></button>
-
-                <div id="desc-unidad" class="help-inline"></div>
+                <div class="col-md-4">
+                    <button id="a-modal" class="btn btn-info " style="margin-left: 31%;" type="button"> Unidad <span class="glyphicon glyphicon-search"></span></button>
+                </div>
+                <div class="col-md-8">
+                    <div id="desc-unidad" class="help-inline" style="color: #5bc0de"></div>
+                </div>
             </div>
             <div class="col-md-3" id="crear_nueva_planilla">
-                <button id="apertura_planilla" class="btn btn-info btn-small" type="button" >Crear Nueva Planilla</button>
+                <button id="apertura_planilla" class="btn btn-info btn-small" type="button" style="width: 211px;">Crear Nueva Planilla</button>
             </div>
         </div>
         <div class="row form-group">
@@ -60,15 +63,15 @@
                 </div>
             </div>
             <div class="col-md-3" id="crear_nueva_planilla">
-                <button class="btn btn-info btn-small" type="button" >Ver Todas las Planillas</button>
+                <button class="btn btn-info btn-small" type="button" style="width: 211px;">Ver Todas las Planillas</button>
             </div>
         </div>
 
         <div class="row form-group">
-            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="no" class="btn btn-small" disabled="true"></button>  No Asignados a Planilla</p></div>
-            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="dev" class="btn btn-small btn-danger" disabled="true"></button>  Devueltos</p></div>
-            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="cp" class="btn btn-small btn-success" disabled="true"></button> En Control Previo</p></div>
-            <div class="col-md-3" style="margin-left: 81%;"><p style="font-size: 12px;"><button id="rh" class="btn btn-small btn-info" disabled="true"></button> en RRHH</p></div>
+            <div class="col-md-3" style="margin-left: 75%;"><p style="font-size: 12px;"><button id="no" class="btn btn-small" disabled="true"></button>  No Asignados a Planilla</p></div>
+            <div class="col-md-3" style="margin-left: 75%;"><p style="font-size: 12px;"><button id="dev" class="btn btn-small btn-danger" disabled="true"></button>  Devueltos</p></div>
+            <div class="col-md-3" style="margin-left: 75%;"><p style="font-size: 12px;"><button id="cp" class="btn btn-small btn-success" disabled="true"></button> En Control Previo</p></div>
+            <div class="col-md-3" style="margin-left: 75%;"><p style="font-size: 12px;"><button id="rh" class="btn btn-small btn-info" disabled="true"></button> en RRHH</p></div>
         </div>
 
     </form>
@@ -129,7 +132,7 @@
         </div>
         <div class="modal-body">
             <div class="paddingT15 paddingB15" id="modal_text">
-                Debe de seleccionar al menos 1 servidorCAS
+                Debe seleccionar al menos 1 servidorCAS
                 para poder enviar a control previo
             </div>
         </div>

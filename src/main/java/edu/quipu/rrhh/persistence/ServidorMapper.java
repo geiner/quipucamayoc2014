@@ -162,7 +162,9 @@ public interface ServidorMapper {
             "    ser_est_afp, " +
             "    ser_fech_reg_lab, " +
             "    SER_TIT_CTA_BAN ," +
-            "    SER_NUM_RUC " +
+            "    SER_NUM_RUC ," +
+            "    SER_COD_DEP_CES, " +
+            "    SER_COD_DEP_ACT " +
             "  ) " +
             "  VALUES " +
             "  ( " +
@@ -181,7 +183,9 @@ public interface ServidorMapper {
             "    #{ser.estAfp}, " +
             "    #{ser.regLab}, " +
             "    #{ser.titcueBan}, " +
-            "    #{ser.ruc} " +
+            "    #{ser.ruc}, " +
+            "    (SELECT COD_DEP_CESANTES FROM DATAPERSUEL.DEPENDENCIA_CESANTES WHERE TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})), " +
+            "    #{ser.dependencia} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
 
@@ -540,10 +544,36 @@ public interface ServidorMapper {
             @Result(column = "T_NACNOM",property = "descripcion"),
 
     })
-
     List<Pais> nacimientoPaises();
 
+    @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_BANCO (" +
+            "NUM_REG, SER_COD, NUM_SEREST, CTA_BANCO,TIPO_PAGO) " +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod}),#{ser.cueBan},#{ser.tipPag})")
+    public void saveHistBanco(@Param("ser") ServidorLaboral servidor);
 
+    @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_ASEG (" +
+            "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,REG_PEN,NUM_SIS_PEN,ENT_ASEG,EST_AFP) " +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            " '-',#{ser.regPen},#{ser.numPen},#{ser.entAse},#{ser.estAfp})")
+    public void saveHistCondAseg(@Param("ser") ServidorLaboral servidor);
+
+    @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_LAB (" +
+            "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,COD_EST,COD_CATEG,COD_TIPO_SER,TTPO_GEN) " +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            " '-',#{ser.estLab},#{ser.cat},#{ser.tip},#{ser.tipGen})")
+    public void saveHistCondLab(@Param("ser") ServidorLaboral servidor);
+
+    @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_PLANI (" +
+            "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,COND_PLA) " +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            " '-',#{ser.conPla})")
+    public void saveHistCondPlani(@Param("ser") ServidorLaboral servidor);
+
+    @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_DEP (" +
+            "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,DEP_CES,DEP_ACT) " +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            " '-',(SELECT COD_DEP_CESANTES FROM DATAPERSUEL.DEPENDENCIA_CESANTES WHERE TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})),#{ser.dependencia})")
+    public void saveHistHistDep(@Param("ser") ServidorLaboral servidor);
 
 }
 

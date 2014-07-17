@@ -37,4 +37,14 @@ public interface ServidorService {
     void updateServidorLaboral(ServidorLaboral servidorLaboral);
 
     void updateServidorLaboral2(ServidorLaboral servidorLaboral);
+
+    void saveHistHistDep(ServidorLaboral servidorLaboral);
+
+    void saveHistBanco(ServidorLaboral servidorLaboral);
+
+    void saveHistCondAseg(ServidorLaboral servidorLaboral);
+
+    void saveHistCondLab(ServidorLaboral servidorLaboral);
+
+    void saveHistCondPlani(ServidorLaboral servidorLaboral);
 }

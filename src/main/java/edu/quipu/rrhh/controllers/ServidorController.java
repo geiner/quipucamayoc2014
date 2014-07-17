@@ -80,14 +80,25 @@ public class ServidorController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ServidorLaboral saveLaboral(@RequestBody ServidorLaboral servidorLaboral) {
-        System.out.println("entro");
+        System.out.println("***********************DATOS*****************************************");
         System.out.println(servidorLaboral.getCod()+"-"+servidorLaboral.getCat()+"-"+servidorLaboral.getTip()+"-"+servidorLaboral.getRegPen()+"-"+servidorLaboral.getCueBan()
                 +"-"+servidorLaboral.getTipPag()+"-"+servidorLaboral.getConPla()+"-"+servidorLaboral.getEntAse()+"-"+servidorLaboral.getTipGen()+"-"+servidorLaboral.getNumPen()
                 +"-"+servidorLaboral.getEstAfp()+"-"+servidorLaboral.getRegLab()+"-"+servidorLaboral.getInsregpen()+"-"+servidorLaboral.getSindic()+"-"+servidorLaboral.getTipocupuni());
+        System.out.println("primero");
         servidorService.saveLaboral(servidorLaboral);
         System.out.println("segundo");
         servidorService.saveLaboral2(servidorLaboral);
-
+        System.out.println("tercero");
+        servidorService.saveHistBanco(servidorLaboral);
+        System.out.println("cuarto");
+        servidorService.saveHistCondAseg(servidorLaboral);
+        System.out.println("quinto");
+        servidorService.saveHistCondLab(servidorLaboral);
+        System.out.println("sexto");
+        servidorService.saveHistCondPlani(servidorLaboral);
+        System.out.println("septimo");
+        servidorService.saveHistHistDep(servidorLaboral);
+        System.out.println("octavo");
         return servidorLaboral;
     }
 

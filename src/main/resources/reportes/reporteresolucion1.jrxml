@@ -29,14 +29,16 @@
               DATAPERLIQU.resolucion_id re,
               DATAPERLIQU.tipores_motivo mo ,
               DATAPERLIQU.tipo_resolucion tipo,
+              DATAPERSUEL.DEPENDENCIA_CESANTES dc,
 	    DATAPERSUEL.servidor_estado se,
 	    QPRODATAQUIPU.UNI_DEP ud
-            WHERE trim(td.ser_cod)=$P{cod_serv}
+            WHERE trim(td.ser_cod)=TRIM($P{cod_serv})
             AND TRIM(td.restranum)=TRIM(re.restranum)
             AND td.tipresmotcod   =mo.tipresmotcod
             AND re.tiprescod      =tipo.tiprescod
           	  AND  trim(td.ser_cod)=trim(se.ser_cod)
-	  AND se.SER_COD_DEP_ACT=ud.UD_COD
+	  AND se.SER_COD_DEP_CES=dc.COD_DEP_CESANTES
+	  AND dc.COD_DEP_ACT=ud.UD_COD
             ORDER BY RESTRAFEC]]>
 	</queryString>
 	<field name="RESID" class="java.lang.String"/>

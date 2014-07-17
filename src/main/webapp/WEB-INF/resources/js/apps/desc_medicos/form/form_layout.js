@@ -18,6 +18,7 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
 
                 //variables globales
                 dni: null,
+
                 numserest: null,
 
                 servidoresSeleccionados: [],
