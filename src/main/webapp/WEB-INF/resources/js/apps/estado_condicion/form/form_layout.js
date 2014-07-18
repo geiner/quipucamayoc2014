@@ -362,7 +362,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     this.codTipo=codEst;
                     this.codGen=clickedElement.attr("data5");
-                    this.codCateg=clickedElement.attr("data4");
+
                     this.codEst=clickedElement.attr("data3");
 
                     this.depAct=clickedElement.attr("data7");
@@ -674,7 +674,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                      var num_resol=$("#numresol").val();
 
                       // alert(this.codigo+" "+this.numserest+" "+this.codCateg+" "+this.codEst+" "+this.codGen+" "+this.codTipo);
-
+                      this.codCateg=$("#categ_prof").val();
 
                         this.model.get("guardarHist").set({
                         "codigo": this.codigo,
@@ -714,6 +714,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                             }
                         });
                         self.TCLReg.show(self.Tabla_Cond_LabView);
+
+                        self.ListarServidorView.fetchServ();
 
                     });
 

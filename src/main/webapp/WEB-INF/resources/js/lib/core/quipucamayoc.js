@@ -4,9 +4,9 @@ $(function(){
 
 
     $(document).ready(function(){
-        //$(location).attr('href','http://quipucamayoc.unmsm.edu.pe/SisRRHH_prueba/admin#inicio');
+        $(location).attr('href','http://quipucamayoc.unmsm.edu.pe/SisRRHH_prueba/admin#inicio');
        // $(location).attr('href','http://quipucamayoc.unmsm.edu.pe/SisRRHH_erp/admin#inicio');
-          $(location).attr('href','http://localhost:9000/admin#inicio');
+         // $(location).attr('href','http://localhost:9000/admin#inicio');
         //$(location).attr('href','http://172.16.156.254:9000/admin#inicio');
     });
     $("#inic").click(function(){
