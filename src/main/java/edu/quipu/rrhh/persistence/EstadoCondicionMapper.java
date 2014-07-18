@@ -3,6 +3,7 @@ package edu.quipu.rrhh.persistence;
 
 import edu.quipu.rrhh.models.EstadoCondicion;
 import edu.quipu.rrhh.models.Servidor;
+import edu.quipu.rrhh.models.Hist_servidor;
 import org.apache.ibatis.annotations.*;
 import org.springframework.dao.DataAccessException;
 
@@ -10,36 +11,45 @@ import java.util.List;
 
 public interface EstadoCondicionMapper {
 
-    @Select(value = "SELECT ser_cod      AS ser_cod, " +
-            "  dni                AS dni,    "+
-            "  ser_cod_ant        AS codAnt,"+
-            "  ser_ape_pat        AS apePat, " +
-            "  ser_ape_mat        AS apeMat, " +
-            "  ser_nom            AS nom, "+
-            "  DESC_CATEG         AS categoria,"+
-            "  DES_TIP_SER            AS cargo, "+
-            "  des_dep_cesantes            AS cesantia, "+
-            "  list_serv.desc_est            AS estado, "+
-            "  num_serest             as  estadoActual, "+
-            "  est_serv.COD_EST AS codEst "+
-            "  FROM DATAPERSUEL.LISTA_SERVIDOR list_serv INNER JOIN DATAPERSUEL.ESTADO est_serv "+
-            "  ON(list_serv.desc_est=est_serv.DESC_EST)  ORDER BY SER_APE_PAT")
+    @Select(value = "SELECT LIST_SERV.SER_COD AS ser_cod,LIST_SERV.SER_COD_ANT AS codAnt,LIST_SERV.SER_NOM AS nom,LIST_SERV.SER_APE_PAT AS apePat,LIST_SERV.SER_APE_MAT AS apeMat," +
+            "LIST_SERV.DNI AS dni,AUX_SERV.NUM_SEREST AS estadoActual,GEN.DES_TIP_SER_GEN AS descGen ,TIPO_SERV.DES_TIP_SER AS cargo,SERV_LAB.NUM_RES AS numResol,\n" +
+            "   SERV_CAT.DESC_CATEG AS categoria,EST.DESC_EST AS estado,DEP.UD_DSC AS dep,DEP_CES.DES_DEP_CESANTES AS depCesante,SERV_LAB.COD_TIPO_SER AS codEst,SERV_LAB.TTPO_GEN AS codGen," +
+            "   SERV_LAB.COD_EST AS codEs,SERV_LAB.COD_CATEG AS codCateg,SERV_DEP.DEP_ACT AS codDep,SERV_DEP.DEP_CES codCes FROM \n" +
+            "  (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_COND_LAB GROUP BY SER_COD,NUM_SEREST) AUX_SERV\n" +
+            "INNER JOIN LISTA_SERVIDOR LIST_SERV ON(AUX_SERV.SER_COD=LIST_SERV.SER_COD AND AUX_SERV.NUM_SEREST=LIST_SERV.NUM_SEREST) \n" +
+            "INNER JOIN TB_HIST_COND_LAB SERV_LAB ON(AUX_SERV.NUM_REG=SERV_LAB.NUM_REG AND AUX_SERV.SER_COD=SERV_LAB.SER_COD AND AUX_SERV.NUM_SEREST=SERV_LAB.NUM_SEREST)\n" +
+            "INNER JOIN TB_HIST_DEP SERV_DEP ON(SERV_DEP.NUM_REG=AUX_SERV.NUM_REG AND SERV_DEP.SER_COD=AUX_SERV.SER_COD AND SERV_DEP.NUM_SEREST=AUX_SERV.NUM_SEREST)\n" +
+            "INNER JOIN DATAPERSUEL.TIP_SERVIDOR TIPO_SERV ON(TIPO_SERV.COD_TIP_SER=SERV_LAB.COD_TIPO_SER)\n" +
+            "INNER JOIN DATAPERSUEL.CATEGORIA SERV_CAT ON(SERV_CAT.COD_CATEG=SERV_LAB.COD_CATEG)\n" +
+            "INNER JOIN DATAPERSUEL.ESTADO EST ON(EST.COD_EST=SERV_LAB.COD_EST)\n" +
+            "LEFT JOIN DATAPERSUEL.TIP_SERVIDOR_GEN GEN ON(GEN.COD_TIP_SER_GEN=SERV_LAB.TTPO_GEN)\n" +
+            "LEFT  JOIN QPRODATAQUIPU.UNI_DEP DEP ON(DEP.UD_COD=SERV_DEP.DEP_ACT) "+
+            "LEFT  JOIN DATAPERSUEL.DEPENDENCIA_CESANTES DEP_CES ON(DEP_CES.COD_DEP_CESANTES=SERV_DEP.DEP_CES) "+
+            "ORDER BY LIST_SERV.SER_APE_PAT")
     @Results(value = {
-            @Result(javaType = Servidor.class),
+            @Result(javaType = Hist_servidor.class),
             @Result(property = "codigo", column = "ser_cod"),
             @Result(property = "numDoc", column = "dni"),
             @Result(property = "codAnt", column = "codAnt"),
             @Result(property = "paterno", column = "apePat"),
             @Result(property = "materno", column = "apeMat"),
+            @Result(property = "numResol", column = "numResol"),
+            @Result(property = "descGen", column = "descGen"),
             @Result(property = "nombre", column = "nom"),
+            @Result(property = "cesantia", column = "depCesante"),
+            @Result(property = "dependencia", column = "dep"),
             @Result(property = "categoria", column = "categoria"),
             @Result(property = "tipoServicio", column = "cargo"),
-            @Result(property = "cesantia", column = "cesantia"),
             @Result(property = "estado", column = "estado") ,
             @Result(property = "codEst", column = "codEst") ,
-            @Result(property = "estadoTrabaActual", column = "estadoActual")
+            @Result(property = "codEs", column = "codEs") ,
+            @Result(property = "codGen", column = "codGen") ,
+            @Result(property = "codCateg", column = "codCateg") ,
+            @Result(property = "estadoTrabaActual", column = "estadoActual"),
+            @Result(property = "codDep", column = "codDep") ,
+            @Result(property = "codCes", column = "codCes")
     })
-    List<Servidor> listarServidores();
+    List<Hist_servidor> listarServidores();
 
 
      // Traemos datos para el combo box categoria
@@ -52,13 +62,19 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion> categoria();
 
     //Traemos el listado segun el Descateg
-    @Select(value = "SELECT COD_CATEG AS codcat ,DESC_CATEG AS descat FROM DATAPERSUEL.categoria where cod_tip_ser=#{valor1} and cod_sub_tip=#{valor2} ORDER BY descat ASC")
+    @Select(value = "SELECT ca.cod_categ AS cod," +
+            "            ca.desc_categ     AS dscr " +
+            "            FROM datapersuel.categoria ca, " +
+            "            DATAPERSUEL.tip_servidor ti " +
+            "            WHERE ca.cod_tip_ser=ti.cod_tip_ser " +
+            "            AND ti.cod_tip_ser  =#{valor1} " +
+            "            ORDER BY dscr")
     @Results(value = {
             @Result(javaType = EstadoCondicion.class),
-            @Result(property = "codcat",column = "codcat"),
-            @Result(property = "descat",column = "descat")
+            @Result(property = "codcat",column = "cod"),
+            @Result(property = "descat",column = "dscr")
     })
-    List<EstadoCondicion> categoriaprof(@Param("valor1") Integer valor1, @Param("valor2") Integer valor2) throws DataAccessException;
+    List<EstadoCondicion> categoriaprof(@Param("valor1") Integer valor1) throws DataAccessException;
 
     // Traemos datos para el combo box estado
     @Select(value = "SELECT COD_EST AS codest, DESC_EST AS desest FROM DATAPERSUEL.estado ORDER BY desest ASC")
@@ -170,18 +186,26 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion> listar_resolucion(@Param("codigo") String Codigo, @Param("numserest") Integer numserest) throws DataAccessException;
 
     // Traemos datos para la tabla condicion laboral
-    @Select(value = "select b.NUM_REG as numreg1, b.NUM_RES as numres1, e.desc_est as est , f.desc_categ as categ, h.des_tip_ser as tip from qpdatagestion.TB_HIST_COND_LAB b, datapersuel.estado e, datapersuel.categoria f, datapersuel.tip_servidor h where b.ser_cod=#{cod} and b.NUM_SEREST=#{numest} and e.cod_est=b.cod_est and f.cod_categ=b.cod_categ  and h.cod_tip_ser=b.cod_tipo_ser ORDER BY numreg1 DESC")
+    @Select(value = "SELECT NUM_REG AS numReg,NUM_RES AS numResol,EST.DESC_EST AS estado,GEN.DES_TIP_SER_GEN AS descGen,TIPO_SERV.DES_TIP_SER AS tipoServicio,SERV_CAT.DESC_CATEG  AS categoria" +
+            "       FROM TB_HIST_COND_LAB HIST_LAB \n" +
+            "        INNER JOIN DATAPERSUEL.ESTADO EST ON(EST.COD_EST=HIST_LAB.COD_EST)\n" +
+            "        LEFT  JOIN DATAPERSUEL.TIP_SERVIDOR_GEN GEN ON(GEN.COD_TIP_SER_GEN=HIST_LAB.TTPO_GEN)\n" +
+            "        INNER JOIN DATAPERSUEL.TIP_SERVIDOR TIPO_SERV ON(TIPO_SERV.COD_TIP_SER=HIST_LAB.COD_TIPO_SER)\n" +
+            "        INNER JOIN DATAPERSUEL.CATEGORIA SERV_CAT ON(SERV_CAT.COD_CATEG=HIST_LAB.COD_CATEG)\n" +
+            "        WHERE HIST_LAB.SER_COD=#{cod} AND HIST_LAB.NUM_SEREST=#{numest}\n" +
+            "        ORDER BY NUM_REG DESC")
 
-    @Results(value = {@Result(javaType = EstadoCondicion.class),
-            @Result(column ="numreg1", property = "numreg1"),
-            @Result(column ="numres1", property = "numres1"),
-            @Result(column ="est", property = "est"),
-            @Result(column ="categ", property = "categ"),
-            @Result(column = "tip", property = "tip")
+    @Results(value = {@Result(javaType = Hist_servidor.class),
+            @Result(column ="numReg", property = "numReg"),
+            @Result(column ="numResol", property = "numResol"),
+            @Result(column ="estado", property = "estado"),
+            @Result(column ="descGen", property = "descGen"),
+            @Result(column ="categoria", property = "categoria"),
+            @Result(column = "tipoServicio", property = "tipoServicio")
           }
 
     )
-    List<EstadoCondicion>  buscarcondlab(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
+    List<Hist_servidor>  buscarcondlab(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     // Traemos datos para la tabla condicion asegurado
     @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.DESC_REG_PEN as regpen, b.num_sis_pen as numsispen, e.DES_ENT_ASEG as entaseg, f.DES_EST_AFP as estafp from qpdatagestion.tb_hist_cond_aseg b,datapersuel.reg_pension d, datapersuel.entidad_aseguradora e, datapersuel.estados_afp f " +
@@ -240,8 +264,8 @@ public interface EstadoCondicionMapper {
 
      //Insertar modificacion en la tabla tb_hist_cond_lab
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_lab " +
-            " values (Num_reg.nextval,#{codigo},#{numserest},#{numres1},#{codest},#{codcat},#{codtip})")
-     public void addcondlab(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("codest") Integer codest, @Param("codcat") String codcat, @Param("codtip") Integer codtip) throws DataAccessException;
+            " values ( (select MAX(NUM_REG) from  TB_HIST_COND_LAB where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,#{codigo},#{numserest},#{numres},#{codest},#{codcateg},#{codtip},#{codgen})")
+     public void addHist_lab(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("numres") String numres, @Param("codest") Integer codest, @Param("codtip") Integer codtip, @Param("codgen") Integer codgen,@Param("codcateg") String codcateg) throws DataAccessException;
 
     //insertar en alerta pendiente
      @Insert(value= "insert into qpdatagestion.tb_alerta_pendiente values (Num_alert_reg.nextval, #{codigo},#{numserest},#{tipalert},#{email}, (select sysdate from sys.dual))")
@@ -263,4 +287,8 @@ public interface EstadoCondicionMapper {
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select max(num_reg)+1 from qpdatagestion.tb_hist_cond_plani where ser_cod=#{codigo} and num_serest=#{numserest}),#{codigo},#{numserest},#{numres1},#{codcond},#{fechcese},#{obser})")
     public void addcondpla(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("codcond") Integer codcond, @Param("fechcese") String fechcese, @Param("obser") String obser) throws DataAccessException;
 
+
+    @Insert(value = "insert into qpdatagestion.tb_hist_dep " +
+            " values ( (select MAX(NUM_REG) from  qpdatagestion.tb_hist_dep where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,#{codigo},#{numserest},#{numresol},#{codDep},#{codCes})")
+    void addHist_dep(@Param("codigo") String codigo,@Param("numserest") String estadoTrabaActual,@Param("numresol") String numResol,@Param("codDep") String codDep,@Param("codCes")  String codCes);
 }

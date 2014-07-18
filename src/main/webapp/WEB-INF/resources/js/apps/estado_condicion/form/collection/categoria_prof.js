@@ -4,8 +4,8 @@ define(['backbone', 'apps/estado_condicion/form/model/categoria_prof'], function
 
         // Reference to this collection's model.
         model: CategoriaProfModel,
-        setUrl: function(valor1, valor2){
-        this.url= 'api/estado_condicion/categoria_prof/'+valor1+'/'+valor2;
+        setUrl: function(valor1){
+        this.url= 'api/estado_condicion/categoria_prof/'+valor1;
         }
     });
     return CategoriaProf;

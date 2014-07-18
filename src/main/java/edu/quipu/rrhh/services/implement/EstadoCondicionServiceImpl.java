@@ -2,6 +2,7 @@ package edu.quipu.rrhh.services.implement;
 
 
 import edu.quipu.rrhh.models.EstadoCondicion;
+import edu.quipu.rrhh.models.Hist_servidor;
 import edu.quipu.rrhh.models.Servidor;
 import edu.quipu.rrhh.persistence.EstadoCondicionMapper;
 import edu.quipu.rrhh.services.EstadoCondicionService;
@@ -16,7 +17,7 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     EstadoCondicionMapper estadoCondicionMapper;
 
     @Override
-    public List<Servidor> listarServidores(){
+    public List<Hist_servidor> listarServidores(){
         return  estadoCondicionMapper.listarServidores();
     }
 
@@ -26,8 +27,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public List<EstadoCondicion> categoriaprof(Integer valor1, Integer valor2){
-        List<EstadoCondicion> estadoCondi = estadoCondicionMapper.categoriaprof(valor1, valor2);
+    public List<EstadoCondicion> categoriaprof(Integer valor1){
+        List<EstadoCondicion> estadoCondi = estadoCondicionMapper.categoriaprof(valor1);
         return estadoCondi;
     }
 
@@ -73,8 +74,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public List<EstadoCondicion> buscarcondlab(String cod, Integer numest) {
-        List<EstadoCondicion> estadoCond=estadoCondicionMapper.buscarcondlab(cod, numest);
+    public List<Hist_servidor> buscarcondlab(String cod, Integer numest) {
+        List<Hist_servidor> estadoCond=estadoCondicionMapper.buscarcondlab(cod, numest);
         return estadoCond;
     }
     @Override
@@ -109,8 +110,12 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public void addCondLab(String cod, Integer numserest, String numres, Integer codest, String codcat, Integer codtip){
-        estadoCondicionMapper.addcondlab(cod,numserest,numres,codest,codcat,codtip);
+    public void addHist_lab(String cod, String numserest, String numres, Integer codest,Integer codtip,Integer codGen,String codcateg){
+        estadoCondicionMapper.addHist_lab(cod,numserest,numres,codest,codtip,codGen,codcateg);
+    }
+    @Override
+    public void addHist_dep(String codigo, String estadoTrabaActual, String numResol, String codDep, String codCes){
+        estadoCondicionMapper.addHist_dep(codigo,estadoTrabaActual,numResol,codDep,codCes);
     }
 
     @Override

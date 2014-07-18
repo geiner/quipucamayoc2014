@@ -192,6 +192,7 @@ define(['app',
 
                             }
 
+
                             self.unidadesDialog.initialize(self.depUsuario,self.perfilUsuario);
                             self.unidadesModal.show(self.unidadesDialog);
                             $('#modal-unidadesMio').modal();
@@ -718,6 +719,7 @@ define(['app',
 
                 clickUnidad : function(e){
 
+
                     if(this.elementoClickeado){
                         $(this.elementoClickeado).css({
                             "background": "",
@@ -734,7 +736,7 @@ define(['app',
                     e.stopPropagation();
                     this.unidadClicked.unidadId=clickedElement.find('input:first').val();
                     this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
-                    console.log(this.unidadClicked);
+
                     this.elementoClickeado=$(e.currentTarget).find('a:first').css({
                         "background": "#c8e4f8",
                         "color": "#000",

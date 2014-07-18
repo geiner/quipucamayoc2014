@@ -1,5 +1,5 @@
 define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion","apps/estado_condicion/form/view/listar_servidor",
-    "apps/estado_condicion/form/view/listar_resolucion", "apps/estado_condicion/form/view/tipo", "apps/estado_condicion/form/view/estado",
+    "apps/estado_condicion/form/view/listar_resolucion", "apps/estado_condicion/form/view/tipo",
     "apps/estado_condicion/form/view/regimen", "apps/estado_condicion/form/view/entidad",
     "apps/estado_condicion/form/view/estadoafp", "apps/estado_condicion/form/view/tipopago","apps/estado_condicion/form/view/condpla", "apps/estado_condicion/form/view/tabla_cond_lab",
     "apps/estado_condicion/form/view/tabla_pago_banco","apps/estado_condicion/form/view/tabla_cond_aseg",
@@ -14,7 +14,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
     "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/jquery.numeric","bootstrap"],
 
-    function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView, TipoView, EstadoView, RegimenView,
+    function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView, TipoView, RegimenView,
               EntidadView, EstadoAfpView, TipoPagoView, CondPlaView, Tabla_Cond_LabView, Tabla_Pago_BancoView,Tabla_Cond_AsegView, Tabla_DepView,Tabla_Cond_PlaView, Guardar_CondLabModel,
               Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView,tablaPlazasAsignadasView, historialPlazaView, modalEliminacionItemHistorialView,  eliminarHistorialPlazaModel,addHistorialPlazaModel) {
         ErzaManager.module('EstadoCondicionApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
@@ -29,7 +29,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 ListarServidorView: new ListarServidorView(),
                 ListarResolView: new ListarResolView(),
                 TipoView: new TipoView(),
-                EstadoView: new EstadoView(),
+
                 RegimenView: new RegimenView(),
                 EntidadView: new EntidadView(),
                 EstadoAfpView: new EstadoAfpView(),
@@ -51,6 +51,14 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 // Variables,
                 codigo: null,
                 numserest: null,
+
+                codEst:null,
+                codCateg:null,
+                codGen:null,
+                codTipo:null,
+
+                depAct:null,
+                depCes:null,
                 cod: null,
                 numest:null,
                 ti:null,
@@ -74,7 +82,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     ListarReg: "#estado_condicion-modal1",
                     ResolReg: "#listar_resol_modal",
                     TipoReg: "#div_tipo",
-                    EstadoReg: "#div_tip_est",
+
                     RegReg: "#div_reg_pen",
                     EntReg: "#div_ent_aseg",
                     EstAfpReg: "#div_est_afp",
@@ -86,7 +94,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     TPBReg: "#table-pagobanco",
                     TCPReg: "#table-condpla",
                     CategoriaProfReg: "#div_categ_prof",
-                    DocenteReg: "div_docente",
+
                     unidadesModalReg: "#modal-unidades",
 
 
@@ -140,13 +148,13 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                  onRender: function(){
                  this.initialFetch();
                      this.TipoReg.show(this.TipoView),
-                     this.EstadoReg.show(this.EstadoView),
+
                      this.RegReg.show(this.RegimenView),
                      this.EntReg.show(this.EntidadView),
                      this.EstAfpReg.show(this.EstadoAfpView),
                      this.TipoPagoReg.show(this.TipoPagoView),
-                     this.CondPlaReg.show(this.CondPlaView),
-                     this.CategoriaProfReg.show(this.CategoriaProfView)
+                     this.CondPlaReg.show(this.CondPlaView)
+
 
 
 
@@ -160,7 +168,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                     this.model.set({
-                        "guardarcondlab": new Guardar_CondLabModel(),
+                        "guardarHist": new Guardar_CondLabModel(),
                         "guardaralertpend": new Guardar_AlertModel(),
                         "guardarcondaseg": new Guardar_CondAsegModel(),
                         "guardardependencia": new Guardar_DependenciaModel(),
@@ -178,11 +186,11 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 initialFetch: function(){
 
                     this.TipoView.getTipo();
-                    this.EstadoView.getTipoEstado();
+
                     this.RegimenView.getRegimen();
                     this.EntidadView.getEntidad();
                     this.EstadoAfpView.getEstadoAfp();
-                    this.CategoriaProfView.fetchCategoriaProf();
+
                     this.TipoPagoView.getTipoPago();
                     this.CondPlaView.getCondPla();
                     this.ListarServidorView.fetchServ();
@@ -287,8 +295,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $('#cod_doc').val("0");
 
                     $('#div_administrativo').hide();
-                    $('#div_doc_mag').hide();
-                    $('#div_adm_salud').hide();
+                   // $('#div_doc_mag').hide();
+                   // $('#div_adm_salud').hide();
                     $('#categ_prof').val("9");
                     $('#div_categ_prof').show();
                     $('#numresol').val("");
@@ -347,18 +355,27 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 */
                     this.codigo=clickedElement.attr("id");
 
-                    var codEst=clickedElement.attr("data1");
+                    var codGen=clickedElement.attr("data1").trim();
+                    var codEst=clickedElement.attr("data2");
                     this.numserest=clickedElement.children(':nth-child(7)').text();
                     this.ti=clickedElement.children(':nth-child(4)').text();
+
+                    this.codTipo=codEst;
+                    this.codGen=clickedElement.attr("data5");
+                    this.codCateg=clickedElement.attr("data4");
+                    this.codEst=clickedElement.attr("data3");
+
+                    this.depAct=clickedElement.attr("data7");
+                    this.depCes=clickedElement.attr("data6");
 
                     var cod=clickedElement.attr("id");
                     var nombre=clickedElement.children(':nth-child(1)').text();     //captura los valores del modal servidor ejem: child(1) es el campo 1=codigo
 
                     var numest=clickedElement.children(':nth-child(7)').text();
 
-                    var desctip=clickedElement.children(':nth-child(4)').text();
+                    var desctip=clickedElement.children(':nth-child(4)').text().trim();
 
-                    var est=clickedElement.children(':nth-child(6)').text();
+                    var est=clickedElement.children(':nth-child(6)').text().trim();
                     var cat=clickedElement.attr("data");
 
                     var cod_ant=clickedElement.children(':nth-child(3)').text();
@@ -376,12 +393,49 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $('#tipito').val(desctip);
                     $('#catito').val(cat);
                     $('#estito').val(est);
+                    $("#tipoGen").val(codGen);
 
-                    $("#est").val(codEst);
+                    $("#estLab").val(est);
+                    $("#tipoGene").val(codGen);
+                    $("#tipoAct").val(desctip);
+
+                    //$("#est").val(codEst);
                     $('#estado_condicion-modal1').modal('hide');
+
+
+                      this.CategoriaProfView.fetchCategoriaProf(codEst,function(){
+
+                          if(est=="CAS" && codGen=="ADMINISTRATIVO" && desctip=="ADMINISTRATIVO"){
+
+
+
+                              for(var i=1;i<24;i++){
+
+                                  $("#categ_prof>option").eq(i).hide();
+
+                              }
+                              $("#categ_prof>option").eq(17).show();
+                              //console.log($("#categ_prof>option").length());
+                          }
+
+                          if(est=="CAS" && codGen=="DOCENTE" && desctip=="DOCENTE"){
+
+
+                          }
+                      });
+
+
+
+                     this.CategoriaProfReg.show(this.CategoriaProfView);
+
+
+
+
+
 
                     //$('#cargando').fadeOut("slow");
                    // $('#new').fadeOut("slow");
+                    /*
                     if(this.ti=="DOCENTE"){
 
                         this.cod_ti=1;
@@ -495,7 +549,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         });
                         this.CategoriaProfReg.show(this.CategoriaProfView);
                     }
-
+                     */
                     //Levantar la tabla Condicion Laboral
 
                     self.Tabla_Cond_LabView.fetchTablaCondLab(cod,numest,function () {
@@ -616,57 +670,29 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 },
 
                 guardarCondLab: function(e){
+                    var self=this;
+                     var num_resol=$("#numresol").val();
 
-                   // alert("guardar");
-
-                    var email =$('#email').text();
-                   var self=this;
-                    //----------------
-
-                   var numres = this.numresol;
-                   // alert($('#est').val());
-                   var tipo = $('#tipo').val();
-                   var estado = $('#est').val();
-                    //para capturar el valor seleccionado en un combo box
-
-                    var d =document.getElementById('est').options.selectedIndex;
-                    var desc_estado=document.getElementById('est').options[d].text;
+                      // alert(this.codigo+" "+this.numserest+" "+this.codCateg+" "+this.codEst+" "+this.codGen+" "+this.codTipo);
 
 
-                    if(this.ti!="SIN TIPO"){
-                         var categoria = $('#categ_prof').val();
-                        //para capturar el valor seleccionado en un combo box
-                        var c = document.getElementById('categ_prof').options.selectedIndex;
-                        var desc_categoria=document.getElementById('categ_prof').options[c].text;
+                        this.model.get("guardarHist").set({
+                        "codigo": this.codigo,
+                        "estadoTrabaActual": this.numserest,
+                        "numResol": num_resol,
+                        "codCateg": this.codCateg,
+                        "codEs": this.codEst,
+                        "codGen": this.codGen,
+                        "codEst": this.codTipo,
+                        "codDep":this.depAct,
+                        "codCes":this.depCes
 
-                    }else{
-                        var categoria = "0";
-                    }
-
-                   var codigo = this.codigo;//$('#id-servidor').text();
-                   var numserest = this.numserest;//$('#id-numserest').text();
-
-
-
-                    if(this.numresol!=null && categoria!="9"){
-                        $("#advertencia").hide();
-
-                        $('#estito').val(desc_estado);
-                        $('#catito').val(desc_categoria);
-
-                        this.model.get("guardarcondlab").set({
-                       "codigo": codigo,
-                        "numserest": numserest,
-                        "numres1": numres,
-                        "codest": estado,
-                        "codcat": categoria,
-                        "codtip": this.cod_ti
 
                     })
 
-                    this.model.get("guardarcondlab").url = 'api/estado_condicion/addcondlab';
+                    this.model.get("guardarHist").url = 'api/estado_condicion/addcondlab';
 
-                    var self_s = this.model.get("guardarcondlab").save({}, {wait: true});
+                    var self_s = this.model.get("guardarHist").save({}, {wait: true});
 
 
                     self_s.done(function () {
@@ -676,11 +702,21 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     });
 
                     self_s.fail(function () {
+                           console.log(self.codigo+" "+self.numserest);
+                        self.Tabla_Cond_LabView.fetchTablaCondLab(self.codigo,self.numserest,function () {
+                            if(self.Tabla_Cond_LabView.collection.length!=0){
+                                $("#table-cond-lab").dataTable();
+                                $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-
+                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                            }
+                        });
+                        self.TCLReg.show(self.Tabla_Cond_LabView);
 
                     });
-
+/*
                         this.model.get("guardaralertpend").set({
                             "codigo": codigo,
                             "numserest": numserest,
@@ -736,11 +772,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                         this.numresol=null;
 
-                    }else{
-                        $("#correcto").hide();
-                        $("#advertencia").show();
-
-                    }
+*/
 
 
 

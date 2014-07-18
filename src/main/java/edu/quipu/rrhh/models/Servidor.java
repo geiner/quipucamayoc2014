@@ -42,14 +42,21 @@ public class Servidor implements Serializable {
     private Integer codNacprov;
     private Integer codNacditr;
     private String estado;
+
     private Integer codEst;
     private String cesantia;
+
     private String tipoServicio;
     private String estadoTrabaActual;
     private String codAnt;
     private String categoria;
     private String abv_est;
     private String abv_tip_ser;
+
+
+
+
+
 
     public Integer getCodEst() {
         return codEst;

@@ -20,7 +20,7 @@ public class EstadoCondicionController {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/listar")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<Servidor> listarServidores(){
+    public List<Hist_servidor> listarServidores(){
 
         System.out.println("Listar !!!!");
         return estadoCondicionService.listarServidores();
@@ -34,11 +34,12 @@ public class EstadoCondicionController {
     }
 
     //Para el combo de subcategorias
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/categoria_prof/{valor1}/{valor2}")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/categoria_prof/{valor1}")
     @ResponseBody
-    public List<EstadoCondicion> categoriap(@PathVariable(value = "valor1") Integer valor1, @PathVariable(value = "valor2") Integer valor2){
+    public List<EstadoCondicion> categoriap(@PathVariable(value = "valor1") Integer valor1){
       //  String aux=valor+"%";  usar este aux para like en las querys
-      List<EstadoCondicion> estadoCondi = estadoCondicionService.categoriaprof(valor1, valor2); //en vez de valor1 y valor2 iria aux
+        System.out.print("id "+valor1);
+      List<EstadoCondicion> estadoCondi = estadoCondicionService.categoriaprof(valor1); //en vez de valor1 y valor2 iria aux
         return estadoCondi;
     }
 
@@ -104,13 +105,13 @@ public class EstadoCondicionController {
     //Obsevacion: Aun se necesite variables dinamicas...usar List ... y no el otro metodo..
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/condlab/{cod}/{numest}")
     @ResponseBody
-    public List<EstadoCondicion> findall(@PathVariable(value="cod") String cod, @PathVariable(value="numest") Integer numest) {
+    public List<Hist_servidor> findall(@PathVariable(value="cod") String cod, @PathVariable(value="numest") Integer numest) {
         //System.out.println("controlador back");
 
         while(cod.length()<10){
             cod=cod+" ";
         }
-        List<EstadoCondicion> estadoCond = estadoCondicionService.buscarcondlab(cod, numest);
+        List<Hist_servidor> estadoCond = estadoCondicionService.buscarcondlab(cod, numest);
         return   estadoCond;
     }
 
@@ -178,8 +179,11 @@ public class EstadoCondicionController {
     @RequestMapping(method = RequestMethod.POST, consumes ="application/json", produces = "application/json", value = "/addcondlab")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void addCondLab(@RequestBody EstadoCondicion estadoCondicion){
-        estadoCondicionService.addCondLab(estadoCondicion.getCodigo(), estadoCondicion.getNumserest(),estadoCondicion.getNumres1(), estadoCondicion.getCodest(), estadoCondicion.getCodcat(), estadoCondicion.getCodtip());
+    public void addCondLab(@RequestBody Hist_servidor hist_serv){
+        estadoCondicionService.addHist_lab(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getNumResol(),hist_serv.getCodEs(),hist_serv.getCodEst(),
+                hist_serv.getCodGen(),hist_serv.getCodCateg());
+
+        estadoCondicionService.addHist_dep(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getNumResol(),hist_serv.getCodDep(),hist_serv.getCodCes());
     }
 
     //Para insertar en la tabla condicion laboral

@@ -6,11 +6,11 @@ define([ 'backbone', 'marionette','hbs!apps/estado_condicion/form/templates/cate
             collection: new CategoriaProfColl(),
 
 
-            fetchCategoriaProf: function(valor1, valor2){
+            fetchCategoriaProf: function(valor1,callback){
                 //this.collection.setUrl();
-                this.collection.setUrl(valor1, valor2);
+                this.collection.setUrl(valor1);
                 this.collection.on("sync", this.render, this);
-                this.collection.fetch().done();
+                this.collection.fetch().done(callback);
 
             }
 
