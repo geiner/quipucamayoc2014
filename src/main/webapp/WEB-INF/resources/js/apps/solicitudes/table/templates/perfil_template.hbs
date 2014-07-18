@@ -1,69 +1,84 @@
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="header-x">x</button>
-<legend>Seleccione Perfil</legend>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content ">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">rgfrg</h4>
+        </div>
+
+        <div class="modal-body">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="header-x">x</button>
+            <legend>Seleccione Perfil</legend>
+
+            <table id="table-tipo-perfil" class="table  " style="font-size: 10px;">
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th>Codigo Perfil</th>
+                    <th>Descripcion</th>
+
+                </tr>
+                </thead>
+                <tbody class="body-table ">
+                {{#each items}}
+                    <tr id="{{codigo}}" class="">
+                        <td>{{codigo}}</td>
+                        <td>{{descripcion}}</td>
+
+                        <td>
+                            <button class="btn btn-mini btn-info" id="cambiar-perfil">Seleccionar Perfil</button>
+                        </td>
+
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen</td>
+                {{/each}}
+
+                <td>
+                    <button class="btn btn-mini btn-info" id="aceptar">Aceptar cambio</button>
+                </td>
 
 
-
-<table id="table-tipo-perfil" class="table  " style="font-size: 10px;">
-    <thead class="header" style="color: #040404;background-color:#f5f5f5">
-    <tr>
-        <th>Codigo Perfil</th>
-        <th>Descripcion</th>
-
-    </tr>
-    </thead>
-    <tbody class="body-table ">
-    {{#each items}}
-        <tr id="{{codigo}}" class="">
-            <td >{{codigo}}</td>
-            <td>{{descripcion}}</td>
-
-            <td><button class="btn btn-mini btn-info" id="cambiar-perfil">Seleccionar Perfil</button></td>
-
-        </tr>
-    {{else}}
-        <td colspan="6">No existen </td>
-    {{/each}}
-
-    <td><button class="btn btn-mini btn-info" id="aceptar">Aceptar cambio</button></td>
-
-
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <style type="text/css">
-    .body-table>tr{
+    .body-table > tr {
         cursor: pointer;
     }
-    .body-table tr:hover{
-        background-color:#E0FFFF;
+
+    .body-table tr:hover {
+        background-color: #E0FFFF;
     }
-    #header-x{
+
+    #header-x {
         position: absolute;
         left: 95%;
         top: 1%;
     }
-    #table-tipo-perfil_filter label
-    {
-        margin-left:304px;
+
+    #table-tipo-perfil_filter label {
+        margin-left: 304px;
     }
 
-
-    #table-tipo-perfil_info{
-        float:left;
+    #table-tipo-perfil_info {
+        float: left;
 
     }
 
+    .table-footer {
+        margin-left: 386px;
+        margin-top: -8px;
+        padding-bottom: 11px;
+    }
 
-    .table-footer{
-        margin-left:386px;
-        margin-top:-8px;
-        padding-bottom:11px;
+    .container-modal {
+        width: 597px;
     }
-    .container-modal{
-        width:597px;
-    }
-    .table-position{
-        padding-left:9px;
-        padding-right:9px;
+
+    .table-position {
+        padding-left: 9px;
+        padding-right: 9px;
     }
 </style>

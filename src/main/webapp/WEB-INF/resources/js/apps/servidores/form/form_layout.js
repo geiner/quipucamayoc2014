@@ -4,10 +4,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
     'apps/servidores/form/view/servidorEstado-view', 'apps/servidores/form/view/categoriaServidor-view', 'apps/servidores/form/view/servidorgenericos-view', 'apps/servidores/form/view/servidorTipo-view',
     'apps/servidores/form/view/regimenPensionario-view', 'apps/servidores/form/view/entidadAseguradora-view', 'apps/servidores/form/view/estadosAFP-view',
     'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view', 'apps/servidores/form/view/tiposOcupaciones_view', "apps/servidores/form/model/servidor",
-    'apps/servidores/form/model/servidorLaboral','apps/resoluciones/form/view/servidor-view',"lib/core/validXtrem", "lib/bootstrap-datepicker", "lib/typeahead.min","lib/jquery.dataTables.min", "bootstrap"],
+    'apps/servidores/form/model/servidorLaboral','apps/resoluciones/form/view/servidor-view',"apps/planillas/list/view/unidades-dialog",
+        "lib/core/validXtrem", "lib/bootstrap-datepicker", "lib/typeahead.min","lib/jquery.dataTables.min", "bootstrap"],
     function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView, provNacimientoView, distrNacimientoView, deptActualView,
               provActualView, distrActualView, servidorEstadoView, categoriaServidorView, servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView,
-              tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral,listaServView) {
+              tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral,listaServView,TablaModalDependencias) {
         ErzaManager.module('ServidoresApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
@@ -32,6 +33,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 CondicionPlanView: new condicionPlanillaView(),
                 tipoOcupacionView: new tipoOcupacionView(),
                 listaServView: new listaServView(),
+                tablaDependencias:new TablaModalDependencias(),
 
                 tab:0,
                 prov_act: null,
@@ -39,6 +41,16 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 cod_paisNac: 120,
                 guar_o_actu:0,//0 guarda - 1 actualiza I.General
                 guar_o_actu2:0,//guarda o actualiza I.laboral
+                elementoClickeado: null,
+                unidadClicked: {
+                    unidadId:10002,
+                    unidadDesc:"UNMSM"
+                },
+                unidadSelected: {
+                    unidadId:10225,
+                    unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
+                },
+
                 regions: {
                     div_estados_civiles: "#serv_est_civ",
                     div_nac_paises: "#serv_nac_paises",
@@ -59,12 +71,15 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     div_tipo_pago: "#div_tip_pag",
                     div_condicion_plan: "#div_cond_pla",
                     div_tipos_ocupaciones: "#div_tip_ocup",
-                    listServ: "#list_servidores"
+                    listServ: "#list_servidores",
+                    dependModal:"#show_depend"
 
                 },
                 events: {
                     "click #reg_pen_clos":"limpiar_reg_pen_clos",
                     "click  #serv_ing_unmsm_clos": "limpiar_ing_unmsm",
+                    "click .tree li": "clickUnidad",
+                    "click #boton-unidad":"unidades_dep",
                     "click #serv_nac_clos": "limipiar_fecha_nac",
                     "click #serv_nac_show": "show_fech_nac",
                     "click #serv_ing_unmsm_show": "serv_ingunmsm_show",
@@ -86,6 +101,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #save_laborales": "save_serv_lab",
                     "change #serv_act_pais":"fun_camb_pais_resid",
                     "click .tab_a":"fun_camb_tab_a",
+                    "click #unidad":"modal_depend",
                     "click .tab_b":"fun_camb_tab_b",
 //                    "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
@@ -301,6 +317,49 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     alert("sgrfs")
                     console.log("hola")
                     $('.datepicker').hide();
+                },
+                modal_depend:function(){
+                    this.dependModal.show(this.tablaDependencias);
+                    $("#show_depend").modal("show");
+
+                },
+                unidades_dep:function(){
+
+                    $('#show_depend').modal('hide');
+                    this.unidadSelected = this.unidadClicked;
+                    var aux=this.unidadSelected.unidadDesc.split("-");
+                    this.unidadSelected.unidadId=aux[0];
+//                    this.udcod=aux[0].trim();
+
+
+                    // $('#nom_dep').text(this.unidadSelected.unidadDesc);
+                    //tablaDependencias
+                        $("#origen").val(aux[1].trim());
+
+
+                },
+                clickUnidad:function(e){
+
+                    if(this.elementoClickeado){
+                        $(this.elementoClickeado).css({
+                            "background": "",
+                            "color": "",
+                            "border": ""
+                        });
+                    }
+                    var clickedElement=$(e.currentTarget);
+                    var children = clickedElement.find('> ul > li');
+                    if (children.is(":visible")) children.hide('fast');
+                    else children.show('fast');
+                    e.stopPropagation();
+                    this.unidadClicked.unidadId=clickedElement.find('input:first').val();
+                    this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
+                    console.log(this.unidadClicked);
+                    this.elementoClickeado=$(e.currentTarget).find('a:first').css({
+                        "background": "#c8e4f8",
+                        "color": "#000",
+                        "border": "1px solid #94a0b4"
+                    });
                 },
                 limpiar_ing_unmsm: function () {
                     $("#serv_ing_unmsm").val("");
@@ -916,7 +975,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "insregpen": $("#reg_pen").val(),
                         "tipocupuni": $("#serv_tip_ocup").val(),
                         "sindic": $("#serv_sind").val(),
-                        "ruc":$("#serv_ruc").val()
+                        "ruc":$("#serv_ruc").val(),
+                        "dependencia":self.unidadSelected.unidadId
                     });
                     console.log($("#serv_ruc").val()+" akaaa");
                     if(self.guar_o_actu2==0){

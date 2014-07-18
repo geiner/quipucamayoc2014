@@ -20,10 +20,13 @@ define(['app',
 
         "apps/cuadro_nominal/form/view/tablaModalServidores2",
 
+         "apps/cuadro_nominal/form/view/advDobleAsignacion",
+
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
         "lib/avgrund",
         "bootstrap"],
+
 
     function (ErzaManager,
               layoutTpl,
@@ -41,6 +44,8 @@ define(['app',
               depySubDepView,
 
               TablaModalServidores2,
+
+              advDobleAsignacionView,
 
 
               datePicker) {
@@ -62,6 +67,9 @@ define(['app',
                 depySubDepView: new depySubDepView(),
 
                 modalServidoresPorDependenciaView2: new TablaModalServidores2(),
+
+
+                advDobleAsignacionView:new  advDobleAsignacionView(),
 
 
 
@@ -110,7 +118,11 @@ define(['app',
                     anioPlazasAHtml:"#anioPlazas",
 
 
-                    "servidoresModalHtml2": "#modalServidores2"
+                    "servidoresModalHtml2": "#modalServidores2",
+
+
+                    "modalSegundaAsignacionHtml": "#modalSegundaAsignacion"
+
 
                 },
 
@@ -130,7 +142,6 @@ define(['app',
 
                     "dblclick #table-servidores_asis2 > tbody > tr ": "seleccionarServidor2",
 
-                  //  "click #jjjjjjj":"clickUnidad"
                     "click .tree li": "clickUnidad"
 
 
@@ -191,7 +202,6 @@ define(['app',
                                 self.perfilUsuario=perfUsu;
 
                             }
-
 
                             self.unidadesDialog.initialize(self.depUsuario,self.perfilUsuario);
                             self.unidadesModal.show(self.unidadesDialog);
@@ -289,7 +299,14 @@ define(['app',
 
                                 self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
                                     if (self.plazasCAPView.collection.length != 0) {
-                                        $("#tabla_plazas").dataTable();
+                                        //$("#tabla_plazas").dataTable();
+
+
+                                        $("#tabla_plazas").dataTable({
+
+                                            "aaSorting": [[ 1, "asc" ]]
+                                        });
+
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                         $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                         $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -351,7 +368,13 @@ define(['app',
 
                                 self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
                                     if (self.plazasCAPView.collection.length != 0) {
-                                        $("#tabla_plazas").dataTable();
+                                        //$("#tabla_plazas").dataTable();
+
+                                        $("#tabla_plazas").dataTable({
+
+                                            "aaSorting": [[ 1, "asc" ]]
+                                        });
+
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                         $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                         $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -417,7 +440,14 @@ define(['app',
 
                             self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores,function(){
 
-                                    $("#table-servidores_asis").dataTable();
+                                    //$("#table-servidores_asis").dataTable();
+
+                                    $("#table-servidores_asis").dataTable({
+
+                                        "aaSorting": [[ 1, "asc" ]]
+                                    });
+
+
                                     $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
                                     $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -435,7 +465,14 @@ define(['app',
 
                             self.modalServidoresPorDependenciaView2.TodosServidoresPorDependencia(this.codDepServidores,function(){
 
-                                    $("#table-servidores_asis2").dataTable();
+                                    //$("#table-servidores_asis2").dataTable();
+
+                                    $("#table-servidores_asis2").dataTable({
+
+                                        "aaSorting": [[ 1, "asc" ]]
+                                    });
+
+
                                     $('#table-servidores_asis2_wrapper').append("<div id='footer-table'></div>");
                                     $('#table-servidores_asis2_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#table-servidores_asis2_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -544,7 +581,13 @@ define(['app',
 
                                 }
 
-                                self.encabezado=nombreEncabezado;
+
+
+                                var  temporal=nombreEncabezado;
+                                temporal=temporal.toUpperCase();
+                                self.encabezado=temporal;
+
+                                //self.encabezado=nombreEncabezado;
                                 self.codDepServidores=codigoDependencia;
 
                             }else{
@@ -582,24 +625,27 @@ define(['app',
 
                                     }
 
-                                    self.encabezado=nombreEncabezado;
+
+                                    var  temporal=nombreEncabezado;
+                                    temporal=temporal.toUpperCase();
+                                    self.encabezado=temporal;
+
+                                    //self.encabezado=nombreEncabezado;
                                     self.codDepServidores=codigoDependencia;
-
-
 
 
                                 }
 
-
-
                             }
 
 
+                       //   nombreEncabezado="á"+" "+"é"+" "+"í"+" "+"ó"+" "+"ú"+" "+"Á"+" "+"É"+" "+"Í"+" "+"Ó"+" "+"Ú";
 
 
 
+                        $('#nom_depen').val(nombreEncabezado);
 
-                      $('#nom_depen').val(nombreEncabezado);
+                       console.log("Defecto  en layout: "+$('#nom_depen').val());
 
                     });
 
@@ -607,14 +653,26 @@ define(['app',
                     this.plazasCAPView.mostrarPlazasSegunDependencias(this.unidadSelected.unidadId,this.añoPlazas,function () {
                         if(self.plazasCAPView.collection.length!=0){
 
-                            //var valor= self.plazasCAPView.collection.at(0).get("nom_estruc");
+                           /*
+                            var valor= self.plazasCAPView.collection.at(0).get("nom_estruc");
+                            console.log("Valores ordenados: "+valor);
+                            var valor= self.plazasCAPView.collection.at(1).get("nom_estruc");
+                            console.log("Valores ordenados: "+valor);
 
-                            $("#tabla_plazas").dataTable();
+                             */
+
+                            $("#tabla_plazas").dataTable({
+
+                                "aaSorting": [[ 1, "asc" ]]
+                            });
+
+
                             $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                             $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                             $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                             $('.dataTables_filter input').addClass('buscador');
                             $('.dataTables_filter input').attr('placeholder','Buscar..');
+
 
                         }
 
@@ -698,7 +756,14 @@ define(['app',
                             self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas, function(){
 
                                 if( self.plazasCAPView.collection.length!=0){
-                                    $("#tabla_plazas").dataTable();
+                                   // $("#tabla_plazas").dataTable();
+
+                                    $("#tabla_plazas").dataTable({
+
+                                        "aaSorting": [[ 1, "asc" ]]
+                                    });
+
+
                                     $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                     $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -719,6 +784,7 @@ define(['app',
 
                 clickUnidad : function(e){
 
+                    console.log("Entro al arbol!!!");
 
                     if(this.elementoClickeado){
                         $(this.elementoClickeado).css({
@@ -736,7 +802,7 @@ define(['app',
                     e.stopPropagation();
                     this.unidadClicked.unidadId=clickedElement.find('input:first').val();
                     this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
-
+                    console.log(this.unidadClicked);
                     this.elementoClickeado=$(e.currentTarget).find('a:first').css({
                         "background": "#c8e4f8",
                         "color": "#000",

@@ -112,7 +112,7 @@ public class ReportServiceImpl implements ReportService {
 
 
 
-    @Override
+   /* @Override
     public void cargarReporteCuadroNominal(HttpServletResponse response ,String codDep,String usuarioCN, String nom_depen) {
         String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
         HashMap params = new HashMap();
@@ -130,6 +130,62 @@ public class ReportServiceImpl implements ReportService {
             logger.error("No se pudo descargar el reporte: "+rutaReporte);
             e.printStackTrace();
         }
+    }*/
+
+
+    @Override
+    public void cargarReporteCuadroNominal(HttpServletResponse response ,String codDep,String usuarioCN, String nom_depen,Integer anio) {
+
+
+        String cadena=nom_depen;
+
+
+        cadena=cadena.replaceAll("Ã¡","á");
+        cadena=cadena.replaceAll("Ã©","é");
+        cadena=cadena.replaceAll("Ã­","í");
+        cadena=cadena.replaceAll("Ã³","ó");
+        cadena=cadena.replaceAll("Ãº","ú");
+        cadena=cadena.replaceAll("Ã±","ñ");
+
+
+        char[] caracteres = cadena.toCharArray();
+
+        caracteres[0] = Character.toUpperCase(caracteres[0]);
+
+        for (int i = 0; i < cadena.length()- 2; i++){
+
+            if (caracteres[i] == ' ' || caracteres[i] == '.' || caracteres[i] == ',') {
+
+                caracteres[i + 1] = Character.toUpperCase(caracteres[i + 1]);
+
+            }
+        }
+
+        cadena= new String(caracteres);
+
+        System.out.println("Mostramos la cadena sin defecto: "+cadena);
+
+
+
+        String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
+        HashMap params = new HashMap();
+        params.put("codDep", codDep);
+        params.put("usuarioCN", usuarioCN);
+        params.put("nom_depen",cadena);
+        params.put("anio", anio);
+
+
+        System.out.println(params);
+        try {
+            System.out.println("download");
+            reportDownloader.downloadPDF(response, rutaReporte, "reporteCN.pdf", params);
+        } catch (Exception e) {
+            System.out.println("catch");
+            logger.error("No se pudo descargar el reporte: "+rutaReporte);
+            e.printStackTrace();
+        }
     }
+
+
 
 }

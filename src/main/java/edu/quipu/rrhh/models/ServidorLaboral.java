@@ -24,6 +24,15 @@ public class ServidorLaboral {
     Integer tipocupuni;
     Integer sindic;
     private String ruc;
+    private String dependencia;
+
+    public String getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(String dependencia) {
+        this.dependencia = dependencia;
+    }
 
     public String getRuc() {
         return ruc;
