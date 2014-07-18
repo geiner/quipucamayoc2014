@@ -716,63 +716,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         self.TCLReg.show(self.Tabla_Cond_LabView);
 
                     });
-/*
-                        this.model.get("guardaralertpend").set({
-                            "codigo": codigo,
-                            "numserest": numserest,
-                            "tipalert":1,
-                            "email": email
 
-                        })
-
-                        this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
-
-                        var self_is = this.model.get("guardaralertpend").save({}, {wait: true});
-
-                        self_is.done(function () {
-
-
-                        });
-                        var cod=this.codigo;
-                        var numest=this.numserest;
-
-                        self_is.fail(function () {
-
-                            self.Tabla_Cond_LabView.fetchTablaCondLab(cod,numest,function () {
-
-                                    $("#table-cond-lab").dataTable();
-                                    $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
-                                    $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                    $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                                    $('.dataTables_filter input').attr('placeholder', 'buscar..');
-
-
-                            });
-                            self.TCLReg.show(self.Tabla_Cond_LabView);
-                        });
-
-                        $("#correcto").show();
-
-
-
-
-
-                        $('#cod_doc').val("0");
-
-                        $('#categ_prof').val("9");
-                        $('#cod_doc_mag').val("0");
-                        $('#cod_adm_salud').val("0") ;
-                        $('#cod_adm').val("0") ;
-                        $('#numresol').val("");
-                        $('#numresol_aseg').val("");
-                        $('#numresol_tipo_pago').val("");
-                        $('#numresol_dep').val("");
-                        $('#numresol_pla').val("");
-
-                        this.numresol=null;
-
-*/
 
 
 
