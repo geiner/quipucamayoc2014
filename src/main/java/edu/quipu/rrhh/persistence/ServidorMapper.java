@@ -184,7 +184,7 @@ public interface ServidorMapper {
             "    #{ser.regLab}, " +
             "    #{ser.titcueBan}, " +
             "    #{ser.ruc}, " +
-            "    (SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING UD_ID=#{ser.dependencia}) AND UD_ID=#{ser.dependencia}), " +
+            "    (SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})), " +
             "    #{ser.dependencia} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
@@ -572,7 +572,7 @@ public interface ServidorMapper {
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_DEP (" +
             "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,DEP_CES,DEP_ACT) " +
             "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
-            " '-',(SELECT COD_DEP_CESANTES FROM DATAPERSUEL.DEPENDENCIA_CESANTES WHERE TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})),#{ser.dependencia})")
+            " '-',(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})),#{ser.dependencia})")
     public void saveHistHistDep(@Param("ser") ServidorLaboral servidor);
 
 }
