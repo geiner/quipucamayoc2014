@@ -861,7 +861,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var udcod= this.udcod;
                     var cod  =this.codigo;
                     var numest=this.numserest;*/
-
+                    var self=this;
                     alert(this.codigo+" "+this.numserest+" "+$("#numresol_dep").val()+" "+this.codDepen+" "+this.codGenDepen);
 
 
@@ -881,6 +881,47 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     });
 
                     self_s.fail(function(){
+                        self.Tabla_DepView.fetchTablaDep(self.codigo,self.numserest,function () {
+                            if(self.Tabla_DepView.collection.length!=0){
+                                $("#table-dep").dataTable();
+                                $('#table-dep_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-dep_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#table-dep_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                            }
+                        });
+
+                        self.TDReg.show(self.Tabla_DepView);
+                    });
+
+
+
+                    var email=$("#email").text();
+
+                    alert(email);
+
+                    this.model.get("guardaralertpend").set({
+                        "codigo": self.codigo,
+                        "numserest": self.numserest,
+                        "tipalert":2,
+                        "email": email
+
+                    })
+                    this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
+
+                    var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
+
+                    self_s.done(function () {
+
+
+
+                    });
+                    self_s.fail(function () {
+
+
 
                     });
 

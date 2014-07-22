@@ -226,7 +226,9 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion>  buscarcondaseg(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     //Traemos la tabla de dependencias
-    @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.UD_DSC as nomdepact, e.DES_DEP_CESANTES as nomdepces from  qpdatagestion.tb_hist_dep b left join QPRODATAQUIPU.uni_dep d on d.UD_COD=b.DEP_ACT left join DATAPERSUEL.dependencia_cesantes e on e.COD_DEP_CESANTES=b.DEP_CES " +
+    @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.UD_DSC as nomdepact, e.DES_DEP_CESANTES as nomdepces from  qpdatagestion.tb_hist_dep b " +
+            " left join QPRODATAQUIPU.uni_dep d on TRIM(d.UD_COD)=TRIM(b.DEP_ACT) " +
+            " left join DATAPERSUEL.dependencia_cesantes e on TRIM(e.COD_DEP_CESANTES)=TRIM(b.DEP_CES) " +
             " where b.ser_cod=#{cod} and b.num_serest=#{numest} ORDER BY numreg1 DESC")
 
     @Results(value = {@Result(javaType = EstadoCondicion.class),
@@ -278,8 +280,7 @@ public interface EstadoCondicionMapper {
      public void addconaseg(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("regpensionario") Integer regpensionario, @Param("numsispen") String numsispen, @Param("entasegurado") Integer entasegurado, @Param("estadoafp") Integer estadoafp) throws DataAccessException;
 
     //Insertar modificacion en la tabla de dependencias
-    @Insert(value ="insert into qpdatagestion.tb_hist_dep values((select max(num_reg)+1 from qpdatagestion.tb_hist_dep where ser_cod=#{codigo} and num_serest=#{numserest}),#{codigo},#{numserest},#{numres1},#{udcod},(select COD_DEP_CESANTES from datapersuel.dependencia_cesantes where COD_DEP_ACT=#{udcod}))")
-    public void adddep(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("udcod") String udcod) throws DataAccessException;
+
 
     //Insertar modificacion en la tabla tb_hist_banco
     @Insert(value = "insert into qpdatagestion.tb_hist_banco values((select max(num_reg)+1 from qpdatagestion.tb_hist_banco where ser_cod=#{codigo} and num_serest=#{numserest}), #{codigo}, #{numserest}, #{ctabanco}, #{codtippago})")
@@ -290,10 +291,16 @@ public interface EstadoCondicionMapper {
     public void addcondpla(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("codcond") Integer codcond, @Param("fechcese") String fechcese, @Param("obser") String obser) throws DataAccessException;
 
 
-    @Insert(value = "insert into qpdatagestion.tb_hist_dep " +
-            " values ( (select MAX(NUM_REG) from  qpdatagestion.tb_hist_dep where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,#{codigo},#{numserest},#{numresol},#{codDep},#{codCes})")
+    @Insert(value = "insert into qpdatagestion.tb_hist_dep values\n" +
+            "((select MAX(NUM_REG) from  TB_HIST_DEP where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,\n" +
+            " #{codigo},#{numserest},#{numresol},#{codDep},#{codCes})")
     void addHist_dep(@Param("codigo") String codigo,@Param("numserest") String estadoTrabaActual,@Param("numresol") String numResol,@Param("codDep") String codDep,@Param("codCes")  String codCes);
 
-
-    public String getCodCes(String codGenDep);
+    @Select(value = "SELECT COD_DEP_CESANTES AS codCes FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) " +
+            "FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING UD_ID=#{codGen}) AND UD_ID=#{codGen}")
+    @Results(value = {
+            @Result(javaType = Hist_servidor.class),
+            @Result(property = "codCes",column = "codCes")
+    })
+    public List<Hist_servidor> getCodCes(@Param("codGen") String codGenDep);
 }
