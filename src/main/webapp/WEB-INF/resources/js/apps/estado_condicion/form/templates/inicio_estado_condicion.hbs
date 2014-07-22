@@ -163,6 +163,52 @@
     <div class="tab-pane" id="d">
         <form class="form-horizontal well" id="">
 
+            <fieldset>
+                <legend>Datos actuales</legend>
+                <div class="row form-group">
+                    <div class="col-md-10">
+                        <label class="col-md-4 control-label">Dependencia</label>
+                        <div class="col-md-8">
+                            <input type="text" id="unid_depen" class="form-control" disabled>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Datos a modificar</legend>
+                <div class="row form-group">
+                    <div class="col-md-10">
+                        <label class="col-md-4 control-label">Dependencia <span style="color:red;">*</span></label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="depencia"  disabled>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="bus_dep"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-8">
+                        <label class="col-md-5 control-label" for="numresol">Nro. Resolucion <span style="color:red;">*</span></label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="numresol_dep"  disabled>
+                                <div class="input-group-btn">
+
+                                    <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+<!--
             <div class="row form-group">
 
                 <div class="col-md-12">
@@ -198,7 +244,7 @@
                     </div>
                 </div>
             </div>
-
+-->
              <hr>
             <div class="form-actions" id="form_insert1" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-dep">Guardar</button>

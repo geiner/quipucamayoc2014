@@ -56,10 +56,16 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 codCateg:null,
                 codGen:null,
                 codTipo:null,
-
+                elementoClickeado: null,
+                unidadClicked: {
+                    unidadId:10002,
+                    unidadDesc:"UNMSM"
+                },
                 depAct:null,
                 depCes:null,
                 cod: null,
+                codDepen:null,
+                codGenDepen:null,
                 numest:null,
                 ti:null,
                 cod_ti:null,
@@ -118,6 +124,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     //"click .btn-modal": "modalConfirm",
                   //  "change #categ": "cambioCategoria",
                    // "change #div_tipo": "cambioTipo",
+
+                    "click .tree li": "clickUnidad",
                     "change #cod_adm": "cambioAdm",
                     "change #cod_doc": "cambioDoc",
                     "change #cod_doc_mag": "cambioDocMag",
@@ -204,17 +212,30 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#div_banco').hide();
                     }
                 },
-
-                close:function(){
-                    $('#loading').dequeue();
-                    $('#new').dequeue();
-
-                    $('#cargando').fadeOut("slow");
-                    $('#new').fadeOut("slow");
+                clickUnidad:function(e){
+                    if(this.elementoClickeado){
+                        $(this.elementoClickeado).css({
+                            "background": "",
+                            "color": "",
+                            "border": ""
+                        });
+                    }
+                    var clickedElement=$(e.currentTarget);
+                    var children = clickedElement.find('> ul > li');
+                    if (children.is(":visible")) children.hide('fast');
+                    else children.show('fast');
+                    e.stopPropagation();
+                    this.unidadClicked.unidadId=clickedElement.find('input:first').val();
+                    this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
+                    console.log(this.unidadClicked);
+                    this.elementoClickeado=$(e.currentTarget).find('a:first').css({
+                        "background": "#c8e4f8",
+                        "color": "#000",
+                        "border": "1px solid #94a0b4"
+                    });
                 },
-                resetCondLab:function(){
-                  $("#advertencia").hide();
-                },
+
+
                 mostrarcalendariocese: function(e){
                     var fecha_cese = $('#fech_cese');
 
@@ -245,17 +266,27 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                     $('#modal-unidades').modal('hide');
-                    this.unidadSelected = this.unidadesDialog.unidadClicked;
+                    this.unidadSelected = this.unidadClicked;
+
+                    var aux=this.unidadSelected.unidadDesc.split("-");
+
+                    $("#depencia").val(aux[1].trim());
+                    this.codDepen=aux[0].trim();
+                    this.codGenDepen=this.unidadSelected.unidadId;
 
                     console.log("Cambio unidad: "+this.unidadSelected.unidadDesc);
                     console.log("Cambio unidad: "+this.unidadSelected.unidadId);
 
-                    this.udcod= this.unidadSelected.unidadDesc.substr(0,5);
+
+
+                   /* this.udcod= this.unidadSelected.unidadDesc.substr(0,5);
 
                     $('#nom_dep').text(this.unidadSelected.unidadDesc);
 
 
                     $('#textDestino').val(this.unidadSelected.unidadDesc);//mio
+                    */
+
                 },
 
 
@@ -378,6 +409,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var est=clickedElement.children(':nth-child(6)').text().trim();
                     var cat=clickedElement.attr("data");
 
+                    var dep=clickedElement.children(':nth-child(5)').text().trim();
                     var cod_ant=clickedElement.children(':nth-child(3)').text();
 
                     var dni=clickedElement.children(':nth-child(2)').text();
@@ -390,6 +422,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#est_emp").text(est);
                     $('#id-numserest').text(numest);
 
+                    $("#unid_depen").val(dep);
                     $('#tipito').val(desctip);
                     $('#catito').val(cat);
                     $('#estito').val(est);
@@ -818,19 +851,41 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 },
 
-                guardarDep: function(e){
+                guardarDep: function(){
 
-                    var clickedElement=$(e.currentTarget);
+/*
                     var email= $('#email').text();
                     var numres= this.numresol;
                     var codigo= this.codigo;
                     var numserest= this.numserest;
                     var udcod= this.udcod;
                     var cod  =this.codigo;
-                    var numest=this.numserest;
-                    if(this.numresol!=null && udcod!=""){
+                    var numest=this.numserest;*/
 
-                        $("#advertencia").hide();
+                    alert(this.codigo+" "+this.numserest+" "+$("#numresol_dep").val()+" "+this.codDepen+" "+this.codGenDepen);
+
+
+                    this.model.get("guardarHist").set({
+                        "codigo":this.codigo,
+                        "estadoTrabaActual":this.numserest,
+                        "numResol":$("#numresol_dep").val(),
+                        "codDep":this.codDepen,
+                        "codGenDep":this.codGenDepen
+                    })
+
+                    this.model.get("guardarHist").url='api/estado_condicion/adddep';
+                    var self_s= this.model.get("guardarHist").save({},{wait:true});
+
+                    self_s.done(function(){
+
+                    });
+
+                    self_s.fail(function(){
+
+                    });
+
+/*
+
                         this.model.get("guardardependencia").set({
                             "codigo":codigo,
                             "numserest":numserest,
@@ -902,11 +957,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                         this.numresol=null;
                         this.udcod=0;
-                    }   else{
-
-                        $("#correcto").hide();
-                        $("#advertencia").show();
-                    }
+*/
 
                 },
 

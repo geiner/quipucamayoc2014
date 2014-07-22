@@ -119,6 +119,12 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
+    public String getCodCes(String codGenDep) {
+        String codCesan =estadoCondicionMapper.getCodCes(codGenDep);
+        return  codCesan;
+    }
+
+    @Override
     public void addAlertPend(String codigo, Integer numserest, Integer tipalert, String email){
         estadoCondicionMapper.addalertpend(codigo,numserest,tipalert,email);
     }

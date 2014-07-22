@@ -27,9 +27,19 @@ public class Hist_servidor implements Serializable{
     private String estadoTrabaActual;
     private String codDep;
     private String codCes;
+    private String codGenDep;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getCodGenDep() {
+        return codGenDep;
+    }
+
+    public void setCodGenDep(String codGenDep) {
+        this.codGenDep = codGenDep;
     }
 
     public String getCodDep() {

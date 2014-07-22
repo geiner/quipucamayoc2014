@@ -183,7 +183,7 @@ public class EstadoCondicionController {
         estadoCondicionService.addHist_lab(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getNumResol(),hist_serv.getCodEs(),hist_serv.getCodEst(),
                 hist_serv.getCodGen(),hist_serv.getCodCateg());
 
-        estadoCondicionService.addHist_dep(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getNumResol(),hist_serv.getCodDep(),hist_serv.getCodCes());
+       // estadoCondicionService.addHist_dep(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getNumResol(),hist_serv.getCodDep(),hist_serv.getCodCes());
     }
 
     //Para insertar en la tabla condicion laboral
@@ -208,8 +208,13 @@ public class EstadoCondicionController {
      @RequestMapping(method = RequestMethod.POST, consumes ="application/json", produces = "application/json", value = "/adddep")
      @ResponseStatus(HttpStatus.CREATED)
      @ResponseBody
-     public void adddependencias(@RequestBody EstadoCondicion estadoCondicion){
-         estadoCondicionService.adddep(estadoCondicion.getCodigo(),estadoCondicion.getNumserest(),estadoCondicion.getNumres1(),estadoCondicion.getUdcod());
+     public void adddependencias(@RequestBody Hist_servidor hist_serv){
+         System.out.print(hist_serv.getCodigo());
+
+         estadoCondicionService.getCodCes(hist_serv.getCodGenDep());
+
+
+         //estadoCondicionService.adddep(estadoCondicion.getCodigo(),estadoCondicion.getNumserest(),estadoCondicion.getNumres1(),estadoCondicion.getUdcod());
      }
 
     //Para insertar en la tabla tb_hist_banco
