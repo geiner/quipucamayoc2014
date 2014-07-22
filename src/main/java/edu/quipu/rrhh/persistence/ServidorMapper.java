@@ -184,7 +184,7 @@ public interface ServidorMapper {
             "    #{ser.regLab}, " +
             "    #{ser.titcueBan}, " +
             "    #{ser.ruc}, " +
-            "    (SELECT COD_DEP_CESANTES FROM DATAPERSUEL.DEPENDENCIA_CESANTES WHERE TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})), " +
+            "    SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING UD_ID=#{ser.dependencia}) AND UD_ID=#{ser.dependencia}, " +
             "    #{ser.dependencia} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);
