@@ -120,8 +120,10 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
 
     @Override
     public String getCodCes(String codGenDep) {
-        String codCesan =estadoCondicionMapper.getCodCes(codGenDep);
-        return  codCesan;
+        List<Hist_servidor> codCesan =estadoCondicionMapper.getCodCes(codGenDep);
+
+         System.out.print("Valor de codCes: "+codCesan.get(0).getCodCes());
+        return  codCesan.get(0).getCodCes();
     }
 
     @Override
@@ -134,10 +136,7 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
         estadoCondicionMapper.addconaseg(codigo, numserest, numres1, regpensionario, numsispen, entasegurado, estadoafp);
     }
 
-    @Override
-    public void adddep(String codigo, Integer numserest, String numres1, String udcod){
-        estadoCondicionMapper.adddep(codigo,numserest,numres1,udcod);
-    }
+
 
     @Override
     public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago){

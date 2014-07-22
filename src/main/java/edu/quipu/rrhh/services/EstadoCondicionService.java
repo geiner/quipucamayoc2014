@@ -28,12 +28,12 @@ public interface EstadoCondicionService {
 
     public void addAlertPend(String codigo, Integer numserest, Integer tipalert, String email);
     public void addCondAseg(String codigo, Integer numserest, String numres1, Integer regpensionario, String numsispen, Integer entasegurado, Integer estadoafp);
-    public void adddep(String codigo, Integer numserest, String numres1, String udcod);
+
     public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago);
     public void addCondPla(String codigo, Integer numserest, String numres1, Integer codcond, String fechcese, String obser);
 
 
-    void addHist_dep(String codigo, String estadoTrabaActual, String numResol, String codDep, String codCes);
+    public void addHist_dep(String codigo, String estadoTrabaActual, String numResol, String codDep, String codCes);
 
     public String getCodCes(String codGenDep);
 }
