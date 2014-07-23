@@ -4,8 +4,9 @@ define(["app"], function(ErzaManager){
 
         ServidoresApp.Router = Marionette.AppRouter.extend({
             appRoutes: {
-                "servidores": "listServidores"/*,
-                 "planillas/": "listAdendas"*/
+                "servidores": "listServidores",
+                "agregar_numserest":"serv_numserest"
+                /*"planillas/": "listAdendas"*/
             }
         });
 
@@ -21,7 +22,19 @@ define(["app"], function(ErzaManager){
                     });
                 }
 
-            }/*,
+            },
+            serv_numserest:function(){
+                if($('#id_rol').text().indexOf(55)>0){
+                    require(["apps/servidores/numserest/numserest_controller"], function(NumserestController){
+                        NumserestController.numserestServidores();
+                    });
+                }else{
+                    require(["apps/inicio/list/list_controller"], function(ListController){
+                        ListController.listModulos();
+                    });
+                }
+            }
+            /*,
              listAdendas: function(){
              require(["apps/contratos/adendas/adendas_controller"], function(AdendasController){
              AdendasController.listAdendas();

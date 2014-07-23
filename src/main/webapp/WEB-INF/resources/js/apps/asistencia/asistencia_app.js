@@ -23,7 +23,7 @@ define(["app"], function(ErzaManager){
                 }
             },
             Asistencia_docente:function(){
-                if($('#id_rol').text().indexOf(7)>0){
+                if($('#id_rol').text().indexOf(57)>0){
                     require(["apps/asistencia/docente/docente_controller"], function(DocenteController){
                         DocenteController.DocenteController();
                     });

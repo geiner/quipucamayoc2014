@@ -83,18 +83,25 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>GESTIÓN PERSONAL</strong><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <sec:authorize access="hasAnyRole('${userAccess}55')">
-                        <li><a  href="#servidores">Servidores</a></li>
+                            <li class="dropdown-header" /><strong>Servidores</strong></li>
+                            <li class="divider"></li>
+                            <li><a  href="#servidores">Nuevo Servidor</a>
+                            <li><a  href="#agregar_numserest">Agregar Numserest</a>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}56')">
-                        <li><a href="#legajos">Legajos</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#legajos">Legajos</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}60')">
-                        <li><a  href="#resoluciones">Resoluciones</a></li>
+                            <li class="divider"></li>
+                            <li><a  href="#resoluciones">Resoluciones</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}57')">
-                        <li><a href="#estado_condicion">Estado y Condicion</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#estado_condicion">Estado y Condicion</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}61')">
+                            <li class="divider"></li>
                             <li><a href="#cuadro_nominal">Cuadro Nominal</a></li>
                         </sec:authorize>
 
