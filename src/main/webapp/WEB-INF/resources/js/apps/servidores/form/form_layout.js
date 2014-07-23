@@ -103,6 +103,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click .tab_a":"fun_camb_tab_a",
                     "click #unidad":"modal_depend",
                     "click .tab_b":"fun_camb_tab_b",
+                    "click #continuar":"continuar_datos_lab",
 //                    "keyup :input#codigo":"fun_validar_codigo",
                     "click #cancel_servidor":"cancelar_inf_gen",
                     "click #cancel_laboral":"cancelar_inf_gen2",
@@ -580,13 +581,16 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                          });
                          self_s.fail(function(){
                              console.log("no funciona");
-                             $('#serv_save').html('<strong>la Información General se guardó correctamente</strong>')
-                             $('#serv_save').show();
+                             $('#texto').html('<strong>la Información General se guardó correctamente. Haga click en Continuar para ingresar datos laborales del servidor.</strong>')
+                             $('#footer_modal').html('<button type="button" class="btn btn-primary"  id="continuar">Continuar</button>');
+                             $('#modal_message').modal();
+//                             $('#serv_save').html('<strong>la Información General se guardó correctamente</strong>')
+//                             $('#serv_save').show();
                              $('#cancel_servidor').click();
                              $("#codigo").val(cod)
-                             setTimeout(function (e) {
+                             /*setTimeout(function (e) {
                                  $('.tab_b').click();
-                             },2000);
+                             },2000);*/
                          });
                      }
                      else{
@@ -628,126 +632,142 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var currentDate = dia + "/" + mes + "/" + anio;
                     console.log(currentDate)
                     if($('#codigo').val() != "" && !isNaN($('#codigo').val())){
-                        if ($('#serv_ape_pat').val() != "" && $('#serv_ape_mat').val() != "" && $('#serv_nom').val() != "" &
-                            $('#serv_est_civil').val() != "99" & $('#serv_tip_docu').val() != "99" & $('#num_document').val() != "" & $('#serv_sexo').val() != "99") {
+                        var codigo = $("#codigo").val();
 
-                            if ($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_nac').val()) & $('#autocom').val()!="") {
-                                if($('#autocom').val()=="PERÚ"){
-                                    if($('#nacdepartamento').val()!="99"){
-                                        if($('#serv_act_pais').val()=="101" & $('#ser_act_domi').val()!=""){
-                                            if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
-                                                    self.insertar_inf_per_servidor();
+                        this.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
+
+                        var fetch_s = this.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
+                        fetch_s.fail(function () {
+
+                            if ($('#serv_ape_pat').val() != "" && $('#serv_ape_mat').val() != "" && $('#serv_nom').val() != "" &
+                                $('#serv_est_civil').val() != "99" & $('#serv_tip_docu').val() != "99" & $('#num_document').val() != "" & $('#serv_sexo').val() != "99") {
+
+                                if ($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_nac').val()) & $('#autocom').val()!="") {
+                                    if($('#autocom').val()=="PERÚ"){
+                                        if($('#nacdepartamento').val()!="99"){
+                                            if($('#serv_act_pais').val()=="101" & $('#ser_act_domi').val()!=""){
+                                                if($('#serv_car_fam').val()!=""){
+                                                    if($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                        self.insertar_inf_per_servidor();
+                                                    }else{
+                                                        $('#serv_save').hide();
+                                                        $('#advertencia').addClass("alert-warning");
+                                                        $('#advertencia').html('<strong>La fecha de ingreso a la Universidad  esta mal ingresada</strong>')
+                                                        $('#advertencia').show();
+                                                    }
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad  esta mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
+                                                    $('#advertencia').show();
+                                                }
+                                            }else
+                                            if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#actdepartamento').val()!="99"){
+                                                if($('#serv_car_fam').val()!=""){
+                                                    if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                        self.insertar_inf_per_servidor();
+                                                    }else{
+                                                        $('#serv_save').hide();
+                                                        $('#advertencia').addClass("alert-warning");
+                                                        $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
+                                                        $('#advertencia').show();
+                                                    }
+                                                }else{
+                                                    $('#serv_save').hide();
+                                                    $('#advertencia').addClass("alert-warning");
+                                                    $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
                                                 $('#advertencia').show();
-                                            }
-                                        }else
-                                        if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#actdepartamento').val()!="99"){
-                                            if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
-                                                    self.insertar_inf_per_servidor();
-                                                }else{
-                                                    $('#serv_save').hide();
-                                                    $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
-                                                    $('#advertencia').show();
-                                                }
-                                            }else{
-                                                $('#serv_save').hide();
-                                                $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
-                                                $('#advertencia').show();
-                                            }
+                                            };
+
                                         }else{
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
-                                            $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
+                                            $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos de Nacimiento </strong>')
                                             $('#advertencia').show();
-                                        };
-
+                                        }
                                     }else{
-                                        $('#serv_save').hide();
-                                        $('#advertencia').addClass("alert-warning");
-                                        $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos de Nacimiento </strong>')
-                                        $('#advertencia').show();
-                                    }
-                                }else{
-                                    if($('#serv_espf_dom').val()!=""){
-                                        if($('#serv_act_pais').val()=="101" && $('#ser_act_domi').val()!=""){
-                                            if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
-                                                    self.insertar_inf_per_servidor();
+                                        if($('#serv_espf_dom').val()!=""){
+                                            if($('#serv_act_pais').val()=="101" && $('#ser_act_domi').val()!=""){
+                                                if($('#serv_car_fam').val()!=""){
+                                                    if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                        self.insertar_inf_per_servidor();
+                                                    }else{
+                                                        $('#serv_save').hide();
+                                                        $('#advertencia').addClass("alert-warning");
+                                                        $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
+                                                        $('#advertencia').show();
+                                                    }
                                                 }else{
                                                     $('#serv_save').hide();
                                                     $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
+                                                    $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
+                                                    $('#advertencia').show();
+                                                }
+                                            }else
+                                            if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#serv_act_provincia').val()!=""){
+                                                if($('#serv_car_fam').val()!=""){
+                                                    if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
+                                                        self.insertar_inf_per_servidor();
+                                                    }else{
+                                                        $('#serv_save').hide();
+                                                        $('#advertencia').addClass("alert-warning");
+                                                        $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
+                                                        $('#advertencia').show();
+                                                    }
+                                                }else{
+                                                    $('#serv_save').hide();
+                                                    $('#advertencia').addClass("alert-warning");
+                                                    $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                                     $('#advertencia').show();
                                                 }
                                             }else{
                                                 $('#serv_save').hide();
                                                 $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
+                                                $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
                                                 $('#advertencia').show();
-                                            }
-                                        }else
-                                        if($('#serv_act_pais').val()=="100" && $('#ser_act_domi').val()!="" && $('#serv_act_provincia').val()!=""){
-                                            if($('#serv_car_fam').val()!=""){
-                                                if($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())){
-                                                    self.insertar_inf_per_servidor();
-                                                }else{
-                                                    $('#serv_save').hide();
-                                                    $('#advertencia').addClass("alert-warning");
-                                                    $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
-                                                    $('#advertencia').show();
-                                                }
-                                            }else{
-                                                $('#serv_save').hide();
-                                                $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
-                                                $('#advertencia').show();
-                                            }
+                                            };
                                         }else{
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
-                                            $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
+                                            $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
                                             $('#advertencia').show();
-                                        };
-                                    }else{
-                                        $('#serv_save').hide();
-                                        $('#advertencia').addClass("alert-warning");
-                                        $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
-                                        $('#advertencia').show();
+                                        }
                                     }
+                                } else {
+                                    $('#serv_save').hide();
+                                    $('#advertencia').addClass("alert-warning");
+                                    $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
+                                    $('#advertencia').show();
                                 }
+
+
                             } else {
                                 $('#serv_save').hide();
                                 $('#advertencia').addClass("alert-warning");
-                                $('#advertencia').html('<strong>Datos de la sección Datos de Nacimiento están mal ingresados</strong>')
+                                $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección de Información Principal</strong>')
                                 $('#advertencia').show();
                             }
 
-
-                        } else {
-                            $('#serv_save').hide();
-                            $('#advertencia').addClass("alert-warning");
-                            $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección de Información Principal</strong>')
-                            $('#advertencia').show();
-                        }
+                        });
+                        fetch_s.done(function () {
+                            $('#texto').html('<strong>El codigo ingresado ya existe</strong>')
+                            $('#footer_modal').html(' <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>')
+                            $('#modal_message').modal();
+                        });
                     }else{
                         $('#serv_save').hide();
                         $('#advertencia').addClass("alert-warning");
                         $('#advertencia').html('<strong>Debe Ingresar el código del servidor</strong>')
                         $('#advertencia').show();
                     }
+
+
 
 
                 },
@@ -1224,6 +1244,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if(this.tab==0 && $("#codigo").val().length <= 8 && $("#codigo").val().length > 0){
                         this.fun_search_servidor();
                     }
+                },
+                continuar_datos_lab:function(){
+                    $('#modal_message').modal('hide');
+                    $('.tab_b').click();
                 },
                 fun_camb_tab_b:function(){
 //                    this.tab=1;

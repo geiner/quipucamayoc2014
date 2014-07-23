@@ -1,0 +1,226 @@
+<fieldset>
+
+<div class="alert text-center" id="mensaje" style="display: none"></div>
+<br/>
+
+<div class="tabbable">
+<ul class="nav nav-tabs">
+	<li class=""><a href="#lA" data-toggle="tab" class="tab_b">Datos Laborales</a></li>
+	<div class="input-group col-md-3 pull-right">
+        <a class="btn btn-primary pull-right" id="bus_ser" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
+    </div>
+</ul>
+</div>
+
+<div class="tab-content">
+<div class="tab-pane active" id="lA">
+    <br>
+    <div class="row form-group" id="block-descr_serv" style="display: none">
+        <div class="col-md-3">
+            <strong style="font-size: 18px;">Codigo:<strong id="cod_serv_lab" style="font-size: 16px; color: #00585f;"></strong></strong>
+        </div>
+        <div class="col-md-3">
+            <strong style="font-size: 18px;">DNI:<strong id="dni_serv_lab" style="font-size: 16px; color:#00585f;"></strong></strong>
+        </div>
+        <div class="col-md-6">
+            <strong style="font-size: 18px;">Servidor:<strong id="desc_serv_lab" style="font-size: 16px; color: #00585f;"></strong></strong>
+        </div>
+        <br>
+    </div>
+    <form class="form-horizontal" id="sav_serv_lab">
+        <fieldset>
+            <br/>
+            <legend>Informacion Laboral</legend>
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <label class="control-label col-md-5" for="codigo_antiguo">Código Antiguo<span
+                            style="color:red;">*</span></label>
+
+                    <div class="controls col-md-7">
+                        <input type="text" id="codigo_antiguo" placeholder="Ingrese Código Antiguo" class="form-control pull-right">
+                    </div>
+                </div>
+            </div>
+        <div class="row form-group">
+            <div class="col-md-6" id="div_serv_est">
+
+            </div>
+            <div class="col-md-6" id="div_serv_gen">
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6" id="div_serv_tip">
+
+            </div>
+            <div class="col-md-6" id="div_serv_cat">
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6" id="div_rpe">
+
+            </div>
+            <div class="col-md-6" id="div_ent_aseg">
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6" id="div_est_afp">
+
+            </div>
+            <div class="col-md-6">
+                <label class="control-label col-md-5">Numero del Sistema Privado de Pensiones <span style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" id="num_sis_pri_pen" placeholder="Ejm. " class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6" id="div_tip_pag">
+
+            </div>
+            <div class="col-md-6" id="div_cta_ban" style="display: none;">
+                <label class="control-label col-md-5" for="cta_ban">Cuenta Bancaria <span style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" id="cta_ban" placeholder="Ejm. " class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-6" style="display: none;">
+
+                <label class="control-label col-md-5" for="serv_disc">Titular Cuenta Bancaria</label>
+
+                <div class="col-md-7">
+                    <select id="serv_tit_ban" class="form-control">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-md-6" id="div_cond_pla">
+
+            </div>
+        </div>
+        <div class="row control-group">
+            <div class="col-md-6">
+                <label class="control-label col-md-5" for="reg_lab">Fecha de Registro Laboral <span
+                        style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input size="10" type="text" value="" id="reg_lab" class="form-control"
+                               placeholder="Ejm. 11/05/2004" readonly="">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="reg_lab_show"><span
+                                    class=" glyphicon glyphicon-calendar"></span></button>
+                            <button class="btn btn-default" type="button" id="reg_lab_clos"><span
+                                    class=" glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                    </div>
+                    <div id="help_reg_lab" class="alert alert-error"
+                         style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label col-md-5" for="reg_pen">Fecha de Inscripción de Registro Pensionario<span
+                        style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input type="text" value="" id="reg_pen" placeholder="Ejm. 11/05/2004" class="form-control" readonly="">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="reg_pen_show"><span
+                                    class="glyphicon glyphicon-calendar"></span></button>
+                            <button class="btn btn-default" type="button" id="reg_pen_clos"><span
+                                    class=" glyphicon glyphicon-refresh"></span></button>
+                        </span>
+                    </div>
+                    <div id="help_reg_pen" class="alert alert-error"
+                         style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row control-group">
+
+            <div class="col-md-6" id="div_tip_ocup">
+
+            </div>
+
+        </div>
+            <div class="row form-group">
+                <div class="col-md-12" id="div">
+                    <label class="col-md-2 control-label" for="origen" style="margin-left:3.6%;">Dependencia <span style="color:red;">*</span></label>
+                    <div class="col-md-6">
+
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="origen" disabled="disabled">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" id="unidad"><span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        <div class="row control-group">
+
+            <div class="col-md-6">
+                <label class="control-label col-md-5" for="serv_sind">Sindicalizado (S/N) <span
+                        style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <select id="serv_sind" class="form-control">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6" style="display: none">
+                <label class="control-label col-md-5" for="serv_afil">Afiliado (S/N) <span style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <select id="serv_afil" class="form-control">
+                        <option value="1">Si</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+            <br/>
+        <div class="row control-group" id="div_ruc" style="display: none;">
+            <div class="col-md-6">
+                <label class="control-label col-md-5">RUC <span style="color:red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" id="serv_ruc" class="form-control">
+                </div>
+            </div>
+        </div>
+            </fieldset>
+        <br/>
+        <div class="form-actions" style="padding-left: 41%;">
+            <a type="submit" class="btn btn-primary" id="save_laborales">Guardar</a>
+            <button type="reset" class="btn btn-default" id="cancel_laboral">Nuevo</button>
+        </div>
+    </form>
+</div>
+</div>
+
+</fieldset>
+
+<div id="list_servidores" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<div id="show_depend" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>

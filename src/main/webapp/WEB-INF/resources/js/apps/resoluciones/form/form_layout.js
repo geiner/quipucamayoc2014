@@ -917,7 +917,7 @@ define(["app","hbs!apps/resoluciones/form/templates/ResolucionGeneralLayout",'li
                     var codAnti=clickedElement.attr('data2');
                     var nombre=clickedElement.children(':nth-child(1)').text();
                    var est_report=clickedElement.children(':nth-child(6)').text();
-                   var dni_repot= clickedElement.children(':nth-child(2)').text();
+                   var dni_repot= clickedElement.attr('id');
 
                     if(this.btnasignar==1){
 
