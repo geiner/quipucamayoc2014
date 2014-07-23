@@ -6,10 +6,12 @@
 
 <div id="advertencia" class="alert alert-warning" style="text-align: center; display:none;"><strong>Existen campos obligatorios vacíos</strong></div>
 <div id="correcto" class="alert alert-success" style="text-align: center; display: none;"><strong>Se registró correctamente los datos</strong></div>
+
+<div id="est_cond" class="alert" style="text-align: center; display: none;"></div>
 <div class="tabbable tabs-left" id="header_est_cod">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#cl" data-toggle="tab">Estado del Trabajador</a></li>
-        <li class=""><a href="#d" data-toggle="tab">Dependencia</a></li>
+        <li class="active"><a href="#cl" id="est_trab" data-toggle="tab">Estado del Trabajador</a></li>
+        <li class=""><a href="#d" id="depen" data-toggle="tab">Dependencia</a></li>
         <li class=""><a href="#ca" data-toggle="tab">Condicion del Asegurado</a></li>
         <li class=""><a href="#b" data-toggle="tab">Tipo Pago</a></li>
         <li class=""><a href="#cp" data-toggle="tab">Condicion Laboral</a></li>
@@ -85,10 +87,26 @@
                 <div class="row form-group">
 
 
-                    <div class="col-md-6" >
+                    <div class="col-md-6"  id="div_input">
                         <label class="col-md-5 control-label" for="tipo" >Estado Laboral</label>
-                        <div class="col-md-7">
+                        <div class="col-md-7" >
                             <input type="text" class="form-control" id="estLab"  disabled>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-6" id="div_select" style="display:none;">
+                        <label class="col-md-5 control-label">Estado laboral <span style="color:red;">*</span></label>
+                        <div class="col-md-7"  >
+                            <select id="est_doc" class="form-control">
+                                <option value="0">Seleccione estado </option>
+
+                                <option value="3">CESANTE</option>
+                                <option value="1">PERMANENTE</option>
+
+                            </select>
                         </div>
                     </div>
 
@@ -122,7 +140,7 @@
 
                 <div class="row form-group">
                     <div class="col-md-6">
-                        <label class="col-md-5 control-label" for="numresol">Nro. Resolucion <span style="color:red;">*</span></label>
+                        <label class="col-md-5 control-label" for="numresol">Nro. Resolución <span style="color:red;">*</span></label>
                         <div class="col-md-7" >
                             <div class="input-group">
                                 <input class="form-control" type="text" id="numresol"  disabled>
@@ -144,7 +162,7 @@
               <hr>
             <div class="form-actions" id="form_insert" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-condlab">Guardar</button>
-                <button type="button" class="btn left btn-default" id="reset-condlab">Cancelar</button>
+                <button type="button" class="btn left btn-default reset-condlab" >Nuevo</button>
             </div>
         </form>
 
@@ -193,13 +211,13 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-8">
-                        <label class="col-md-5 control-label" for="numresol">Nro. Resolucion <span style="color:red;">*</span></label>
+                        <label class="col-md-5 control-label" for="numresol">Contrato <span style="color:red;">*</span></label>
                         <div class="col-md-7">
                             <div class="input-group">
                                 <input class="form-control" type="text" id="numresol_dep"  disabled>
                                 <div class="input-group-btn">
 
-                                    <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                                    <button class="btn btn-default" type="button" id="bus_contratos"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                             </div>
                         </div>
@@ -248,7 +266,7 @@
              <hr>
             <div class="form-actions" id="form_insert1" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-dep">Guardar</button>
-                <button type="reset" class="btn left btn-default" id="cancel_est_traba">Cancelar</button>
+                <button type="reset" class="btn left btn-default reset-condlab">Nuevo</button>
             </div>
 
         </form>
@@ -524,6 +542,34 @@
 
 </div>
 <div id="estado_condicion-modal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<div id="modal_contratos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+<div id="modal_message" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">ADVERTENCIA</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <strong>Servidor: <span id="desc_serv" style="color: #00585f;"> </span><br/>
+                            Estado: <span id="desc_est" style="color: #00585f;"> </span><br>
+                            Esta funcionalidad es solo para personal CAS</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+
+            </div>
+        </div>
+    </div>
 
 </div>
 <style type="text/css">

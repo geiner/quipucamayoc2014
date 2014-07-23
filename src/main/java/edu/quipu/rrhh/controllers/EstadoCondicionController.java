@@ -175,6 +175,16 @@ public class EstadoCondicionController {
         return estadoresol;
     }
 
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/listar_contratos/{codigo}")
+    @ResponseBody
+    public List<Contrato> listContratos(@PathVariable(value = "codigo") String codigo){
+        while(codigo.length()<10){
+            codigo=codigo+" ";
+        }
+        List<Contrato> listContratos = estadoCondicionService.listar_contratos(codigo);
+        return listContratos;
+    }
+
     //Para insertar en la tabla condicion laboral
     @RequestMapping(method = RequestMethod.POST, consumes ="application/json", produces = "application/json", value = "/addcondlab")
     @ResponseStatus(HttpStatus.CREATED)

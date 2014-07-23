@@ -1,6 +1,7 @@
 package edu.quipu.rrhh.services.implement;
 
 
+import edu.quipu.rrhh.models.Contrato;
 import edu.quipu.rrhh.models.EstadoCondicion;
 import edu.quipu.rrhh.models.Hist_servidor;
 import edu.quipu.rrhh.models.Servidor;
@@ -8,7 +9,10 @@ import edu.quipu.rrhh.persistence.EstadoCondicionMapper;
 import edu.quipu.rrhh.services.EstadoCondicionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 @Service
 public class EstadoCondicionServiceImpl implements EstadoCondicionService{
@@ -124,6 +128,12 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
 
          System.out.print("Valor de codCes: "+codCesan.get(0).getCodCes());
         return  codCesan.get(0).getCodCes();
+    }
+
+    @Override
+    public List<Contrato> listar_contratos(String codigo) {
+        List<Contrato> listContratos=estadoCondicionMapper.listar_contratos(codigo);
+        return listContratos;
     }
 
     @Override
