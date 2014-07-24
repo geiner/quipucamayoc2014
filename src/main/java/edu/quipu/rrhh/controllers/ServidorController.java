@@ -107,9 +107,30 @@ public class ServidorController {
     @ResponseBody
     public String updateServidoLaboral(@RequestBody ServidorLaboral servidorLaboral){
         System.out.println(servidorLaboral.getRuc()+"!!!!!!!!!!!!!!!!!!!");
+        System.out.println("primero");
         servidorService.updateServidorLaboral(servidorLaboral);
+        System.out.println("segundo");
         servidorService.updateServidorLaboral2(servidorLaboral);
+        System.out.println("tercero");
+        servidorService.updateHistBanco(servidorLaboral);
+        System.out.println("cuarto");
+        servidorService.updateHistCondAseg(servidorLaboral);
+        System.out.println("quinto");
+        servidorService.updateHistCondLab(servidorLaboral);
+        System.out.println("sexto");
+        servidorService.updateHistCondPlani(servidorLaboral);
+        System.out.println("septimo");
+        servidorService.updateHistHistDep(servidorLaboral);
+        System.out.println("octavo");
         return "";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/num_registros/{codigo}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public List<ServidorLaboral> selectnumeroRegistros(@PathVariable(value = "codigo") String codigo) {
+        System.out.println("entro");
+        return servidorService.selectnumeroRegistros(codigo);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/tiposdocumento")

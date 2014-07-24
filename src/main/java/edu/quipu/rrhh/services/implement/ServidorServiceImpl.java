@@ -75,6 +75,36 @@ public class ServidorServiceImpl implements ServidorService {
     }
 
     @Override
+    public void updateHistHistDep(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateHistHistDep(servidorLaboral);
+    }
+
+    @Override
+    public void updateHistCondLab(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateHistCondLab(servidorLaboral);
+    }
+
+    @Override
+    public void updateHistBanco(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateHistBanco(servidorLaboral);
+    }
+
+    @Override
+    public void updateHistCondAseg(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateHistCondAseg(servidorLaboral);
+    }
+
+    @Override
+    public void updateHistCondPlani(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateHistCondPlani(servidorLaboral);
+    }
+
+    @Override
+    public List<ServidorLaboral> selectnumeroRegistros(String codigo) {
+        return servidorMapper.selectnumeroRegistros(codigo);
+    }
+
+    @Override
     public List<Servidor> findByCod(Servidor servidor) {
         return servidorMapper.findByCod(servidor);  //To change body of implemented methods use File | Settings | File Templates.
     }

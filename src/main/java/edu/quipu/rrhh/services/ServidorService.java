@@ -47,4 +47,16 @@ public interface ServidorService {
     void saveHistCondLab(ServidorLaboral servidorLaboral);
 
     void saveHistCondPlani(ServidorLaboral servidorLaboral);
+
+    void updateHistHistDep(ServidorLaboral servidorLaboral);
+
+    void updateHistCondLab(ServidorLaboral servidorLaboral);
+
+    void updateHistBanco(ServidorLaboral servidorLaboral);
+
+    void updateHistCondAseg(ServidorLaboral servidorLaboral);
+
+    void updateHistCondPlani(ServidorLaboral servidorLaboral);
+
+    List<ServidorLaboral> selectnumeroRegistros(String codigo);
 }

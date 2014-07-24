@@ -7,9 +7,9 @@ import org.springframework.dao.DataAccessException;
 public interface WorkerEntityMapper {
     @Select(value = "SELECT SER_COD, SAP, SAM, SNOM, DEST, DCAT, DTYPE, UDID, UDDSC, PERF_DESC FROM (SELECT s.ser_cod, s.ser_mail, SER_APE_PAT as sAP, SER_APE_MAT as sAM, SER_NOM as sNom,DESC_EST as dEst, DESC_CATEG as dCat,DES_TIP_SER as dType,UD_ID as udId,UD_DSC as udDsc    \n" +
             "            FROM ((DATAPERSUEL.SERVIDOR s left join (DATAPERSUEL.TIP_SERVIDOR ts left join (UNI_DEP ud left join  (DATAPERSUEL.SERVIDOR_ESTADO se left join DATAPERSUEL.ESTADO es \n" +
-            "            on se.ser_est_act =es.cod_est)  on ud.UD_COD=se.SER_COD_DEP_ACT) on ts.COD_TIP_SER=se.SER_TIP_ACT)on s.SER_COD=se.SER_COD) \n" +
+            "            on se.ser_est_act =es.cod_est)  on ud.UD_COD=se.SER_COD_DEP_ACT) on ts.COD_TIP_SER=se.SER_TIP_ACT)on s.SER_COD=se.SER_COD)  \n" +
             "            left join DATAPERSUEL.categoria cat on cat.cod_categ = se.ser_cat_act) \n" +
-            "            WHERE S.SER_COD=#{nId}    ) actual LEFT JOIN (QPRODATAQUIPU.tb_perfil b inner join QPRODATAQUIPU.tb_hist_usu_perf a on b.perf_cod = a.perf_cod) ON actual.SER_COD = a.c_usuid")
+            "            WHERE S.SER_COD=#{nId} and se.ser_con_pla_act=1   ) actual LEFT JOIN (QPRODATAQUIPU.tb_perfil b inner join QPRODATAQUIPU.tb_hist_usu_perf a on b.perf_cod = a.perf_cod) ON actual.SER_COD = a.c_usuid")
 
     @Results(value = {@Result(javaType = WorkerEntity.class),
 
@@ -83,7 +83,7 @@ public interface WorkerEntityMapper {
             " WHERE T_MAIL= " +
             "  (SELECT eu.t_mail " +
             "  FROM QPRODATAQUIPU.tb_erp_usuario eu " +
-            "  WHERE trim(c_usuid)=#{id} " +
+            "  WHERE trim(c_usuid)=trim(#{id}) " +
             "  ) " +
             " AND c_usuid IS NULL " +
             " AND ud_id   IS NULL")

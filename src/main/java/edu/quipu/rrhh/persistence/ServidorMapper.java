@@ -72,29 +72,33 @@ public interface ServidorMapper {
 
 
     //servidor laboral
-    @Select(value = "SELECT se.ser_cod        AS cod, " +
-            "  ser_est_act         AS estLab, " +
-            "  ser_rpe_act         AS regPen, " +
-            "  ser_ent_aseg        AS entAse, " +
-            "  ser_est_afp         AS estAfp, " +
-            "  ser_cat_act         AS cat, " +
-            "  ser_con_pla_act     AS conPla, " +
-            "  ser_tip_ser_gen     AS tipGen, " +
-            "  ser_tip_act         AS tip, " +
-            "  ser_tip_pag_act     AS tipPag, " +
-            "  ser_cta_ban_act     AS cueBan, " +
-            "  SER_TIT_CTA_BAN     as titcueBan, "+
-            "  SER_NUM_RUC         as ruc, "+
-            "  TO_CHAR(ser_fech_reg_lab,'DD/MM/YYYY' )    AS regLab, " +
-            "  ser_num_sis_pri_pen AS numPen ," +
-            "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen,"+
-            "  SER_ORI_TIP_OCUPUNIV AS tipocupuni, " +
-            "  SER_ORI_SINDICATO AS sindic " +
-            "  FROM datapersuel.servidor_estado se ," +
-            "  DATAPERSUEL.servidor_origen so "+
-            "  WHERE trim(se.ser_cod) = trim(#{servidorLaboral.cod}) " +
-            "  and se.ser_cod=so.ser_cod "+
-            "  ORDER BY conPla, " +
+    @Select(value ="SELECT se.ser_cod                                 AS cod, " +
+            "  ser_est_act                                     AS estLab, " +
+            "  ser_rpe_act                                     AS regPen, " +
+            "  ser_ent_aseg                                    AS entAse, " +
+            "  ser_est_afp                                     AS estAfp, " +
+            "  ser_cat_act                                     AS cat, " +
+            "  ser_con_pla_act                                 AS conPla, " +
+            "  ser_tip_ser_gen                                 AS tipGen, " +
+            "  ser_tip_act                                     AS tip, " +
+            "  ser_tip_pag_act                                 AS tipPag, " +
+            "  ser_cta_ban_act                                 AS cueBan, " +
+            "  SER_TIT_CTA_BAN                                 AS titcueBan, " +
+            "  SER_NUM_RUC                                     AS ruc, " +
+            "  SER_COD_DEP_ACT                                 AS dependencia, " +
+            "  ud.UD_DSC                                       AS des_depend, " +
+            "  TO_CHAR(ser_fech_reg_lab,'DD/MM/YYYY' )         AS regLab, " +
+            "  ser_num_sis_pri_pen                             AS numPen , " +
+            "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen, " +
+            "  SER_ORI_TIP_OCUPUNIV                            AS tipocupuni, " +
+            "  SER_ORI_SINDICATO                               AS sindic " +
+            "FROM datapersuel.servidor_estado se , " +
+            "  DATAPERSUEL.servidor_origen so, " +
+            "  QPRODATAQUIPU.uni_dep ud " +
+            "WHERE trim(se.ser_cod) =trim(#{servidorLaboral.cod}) " +
+            "AND se.ser_cod         =so.ser_cod " +
+            "AND trim(ud.UD_COD)          =trim(se.ser_cod_dep_act) " +
+            "ORDER BY conPla, " +
             "  cat")
     @Results(value = {
             @Result(javaType = ServidorLaboral.class),
@@ -114,6 +118,8 @@ public interface ServidorMapper {
             @Result(column = "numPen", property = "numPen"),
             @Result(column = "insregpen", property = "insregpen"),
             @Result(column = "tipocupuni", property = "tipocupuni"),
+            @Result(column = "dependencia", property = "dependencia"),
+            @Result(column = "des_depend", property = "des_depend"),
             @Result(column = "sindic", property = "sindic"),
             @Result(column = "ruc", property = "ruc"),
     })
@@ -203,6 +209,8 @@ public interface ServidorMapper {
             "    ser_num_sis_pri_pen=#{ser.numPen}, " +
             "    ser_est_afp=#{ser.estAfp}, " +
             "    ser_num_ruc=#{ser.ruc}, " +
+            "    ser_cod_dep_act=#{ser.dependencia}, " +
+            "    ser_cod_dep_ces=(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})), " +
             "    ser_fech_reg_lab=TO_DATE(#{ser.regLab},'DD/MM/YY') " +
             " WHERE trim(SER_COD)=trim(#{ser.cod})")
     void updateServidorLaboral(@Param("ser") ServidorLaboral servidorLaboral);
@@ -575,6 +583,63 @@ public interface ServidorMapper {
             " '-',(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})),#{ser.dependencia})")
     public void saveHistHistDep(@Param("ser") ServidorLaboral servidor);
 
+    @Update(value ="UPDATE QPDATAGESTION.TB_HIST_BANCO SET" +
+            " CTA_BANCO=#{ser.cueBan} ," +
+            "  TIPO_PAGO=#{ser.tipPag} " +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateHistBanco( @Param("ser") ServidorLaboral servidorLaboral);
+
+    @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_ASEG SET" +
+            " REG_PEN=#{ser.regPen} ," +
+            " ENT_ASEG=#{ser.entAse} ," +
+            " EST_AFP=#{ser.estAfp} ," +
+            " NUM_SIS_PEN=#{ser.numPen} " +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateHistCondAseg( @Param("ser") ServidorLaboral servidorLaboral);
+
+    @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_LAB SET" +
+            " COD_EST=#{ser.estLab} ," +
+            " COD_CATEG=#{ser.cat} ," +
+            " COD_TIPO_SER=#{ser.tip} ," +
+            " TTPO_GEN=#{ser.tipGen} " +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateHistCondLab( @Param("ser") ServidorLaboral servidorLaboral);
+
+    @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_PLANI SET" +
+            " COND_PLA=#{ser.cueBan} " +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateHistCondPlani( @Param("ser") ServidorLaboral servidorLaboral);
+
+    @Update(value ="UPDATE QPDATAGESTION.TB_HIST_DEP SET" +
+            " DEP_ACT=#{ser.dependencia} ," +
+            " DEP_CES=(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})) " +
+            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+    void updateHistHistDep( @Param("ser") ServidorLaboral servidorLaboral);
+
+    @Select(value ="SELECT MAX(hb.NUM_REG) AS num1, "
+            +"  MAX(hca.NUM_REG)     AS num2, "
+            +"  MAX(hd.NUM_REG)      AS num3, "
+            +"  MAX(hcl.NUM_REG)     AS num4, "
+            +"  MAX(hcp.NUM_REG)     AS num5 "
+            +"FROM qpdatagestion.tb_hist_banco hb , "
+            +"  qpdatagestion.tb_hist_cond_aseg hca , "
+            +"  qpdatagestion.TB_HIST_DEP hd , "
+            +"  qpdatagestion.tb_hist_cond_lab hcl, "
+            +"  qpdatagestion.tb_hist_cond_plani hcp "
+            +"WHERE trim(hb.ser_cod)=trim(#{codigo}) "
+            +"AND trim(hca.ser_cod) =trim(#{codigo})"
+            +"AND trim(hd.ser_cod)  =trim(#{codigo}) "
+            +"AND trim(hcl.ser_cod) =trim(#{codigo}) "
+            +"AND trim(hcp.ser_cod) =trim(#{codigo})")
+    @Results(value = {
+            @Result(javaType = Pais.class),
+            @Result(column = "num1",property = "num1"),
+            @Result(column = "num2",property = "num2"),
+            @Result(column = "num3",property = "num3"),
+            @Result(column = "num4",property = "num4"),
+            @Result(column = "num5",property = "num5"),
+    })
+    List<ServidorLaboral> selectnumeroRegistros(String codigo);
 }
 
 
