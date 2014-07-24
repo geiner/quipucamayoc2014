@@ -36,4 +36,6 @@ public interface EstadoCondicionService {
     public void addHist_dep(String codigo, String estadoTrabaActual, String numResol, String codDep, String codCes);
 
     public String getCodCes(String codGenDep);
+
+    List<Contrato> listar_contratos(String codigo);
 }

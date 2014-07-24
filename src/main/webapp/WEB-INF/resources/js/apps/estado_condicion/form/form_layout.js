@@ -1,5 +1,5 @@
 define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion","apps/estado_condicion/form/view/listar_servidor",
-    "apps/estado_condicion/form/view/listar_resolucion", "apps/estado_condicion/form/view/tipo",
+    "apps/estado_condicion/form/view/listar_resolucion","apps/estado_condicion/form/view/listar_contratos" ,"apps/estado_condicion/form/view/tipo",
     "apps/estado_condicion/form/view/regimen", "apps/estado_condicion/form/view/entidad",
     "apps/estado_condicion/form/view/estadoafp", "apps/estado_condicion/form/view/tipopago","apps/estado_condicion/form/view/condpla", "apps/estado_condicion/form/view/tabla_cond_lab",
     "apps/estado_condicion/form/view/tabla_pago_banco","apps/estado_condicion/form/view/tabla_cond_aseg",
@@ -14,7 +14,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
     "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/jquery.numeric","bootstrap"],
 
-    function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView, TipoView, RegimenView,
+    function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView,ListarContrView,TipoView, RegimenView,
               EntidadView, EstadoAfpView, TipoPagoView, CondPlaView, Tabla_Cond_LabView, Tabla_Pago_BancoView,Tabla_Cond_AsegView, Tabla_DepView,Tabla_Cond_PlaView, Guardar_CondLabModel,
               Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView,tablaPlazasAsignadasView, historialPlazaView, modalEliminacionItemHistorialView,  eliminarHistorialPlazaModel,addHistorialPlazaModel) {
         ErzaManager.module('EstadoCondicionApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
@@ -28,6 +28,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 template: InicioTemp,
                 ListarServidorView: new ListarServidorView(),
                 ListarResolView: new ListarResolView(),
+                ListarContrView:new ListarContrView(),
                 TipoView: new TipoView(),
 
                 RegimenView: new RegimenView(),
@@ -86,6 +87,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 regions:{
                     ListarReg: "#estado_condicion-modal1",
+                    ListContratos:"#modal_contratos",
                     ResolReg: "#listar_resol_modal",
                     TipoReg: "#div_tipo",
 
@@ -113,17 +115,25 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 events:{
                     "click #search": "llamarModalListar",
-                    "click #reset-condlab":"resetCondLab",
-                    "click .close": "close",
+
+
+                    "click #depen":"fun_depen",
+
+                    "click #est_trab":"fun_est_trab",
+
                     "click #bus_resol":"llamarModalResol",
                     "dblclick #tabla > tbody > tr ": "seleccionarServidor",
                     "dblclick #tabla_resol > tbody > tr": "seleccionarResolucion",
                     "click #btn-condlab": "guardarCondLab",
 
+                    "dblclick #tabla_contratos >tbody>tr":"selectContr",
+
                     "click #header_est_cod>ul>li":"cambPest",
                     //"click .btn-modal": "modalConfirm",
                   //  "change #categ": "cambioCategoria",
                    // "change #div_tipo": "cambioTipo",
+
+                    "click #bus_contratos":"fun_buscar_contratos",
 
                     "click .tree li": "clickUnidad",
                     "change #cod_adm": "cambioAdm",
@@ -137,6 +147,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     "click #btn-condpla": "guardarCondPla",
                     "click #bus_dep":"llamarModalUnidades",
                     "click #boton-unidad":"seleccionarunidad",
+
+                    "click .reset-condlab":"fun_nuevo",
                     //"click #nomb_fech_show":"mostrarcalendarionomb", // cuando se hace clic en el boton fecha nombramiento...
                     "click #cese_fech_show":"mostrarcalendariocese", //  cuando se hace clic en el boton fecha cese...
 
@@ -212,6 +224,14 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#div_banco').hide();
                     }
                 },
+                fun_depen:function(){
+                    $("#est_cond").hide();
+                    $("#numresol_dep").val("");
+                    $("#depencia").val("");
+                },
+                fun_est_trab:function(){
+                    $("#est_cond").hide();
+                },
                 clickUnidad:function(e){
                     if(this.elementoClickeado){
                         $(this.elementoClickeado).css({
@@ -286,6 +306,64 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     $('#textDestino').val(this.unidadSelected.unidadDesc);//mio
                     */
+
+                },
+
+                fun_nuevo:function(){
+
+                    $("#sec_est_cond").hide();
+                    $("#form_insert").hide();
+                    $("#form_insert1").hide();
+                    $("#est_cond").hide();
+                    this.TCLReg.reset();
+                    this.TDReg.reset();
+                    $("#unid_depen").val("");
+                    $("#depencia").val("");
+                    $("#numresol_dep").val("");
+                    $("#estito").val("");
+                    $("#tipoGen").val("");
+                    $("#tipito").val("");
+                    $("#catito").val("");
+                    $("#estLab").val("");
+                    $("#tipoGene").val("");
+                    $("#tipoAct").val("");
+                    $("#numresol").val("");
+                    $("#categ_prof").val("9");
+
+
+                },
+
+                fun_buscar_contratos:function(){
+
+                 var self=this;
+
+                    if($("#est_emp").text()=="CAS"){
+                        self.ListarContrView.fetchContratos(this.codigo,function(){
+
+                            if(self.ListarContrView.collection.length!=0){
+                                $("#tabla_contratos").dataTable();
+                                $('#tabla_contratos_wrapper').append("<div id='footer-table'></div>");
+                                $('#tabla_contratos_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#tabla_contratos_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                $('.dataTables_filter input').attr('placeholder','Buscar..');
+                            }
+                            else{
+                                alert("NO TRAJO NADA");
+                            }
+
+                        });
+
+                        self.ListContratos.show(self.ListarContrView);
+
+                        $("#modal_contratos").modal();
+                    }else{
+
+                        $("#desc_serv").text($("#employed").text());
+                        $("#desc_est").text($("#est_emp").text());
+                        $("#modal_message").modal("show");
+                    }
+
 
                 },
 
@@ -369,16 +447,28 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 },
 
+                selectContr:function(e){
 
+                    var clickedElement=$(e.currentTarget);
+                    var numContrato=clickedElement.children(':nth-child(1)').text();
+
+
+                  $("#modal_contratos").modal("hide");
+
+                    $("#numresol_dep").val(numContrato);
+
+                },
 
                 seleccionarServidor: function(e){
                     var self=this;
+
                     $('#form_insert').show();
                     $('#form_insert1').show();
                     $('#form_insert2').show();
                     $('#form_insert3').show();
                     $('#form_insert4').show();
                     $("#sec_est_cond").show();
+                    $("#est_cond").hide();
                     var clickedElement=$(e.currentTarget);
 /*
                     alert("codigo:"+clickedElement.attr("id")+" numserest:"+clickedElement.children(':nth-child(7)').text()+" ti:"+clickedElement.children(":nth-child(4)").text());
@@ -415,6 +505,15 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var dni=clickedElement.children(':nth-child(2)').text();
 
                    // alert(dni+" "+nombre+" "+cod_ant+" "+est);
+                    if(this.codEst=="2" && this.codTipo=="1" && this.codGen=="1"){
+                          $("#div_input").hide();
+                          $("#div_select").show();
+
+                    }
+                    else{
+                        $("#div_input").show();
+                        $("#div_select").hide();
+                    }
 
                     $("#dni_emp").text(dni);
                     $('#employed').text(nombre);
@@ -431,6 +530,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#estLab").val(est);
                     $("#tipoGene").val(codGen);
                     $("#tipoAct").val(desctip);
+
+                    $("#depencia").val("");
 
                     //$("#est").val(codEst);
                     $('#estado_condicion-modal1').modal('hide');
@@ -702,55 +803,180 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 },
 
-                guardarCondLab: function(e){
+                guardarCondLab: function(){
                     var self=this;
                      var num_resol=$("#numresol").val();
 
                       // alert(this.codigo+" "+this.numserest+" "+this.codCateg+" "+this.codEst+" "+this.codGen+" "+this.codTipo);
-                      this.codCateg=$("#categ_prof").val();
+                    if(this.codEst=="2" && this.codTipo=="1" && this.codGen=="1"){
 
-                        this.model.get("guardarHist").set({
-                        "codigo": this.codigo,
-                        "estadoTrabaActual": this.numserest,
-                        "numResol": num_resol,
-                        "codCateg": this.codCateg,
-                        "codEs": this.codEst,
-                        "codGen": this.codGen,
-                        "codEst": this.codTipo,
-                        "codDep":this.depAct,
-                        "codCes":this.depCes
+                        if($("#est_doc").val()=="0"){
+                            $("#est_cond").show();
+                            $("#est_cond").removeClass("alert-warning");
+                            $("#est_cond").removeClass("alert-success");
+                            $("#est_cond").html("Seleccione el estado laboral de <strong>"+$("#employed").text()+"</strong>")
+                            $("#est_cond").addClass("alert-warning");
+                        }
+                        else{
+                            if($("#categ_prof").val()=="9"){
+                                // alert("Seleccione categoria");
 
-
-                    })
-
-                    this.model.get("guardarHist").url = 'api/estado_condicion/addcondlab';
-
-                    var self_s = this.model.get("guardarHist").save({}, {wait: true});
-
-
-                    self_s.done(function () {
-
-
-
-                    });
-
-                    self_s.fail(function () {
-                           console.log(self.codigo+" "+self.numserest);
-                        self.Tabla_Cond_LabView.fetchTablaCondLab(self.codigo,self.numserest,function () {
-                            if(self.Tabla_Cond_LabView.collection.length!=0){
-                                $("#table-cond-lab").dataTable();
-                                $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Seleccione la categoria de <strong>"+$("#employed").text()+"</strong>");
+                                $("#est_cond").addClass("alert-warning");
                             }
-                        });
-                        self.TCLReg.show(self.Tabla_Cond_LabView);
+                            else{
+                                if(num_resol==""){
 
-                        self.ListarServidorView.fetchServ();
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Ingrese un Nro de Resolución para <strong>"+$("#employed").text()+"</strong>");
+                                    $("#est_cond").addClass("alert-warning");
+                                }
+                                else{
+                                    this.codCateg=$("#categ_prof").val();
+                                    this.codEst=$("#est_doc").val();
 
-                    });
+                                    this.model.get("guardarHist").set({
+                                        "codigo": this.codigo,
+                                        "estadoTrabaActual": this.numserest,
+                                        "numResol": num_resol,
+                                        "codCateg": this.codCateg,
+                                        "codEs": this.codEst,
+                                        "codGen": this.codGen,
+                                        "codEst": this.codTipo,
+                                        "codDep":this.depAct,
+                                        "codCes":this.depCes
+
+
+                                    })
+                                    this.model.get("guardarHist").url = 'api/estado_condicion/addcondlab';
+
+                                    var self_s = this.model.get("guardarHist").save({}, {wait: true});
+
+
+                                    self_s.done(function () {
+
+
+
+                                    });
+
+                                    self_s.fail(function () {
+                                        console.log(self.codigo+" "+self.numserest);
+                                        self.Tabla_Cond_LabView.fetchTablaCondLab(self.codigo,self.numserest,function () {
+                                            if(self.Tabla_Cond_LabView.collection.length!=0){
+                                                $("#table-cond-lab").dataTable();
+                                                $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
+                                                $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                                $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                                            }
+                                        });
+                                        self.TCLReg.show(self.Tabla_Cond_LabView);
+
+                                        self.ListarServidorView.fetchServ();
+
+                                    });
+
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Se actualizó correctamente la condición del trabajador :<strong>"+$("#employed").text()+"</strong>");
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").addClass("alert-success");
+
+                                }
+                            }
+                        }
+
+
+
+                    }
+                    else{
+                        if($("#categ_prof").val()=="9"){
+                            // alert("Seleccione categoria");
+
+                            $("#est_cond").show();
+                            $("#est_cond").removeClass("alert-warning");
+                            $("#est_cond").removeClass("alert-success");
+                            $("#est_cond").html("Seleccione la categoria de <strong>"+$("#employed").text()+"</strong>");
+                            $("#est_cond").addClass("alert-warning");
+                        }
+                        else{
+
+                            if(num_resol==""){
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Ingrese un Nro de Resolución para <strong>"+$("#employed").text()+"</strong>");
+                                $("#est_cond").addClass("alert-warning");
+                            }
+                            else{
+
+                                this.codCateg=$("#categ_prof").val();
+
+                                this.model.get("guardarHist").set({
+                                    "codigo": this.codigo,
+                                    "estadoTrabaActual": this.numserest,
+                                    "numResol": num_resol,
+                                    "codCateg": this.codCateg,
+                                    "codEs": this.codEst,
+                                    "codGen": this.codGen,
+                                    "codEst": this.codTipo,
+                                    "codDep":this.depAct,
+                                    "codCes":this.depCes
+
+
+                                })
+
+                                this.model.get("guardarHist").url = 'api/estado_condicion/addcondlab';
+
+                                var self_s = this.model.get("guardarHist").save({}, {wait: true});
+
+
+                                self_s.done(function () {
+
+
+
+                                });
+
+                                self_s.fail(function () {
+                                    console.log(self.codigo+" "+self.numserest);
+                                    self.Tabla_Cond_LabView.fetchTablaCondLab(self.codigo,self.numserest,function () {
+                                        if(self.Tabla_Cond_LabView.collection.length!=0){
+                                            $("#table-cond-lab").dataTable();
+                                            $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
+                                            $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                            $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                                        }
+                                    });
+                                    self.TCLReg.show(self.Tabla_Cond_LabView);
+
+                                    self.ListarServidorView.fetchServ();
+
+                                });
+
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Se actualizó correctamente la condición del trabajador :<strong>"+$("#employed").text()+"</strong>");
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").addClass("alert-success");
+                            }
+                        }
+                    }
+
+
+
+
+
+
 
 
 
@@ -862,143 +1088,113 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var cod  =this.codigo;
                     var numest=this.numserest;*/
                     var self=this;
-                    alert(this.codigo+" "+this.numserest+" "+$("#numresol_dep").val()+" "+this.codDepen+" "+this.codGenDepen);
+                 //   alert(this.codigo+" "+this.numserest+" "+$("#numresol_dep").val()+" "+this.codDepen+" "+this.codGenDepen);
+
+                    if($("#est_emp").text()=="CAS"){
+
+                       if($("#depencia").val()==""){
+
+                           $("#est_cond").show();
+                           $("#est_cond").removeClass("alert-warning");
+                           $("#est_cond").removeClass("alert-success");
+                           $("#est_cond").html("Ingrese la dependencia para <strong>"+$("#employed").text()+"</strong>");
+                           $("#est_cond").addClass("alert-warning");
+                       }
+                        else{
+                           if($("#numresol_dep").val()==""){
+                               $("#est_cond").show();
+                               $("#est_cond").removeClass("alert-warning");
+                               $("#est_cond").removeClass("alert-success");
+                               $("#est_cond").html("Ingrese un Nro de contrato para <strong>"+$("#employed").text()+"</strong>");
+                               $("#est_cond").addClass("alert-warning");
+
+                           }
+                           else{
+                               this.model.get("guardarHist").set({
+                                   "codigo":this.codigo,
+                                   "estadoTrabaActual":this.numserest,
+                                   "numResol":$("#numresol_dep").val(),
+                                   "codDep":this.codDepen,
+                                   "codGenDep":this.codGenDepen
+                               })
+
+                               this.model.get("guardarHist").url='api/estado_condicion/adddep';
+                               var self_s= this.model.get("guardarHist").save({},{wait:true});
+
+                               self_s.done(function(){
+
+                               });
+
+                               self_s.fail(function(){
+                                   self.Tabla_DepView.fetchTablaDep(self.codigo,self.numserest,function () {
+                                       if(self.Tabla_DepView.collection.length!=0){
+                                           $("#table-dep").dataTable();
+                                           $('#table-dep_wrapper').append("<div id='footer-table'></div>");
+                                           $('#table-dep_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                           $('#table-dep_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                           $('.dataTables_filter input').attr('placeholder', 'buscar..');
 
 
-                    this.model.get("guardarHist").set({
-                        "codigo":this.codigo,
-                        "estadoTrabaActual":this.numserest,
-                        "numResol":$("#numresol_dep").val(),
-                        "codDep":this.codDepen,
-                        "codGenDep":this.codGenDepen
-                    })
+                                       }
+                                   });
 
-                    this.model.get("guardarHist").url='api/estado_condicion/adddep';
-                    var self_s= this.model.get("guardarHist").save({},{wait:true});
+                                   self.TDReg.show(self.Tabla_DepView);
 
-                    self_s.done(function(){
-
-                    });
-
-                    self_s.fail(function(){
-                        self.Tabla_DepView.fetchTablaDep(self.codigo,self.numserest,function () {
-                            if(self.Tabla_DepView.collection.length!=0){
-                                $("#table-dep").dataTable();
-                                $('#table-dep_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-dep_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-dep_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
-
-
-                            }
-                        });
-
-                        self.TDReg.show(self.Tabla_DepView);
-                    });
-
-
-
-                    var email=$("#email").text();
-
-                    alert(email);
-
-                    this.model.get("guardaralertpend").set({
-                        "codigo": self.codigo,
-                        "numserest": self.numserest,
-                        "tipalert":2,
-                        "email": email
-
-                    })
-                    this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
-
-                    var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
-
-                    self_s.done(function () {
-
-
-
-                    });
-                    self_s.fail(function () {
+                                   self.ListarServidorView.fetchServ();
+                               });
 
 
 
-                    });
+                               var email=$("#email").text();
+
+
+
+                               this.model.get("guardaralertpend").set({
+                                   "codigo": self.codigo,
+                                   "numserest": self.numserest,
+                                   "tipalert":2,
+                                   "email": email
+
+                               })
+                               this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
+
+                               var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
+
+                               self_s.done(function () {
+
+
+
+                               });
+                               self_s.fail(function () {
+
+
+
+                               });
+
+                               $("#est_cond").show();
+                               $("#est_cond").removeClass("alert-warning");
+                               $("#est_cond").removeClass("alert-success");
+                               $("#est_cond").html("Se cambio correctamente la dependencia del trabajador:<strong>"+$("#employed").text()+"</strong>");
+
+                               $("#est_cond").addClass("alert-success");
+
+                           }
+                       }
+
+
+
+                    }else{
+                        //alert("personal no CAS");
+                        $("#desc_serv").text($("#employed").text());
+                        $("#desc_est").text($("#est_emp").text());
+                        $("#modal_message").modal("show");
+                    }
 
 /*
 
-                        this.model.get("guardardependencia").set({
-                            "codigo":codigo,
-                            "numserest":numserest,
-                            "numres1":numres,
-                            "udcod":udcod
-
-                        })
-
-
-                        this.model.get("guardardependencia").url='api/estado_condicion/adddep';
-                        var self_s= this.model.get("guardardependencia").save({},{wait:true});
-                        var self= this;
-                        self_s.done(function(){
-
-                        });
-
-                        self_s.fail(function(){
-
-                        });
-                        //Aqui se inserta en alertas pendientes
-
-                        this.model.get("guardaralertpend").set({
-                            "codigo": codigo,
-                            "numserest": numserest,
-                            "tipalert":2,
-                            "email": email
-
-                        })
-
-                        this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
-
-                        var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
-
-                        var self = this;
-
-                        self_s.done(function () {
-
-
-
-                        });
-
-                        self_s.fail(function () {
-                            self.Tabla_DepView.fetchTablaDep(cod,numest,function () {
-                                if(self.Tabla_DepView.collection.length!=0){
-                                    $("#table-dep").dataTable();
-                                    $('#table-dep_wrapper').append("<div id='footer-table'></div>");
-                                    $('#table-dep_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                    $('#table-dep_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                                    $('.dataTables_filter input').attr('placeholder', 'buscar..');
-
-
-                                }
-                            });
-
-                            self.TDReg.show(self.Tabla_DepView);
-                        });
-                        $('#correcto').show();
-
-
-
-                        //reiniciando los campos num. sist. pensionario y numero de resolucion
-                        $('#numresol').val("");
-                        $('#numresol_aseg').val("");
-                        $('#numresol_tipo_pago').val("");
-                        $('#numresol_dep').val("");
-                        $('#numresol_pla').val("");
-                        $('#nom_dep').text("");
-
-                        this.numresol=null;
-                        this.udcod=0;
 */
+
 
                 },
 

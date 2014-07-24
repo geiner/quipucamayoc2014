@@ -1,6 +1,7 @@
 package edu.quipu.rrhh.persistence;
 
 
+import edu.quipu.rrhh.models.Contrato;
 import edu.quipu.rrhh.models.EstadoCondicion;
 import edu.quipu.rrhh.models.Servidor;
 import edu.quipu.rrhh.models.Hist_servidor;
@@ -303,4 +304,14 @@ public interface EstadoCondicionMapper {
             @Result(property = "codCes",column = "codCes")
     })
     public List<Hist_servidor> getCodCes(@Param("codGen") String codGenDep);
+
+
+    @Select(value = "SELECT T_CONTRATO_NUMERO AS numContr,T_ADENDA_NUMERO AS numAden FROM TB_CONTRATOS_ADENDAS WHERE SER_COD=#{codigo}")
+    @Results(value = {
+            @Result(javaType = Contrato.class),
+            @Result(property = "numContrato",column = "numContr"),
+            @Result(property = "numAdenda",column = "numAden")
+
+})
+    public List<Contrato> listar_contratos(@Param("codigo") String codigo);
 }
