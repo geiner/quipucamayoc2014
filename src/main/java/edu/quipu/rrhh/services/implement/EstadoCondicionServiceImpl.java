@@ -154,8 +154,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public void addCondPla(String codigo, Integer numserest, String numres1, Integer codcond, String fechcese, String obser){
-        estadoCondicionMapper.addcondpla(codigo,numserest,numres1,codcond,fechcese,obser);
+    public void addCondPla(String codigo, String numserest, String numResol, Integer condPlani, String fechcese, String obser){
+        estadoCondicionMapper.addcondpla(codigo,numserest,numResol,condPlani,fechcese,obser);
     }
 
 

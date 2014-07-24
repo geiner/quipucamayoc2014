@@ -28,10 +28,83 @@ public class Hist_servidor implements Serializable{
     private String codDep;
     private String codCes;
     private String codGenDep;
+    private String condPla;
+    private Integer codicPlani;
+    private String fechaCese;
+    private String obsPlani;
+    private String regPen;
+    private String entAseg;
+    private String estAFP;
+    private String numPensiones;
+
 
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getRegPen() {
+        return regPen;
+    }
+
+    public void setRegPen(String regPen) {
+        this.regPen = regPen;
+    }
+
+    public String getEntAseg() {
+        return entAseg;
+    }
+
+    public void setEntAseg(String entAseg) {
+        this.entAseg = entAseg;
+    }
+
+    public String getEstAFP() {
+        return estAFP;
+    }
+
+    public void setEstAFP(String estAFP) {
+        this.estAFP = estAFP;
+    }
+
+    public String getNumPensiones() {
+        return numPensiones;
+    }
+
+    public void setNumPensiones(String numPensiones) {
+        this.numPensiones = numPensiones;
+    }
+
+    public Integer getCodicPlani() {
+        return codicPlani;
+    }
+
+    public void setCodicPlani(Integer codicPlani) {
+        this.codicPlani = codicPlani;
+    }
+
+    public String getFechaCese() {
+        return fechaCese;
+    }
+
+    public void setFechaCese(String fechaCese) {
+        this.fechaCese = fechaCese;
+    }
+
+    public String getObsPlani() {
+        return obsPlani;
+    }
+
+    public void setObsPlani(String obsPlani) {
+        this.obsPlani = obsPlani;
+    }
+
+    public String getCondPla() {
+        return condPla;
+    }
+
+    public void setCondPla(String condPla) {
+        this.condPla = condPla;
     }
 
     public String getCodGenDep() {

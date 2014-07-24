@@ -240,8 +240,11 @@ public class EstadoCondicionController {
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/addcondpla")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void addCondPla(@RequestBody EstadoCondicion estadoCondicion){
-        estadoCondicionService.addCondPla(estadoCondicion.getCodigo(), estadoCondicion.getNumserest(), estadoCondicion.getNumres1(), estadoCondicion.getCodcond(), estadoCondicion.getFechcese(),estadoCondicion.getObser());
+    public void addCondPla(@RequestBody Hist_servidor estadoCondicion){
+
+        System.out.print("Numero de Resol:"+estadoCondicion.getNumResol());
+        estadoCondicionService.addCondPla(estadoCondicion.getCodigo(), estadoCondicion.getEstadoTrabaActual(),estadoCondicion.getNumResol(),
+                estadoCondicion.getCodicPlani(), estadoCondicion.getFechaCese(),estadoCondicion.getObsPlani());
     }
 
 }

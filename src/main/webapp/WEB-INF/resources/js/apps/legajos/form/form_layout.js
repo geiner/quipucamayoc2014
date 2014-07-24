@@ -764,7 +764,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                                                       self.duracion=$('#anio').val()+"-"+$('#mes').val()+"-"+$('#dia').val();
                                                   };
 
-                                                  var tipoyxhoras=$("#leg_tip").val();
+
 
 
 

@@ -226,7 +226,7 @@ public interface LegajosMapper {
     List<TiempoServicio> tipoTiempoServicio(@Param("tipo") String tipo);
 
     @Select(value = "SELECT RESTRANUM                  AS RESID, " +
-            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY') AS FECHA , " +
+            "  TO_CHAR(RESTRAFEC,'DD/MM/YYYY') AS FECHA , " +
             "  RESTRADES1                      AS DESCR, " +
             "  re.tiprescod                    AS TIPCOD, " +
             "  tipo.tipresdes                  AS TIPDESC, " +
@@ -293,7 +293,7 @@ public interface LegajosMapper {
             "  ts.ANIO            AS ANIO, " +
             "  ts.MES             AS MES, " +
             "  ts.DIA             AS DIA, " +
-            "  TO_CHAR(RESTRAFEC,'DD-MM-YYYY' )  AS FECHARESOL " +
+            "  TO_CHAR(RESTRAFEC,'DD/MM/YYYY' )  AS FECHARESOL " +
             "  FROM DATAPERLIQU.tb_tiempo_servicio ts, " +
             "  DATAPERLIQU.tb_tipo_timserv tipo, " +
             "  DATAPERLIQU.resolucion_id re " +

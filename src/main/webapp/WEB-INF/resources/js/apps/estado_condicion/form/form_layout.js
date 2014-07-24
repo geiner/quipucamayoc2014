@@ -135,6 +135,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     "click #bus_contratos":"fun_buscar_contratos",
 
+                    "click #cese_fech_clos":"clear_fecha",
+
+                    "change #pla":"camb_cese",
                     "click .tree li": "clickUnidad",
                     "change #cod_adm": "cambioAdm",
                     "change #cod_doc": "cambioDoc",
@@ -224,6 +227,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#div_banco').hide();
                     }
                 },
+                clear_fecha:function(){
+                  $("#fech_cese").val("");
+                },
                 fun_depen:function(){
                     $("#est_cond").hide();
                     $("#numresol_dep").val("");
@@ -256,11 +262,11 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 },
 
 
-                mostrarcalendariocese: function(e){
+                mostrarcalendariocese: function(){
                     var fecha_cese = $('#fech_cese');
 
                     fecha_cese.datepicker({
-                        format: 'dd-mm-yyyy',
+                        format: 'dd/mm/yyyy',
                         viewMode: 2
                     });
 
@@ -274,9 +280,14 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                 llamarModalUnidades: function(){
-                    this.unidadesModalReg.show(this.unidadesDialog);
+                    var self=this;
+                    if(self.codigo!=null && self.numserest!=null){
+                        this.unidadesModalReg.show(this.unidadesDialog);
 
-                    $('#modal-unidades').modal("show");
+                        $('#modal-unidades').modal("show");
+
+                    }
+
 
                 },
 
@@ -298,25 +309,38 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     console.log("Cambio unidad: "+this.unidadSelected.unidadId);
 
 
+                },
 
-                   /* this.udcod= this.unidadSelected.unidadDesc.substr(0,5);
+                camb_cese:function(){
+                  if($("#pla").val()=="5" || $("#pla").val()=="6" || $("#pla").val()=="10" || $("#pla").val()=="9"){
 
-                    $('#nom_dep').text(this.unidadSelected.unidadDesc);
-
-
-                    $('#textDestino').val(this.unidadSelected.unidadDesc);//mio
-                    */
-
+                      $("#div_fech_cese").show();
+                  }
+                    else{
+                      $("#div_fech_cese").hide();
+                  }
                 },
 
                 fun_nuevo:function(){
+
+                    this.numserest=null;
+                    this.codigo=null;
 
                     $("#sec_est_cond").hide();
                     $("#form_insert").hide();
                     $("#form_insert1").hide();
                     $("#est_cond").hide();
+                    $("#form_insert4").hide();
                     this.TCLReg.reset();
                     this.TDReg.reset();
+                    this.TCPReg.reset();
+                    $("#div_fech_cese").hide();
+                    $("#obs").val("");
+                    $("#numresol_pla").val("");
+                    $("#fech_cese").val("");
+                    $("#cond_plani").val("");
+                    $("#pla").val("100");
+
                     $("#unid_depen").val("");
                     $("#depencia").val("");
                     $("#numresol_dep").val("");
@@ -337,32 +361,36 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                  var self=this;
 
-                    if($("#est_emp").text()=="CAS"){
-                        self.ListarContrView.fetchContratos(this.codigo,function(){
+                    if(self.codigo!=null & self.numserest!=null){
 
-                            if(self.ListarContrView.collection.length!=0){
-                                $("#tabla_contratos").dataTable();
-                                $('#tabla_contratos_wrapper').append("<div id='footer-table'></div>");
-                                $('#tabla_contratos_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#tabla_contratos_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                        if($("#est_emp").text()=="CAS"){
+                            self.ListarContrView.fetchContratos(this.codigo,function(){
 
-                                $('.dataTables_filter input').attr('placeholder','Buscar..');
-                            }
-                            else{
-                                alert("NO TRAJO NADA");
-                            }
+                                if(self.ListarContrView.collection.length!=0){
+                                    $("#tabla_contratos").dataTable();
+                                    $('#tabla_contratos_wrapper').append("<div id='footer-table'></div>");
+                                    $('#tabla_contratos_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#tabla_contratos_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                        });
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+                                }
+                                else{
+                                    alert("NO TRAJO NADA");
+                                }
 
-                        self.ListContratos.show(self.ListarContrView);
+                            });
 
-                        $("#modal_contratos").modal();
-                    }else{
+                            self.ListContratos.show(self.ListarContrView);
 
-                        $("#desc_serv").text($("#employed").text());
-                        $("#desc_est").text($("#est_emp").text());
-                        $("#modal_message").modal("show");
+                            $("#modal_contratos").modal();
+                        }else{
+
+                            $("#desc_serv").text($("#employed").text());
+                            $("#desc_est").text($("#est_emp").text());
+                            $("#modal_message").modal("show");
+                        }
                     }
+
 
 
                 },
@@ -489,6 +517,14 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     this.depAct=clickedElement.attr("data7");
                     this.depCes=clickedElement.attr("data6");
 
+                    var conPlani=clickedElement.attr("data8");
+
+                    var regPensi=clickedElement.attr("data9");
+
+                    var entAseg=clickedElement.attr("data10");
+
+                    var estAFP=clickedElement.attr("data11");
+                    var numPensiones=clickedElement.attr("data12");
                     var cod=clickedElement.attr("id");
                     var nombre=clickedElement.children(':nth-child(1)').text();     //captura los valores del modal servidor ejem: child(1) es el campo 1=codigo
 
@@ -504,6 +540,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     var dni=clickedElement.children(':nth-child(2)').text();
 
+
                    // alert(dni+" "+nombre+" "+cod_ant+" "+est);
                     if(this.codEst=="2" && this.codTipo=="1" && this.codGen=="1"){
                           $("#div_input").hide();
@@ -514,6 +551,30 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $("#div_input").show();
                         $("#div_select").hide();
                     }
+
+                    if(regPensi=="Ley 19990" || regPensi=="Ley 20530 - ACT" || regPensi=="Ley 20530 - CES"){
+                        $("#div_estAFP").hide();
+                        $("#div_nroPen").hide();
+
+                    }
+                    if(regPensi=="No Afil." || regPensi=="Sin obligacion"){
+                        $("#div_entAseg").hide();
+                        $("#div_estAFP").hide();
+                        $("#div_nroPen").hide();
+                    }
+                    if(regPensi=="AFP"){
+                        $("#div_entAseg").show();
+                        $("#div_estAFP").show();
+                        $("#div_nroPen").show();
+                    }
+
+
+                    $("#regPens").val(regPensi);
+                    $("#entAseg").val(entAseg);
+                    $("#estAFP").val(estAFP);
+                    $("#nroPen").val(numPensiones);
+
+                    $("#cond_plani").val(conPlani);
 
                     $("#dni_emp").text(dni);
                     $('#employed').text(nombre);
@@ -562,128 +623,6 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                      this.CategoriaProfReg.show(this.CategoriaProfView);
 
-
-
-
-
-
-                    //$('#cargando').fadeOut("slow");
-                   // $('#new').fadeOut("slow");
-                    /*
-                    if(this.ti=="DOCENTE"){
-
-                        this.cod_ti=1;
-                        $('#cod_doc').val("0") ; //para resetear el combo docente
-                        $('#categ_prof').val("9");  //para resetear el combo categoria
-                        //-----------------------
-                        $('#div_docente').show();
-                        $('#div_categ_prof').show();
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-
-
-                    }
-                    else if(this.ti=="ADMINISTRATIVO          "){
-
-                        this.cod_ti=2;
-                        $('#cod_adm').val("0") ;
-                        $('#categ_prof').val("9") ;
-                        //-----------------
-                        $('#div_docente').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-                        $('#div_administrativo').show();
-                        $('#div_categ_prof').show();
-                        //this.cambioAdm(e);
-
-                    }
-                    else  if(this.ti=="DOCENTE DEL MAGISTERIO"){
-                        this.cod_ti=3;
-                        $('#cod_doc_mag').val("0");
-                        $('#categ_prof').val("9")  ;
-                        //-----------------------
-                        $('#div_docente').hide();
-                        $('#div_administrativo').hide();
-                        $('#div_adm_salud').hide();
-                        $('#div_doc_mag').show();
-                        $('#div_categ_prof').show();
-                        // this.cambioDocMag(e);
-                    }
-                    else if(this.ti=="ADM. PROF. DE LA SALUD"){
-                        this.cod_ti=4;
-                        $('#cod_adm_salud').val("0") ;
-                        $('#categ_prof').val("9")     ;
-                        //--------------
-                        $('#div_docente').hide();
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').show();
-                        $('#div_categ_prof').show();
-                        //this.cambioAdmSalud(e);
-                    }
-                    else if(this.ti=="OBRERO"){
-                        this.cod_ti=5;
-                        $('#div_docente').hide();             //porque dependiendo de cual sea se va a llenar el combo de categoria
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-                        $('#div_categ_prof').show();
-                        var valor2 = 1;
-                        var valor1 = 5;
-                        $("#div_categ_prof").show();
-
-                        this.CategoriaProfView.fetchCategoriaProf(valor1, valor2, function(){
-                            $("#div_categ_prof").show();
-                        });
-                        this.CategoriaProfReg.show(this.CategoriaProfView);
-                    }
-                    else if(this.ti=="SIN TIPO"){
-                        this.cod_ti=0;
-                        $('#div_docente').hide();
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-                        $('#div_categ_prof').hide();
-
-
-
-                    }
-                    else if(this.ti=="DESIGNADO"){
-                        this.cod_ti=6;
-                        $('#div_docente').hide();
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-
-
-                        var valor2 = 1;
-                        var valor1 = 6;
-                        $("#div_categ_prof").show();
-
-                        this.CategoriaProfView.fetchCategoriaProf(valor1, valor2, function(){
-                            $("#div_categ_prof").show();
-                        });
-                        this.CategoriaProfReg.show(this.CategoriaProfView);
-                    }
-                    else if(this.ti=="DESIGNADO DOC. DEL MAGISTERIO"){
-                        this.cod_ti=7;
-                        $('#div_docente').hide();      //si $('#tipo')==7
-                        $('#div_administrativo').hide();
-                        $('#div_doc_mag').hide();
-                        $('#div_adm_salud').hide();
-
-
-                        var valor2 = 2;
-                        var valor1 = 7;
-                        $("#div_categ_prof").show();
-
-                        this.CategoriaProfView.fetchCategoriaProf(valor1, valor2, function(){
-                            $("#div_categ_prof").show();
-                        });
-                        this.CategoriaProfReg.show(this.CategoriaProfView);
-                    }
-                     */
                     //Levantar la tabla Condicion Laboral
 
                     self.Tabla_Cond_LabView.fetchTablaCondLab(cod,numest,function () {
@@ -1355,20 +1294,149 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 },
 
 
-                guardarCondPla: function(e){
+                guardarCondPla: function(){
 
-                    var clickedElement=$(e.currentTarget);
-                    var email= $('#email').text();
-                    var numres= this.numresol;
-                    var codigo= this.codigo;
-                    var numserest= this.numserest;
-                    var codcond=$('#pla').val();
+                    var self=this;
                     var fechcese=$('#fech_cese').val();
-                    var cod  =this.codigo;
-                    var numest=this.numserest;
-                    //var fechnomb=$('#fech_nomb').val();
+
                     var obser=$('#obs').val();
 
+                    var numResol=$("#numresol_pla").val();
+                    var condPlani=$("#pla").val();
+
+                    if($("#pla").val()=="100"){
+
+
+                        $("#est_cond").show();
+                        $("#est_cond").removeClass("alert-warning");
+                        $("#est_cond").removeClass("alert-success");
+                        $("#est_cond").html("Seleccione la condicion de planilla para <strong>"+$("#employed").text()+"</strong>");
+                        $("#est_cond").addClass("alert-warning");
+                    }
+                    else{
+
+                        if($("#numresol_pla").val()==""){
+
+
+                            $("#est_cond").show();
+                            $("#est_cond").removeClass("alert-warning");
+                            $("#est_cond").removeClass("alert-success");
+                            $("#est_cond").html("Ingrese una resolucion para <strong>"+$("#employed").text()+"</strong>");
+                            $("#est_cond").addClass("alert-warning");
+                        }
+                        else{
+
+                            if($("#pla").val()=="5"){
+
+                                if($("#fech_cese").val()==""){
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Ingrese una fecha de Cese para <strong>"+$("#employed").text()+"</strong>");
+                                    $("#est_cond").addClass("alert-warning");
+                                }
+                                else{
+                                    this.model.get("guardarHist").set({
+                                        "codigo":this.codigo,
+                                        "estadoTrabaActual":this.numserest,
+                                        "numResol": numResol,
+                                        "codicPlani": condPlani,
+                                        "fechaCese": fechcese,
+                                        "obsPlani": obser
+                                    })
+
+                                    this.model.get("guardarHist").url='api/estado_condicion/addcondpla';
+                                    var self_s=this.model.get("guardarHist").save({}, {wait: true});
+
+                                    self_s.done(function(){
+
+                                    });
+
+                                    self_s.fail(function(){
+
+                                        self.Tabla_Cond_PlaView.fetchTablaCondPla(self.codigo,self.numserest, function(){
+                                            if(self.Tabla_Cond_PlaView.collection.length!=0){
+                                                $("#table-cond-pla").dataTable();
+
+                                                $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
+                                                $('#table-cond-pla_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                                $('#table-cond-pla_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+
+                                            }
+                                        });
+                                        self.TCPReg.show(self.Tabla_Cond_PlaView);
+
+                                        self.ListarServidorView.fetchServ();
+
+                                    });
+
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Se cambio correctamente la condicion de planilla del trabajador:<strong>"+$("#employed").text()+"</strong>");
+                                    $("#est_cond").addClass("alert-success");
+                                }
+
+                            }
+                            else{
+                                this.model.get("guardarHist").set({
+                                    "codigo":this.codigo,
+                                    "estadoTrabaActual":this.numserest,
+                                    "numResol": numResol,
+                                    "codicPlani": condPlani,
+                                    "fechaCese": fechcese,
+                                    "obsPlani": obser
+                                })
+
+                                this.model.get("guardarHist").url='api/estado_condicion/addcondpla';
+                                var self_s=this.model.get("guardarHist").save({}, {wait: true});
+
+                                self_s.done(function(){
+
+                                });
+
+                                self_s.fail(function(){
+
+                                    self.Tabla_Cond_PlaView.fetchTablaCondPla(self.codigo,self.numserest, function(){
+                                        if(self.Tabla_Cond_PlaView.collection.length!=0){
+                                            $("#table-cond-pla").dataTable();
+
+                                            $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
+                                            $('#table-cond-pla_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                            $('#table-cond-pla_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                        }
+                                    });
+                                    self.TCPReg.show(self.Tabla_Cond_PlaView);
+
+                                    self.ListarServidorView.fetchServ();
+
+                                });
+
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Se cambio correctamente la condicion de planilla del trabajador:<strong>"+$("#employed").text()+"</strong>");
+                                $("#est_cond").addClass("alert-success");
+                            }
+
+                        }
+                    }
+
+
+               //    alert(this.codigo+" "+this.numserest+"/"+numResol+"/"+condPlani+"/"+fechcese+"/"+obser);
+
+
+
+
+/*
                     if(this.numresol!=null){
                         if(codcond!=5){
 
@@ -1536,11 +1604,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                         }
 
-                    } else{
+                    }
+                    else{
                         $("#correcto").hide();
                         $("#advertencia").show();
                     }
-
+*/
 
                 },
 

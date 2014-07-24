@@ -12,9 +12,10 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="#cl" id="est_trab" data-toggle="tab">Estado del Trabajador</a></li>
         <li class=""><a href="#d" id="depen" data-toggle="tab">Dependencia</a></li>
+        <li class=""><a href="#cp" data-toggle="tab">Condicion Laboral</a></li>
         <li class=""><a href="#ca" data-toggle="tab">Condicion del Asegurado</a></li>
         <li class=""><a href="#b" data-toggle="tab">Tipo Pago</a></li>
-        <li class=""><a href="#cp" data-toggle="tab">Condicion Laboral</a></li>
+
         <li class=""><a href="#rp" data-toggle="tab">Rotación Plaza</a></li>
         <button id="search" class="btn btn-primary pull-right" type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
     </ul>
@@ -24,17 +25,17 @@
      <br>
      <div class="row form-group" id="sec_est_cond" style="display: none;">
       <div class="col-md-2">
-          <strong style="font-size: 18px;">DNI:<strong id="dni_emp" style="font-size: 16px;color: #00585f;"></strong></strong>
+          <strong style="font-size: 15px;">DNI:<strong id="dni_emp" style="font-size: 15px;color: #00585f;"></strong></strong>
       </div>
-      <div class="col-md-4">
-       <strong style="font-size: 18px;">Servidor:<strong id="employed" style="font-size: 16px;color: #00585f;"></strong></strong>
+      <div class="col-md-5">
+       <strong style="font-size: 15px;">Servidor:<strong id="employed" style="font-size: 15px;color: #00585f;"></strong></strong>
       </div>
 
-      <div class="col-md-3">
-        <strong style="font-size: 18px;">Cod Antiguo:<strong id="cod_ant" style="font-size: 16px;color: #00585f;"> </strong> </strong>
+      <div class="col-md-2">
+        <strong style="font-size: 15px;">Cod Antiguo:<strong id="cod_ant" style="font-size: 15px;color: #00585f;"> </strong> </strong>
       </div>
       <div class="col-md-3">
-          <strong style="font-size: 18px;">Estado:<strong id="est_emp" style="font-size:16px;color: #00585f; "></strong></strong>
+          <strong style="font-size: 15px;">Estado:<strong id="est_emp" style="font-size:15px;color: #00585f; "></strong></strong>
       </div>
      </div>
     <div class="tab-pane active" id="cl">
@@ -284,6 +285,42 @@
     <div class="tab-pane" id="ca">
         <form class="form-horizontal well" id="">
 
+            <fieldset>
+                <legend>Datos actuales</legend>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label">Regimen Pensionario</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="regPens" type="text" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="div_entAseg">
+                        <label class="col-md-5 control-label">Entidad Aseguradora</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="entAseg" type="text" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6" id="div_estAFP">
+                        <label class="col-md-5 control-label">Estado AFP</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="estAFP" type="text" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="div_nroPen">
+                        <label class="col-md-5 control-label">Nro.Sis.Pensiones</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="nroPen" type="text" disabled>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Datos a modificar</legend>
+            </fieldset>
+<!--
             <div class="row form-group">
                     <div class="col-md-6" id="div_reg_pen">
 
@@ -322,6 +359,7 @@
                     </div>
                 </div>
             </div>
+            -->
             <hr>
             <div class="form-actions" id="form_insert2" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-condaseg">Guardar</button>
@@ -382,9 +420,27 @@
     <div class="tab-pane" id="cp">
         <form class="form-horizontal well" id="">
 
+            <fieldset>
+                <legend>Datos actuales</legend>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label">Cond. Planilla</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="cond_plani" type="text" disabled>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Datos a modificar</legend>
+
+            </fieldset>
             <div class="row form-group" >
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label">Fecha Cese</label>
+                <div class="col-md-6" id="div_cond_pla">
+
+                </div>
+                <div class="col-md-6" style="display: none;" id="div_fech_cese">
+                    <label class="col-md-5 control-label">Fecha Cese <span style="color:red;">*</span></label>
 
                     <div class="col-md-7">
                         <div class="input-group">
@@ -399,9 +455,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-6" id="div_cond_pla">
 
-                </div>
             </div>
 
             <div class="row form-group">
@@ -432,9 +486,10 @@
                 </div>
             </div>
                <hr>
+
             <div class="form-actions" id="form_insert4" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-condpla">Guardar</button>
-                <button type="reset" class="btn left btn-default" id="cancel_est_traba">Cancelar</button>
+                <button type="reset" class="btn left btn-default reset-condlab">Nuevo</button>
             </div>
 
         </form>
@@ -485,10 +540,7 @@
 
    </div>
 </div>
-<!--
-<div id="listar_serv_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"aria-hidden="true" style="height: 61%; width: 45%">
 
-</div>-->
 
 
 

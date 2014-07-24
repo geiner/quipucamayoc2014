@@ -30,7 +30,7 @@ public interface EstadoCondicionService {
     public void addCondAseg(String codigo, Integer numserest, String numres1, Integer regpensionario, String numsispen, Integer entasegurado, Integer estadoafp);
 
     public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago);
-    public void addCondPla(String codigo, Integer numserest, String numres1, Integer codcond, String fechcese, String obser);
+    public void addCondPla(String codigo, String numserest, String numResol, Integer condPlani, String fechcese, String obser);
 
 
     public void addHist_dep(String codigo, String estadoTrabaActual, String numResol, String codDep, String codCes);

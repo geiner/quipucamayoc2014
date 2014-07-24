@@ -12,10 +12,11 @@ import java.util.List;
 
 public interface EstadoCondicionMapper {
 
-    @Select(value = "SELECT    LIST_SERV.SER_COD AS ser_cod,LIST_SERV.SER_COD_ANT AS codAnt,LIST_SERV.SER_NOM AS nom,LIST_SERV.SER_APE_PAT AS apePat,LIST_SERV.SER_APE_MAT AS apeMat,\n" +
-            "         LIST_SERV.DNI AS dni,AUX_SERV.NUM_SEREST AS estadoActual,GEN.DES_TIP_SER_GEN AS descGen,TIPO_SERV.DES_TIP_SER AS cargo,SERV_LAB.NUM_RES AS numResol,\n" +
-            "         SERV_CAT.DESC_CATEG AS categoria,EST.DESC_EST AS estado,UNI_DEPEN.UD_DSC AS dep,DEP_CES.DES_DEP_CESANTES AS depCesante,SERV_LAB.COD_TIPO_SER AS codEst,SERV_LAB.TTPO_GEN AS codGen,\n" +
-            "           SERV_LAB.COD_EST AS codEs,SERV_LAB.COD_CATEG AS codCateg,HIST_DEPEN.DEP_ACT AS codDep,HIST_DEPEN.DEP_CES codCes \n" +
+    @Select(value = "    SELECT    LIST_SERV.SER_COD AS ser_cod,LIST_SERV.SER_COD_ANT AS codAnt,LIST_SERV.SER_NOM AS nom,LIST_SERV.SER_APE_PAT AS apePat,LIST_SERV.SER_APE_MAT AS apeMat,\n" +
+            "            LIST_SERV.DNI AS dni,AUX_SERV.NUM_SEREST AS estadoActual,GEN.DES_TIP_SER_GEN AS descGen,TIPO_SERV.DES_TIP_SER AS cargo,SERV_LAB.NUM_RES AS numResol,\n" +
+            "            SERV_CAT.DESC_CATEG AS categoria,EST.DESC_EST AS estado,UNI_DEPEN.UD_DSC AS dep,DEP_CES.DES_DEP_CESANTES AS depCesante,SERV_LAB.COD_TIPO_SER AS codEst,SERV_LAB.TTPO_GEN AS codGen,\n" +
+            "            SERV_LAB.COD_EST AS codEs,SERV_LAB.COD_CATEG AS codCateg,HIST_DEPEN.DEP_ACT AS codDep,HIST_DEPEN.DEP_CES codCes,COND_PLAN.DES_CON_PLA AS condPla,REG_PENSION.DESC_REG_PEN AS regPen,\n" +
+            "            ENT_ASEG.DES_ENT_ASEG AS entAseg,ESTA_AFP.DES_EST_AFP AS estAFP,HIST_ASEG.NUM_SIS_PEN AS numPensiones \n" +
             "            FROM (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_COND_LAB GROUP BY SER_COD,NUM_SEREST) AUX_SERV         \n" +
             "            INNER JOIN LISTA_SERVIDOR LIST_SERV ON(AUX_SERV.SER_COD=LIST_SERV.SER_COD AND AUX_SERV.NUM_SEREST=LIST_SERV.NUM_SEREST)\n" +
             "            INNER JOIN TB_HIST_COND_LAB SERV_LAB ON(AUX_SERV.NUM_REG=SERV_LAB.NUM_REG AND AUX_SERV.SER_COD=SERV_LAB.SER_COD AND AUX_SERV.NUM_SEREST=SERV_LAB.NUM_SEREST)\n" +
@@ -28,6 +29,17 @@ public interface EstadoCondicionMapper {
             "            ON ( HIST_DEPEN.SER_COD=AUX_SERV.SER_COD AND HIST_DEPEN.NUM_SEREST=AUX_SERV.NUM_SEREST)\n" +
             "            LEFT  JOIN QPRODATAQUIPU.UNI_DEP UNI_DEPEN ON(TRIM(UNI_DEPEN.UD_COD)=TRIM(HIST_DEPEN.DEP_ACT)) \n" +
             "            LEFT  JOIN DATAPERSUEL.DEPENDENCIA_CESANTES DEP_CES ON(TRIM(DEP_CES.COD_DEP_CESANTES)=TRIM(HIST_DEPEN.DEP_CES))\n" +
+            "            INNER JOIN (SELECT PLANI.SER_COD,PLANI.NUM_SEREST,PLANI.NUM_REG,PLANI.COND_PLA FROM (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_COND_PLANI  GROUP BY SER_COD,NUM_SEREST) AUX_PLANI \n"+
+            "            INNER JOIN TB_HIST_COND_PLANI PLANI ON(AUX_PLANI.NUM_REG=PLANI.NUM_REG AND AUX_PLANI.SER_COD=PLANI.SER_COD AND AUX_PLANI.NUM_SEREST=PLANI.NUM_SEREST)) HIST_PLANI \n"+
+            "            ON (HIST_PLANI.SER_COD=AUX_SERV.SER_COD AND HIST_PLANI.NUM_SEREST=AUX_SERV.NUM_SEREST) \n"+
+            "            INNER JOIN COND_SER_PLAN COND_PLAN ON(COND_PLAN.COD_CON_PLA=HIST_PLANI.COND_PLA) \n" +
+            "            INNER JOIN (SELECT ASEG.SER_COD,ASEG.NUM_SEREST,ASEG.NUM_REG,ASEG.REG_PEN,ASEG.NUM_SIS_PEN,ASEG.ENT_ASEG,ASEG.EST_AFP\n" +
+            "            FROM (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_COND_ASEG  GROUP BY SER_COD,NUM_SEREST) AUX_ASEG\n" +
+            "            INNER JOIN TB_HIST_COND_ASEG ASEG ON(AUX_ASEG.NUM_REG=ASEG.NUM_REG AND AUX_ASEG.SER_COD=ASEG.SER_COD AND AUX_ASEG.NUM_SEREST=ASEG.NUM_SEREST)) HIST_ASEG\n" +
+            "            ON (HIST_ASEG.SER_COD=AUX_SERV.SER_COD AND HIST_ASEG.NUM_SEREST=AUX_SERV.NUM_SEREST)\n" +
+            "            LEFT JOIN REG_PENSION ON(HIST_ASEG.REG_PEN=REG_PENSION.COD_REG_PEN)\n" +
+            "            LEFT JOIN ENTIDAD_ASEGURADORA ENT_ASEG ON(HIST_ASEG.ENT_ASEG=ENT_ASEG.ENT_ASEG_COD)\n" +
+            "            LEFT JOIN ESTADOS_AFP ESTA_AFP ON(HIST_ASEG.EST_AFP=ESTA_AFP.COD_EST_AFP)"+
             "            ORDER BY LIST_SERV.SER_APE_PAT")
     @Results(value = {
             @Result(javaType = Hist_servidor.class),
@@ -50,7 +62,12 @@ public interface EstadoCondicionMapper {
             @Result(property = "codCateg", column = "codCateg") ,
             @Result(property = "estadoTrabaActual", column = "estadoActual"),
             @Result(property = "codDep", column = "codDep") ,
-            @Result(property = "codCes", column = "codCes")
+            @Result(property = "codCes", column = "codCes"),
+            @Result(property = "condPla", column = "condPla"),
+            @Result(property = "regPen", column = "regPen"),
+            @Result(property = "entAseg", column = "entAseg"),
+            @Result(property = "estAFP", column = "estAFP"),
+            @Result(property = "numPensiones", column = "numPensiones")
     })
     List<Hist_servidor> listarServidores();
 
@@ -256,7 +273,9 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion> buscarbanco(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     //Traemos datos para la tabla condicion planilla
-    @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.DES_CON_PLA as descondpla, b.FECHA_CESE fechcese, b.OBS_PLAN_PERM as obser  from qpdatagestion.tb_hist_cond_plani b inner join datapersuel.cond_ser_plan d on b.COND_PLA=d.COD_CON_PLA where b.ser_cod=#{cod} and b.num_serest=#{numest} ORDER BY numreg1 DESC")
+    @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.DES_CON_PLA as descondpla,TO_CHAR(b.FECHA_CESE,'DD/MM/YYYY') AS  fechcese, b.OBS_PLAN_PERM as obser  " +
+            "from qpdatagestion.tb_hist_cond_plani b inner join datapersuel.cond_ser_plan d on b.COND_PLA=d.COD_CON_PLA where b.ser_cod=#{cod} and b.num_serest=#{numest} " +
+            "ORDER BY numreg1 DESC")
     @Results(value = {@Result(javaType = EstadoCondicion.class),
             @Result(column = "numreg1", property = "numreg1"),
             @Result(column = "numres1", property = "numres1"),
@@ -288,8 +307,9 @@ public interface EstadoCondicionMapper {
     public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("ctabanco") String ctabanco, @Param("codtippago") Integer codtippago) throws DataAccessException;
 
     //Insertar modificacion en la tabla tb_hist_cond_plani
-    @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select max(num_reg)+1 from qpdatagestion.tb_hist_cond_plani where ser_cod=#{codigo} and num_serest=#{numserest}),#{codigo},#{numserest},#{numres1},#{codcond},#{fechcese},#{obser})")
-    public void addcondpla(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("codcond") Integer codcond, @Param("fechcese") String fechcese, @Param("obser") String obser) throws DataAccessException;
+    @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select MAX(NUM_REG) from  TB_HIST_COND_PLANI where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +
+            "#{codigo},#{numserest},#{numResol},#{condPlani},#{fechcese},#{obser})")
+    public void addcondpla(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("numResol") String numResol, @Param("condPlani") Integer condPlani, @Param("fechcese") String fechcese, @Param("obser") String obser) throws DataAccessException;
 
 
     @Insert(value = "insert into qpdatagestion.tb_hist_dep values\n" +
