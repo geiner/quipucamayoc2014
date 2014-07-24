@@ -59,7 +59,7 @@ public interface SolicitudMapper {
     })
     List<Solicitud> findSolicitudes() throws DataAccessException;
 
-    @Update(value = "update QPRODATAQUIPU.tb_hist_usu_perf set est=1, perf_cod=#{percod}, f_camb_est=(select sysdate from SYS.dual) where (est=0 or est=3) and trim(c_usuid)=#{dni}")
+    @Update(value = "update QPRODATAQUIPU.tb_hist_usu_perf set est=1, perf_cod=#{percod}, f_camb_est=(select sysdate from SYS.dual) where (est=0 or est=3) and trim(c_usuid)=trim(#{dni})")
     public void update(@Param("dni") String dni, @Param("percod") Integer percod) throws DataAccessException;
 
 
