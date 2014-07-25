@@ -74,10 +74,10 @@ public class EstadoCondicionController {
     }
 
     //Para el combo regimen entidad aseguradora
-    @RequestMapping(method = RequestMethod.GET,produces = "application/json", value = "/entidad")
+    @RequestMapping(method = RequestMethod.GET,produces = "application/json", value = "/entidad/{regPen}")
     @ResponseBody
-    public List<EstadoCondicion> entidad(){
-        return estadoCondicionService.entidad();
+    public List<EstadoCondicion> entidad(@PathVariable(value="regPen") Integer regPen){
+        return estadoCondicionService.entidad(regPen);
     }
 
     //Para el combo regimen estado afp
@@ -209,8 +209,9 @@ public class EstadoCondicionController {
     @RequestMapping(method = RequestMethod.POST, consumes ="application/json", produces = "application/json", value = "/addcondaseg")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void addCondAseg(@RequestBody EstadoCondicion estadoCondicion){
-        estadoCondicionService.addCondAseg(estadoCondicion.getCodigo(), estadoCondicion.getNumserest(),estadoCondicion.getNumres1(), estadoCondicion.getRegpensionario(), estadoCondicion.getNumsispen(), estadoCondicion.getEntasegurado(), estadoCondicion.getEstadoafp());
+    public void addCondAseg(@RequestBody Hist_servidor estCond){
+        estadoCondicionService.addCondAseg(estCond.getCodigo(), estCond.getEstadoTrabaActual(),estCond.getNumResol(),
+                estCond.getIdregPen(),estCond.getNumPensiones(),estCond.getIdentAseg(),estCond.getIdestAFP());
 
     }
 

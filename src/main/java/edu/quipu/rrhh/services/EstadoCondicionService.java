@@ -13,7 +13,7 @@ public interface EstadoCondicionService {
     List<EstadoCondicion> tipo();
     //List<EstadoCondicion> dependencia();
     List<EstadoCondicion> regimen();
-    List<EstadoCondicion> entidad();
+    List<EstadoCondicion> entidad(Integer regPen);
     List<EstadoCondicion> estadoafp();
     List<EstadoCondicion> tipopago();
     List<EstadoCondicion> condpla();
@@ -27,7 +27,7 @@ public interface EstadoCondicionService {
 
 
     public void addAlertPend(String codigo, Integer numserest, Integer tipalert, String email);
-    public void addCondAseg(String codigo, Integer numserest, String numres1, Integer regpensionario, String numsispen, Integer entasegurado, Integer estadoafp);
+    public void addCondAseg(String codigo, String numserest, String numResol, Integer regPen, String numPen, Integer entAseg, Integer estAFP);
 
     public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago);
     public void addCondPla(String codigo, String numserest, String numResol, Integer condPlani, String fechcese, String obser);

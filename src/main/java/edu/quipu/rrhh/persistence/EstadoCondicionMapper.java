@@ -138,14 +138,14 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion> regimen();
 
     // Traemos datos para el combo box entidad aseguradora
-    @Select(value = "select ENT_ASEG_COD as codent, DES_ENT_ASEG as desent from datapersuel.entidad_aseguradora where ENT_ASEG_COD not in (0,1) ORDER BY desent ASC")
+    @Select(value = "select ENT_ASEG_COD as codent, DES_ENT_ASEG as desent from datapersuel.entidad_aseguradora where COD_REG_PEN=#{regPen}  ORDER BY desent ASC")
     @Results(value = {
             @Result(javaType = EstadoCondicion.class),
             @Result(property = "codent",column = "codent"),
             @Result(property = "desent",column = "desent")
 
     })
-    List<EstadoCondicion> entidad();
+    List<EstadoCondicion> entidad(@Param("regPen") Integer regPen);
 
     // Traemos datos para el combo box estado afp
     @Select(value = "select COD_EST_AFP as codestafp, DES_EST_AFP as desestafp from datapersuel.estados_afp ORDER BY desestafp ASC")
@@ -228,8 +228,11 @@ public interface EstadoCondicionMapper {
     List<Hist_servidor>  buscarcondlab(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     // Traemos datos para la tabla condicion asegurado
-    @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.DESC_REG_PEN as regpen, b.num_sis_pen as numsispen, e.DES_ENT_ASEG as entaseg, f.DES_EST_AFP as estafp from qpdatagestion.tb_hist_cond_aseg b,datapersuel.reg_pension d, datapersuel.entidad_aseguradora e, datapersuel.estados_afp f " +
-            " where b.ser_cod= #{cod}and b.num_serest=#{numest} and b.reg_pen=d.COD_REG_PEN and b.ent_aseg=e.ENT_ASEG_COD and b.est_afp=f.COD_EST_AFP ORDER BY numreg1 DESC  ")
+    @Select(value = "SELECT NUM_REG AS numreg1,NUM_RES AS numres1,PEN.DESC_REG_PEN AS regpen,num_sis_pen AS numsispen,ENT_ASEGU.DES_ENT_ASEG AS entaseg,EST_AFP.DES_EST_AFP AS estafp\n" +
+            "         FROM TB_HIST_COND_ASEG HIST_ASEG INNER JOIN REG_PENSION PEN ON(HIST_ASEG.REG_PEN=PEN.COD_REG_PEN)\n" +
+            "         LEFT JOIN ENTIDAD_ASEGURADORA ENT_ASEGU ON(HIST_ASEG.ENT_ASEG=ENT_ASEGU.ENT_ASEG_COD )\n" +
+            "         LEFT JOIN ESTADOS_AFP EST_AFP ON(EST_AFP.COD_EST_AFP=HIST_ASEG.EST_AFP)\n" +
+            "         WHERE HIST_ASEG.ser_cod=#{cod} and HIST_ASEG.num_serest=#{numest}")
 
     @Results(value = {@Result(javaType = EstadoCondicion.class),
             @Result(column ="numreg1", property = "numreg1"),
@@ -296,8 +299,11 @@ public interface EstadoCondicionMapper {
      public void addalertpend(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("tipalert") Integer tipalert, @Param("email") String email);
 
     //Insertar modificacion en la tabla condicion del asegurado
-     @Insert(value = "insert into qpdatagestion.tb_hist_cond_aseg values ((select max(num_reg)+1 from qpdatagestion.tb_hist_cond_aseg where ser_cod=#{codigo} and num_serest=#{numserest}), #{codigo}, #{numserest}, #{numres1}, #{regpensionario}, #{numsispen}, #{entasegurado}, #{estadoafp})")
-     public void addconaseg(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("numres1") String numres1, @Param("regpensionario") Integer regpensionario, @Param("numsispen") String numsispen, @Param("entasegurado") Integer entasegurado, @Param("estadoafp") Integer estadoafp) throws DataAccessException;
+     @Insert(value = "insert into qpdatagestion.tb_hist_cond_aseg values " +
+             "((select max(num_reg)+1 from qpdatagestion.tb_hist_cond_aseg " +
+             "where ser_cod=#{codigo} and num_serest=#{numserest}), #{codigo}, #{numserest}," +
+             " #{numResol}, #{regPen}, #{numPen}, #{entAseg}, #{estAFP})")
+     public void addconaseg(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("numResol") String numResol, @Param("regPen") Integer regPen, @Param("numPen") String numPen, @Param("entAseg") Integer entAseg, @Param("estAFP") Integer estAFP) throws DataAccessException;
 
     //Insertar modificacion en la tabla de dependencias
 

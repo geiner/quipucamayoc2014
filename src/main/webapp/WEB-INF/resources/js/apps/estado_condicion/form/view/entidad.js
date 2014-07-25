@@ -6,8 +6,9 @@ define([ 'backbone', 'marionette','hbs!apps/estado_condicion/form/templates/enti
             collection: new EntidadColl(),
 
 
-            getEntidad: function(){
-                //this.collection.setUrl();
+            getEntidad: function(renPen){
+
+                this.collection.setUrl(renPen);
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch().done();
 

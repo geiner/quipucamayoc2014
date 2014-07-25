@@ -58,8 +58,9 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public List<EstadoCondicion> entidad() {
-        return estadoCondicionMapper.entidad();
+    public List<EstadoCondicion> entidad(Integer regPen) {
+
+        return estadoCondicionMapper.entidad(regPen);
     }
 
     @Override
@@ -142,8 +143,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public void addCondAseg(String codigo, Integer numserest, String numres1, Integer regpensionario, String numsispen, Integer entasegurado, Integer estadoafp){
-        estadoCondicionMapper.addconaseg(codigo, numserest, numres1, regpensionario, numsispen, entasegurado, estadoafp);
+    public void addCondAseg(String codigo, String numserest, String numResol, Integer regPen, String numPen, Integer entAseg, Integer estAFP){
+        estadoCondicionMapper.addconaseg(codigo,numserest,numResol, regPen, numPen,entAseg,estAFP);
     }
 
 

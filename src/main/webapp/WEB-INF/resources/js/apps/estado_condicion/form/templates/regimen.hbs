@@ -1,7 +1,8 @@
-<label class="col-md-5 control-label" for="reg">Regimen</label>
+<label class="col-md-5 control-label" for="reg">Regimen Pensionario</label>
 
 <div class="col-md-7">
     <select id="reg" class="form-control" >
+        <option value="100">Seleccione Regimen</option>
         {{#each items}}
             <option value="{{codreg}}">{{desreg}}</option>
         {{/each}}

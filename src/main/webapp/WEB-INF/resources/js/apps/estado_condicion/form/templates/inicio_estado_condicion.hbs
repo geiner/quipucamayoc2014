@@ -12,9 +12,9 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="#cl" id="est_trab" data-toggle="tab">Estado del Trabajador</a></li>
         <li class=""><a href="#d" id="depen" data-toggle="tab">Dependencia</a></li>
-        <li class=""><a href="#cp" data-toggle="tab">Condicion Laboral</a></li>
-        <li class=""><a href="#ca" data-toggle="tab">Condicion del Asegurado</a></li>
-        <li class=""><a href="#b" data-toggle="tab">Tipo Pago</a></li>
+        <li class=""><a href="#cp" id="condLab" data-toggle="tab">Condicion Laboral</a></li>
+        <li class=""><a href="#ca" id="condAseg" data-toggle="tab">Condicion del Asegurado</a></li>
+        <li class=""><a href="#b" id="tipoPag" data-toggle="tab">Tipo Pago</a></li>
 
         <li class=""><a href="#rp" data-toggle="tab">Rotación Plaza</a></li>
         <button id="search" class="btn btn-primary pull-right" type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
@@ -319,6 +319,39 @@
 
             <fieldset>
                 <legend>Datos a modificar</legend>
+                <div class="row form-group">
+                    <div class="col-md-6" id="div_reg_pen">
+
+                    </div>
+                    <div class="col-md-6" id="div_ent_aseg" style="display: none;">
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6" id="div_est_afp" style="display: none;">
+
+                    </div>
+                    <div class="col-md-6" id="div_numPen" style="display: none;">
+                        <label class="col-md-5 control-label">Nro.Sis.Pensiones</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="nroPensio" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label" for="numresol_aseg">Nro. Resolución <span style="color: red;">*</span></label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="numresol_aseg" disabled>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </fieldset>
 <!--
             <div class="row form-group">
@@ -363,7 +396,7 @@
             <hr>
             <div class="form-actions" id="form_insert2" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-condaseg">Guardar</button>
-                <button type="reset" class="btn left btn-default" id="cancel_est_traba">Cancelar</button>
+                <button type="reset" class="btn left btn-default reset-condlab" >Nuevo</button>
             </div>
 
 
@@ -471,7 +504,7 @@
 
             <div class="row form-group">
                 <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="numresol_pla">Nro. Resolucion <span style="color:red;">*</span></label>
+                    <label class="col-md-5 control-label" for="numresol_pla">Nro. Resolución <span style="color:red;">*</span></label>
                     <div class="col-md-7">
                         <div class="input-group">
                             <input class="form-control" type="text" id="numresol_pla" disabled>
@@ -624,14 +657,9 @@
     </div>
 
 </div>
-<style type="text/css">
-    .controls > .error {
-        color: #b94a48;
-        display: inline-block;
-        *display: inline;
-        padding-left: 5px;
-        vertical-align: middle;
-        *zoom: 1;
-    }
+<script type="text/javascript">
+    $(function(){
+        $("#nroPensio").validXtrem('0123456789');
+    });
+</script>
 
-</style>

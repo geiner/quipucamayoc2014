@@ -33,8 +33,11 @@ public class Hist_servidor implements Serializable{
     private String fechaCese;
     private String obsPlani;
     private String regPen;
+    private Integer idregPen;
     private String entAseg;
+    private Integer identAseg;
     private String estAFP;
+    private Integer idestAFP;
     private String numPensiones;
 
 
@@ -42,6 +45,32 @@ public class Hist_servidor implements Serializable{
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
+
+
+    public Integer getIdregPen() {
+        return idregPen;
+    }
+
+    public void setIdregPen(Integer idregPen) {
+        this.idregPen = idregPen;
+    }
+
+    public Integer getIdentAseg() {
+        return identAseg;
+    }
+
+    public void setIdentAseg(Integer identAseg) {
+        this.identAseg = identAseg;
+    }
+
+    public Integer getIdestAFP() {
+        return idestAFP;
+    }
+
+    public void setIdestAFP(Integer idestAFP) {
+        this.idestAFP = idestAFP;
+    }
+
 
     public String getRegPen() {
         return regPen;

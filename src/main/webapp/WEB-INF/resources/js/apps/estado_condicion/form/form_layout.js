@@ -12,7 +12,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
         "apps/estado_condicion/form/model/eliminarHistorialPlaza",
         "apps/estado_condicion/form/model/addHistorialPlaza",
 
-    "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/jquery.numeric","bootstrap"],
+    "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/core/validXtrem","bootstrap"],
 
     function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView,ListarContrView,TipoView, RegimenView,
               EntidadView, EstadoAfpView, TipoPagoView, CondPlaView, Tabla_Cond_LabView, Tabla_Pago_BancoView,Tabla_Cond_AsegView, Tabla_DepView,Tabla_Cond_PlaView, Guardar_CondLabModel,
@@ -126,6 +126,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     "dblclick #tabla_resol > tbody > tr": "seleccionarResolucion",
                     "click #btn-condlab": "guardarCondLab",
 
+                    "click #condLab":"fun_condLab",
+                    "click #condAseg":"fun_condAseg",
+
                     "dblclick #tabla_contratos >tbody>tr":"selectContr",
 
                     "click #header_est_cod>ul>li":"cambPest",
@@ -144,6 +147,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     "change #cod_doc_mag": "cambioDocMag",
                     "change #cod_adm_salud": "cambioAdmSalud",
                     "change #tipopago": "mostrarctabanco",
+                    "change #reg":"fun_regimen",
                     "click #btn-condaseg": "guardarCondAseg",
                     "click #btn-dep": "guardarDep",
                     "click #btn-pagobanco": "guardarPagoBanco",
@@ -173,7 +177,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                      this.TipoReg.show(this.TipoView),
 
                      this.RegReg.show(this.RegimenView),
-                     this.EntReg.show(this.EntidadView),
+
                      this.EstAfpReg.show(this.EstadoAfpView),
                      this.TipoPagoReg.show(this.TipoPagoView),
                      this.CondPlaReg.show(this.CondPlaView)
@@ -211,7 +215,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     this.TipoView.getTipo();
 
                     this.RegimenView.getRegimen();
-                    this.EntidadView.getEntidad();
+
                     this.EstadoAfpView.getEstadoAfp();
 
                     this.TipoPagoView.getTipoPago();
@@ -226,6 +230,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     } else{
                         $('#div_banco').hide();
                     }
+                },
+                fun_condAseg:function(){
+                    $("#est_cond").hide();
+                },
+                fun_condLab:function(){
+                    $("#est_cond").hide();
                 },
                 clear_fecha:function(){
                   $("#fech_cese").val("");
@@ -331,9 +341,24 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#form_insert1").hide();
                     $("#est_cond").hide();
                     $("#form_insert4").hide();
+                    $("#form_insert2").hide();
                     this.TCLReg.reset();
                     this.TDReg.reset();
                     this.TCPReg.reset();
+                    this.TCAReg.reset();
+                    $("#regPens").val("");
+                    $("#entAseg").val("");
+                    $("#estAFP").val("");
+                    $("#nroPen").val("");
+                    $("#nroPensio").val("");
+                    $("#numresol_aseg").val("");
+                    $("#estafp").val("100");
+                    $("#ent").val("100");
+                    $("#reg").val("100");
+                    $("#div_numPen").hide();
+                    $("#div_est_afp").hide();
+                    $("#div_ent_aseg").hide();
+
                     $("#div_fech_cese").hide();
                     $("#obs").val("");
                     $("#numresol_pla").val("");
@@ -356,7 +381,45 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                 },
+                fun_regimen:function(){
+                    var regPen=$("#reg").val();
 
+                    if(regPen=="4"){
+                        this.EntidadView.getEntidad(regPen);
+                        this.EntReg.show(this.EntidadView);
+
+                        $("#ent").val("100");
+
+                        $("#estafp").val("100");
+                        $("#nroPensio").val("");
+                        $("#div_ent_aseg").show();
+                        $("#div_est_afp").show();
+
+                        $("#div_numPen").show();
+                    }
+                    if(regPen=="3"){
+                        this.EntidadView.getEntidad(regPen);
+                        this.EntReg.show(this.EntidadView);
+
+                        $("#estafp").val("100");
+                        $("#nroPensio").val("");
+                        $("#div_ent_aseg").show();
+                        $("#div_est_afp").hide();
+                        $("#div_numPen").hide();
+                    }
+                    if(regPen=="5" || regPen=="6" || regPen=="100"){
+
+                        $("#ent").val("100");
+
+                        $("#estafp").val("100");
+                        $("#nroPensio").val("");
+                        $("#div_ent_aseg").hide();
+                        $("#div_est_afp").hide();
+                        $("#div_numPen").hide();
+                    }
+
+
+                },
                 fun_buscar_contratos:function(){
 
                  var self=this;
@@ -923,41 +986,255 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 },
 
-                guardarCondAseg: function(e){
+                guardarCondAseg: function(){
 
-                    var clickedElement=$(e.currentTarget);
-                    var email= $('#email').text();
-                    var numres= this.numresol;
-                    var codigo= this.codigo;
-                    var numserest= this.numserest;
+                    var self=this;
+
                     var regpen= $('#reg').val();
+
+
+
                     var entaseg=$('#ent').val();
+
                     var estafp=$('#estafp').val();
-                    var numsispen=$('#numsispen').val();
+                    var numPen=$('#nroPensio').val();
+                    var numResol=$("#numresol_aseg").val();
 
-                    if(this.numresol!=null){
-                        $("#advertencia").hide();
-                        this.model.get("guardarcondaseg").set({
-                            "codigo":codigo,
-                            "numserest":numserest,
-                            "numres1":numres,
-                            "regpensionario":regpen,
-                            "entasegurado":entaseg,
-                            "estadoafp":estafp,
-                            "numsispen":numsispen
+                    if(regpen=="100"){
 
-                        })
-                        this.model.get("guardarcondaseg").url='api/estado_condicion/addcondaseg';
-                        var self_s= this.model.get("guardarcondaseg").save({},{wait:true});
-                        var self= this;
-                        self_s.done(function(){
 
-                        });
+                        $("#est_cond").show();
+                        $("#est_cond").removeClass("alert-warning");
+                        $("#est_cond").removeClass("alert-success");
+                        $("#est_cond").html("Seleccione un regimen pensionario para el trabajador :<strong>"+$("#employed").text()+"</strong>");
 
-                        self_s.fail(function(){
+                        $("#est_cond").addClass("alert-warning");
+                    }
+                    else{
+                        if(regpen=="4"){
 
-                        });
+                            if(entaseg=="100"){
+
+
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Seleccione una entidad aseguradora para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                $("#est_cond").addClass("alert-warning");
+                            }
+                            else{
+
+                                if(estafp=="100"){
+
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Seleccione un Estado AFP para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                    $("#est_cond").addClass("alert-warning");
+                                }else{
+                                    if($("#nroPensio").val()==""){
+
+                                        $("#est_cond").show();
+                                        $("#est_cond").removeClass("alert-warning");
+                                        $("#est_cond").removeClass("alert-success");
+                                        $("#est_cond").html("Ingrese un N° de Sis Pensiones para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                        $("#est_cond").addClass("alert-warning");
+
+                                    }else{
+
+                                        if($("#numresol_aseg").val()==""){
+
+                                            $("#est_cond").show();
+                                            $("#est_cond").removeClass("alert-warning");
+                                            $("#est_cond").removeClass("alert-success");
+                                            $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                            $("#est_cond").addClass("alert-warning");
+                                        }
+                                        else{
+
+                                            this.model.get("guardarHist").set({
+                                                "codigo":this.codigo,
+                                                "estadoTrabaActual":this.numserest,
+                                                "numResol":numResol,
+                                                "idregPen":regpen,
+                                                "identAseg":entaseg,
+                                                "idestAFP":estafp,
+                                                "numPensiones":numPen
+
+                                            })
+                                            this.model.get("guardarHist").url='api/estado_condicion/addcondaseg';
+                                            var self_s= this.model.get("guardarHist").save({},{wait:true});
+
+                                            self_s.done(function(){
+
+                                            });
+
+                                            self_s.fail(function(){
+
+                                                self.Tabla_Cond_AsegView.fetchTablaCondAseg(self.codigo,self.numserest,function () {
+                                                    if(self.Tabla_Cond_AsegView.collection.length!=0){
+                                                        $("#table-cond-aseg").dataTable();
+                                                        $('#table-cond-aseg_wrapper').append("<div id='footer-table'></div>");
+                                                        $('#table-cond-aseg_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                                        $('#table-cond-aseg_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                                        $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                                    }
+                                                });
+                                                self.TCAReg.show(self.Tabla_Cond_AsegView);
+
+                                                self.ListarServidorView.fetchServ();
+
+                                            });
+
+                                            $("#est_cond").show();
+                                            $("#est_cond").removeClass("alert-warning");
+                                            $("#est_cond").removeClass("alert-success");
+                                            $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                            $("#est_cond").addClass("alert-success");
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                        if(regpen=="3"){
+
+                            if(entaseg=="100"){
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Seleccione una entidad aseguradora para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                $("#est_cond").addClass("alert-warning");
+                            }else{
+                                if($("#numresol_aseg").val()==""){
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                    $("#est_cond").addClass("alert-warning");
+                                }else{
+
+                                    this.model.get("guardarHist").set({
+                                        "codigo":this.codigo,
+                                        "estadoTrabaActual":this.numserest,
+                                        "numResol":numResol,
+                                        "idregPen":regpen,
+                                        "identAseg":entaseg,
+                                        "idestAFP":estafp,
+                                        "numPensiones":numPen
+
+                                    })
+                                    this.model.get("guardarHist").url='api/estado_condicion/addcondaseg';
+                                    var self_s= this.model.get("guardarHist").save({},{wait:true});
+
+                                    self_s.done(function(){
+
+                                    });
+
+                                    self_s.fail(function(){
+                                        self.Tabla_Cond_AsegView.fetchTablaCondAseg(self.codigo,self.numserest,function () {
+                                            if(self.Tabla_Cond_AsegView.collection.length!=0){
+                                                $("#table-cond-aseg").dataTable();
+                                                $('#table-cond-aseg_wrapper').append("<div id='footer-table'></div>");
+                                                $('#table-cond-aseg_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                                $('#table-cond-aseg_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                            }
+                                        });
+                                        self.TCAReg.show(self.Tabla_Cond_AsegView);
+                                        self.ListarServidorView.fetchServ();
+                                    });
+
+                                    $("#est_cond").show();
+                                    $("#est_cond").removeClass("alert-warning");
+                                    $("#est_cond").removeClass("alert-success");
+                                    $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                    $("#est_cond").addClass("alert-success");
+                                }
+
+                            }
+
+                        }
+
+                        if(regpen=="5" || regpen=="6"){
+
+                            if($("#numresol_aseg").val()==""){
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                $("#est_cond").addClass("alert-warning");
+                            }else{
+
+                                this.model.get("guardarHist").set({
+                                    "codigo":this.codigo,
+                                    "estadoTrabaActual":this.numserest,
+                                    "numResol":numResol,
+                                    "idregPen":regpen,
+                                    "identAseg":entaseg,
+                                    "idestAFP":estafp,
+                                    "numPensiones":numPen
+
+                                })
+                                this.model.get("guardarHist").url='api/estado_condicion/addcondaseg';
+                                var self_s= this.model.get("guardarHist").save({},{wait:true});
+
+                                self_s.done(function(){
+
+                                });
+
+                                self_s.fail(function(){
+                                    self.Tabla_Cond_AsegView.fetchTablaCondAseg(self.codigo,self.numserest,function () {
+                                        if(self.Tabla_Cond_AsegView.collection.length!=0){
+                                            $("#table-cond-aseg").dataTable();
+                                            $('#table-cond-aseg_wrapper').append("<div id='footer-table'></div>");
+                                            $('#table-cond-aseg_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                            $('#table-cond-aseg_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                        }
+                                    });
+                                    self.TCAReg.show(self.Tabla_Cond_AsegView);
+
+                                    self.ListarServidorView.fetchServ();
+                                });
+
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
+
+                                $("#est_cond").addClass("alert-success");
+                            }
+                        }
+
+                    }
+
+
+
+
                         //Aqui se inserta en alertas pendientes
+                    /*
                         this.model.get("guardaralertpend").set({
                             "codigo": codigo,
                             "numserest": numserest,
@@ -1006,12 +1283,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#numresol_pla').val("");
                         $('#numsispen').val("");
 
-                        this.numresol=null;
-
-                    }    else{
-                        $("#correcto").hide();
-                        $("#advertencia").show();
-                    }
+                        this.numresol=null;*/
 
 
                 },
