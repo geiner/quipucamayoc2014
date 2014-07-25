@@ -6,8 +6,8 @@ define([ 'backbone', 'marionette', 'apps/servidores/form/collection/numregistros
             template: numregistroTemplate,
             collection: new numRegistros(),
 
-            fetchNumRegistros: function(codigo,callback){
-                this.collection.setUrl(codigo);
+            fetchNumRegistros: function(codigo,num_ser_est,callback){
+                this.collection.setUrl(codigo,num_ser_est);
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch().done(callback);
             }

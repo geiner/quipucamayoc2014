@@ -43,6 +43,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 cod_paisNac: 120,
                 guar_o_actu: 0,//0 guarda - 1 actualiza I.General
                 guar_o_actu2: 0,//guarda o actualiza I.laboral
+                num_ser_estado:0,
                 elementoClickeado: null,
                 unidadClicked: {
                     unidadId: 10002,
@@ -980,10 +981,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if ($("#ent_aseg").val() == "999") {
                         $("#ent_aseg").val("");
                     }
+                    console.log(self.num_ser_estado+" ---numserest")
 
                     this.model.get("servidorlaboral").set({
                         "cod": codigo,
                         "estLab": $("#serv_est").val(),
+                        "num_ser_est":self.num_ser_estado,
                         "tipGen": $("#serv_gen").val(),
                         "tip": $("#serv_tip").val(),
                         "cat": $("#serv_cat").val(),
@@ -1031,14 +1034,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         });
                     } else {
-
-                        self.numregistros.fetchNumRegistros(codigo,function(){
+                        console.log("actualizar  ...................")
+                        self.numregistros.fetchNumRegistros(codigo,self.num_ser_estado, function(){
                             var num1=self.numregistros.collection.at(0).get('num1');
                             var num2=self.numregistros.collection.at(0).get('num2');
                             var num3=self.numregistros.collection.at(0).get('num3');
                             var num4=self.numregistros.collection.at(0).get('num4');
                             var num5=self.numregistros.collection.at(0).get('num5');
-                            console.log(num1+"..."+num4);
+                            console.log(num1+"/"+num2+"/"+num3+"/"+num4+"/"+num5);
                             if((num1>1) || (num2>1) || (num3>1) || (num4>1) || (num5>1)){
                                 $('#texto').html('<strong>No es posible actualizar los datos laborales debido a que ya tiene historial de cambios</strong>')
                                 $('#footer_modal').html(' <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>')
@@ -1522,6 +1525,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self = this;
                     var clickedElement = $(e.currentTarget);
                     var dni_serv = clickedElement.children(':nth-child(8)').text();
+                    this.num_ser_estado=clickedElement.children(':nth-child(7)').text();
                     $("#codigo").val(dni_serv);
                     $('#codigo').attr('disabled', 'disabled');
                     this.fun_search_servidor();

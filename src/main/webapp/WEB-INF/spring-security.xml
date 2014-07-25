@@ -22,7 +22,7 @@
         <security:intercept-url pattern="/rest/cas/profile/**" access="hasAnyRole('ADMIN52')" />
         <security:intercept-url pattern="/rest/cas/roles/**" access="hasAnyRole('ADMIN52')" />
         <security:intercept-url pattern="/api/planillasCAS/**" access="hasAnyRole('ADMIN53','USUDE53')"/>
-        <security:intercept-url pattern="/rest/reportes/**" access="hasAnyRole('ADMIN53','USUDE53','JPFAC61')" />
+        <security:intercept-url pattern="/rest/reportes/**" access="hasAnyRole('ADMIN63','USUDE63','JPFAC63')" />
         <security:intercept-url pattern="/api/servidoresCAS/**" access="hasAnyRole('ADMIN53','USUDE53')"/>
         <security:intercept-url pattern="/rest/cas/plazas/**" access="hasAnyRole('ADMIN54','USUDE54')"/>
         <security:intercept-url pattern="/api/cuadro_nominal/**" access="hasAnyRole('ADMIN61','JPFAC61')"/>

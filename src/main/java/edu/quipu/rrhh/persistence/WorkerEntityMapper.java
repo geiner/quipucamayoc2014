@@ -5,12 +5,33 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.dao.DataAccessException;
 
 public interface WorkerEntityMapper {
-    @Select(value = "SELECT SER_COD, SAP, SAM, SNOM, DEST, DCAT, DTYPE, UDID, UDDSC, PERF_DESC FROM (SELECT s.ser_cod, s.ser_mail, SER_APE_PAT as sAP, SER_APE_MAT as sAM, SER_NOM as sNom,DESC_EST as dEst, DESC_CATEG as dCat,DES_TIP_SER as dType,UD_ID as udId,UD_DSC as udDsc    \n" +
-            "            FROM ((DATAPERSUEL.SERVIDOR s left join (DATAPERSUEL.TIP_SERVIDOR ts left join (UNI_DEP ud left join  (DATAPERSUEL.SERVIDOR_ESTADO se left join DATAPERSUEL.ESTADO es \n" +
-            "            on se.ser_est_act =es.cod_est)  on ud.UD_COD=se.SER_COD_DEP_ACT) on ts.COD_TIP_SER=se.SER_TIP_ACT)on s.SER_COD=se.SER_COD)  \n" +
-            "            left join DATAPERSUEL.categoria cat on cat.cod_categ = se.ser_cat_act) \n" +
-            "            WHERE S.SER_COD=#{nId} and se.ser_con_pla_act=1   ) actual LEFT JOIN (QPRODATAQUIPU.tb_perfil b inner join QPRODATAQUIPU.tb_hist_usu_perf a on b.perf_cod = a.perf_cod) ON actual.SER_COD = a.c_usuid")
-
+    @Select(value = "SELECT SE.SER_COD AS SER_COD , " +
+            "  se.ser_ape_pat  AS SAP, " +
+            "  se.ser_ape_mat  AS SAM , " +
+            "  se.ser_nom      AS SNOM , " +
+            "  es.desc_est     AS DEST, " +
+            "  cat.desc_categ  AS DCAT, " +
+            "  TS.DES_TIP_SER  AS DTYPE, " +
+            "  ud.ud_dsc       AS UDDSC , " +
+            "  ud.ud_id        AS UDID , " +
+            "  B.PERF_DESC " +
+            "FROM DATAPERSUEL.servidor se " +
+            "INNER JOIN DATAPERSUEL.SERVIDOR_ESTADO ST " +
+            "ON se.ser_cod=st.ser_cod " +
+            "INNER JOIN DATAPERSUEL.ESTADO ES " +
+            "ON st.ser_est_act=es.cod_est " +
+            "INNER JOIN DATAPERSUEL.categoria cat " +
+            "ON st.ser_cat_act=cat.cod_categ " +
+            "INNER JOIN DATAPERSUEL.TIP_SERVIDOR ts " +
+            "ON st.ser_tip_act=TS.COD_TIP_SER " +
+            "LEFT JOIN UNI_DEP UD " +
+            "ON ST.ser_cod_dep_act=ud.ud_cod " +
+            "LEFT JOIN QPRODATAQUIPU.tb_hist_usu_perf HU " +
+            "ON SE.ser_doc_id_act=HU.C_USUID " +
+            "LEFT JOIN QPRODATAQUIPU.tb_perfil b " +
+            "ON b.perf_cod          = HU.perf_cod " +
+            "WHERE TRIM(se.ser_doc_id_act)=TRIM(#{nId}) " +
+            "AND st.ser_con_pla_act =1")
     @Results(value = {@Result(javaType = WorkerEntity.class),
 
             @Result(column ="SER_COD", property = "id"),

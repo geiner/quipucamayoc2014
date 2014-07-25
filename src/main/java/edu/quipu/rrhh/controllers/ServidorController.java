@@ -106,7 +106,7 @@ public class ServidorController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String updateServidoLaboral(@RequestBody ServidorLaboral servidorLaboral){
-        System.out.println(servidorLaboral.getRuc()+"!!!!!!!!!!!!!!!!!!!");
+        System.out.println(servidorLaboral.getNum_ser_est()+"!!!!!!!!!!!!!!!!!!!");
         System.out.println("primero");
         servidorService.updateServidorLaboral(servidorLaboral);
         System.out.println("segundo");
@@ -125,12 +125,12 @@ public class ServidorController {
         return "";
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/num_registros/{codigo}")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/num_registros/{codigo}/{num_ser_est}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public List<ServidorLaboral> selectnumeroRegistros(@PathVariable(value = "codigo") String codigo) {
-        System.out.println("entro");
-        return servidorService.selectnumeroRegistros(codigo);
+    public List<ServidorLaboral> selectnumeroRegistros(@PathVariable(value = "codigo") String codigo,@PathVariable(value = "num_ser_est") int num_ser_est) {
+        System.out.println("entro "+num_ser_est);
+        return servidorService.selectnumeroRegistros(codigo,num_ser_est);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/tiposdocumento")

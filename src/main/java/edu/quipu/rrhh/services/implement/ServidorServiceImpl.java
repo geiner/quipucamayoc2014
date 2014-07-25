@@ -100,8 +100,8 @@ public class ServidorServiceImpl implements ServidorService {
     }
 
     @Override
-    public List<ServidorLaboral> selectnumeroRegistros(String codigo) {
-        return servidorMapper.selectnumeroRegistros(codigo);
+    public List<ServidorLaboral> selectnumeroRegistros(String codigo,int num_ser_est) {
+        return servidorMapper.selectnumeroRegistros(codigo,num_ser_est);
     }
 
     @Override
