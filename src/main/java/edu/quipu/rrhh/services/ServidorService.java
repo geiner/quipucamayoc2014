@@ -58,5 +58,5 @@ public interface ServidorService {
 
     void updateHistCondPlani(ServidorLaboral servidorLaboral);
 
-    List<ServidorLaboral> selectnumeroRegistros(String codigo);
+    List<ServidorLaboral> selectnumeroRegistros(String codigo,int num_ser_est);
 }

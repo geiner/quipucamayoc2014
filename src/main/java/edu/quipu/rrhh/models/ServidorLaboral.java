@@ -9,6 +9,7 @@ public class ServidorLaboral {
     String cod;
     Integer estLab;
     Integer regPen;
+    Integer num_ser_est;
     Integer entAse;
     Integer estAfp;
     String cat;
@@ -32,6 +33,14 @@ public class ServidorLaboral {
     private int num3;
     private int num4;
     private int num5;
+
+    public Integer getNum_ser_est() {
+        return num_ser_est;
+    }
+
+    public void setNum_ser_est(Integer num_ser_est) {
+        this.num_ser_est = num_ser_est;
+    }
 
     public int getNum1() {
         return num1;

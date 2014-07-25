@@ -212,7 +212,7 @@ public interface ServidorMapper {
             "    ser_cod_dep_act=#{ser.dependencia}, " +
             "    ser_cod_dep_ces=(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})), " +
             "    ser_fech_reg_lab=TO_DATE(#{ser.regLab},'DD/MM/YY') " +
-            " WHERE trim(SER_COD)=trim(#{ser.cod})")
+            " WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(NUM_SEREST)=trim(#{ser.num_ser_est})")
     void updateServidorLaboral(@Param("ser") ServidorLaboral servidorLaboral);
     //fin de metodos de servidorLABORAL
 
@@ -586,7 +586,7 @@ public interface ServidorMapper {
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_BANCO SET" +
             " CTA_BANCO=#{ser.cueBan} ," +
             "  TIPO_PAGO=#{ser.tipPag} " +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistBanco( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_ASEG SET" +
@@ -594,7 +594,7 @@ public interface ServidorMapper {
             " ENT_ASEG=#{ser.entAse} ," +
             " EST_AFP=#{ser.estAfp} ," +
             " NUM_SIS_PEN=#{ser.numPen} " +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistCondAseg( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_LAB SET" +
@@ -602,18 +602,18 @@ public interface ServidorMapper {
             " COD_CATEG=#{ser.cat} ," +
             " COD_TIPO_SER=#{ser.tip} ," +
             " TTPO_GEN=#{ser.tipGen} " +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistCondLab( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_PLANI SET" +
             " COND_PLA=#{ser.cueBan} " +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistCondPlani( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_DEP SET" +
             " DEP_ACT=#{ser.dependencia} ," +
             " DEP_CES=(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})) " +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod})  and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistHistDep( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Select(value ="SELECT MAX(hb.NUM_REG) AS num1, "
@@ -627,10 +627,15 @@ public interface ServidorMapper {
             +"  qpdatagestion.tb_hist_cond_lab hcl, "
             +"  qpdatagestion.tb_hist_cond_plani hcp "
             +"WHERE trim(hb.ser_cod)=trim(#{codigo}) "
+            +"AND trim(hb.num_serest) =trim(#{num_ser_est})"
             +"AND trim(hca.ser_cod) =trim(#{codigo})"
+            +"AND trim(hca.num_serest) =trim(#{num_ser_est})"
             +"AND trim(hd.ser_cod)  =trim(#{codigo}) "
+            +"AND trim(hd.num_serest) =trim(#{num_ser_est})"
             +"AND trim(hcl.ser_cod) =trim(#{codigo}) "
-            +"AND trim(hcp.ser_cod) =trim(#{codigo})")
+            +"AND trim(hcl.num_serest) =trim(#{num_ser_est})"
+            +"AND trim(hcp.ser_cod) =trim(#{codigo})"
+            +"AND trim(hcp.num_serest) =trim(#{num_ser_est})")
     @Results(value = {
             @Result(javaType = Pais.class),
             @Result(column = "num1",property = "num1"),
@@ -639,7 +644,7 @@ public interface ServidorMapper {
             @Result(column = "num4",property = "num4"),
             @Result(column = "num5",property = "num5"),
     })
-    List<ServidorLaboral> selectnumeroRegistros(String codigo);
+    List<ServidorLaboral> selectnumeroRegistros(@Param("codigo") String codigo,@Param("num_ser_est") int num_ser_est);
 }
 
 
