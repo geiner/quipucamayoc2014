@@ -129,4 +129,26 @@ public class CuadroNominalController {
         return DepySubDep;
     }
 
+
+
+
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/numPlazasServidor/{dniServidor}"+"/{anio}")
+            @ResponseBody
+            public List<PlazaCAP> obtenerNumPlazasServidor(@PathVariable(value="dniServidor") String dniServidor,@PathVariable(value="anio") String anio){
+        List<PlazaCAP> origen=cuadroNominalService.obtenerNumPlazasServidor(dniServidor,anio);
+
+        return origen;
+    }
+
+/*
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/numPlazasServidor/{dniServidor}"+"/{anio})
+    @ResponseBody
+    public List<PlazaCAP> obtenerNumPlazasServidor(@PathVariable(value="dniServidor") String dniServidor){
+        List<PlazaCAP> origen=cuadroNominalService.obtenerNumPlazasServidor( "%"+dniServidor);
+
+        return origen;
+    }
+
+    */
+
 }

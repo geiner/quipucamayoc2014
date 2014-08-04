@@ -8,10 +8,10 @@
 		 orientation="Landscape"
 		 pageWidth="842"
 		 pageHeight="595"
-		 columnWidth="782"
+		 columnWidth="814"
 		 columnSpacing="0"
-		 leftMargin="30"
-		 rightMargin="30"
+		 leftMargin="14"
+		 rightMargin="14"
 		 topMargin="20"
 		 bottomMargin="20"
 		 whenNoDataType="NoPages"
@@ -26,30 +26,17 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="udcod" isForPrompting="false" class="java.lang.String">
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="anio" isForPrompting="false" class="java.lang.Integer">
-		<defaultValueExpression ><![CDATA[new Integer(2012)]]></defaultValueExpression>
-	</parameter>
-	<parameter name="fuente" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["09"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="usuario" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["prueba"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="logo" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["escudo_reporte.jpg"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="uddsc" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["Facultad/Dep"]]></defaultValueExpression>
+	<parameter name="anio" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(2014)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="codDependencia" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="codDep" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["10917"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["11290"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="usuarioCN" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["Erick"]]></defaultValueExpression>
@@ -57,37 +44,39 @@
 	<parameter name="nom_depen" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["Sistemas"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT  plaza.C_COD_PLAZA AS CODPLAZA,
-        cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,
-        dependencia.UD_ID  AS DEPENDENCIACODD,
-        dependencia.UD_DSC  AS DEPENDENCIA,
-        plaza.N_EST_PLAZA AS IDESTPLAZA,
-        estado.T_DES_ESTADO AS ESTPLAZA,
-        nominal.SER_COD AS COD_SER,
-        nominal.NUM_SEREST AS NUMSEREST,
-        servidor.SER_APE_PAT AS SERPAT,
-        servidor.SER_APE_MAT AS SERMAT,
-        servidor.SER_NOM AS SERNOM,
-        TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,
-        TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,
-        serModalidad.SER_MOD_DESC AS MODALIDAD 
-        FROM  ( ( ( (  QPRODATAPLANI.TB_CARGO cargo
-            INNER JOIN QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO
-            INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD
-            INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )
-            LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA
-            INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )
-            INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)
-            LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)
-            LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD
+	<queryString><![CDATA[SELECT    plaza.C_COD_PLAZA AS CODPLAZA,
+                      cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,
+                      dependencia.UD_ID  AS DEPENDENCIACODD,
+                      dependencia.UD_DSC  AS DEPENDENCIA,
+                      plaza.N_EST_PLAZA AS IDESTPLAZA,
+                      estado.T_DES_ESTADO AS ESTPLAZA,
+                      servidor_pap.SER_COD_ANT AS CODANT,
+                      nominal.SER_COD AS COD_SER,
+                      nominal.NUM_SEREST AS NUMSEREST,
+                      servidor.SER_APE_PAT||' '||servidor.SER_APE_MAT||' '||servidor.SER_NOM AS NOMBRES,
+                     
+                      TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,
+                      TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,
+                      serModalidad.SER_MOD_DESC AS MODALIDAD  
             
-            WHERE (   cargo.N_UD_ID  IN ( 
-            SELECT  dependencia1.ud_id
-            FROM QPRODATAQUIPU.UNI_DEP dependencia1
-            WHERE ( 
-            SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE  $P{codDep}) ) ) 
-            LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}   )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}   AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
-            ORDER BY NOMESTRUC]]></queryString>
+                      FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo
+                      INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO
+                      INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD
+                      INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )
+                      LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA
+                      INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )
+                      INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)
+                      LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)
+                      LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)
+                      LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD
+          
+                      WHERE (   cargo.N_UD_ID  IN ( 
+                      SELECT  dependencia1.ud_id
+                      FROM QPRODATAQUIPU.UNI_DEP dependencia1
+                      WHERE (  
+                      SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep} ) ) ) 
+                      LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
+                      ORDER BY NOMESTRUC]]></queryString>
 
 	<field name="CODPLAZA" class="java.math.BigDecimal"/>
 	<field name="NOMESTRUC" class="java.lang.String"/>
@@ -95,11 +84,10 @@
 	<field name="DEPENDENCIA" class="java.lang.String"/>
 	<field name="IDESTPLAZA" class="java.math.BigDecimal"/>
 	<field name="ESTPLAZA" class="java.lang.String"/>
+	<field name="CODANT" class="java.lang.String"/>
 	<field name="COD_SER" class="java.lang.String"/>
 	<field name="NUMSEREST" class="java.math.BigDecimal"/>
-	<field name="SERPAT" class="java.lang.String"/>
-	<field name="SERMAT" class="java.lang.String"/>
-	<field name="SERNOM" class="java.lang.String"/>
+	<field name="NOMBRES" class="java.lang.String"/>
 	<field name="FECH_ING" class="java.lang.String"/>
 	<field name="FECH_SAL" class="java.lang.String"/>
 	<field name="MODALIDAD" class="java.lang.String"/>
@@ -110,13 +98,29 @@
 	</variable>
 
 		<group  name="oculto" >
-			<groupExpression><![CDATA[$P{udcod}]]></groupExpression>
+			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
 			<band height="87"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="6"
+						y="12"
+						width="799"
+						height="8"
+						key="subreport-1"/>
+					<subreportParameter  name="anio">
+						<subreportParameterExpression><![CDATA[$P{anio}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="codDep">
+						<subreportParameterExpression><![CDATA[$P{codDep}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["/subReportCuadroNominal.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 			</groupFooter>
 		</group>
@@ -170,31 +174,31 @@
 					<reportElement
 						x="35"
 						y="83"
-						width="44"
+						width="135"
 						height="14"
 						key="staticText-11"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[NOMBRE]]></text>
+				<text><![CDATA[NOMBRE DE LA PLAZA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="232"
+						x="334"
 						y="83"
-						width="40"
+						width="52"
 						height="14"
 						key="staticText-12"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[ESTADO]]></text>
+				<text><![CDATA[EST. PLAZA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="299"
+						x="453"
 						y="83"
 						width="39"
 						height="13"
@@ -203,63 +207,24 @@
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[COD.SER]]></text>
+				<text><![CDATA[DNI]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="361"
+						x="507"
 						y="83"
-						width="27"
-						height="13"
-						key="staticText-14"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[E.SER]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="399"
-						y="83"
-						width="39"
+						width="173"
 						height="13"
 						key="staticText-15"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
-				<text><![CDATA[APE. PAT]]></text>
+				<text><![CDATA[APELLIDOS Y NOMBRES]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="480"
-						y="83"
-						width="46"
-						height="13"
-						key="staticText-16"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[APE. MAT]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="574"
-						y="82"
-						width="39"
-						height="14"
-						key="staticText-17"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[NOMBRE]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="641"
+						x="695"
 						y="82"
 						width="47"
 						height="14"
@@ -272,7 +237,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="702"
+						x="752"
 						y="82"
 						width="53"
 						height="14"
@@ -285,9 +250,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="132"
+						x="182"
 						y="83"
-						width="50"
+						width="139"
 						height="14"
 						key="staticText-20"/>
 					<box></box>
@@ -430,7 +395,7 @@
 					<reportElement
 						x="7"
 						y="108"
-						width="748"
+						width="800"
 						height="1"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -439,11 +404,24 @@
 					<reportElement
 						x="6"
 						y="71"
-						width="748"
+						width="801"
 						height="0"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<staticText>
+					<reportElement
+						x="400"
+						y="83"
+						width="39"
+						height="13"
+						key="staticText-24"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[COD]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -451,14 +429,14 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="82"  isSplitAllowed="true" >
+			<band height="43"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(true)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="36"
 						y="7"
-						width="87"
-						height="49"
+						width="133"
+						height="31"
 						key="textField-8"/>
 					<box></box>
 					<textElement>
@@ -468,10 +446,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="233"
+						x="333"
 						y="7"
-						width="54"
-						height="48"
+						width="53"
+						height="30"
 						key="textField-9"/>
 					<box></box>
 					<textElement>
@@ -481,10 +459,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="298"
+						x="453"
 						y="7"
 						width="45"
-						height="49"
+						height="30"
 						key="textField-10"/>
 					<box></box>
 					<textElement>
@@ -494,62 +472,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="361"
-						y="7"
-						width="26"
-						height="47"
-						key="textField-11"/>
-					<box></box>
-					<textElement textAlignment="Center">
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{NUMSEREST}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="400"
-						y="7"
-						width="70"
-						height="49"
-						key="textField-12"/>
-					<box></box>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERPAT}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="479"
-						y="7"
-						width="77"
-						height="49"
-						key="textField-13"/>
-					<box></box>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERMAT}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="574"
-						y="7"
-						width="54"
-						height="47"
-						key="textField-14"/>
-					<box></box>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SERNOM}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="642"
+						x="694"
 						y="7"
 						width="45"
-						height="46"
+						height="30"
 						key="textField-15"/>
 					<box></box>
 					<textElement>
@@ -559,10 +485,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="702"
+						x="752"
 						y="7"
 						width="70"
-						height="47"
+						height="30"
 						key="textField-16"/>
 					<box></box>
 					<textElement>
@@ -575,7 +501,7 @@
 						x="7"
 						y="7"
 						width="25"
-						height="48"
+						height="19"
 						key="textField-17"/>
 					<box></box>
 					<textElement>
@@ -585,16 +511,42 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="132"
+						x="182"
 						y="7"
-						width="87"
-						height="49"
+						width="139"
+						height="30"
 						key="textField-19"/>
 					<box></box>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DEPENDENCIA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="507"
+						y="7"
+						width="174"
+						height="30"
+						key="textField-25"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMBRES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="7"
+						width="45"
+						height="30"
+						key="textField-26"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODANT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

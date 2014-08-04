@@ -133,6 +133,12 @@ public class ReportServiceImpl implements ReportService {
     }*/
 
 
+
+
+
+
+
+
     @Override
     public void cargarReporteCuadroNominal(HttpServletResponse response ,String codDep,String usuarioCN, String nom_depen,Integer anio) {
 
@@ -186,6 +192,31 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+
+    @Override
+    public void cargarReporteCuadroNominalTotal(HttpServletResponse response,String usuarioCN, Integer anio) {
+
+
+        String rutaReporte="/reportes/reporteCuadroNominalTotal.jrxml";
+        HashMap params = new HashMap();
+        // params.put("codDep", codDep);
+        params.put("usuarioCN", usuarioCN);
+        // params.put("nom_depen",cadena);
+        params.put("anio", anio);
+
+
+        System.out.println(params);
+        try {
+            System.out.println("download");
+            reportDownloader.downloadPDF(response, rutaReporte, "reporteCN_Total.pdf", params);
+        } catch (Exception e) {
+            System.out.println("catch");
+            logger.error("No se pudo descargar el reporte: "+rutaReporte);
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 }

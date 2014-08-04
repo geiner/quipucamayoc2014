@@ -92,6 +92,11 @@ public class ReportsController {
 
 
 
+
+
+
+
+
     @RequestMapping(method = RequestMethod.POST, value ="/cuadroNominalDependencia/pdf")
     public void mostrarReporteCuadroNominal(HttpServletResponse response,String codigoDependencia,String usuarioCN ,String nom_depen,Integer anio) {
         System.out.println("Valor defectuoso : "+nom_depen);
@@ -100,6 +105,16 @@ public class ReportsController {
 
     }
 
+
+
+
+    @RequestMapping(method = RequestMethod.POST, value ="/cuadroNominalTotal/pdf")
+    public void mostrarReporteCuadroNominalTotal(HttpServletResponse response,String usuarioCN,Integer anio) {
+        // System.out.println("Valor defectuoso : "+nom_depen);
+        System.out.println("porsiacaso");
+        reportsService.cargarReporteCuadroNominalTotal(response,usuarioCN, anio);
+
+    }
 
 
 }

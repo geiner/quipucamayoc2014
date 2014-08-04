@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="resources/css/vendor/datepicker.css" />
     <link rel="stylesheet" href="resources/css/vendor/typeahead.css" />
 
-
 </head>
 <body>
 
@@ -151,8 +150,8 @@
 
 
 
-<%--<script language="Javascript" type="text/javascript">
-    document.oncontextmenu = function(){return false};
+<script language="Javascript" type="text/javascript">
+    /*document.oncontextmenu = function(){return false};
     shortcut.add("F12", function() {
         return false;
     });
@@ -164,8 +163,22 @@
     });
     shortcut.add("Ctrl+Shift+i", function() {
         return false;
-    });
-</script>--%>
+    });*/
+
+    /*$(document).ready(function(){
+        $("body").bind("mouse.inactive",function(){
+            $('#inactividad').modal();
+        });
+
+        $.LazyMouse({
+            delay:2000
+        });
+        $('#acp_sesion').click(function(){
+            $('#inactividad').modal('hide');
+
+        });
+    });*/
+</script>
 
 <footer class="footer" style="text-align: center;padding-top: 40px;padding-bottom: 20px;">© Quipucamayoc 2014</footer>
 <script type="text/javascript" src="resources/js/lib/jquery.js"></script>
@@ -174,6 +187,25 @@
 <script data-main="resources/js/require_main.js" src="resources/js/lib/require.js"></script>
 
 <script language="JavaScript" src="resources/js/lib/shortcut.js"></script>
+<script language="JavaScript" src="resources/js/lib/jquery-lazymouse.js"></script>
 
+<div id="inactividad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">SESION CADUCADA</h4>
+            </div>
+            <div class="modal-body" id="texto">
+                Su sesion en esta pagina ha caducada debe volver a iniciar sesion
+            </div>
+            <div class="modal-footer" id="footer_modal">
+                <button type="button" class="btn btn-primary" id="acp_sesion">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

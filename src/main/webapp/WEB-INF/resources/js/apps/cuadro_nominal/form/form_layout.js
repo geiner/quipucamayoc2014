@@ -22,9 +22,14 @@ define(['app',
 
          "apps/cuadro_nominal/form/view/advDobleAsignacion",
 
+
+        "apps/cuadro_nominal/form/view/numPlazasServidor",
+
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
         "lib/avgrund",
+
+
         "bootstrap"],
 
 
@@ -46,6 +51,8 @@ define(['app',
               TablaModalServidores2,
 
               advDobleAsignacionView,
+
+              numPlazasServidorView,
 
 
               datePicker) {
@@ -70,6 +77,11 @@ define(['app',
 
 
                 advDobleAsignacionView:new  advDobleAsignacionView(),
+
+
+                numPlazasServidorView:new  numPlazasServidorView(),
+
+
 
 
 
@@ -142,7 +154,11 @@ define(['app',
 
                     "dblclick #table-servidores_asis2 > tbody > tr ": "seleccionarServidor2",
 
-                    "click .tree li": "clickUnidad"
+                    "click .tree li": "clickUnidad",
+
+
+                    "click #botonEfecto":"mensajeDesaparece"
+
 
 
                 },
@@ -193,6 +209,7 @@ define(['app',
 
                         var self=this;
                         this.depenUsuarioView.mostrarDependenciaUsuario(emailUsuario,function () {
+
                             if(self.depenUsuarioView.collection.length!=0){
 
                                 var depUsu= self.depenUsuarioView.collection.at(0).get("origenCodigo");
@@ -248,7 +265,6 @@ define(['app',
 
                     */
 
-
                 },
 
 
@@ -282,20 +298,28 @@ define(['app',
                                 "modSer": $('#modalidad').val(),
                                 "estPlaza": $('#ModOcupado').val()
 
-
                             });
+
+                             console.log("Paso 1");
+
 
 
                             this.model.get("addServidorAPlaza").url = "api/cuadro_nominal/addSerCuadroNominal2";
 
                             var self_s = this.model.get("addServidorAPlaza").save({}, {wait: true});
 
+
+
                             self_s.done(function () {
 
 
                             });
 
+
+
                             self_s.fail(function () {
+
+                               var  selfInterno=self;
 
                                 self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
                                     if (self.plazasCAPView.collection.length != 0) {
@@ -317,11 +341,50 @@ define(['app',
 
                                     $('#nom_encabezado_plazas').text(self.encabezado);
 
+
+                                    console.log("Paso 2");
+
+
+
+                                    selfInterno.numPlazasServidorView.obtenerNumPlazasServidor(cod,$('#anio_plazas').val(),function () {
+
+                                        console.log("El codigo del servidor es: "+cod);
+
+                                        //console.log("Año:"+$('#anio_plazas').val());
+
+
+                                            var valor= selfInterno.numPlazasServidorView.collection.at(0).get("cod_plaza");
+                                            console.log("Numero de plazas: "+valor);
+                                            console.log("Paso 3");
+
+                                            if(valor>1){
+                                                $("#el_div")[0].style.display='';
+                                                $("#el_div").delay(3000).fadeOut("slow");
+
+
+                                            }
+
+
+
+
+                                    });
+
+
+
+
                                 })
 
                             });
 
+
+
+
                             $('#modalServidores').modal("hide")
+
+
+
+
+
                         }
                     }
                 },
@@ -449,8 +512,8 @@ define(['app',
 
 
                                     $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
-                                    $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                    $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                    $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
+                                    $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
                                     $('.dataTables_filter input').attr('placeholder', 'Buscar..');
 
                                 }
@@ -472,7 +535,6 @@ define(['app',
                                         "aaSorting": [[ 1, "asc" ]]
                                     });
 
-
                                     $('#table-servidores_asis2_wrapper').append("<div id='footer-table'></div>");
                                     $('#table-servidores_asis2_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#table-servidores_asis2_previous').html("<i class='glyphicon glyphicon-backward'></i>");
@@ -488,7 +550,6 @@ define(['app',
 
 
                         }
-
 
 
                     }else{
@@ -517,6 +578,12 @@ define(['app',
                    //$('#nom_depen').val(this.unidadSelected.unidadDesc);
                    $('#anio').val($('#anio_plazas').val());
                    $('#form_reporteCN').show();
+
+                    $('#usuarioCN2').val($('#email').text());
+                    $('#anio2').val($('#anio_plazas').val());
+                    $('#form_reporteCN2').show();
+
+
 
                     this.añoPlazas=$('#anio_plazas').val();
 
@@ -582,7 +649,6 @@ define(['app',
                                 }
 
 
-
                                 var  temporal=nombreEncabezado;
                                 temporal=temporal.toUpperCase();
                                 self.encabezado=temporal;
@@ -593,7 +659,6 @@ define(['app',
                             }else{
 
                                 if(self.depySubDepView.collection.length != 0  &&  self.depySubDepView.collection.length == 1){
-
 
 
                                     var fila1_ud_id_h = self.depySubDepView.collection.at(0).get("ud_id_hijo");
@@ -641,8 +706,6 @@ define(['app',
 
                        //   nombreEncabezado="á"+" "+"é"+" "+"í"+" "+"ó"+" "+"ú"+" "+"Á"+" "+"É"+" "+"Í"+" "+"Ó"+" "+"Ú";
 
-
-
                         $('#nom_depen').val(nombreEncabezado);
 
                        console.log("Defecto  en layout: "+$('#nom_depen').val());
@@ -681,6 +744,7 @@ define(['app',
                     });
 
                     this.tablaPlazasHtml.show(this.plazasCAPView) ;
+                    $("#tablaPlazas").show();
 
                 },
 
@@ -719,7 +783,9 @@ define(['app',
                     //console.log("Entro alerta anio");
                     $("#advertenciaAnioPlaza").hide();
 
-                   // $("#tablaPlazas").hide();
+                    $("#tablaPlazas").hide();
+                    $('#form_reporteCN').hide();
+                    $('#form_reporteCN2').hide();
 
                 },
 
@@ -782,6 +848,8 @@ define(['app',
 
 
 
+
+
                 clickUnidad : function(e){
 
                     console.log("Entro al arbol!!!");
@@ -809,7 +877,18 @@ define(['app',
                         "border": "1px solid #94a0b4"
                     });
 
-                }
+                },
+
+
+
+
+                mensajeDesaparece : function()
+            {
+                $("#el_div")[0].style.display='';
+                $("#el_div").delay(3000).fadeOut("slow");
+            }
+
+
 
 
             });

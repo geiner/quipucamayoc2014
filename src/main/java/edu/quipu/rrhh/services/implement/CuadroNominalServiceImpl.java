@@ -46,7 +46,7 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
     public void updateEstadoPlaza(AsigCuadroNominal obj) {
         System.out.println("Aqui nuevo implm");
 
-        cuadroNominalMapper.updateEstadoPlaza(obj.getCodPlaza(), obj.getEstPlaza());
+        cuadroNominalMapper.updateEstadoPlaza(obj.getCodPlaza(),obj.getEstPlaza());
 
     }
 //*****************************************************
@@ -101,4 +101,19 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
     public List<EncabezadoDepySubDep> obtenerDepySubDep(String codDep) {
         return cuadroNominalMapper.obtenerDepySubDep(codDep);
     }
+
+
+    @Override
+    public List<PlazaCAP> obtenerNumPlazasServidor(String dniServidor,String anio) {
+        return cuadroNominalMapper.obtenerNumPlazasServidor(dniServidor,anio);
+    }
+
+    /*
+    @Override
+    public List<PlazaCAP> obtenerNumPlazasServidor(String dniServidor) {
+        return cuadroNominalMapper.obtenerNumPlazasServidor(dniServidor);
+    }
+    */
+
+
 }

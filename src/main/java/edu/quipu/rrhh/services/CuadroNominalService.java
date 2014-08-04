@@ -48,4 +48,10 @@ public interface CuadroNominalService {
 
     List<EncabezadoDepySubDep> obtenerDepySubDep(String codDep);
 
+
+    //List<PlazaCAP> obtenerNumPlazasServidor(String dniServidor);
+
+
+    List<PlazaCAP> obtenerNumPlazasServidor(String dniServidor, String anio);
+
 }

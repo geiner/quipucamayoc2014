@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="subReportCuadroNominal"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="736"
+		 pageHeight="841"
+		 columnWidth="736"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="DESCRIPCIONACT" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="codDep" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["11290"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" isForPrompting="false" class="java.lang.Integer">
+		<defaultValueExpression ><![CDATA[new Integer(2014)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT T1.N_VAC_PRES,T2.N_OCU_PRES,T3.N_VAC_FUNC,T4.N_OCU_FUNC
+                    FROM (SELECT   COUNT(plaza.C_COD_PLAZA) AS N_VAC_PRES
+                     FROM    QPRODATAPLANI.TB_CARGO cargo
+                     INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO                      
+                     INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID 
+                     INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  
+                     WHERE (   cargo.N_UD_ID  IN 
+                     ( 
+                     SELECT  dependencia1.ud_id
+                     FROM QPRODATAQUIPU.UNI_DEP dependencia1
+                     WHERE (  
+                     SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}  ) ) ) 
+                     LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 3 ))) T1,
+                     
+                     
+                     
+                     ( SELECT   COUNT(plaza.C_COD_PLAZA) AS N_OCU_PRES
+                     FROM    QPRODATAPLANI.TB_CARGO cargo
+                     INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO                      
+                     INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID 
+                     INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  
+                     WHERE (   cargo.N_UD_ID  IN 
+                     ( 
+                     SELECT  dependencia1.ud_id
+                     FROM QPRODATAQUIPU.UNI_DEP dependencia1
+                     WHERE (  
+                     SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}  ) ) ) 
+                     LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 4 ))) T2, 
+                     
+                     
+                     
+                     (SELECT   COUNT(plaza.C_COD_PLAZA) AS N_VAC_FUNC
+                     FROM    QPRODATAPLANI.TB_CARGO cargo
+                     INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO                      
+                     INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID 
+                     INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  
+                     WHERE (   cargo.N_UD_ID  IN 
+                     ( 
+                     SELECT  dependencia1.ud_id
+                     FROM QPRODATAQUIPU.UNI_DEP dependencia1
+                     WHERE (  
+                     SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}  ) ) ) 
+                     LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 5 )) ) T3,
+                     
+                     
+                     
+                     (SELECT   COUNT(plaza.C_COD_PLAZA) AS N_OCU_FUNC
+                     FROM    QPRODATAPLANI.TB_CARGO cargo
+                     INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO                      
+                     INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID 
+                     INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  
+                     WHERE (   cargo.N_UD_ID  IN 
+                     ( 
+                     SELECT  dependencia1.ud_id
+                     FROM QPRODATAQUIPU.UNI_DEP dependencia1
+                     WHERE (  
+                     SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}  ) ) ) 
+                     LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 6 )) ) T4]]></queryString>
+
+	<field name="N_VAC_PRES" class="java.math.BigDecimal"/>
+	<field name="N_OCU_PRES" class="java.math.BigDecimal"/>
+	<field name="N_VAC_FUNC" class="java.math.BigDecimal"/>
+	<field name="N_OCU_FUNC" class="java.math.BigDecimal"/>
+
+	<variable name="sumaTotal" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new BigDecimal($F{N_VAC_PRES}.doubleValue() +$F{N_OCU_PRES}.doubleValue()+$F{N_VAC_FUNC}.doubleValue()
++$F{N_OCU_FUNC}.doubleValue())]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="25"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="153"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="159"
+						y="7"
+						width="424"
+						height="15"
+						key="textField-56"/>
+					<box rightPadding="1">					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["RESUMEN DEL CUADRO NOMINAL"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="159"
+						y="52"
+						width="121"
+						height="30"
+						key="staticText-1"
+						positionType="FixRelativeToBottom"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Plazas Vacantes Presupuetadas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="280"
+						y="52"
+						width="100"
+						height="30"
+						key="staticText-2"
+						positionType="FixRelativeToBottom"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Plazas Ocupadas Presupuestadas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="380"
+						y="52"
+						width="105"
+						height="30"
+						key="staticText-3"
+						positionType="FixRelativeToBottom"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Plazas Vacantes Funcionales]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="485"
+						y="52"
+						width="98"
+						height="30"
+						key="staticText-4"
+						positionType="FixRelativeToBottom"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Plazas Ocupadas Funcionales]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="159"
+						y="82"
+						width="121"
+						height="20"
+						key="textField-16"
+						stretchType="RelativeToTallestObject"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{N_VAC_PRES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="280"
+						y="82"
+						width="100"
+						height="20"
+						key="textField-17"
+						stretchType="RelativeToTallestObject"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{N_OCU_PRES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="82"
+						width="105"
+						height="20"
+						key="textField-18"
+						stretchType="RelativeToTallestObject"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{N_VAC_FUNC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="485"
+						y="82"
+						width="98"
+						height="20"
+						key="textField-19"
+						stretchType="RelativeToTallestObject"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{N_OCU_FUNC}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="159"
+						y="22"
+						width="121"
+						height="30"
+						key="staticText-5"
+						positionType="FixRelativeToBottom"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Total de plazas:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="280"
+						y="22"
+						width="303"
+						height="30"
+						key="textField-57"/>
+					<box>					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{sumaTotal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

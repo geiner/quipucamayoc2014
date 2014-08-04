@@ -13,8 +13,15 @@ public interface ReportService {
 
     void cargarReporteDescansos(HttpServletResponse response, String anio, String mes, String nombremes, String usuario, String[] array_codigos);
 
-    void cargarReporteCuadroNominal(HttpServletResponse response, String codigoDependencia, String usuarioCN, String nom_depen,Integer anio);
+   // void cargarReporteCuadroNominal(HttpServletResponse response, String codigoDependencia, String usuarioCN, String nom_depen,Integer anio);
 
     //void cargarReporteCuadroNominal(HttpServletResponse response, String codigoDependencia, String usuarioCN, String nom_depen);
+
+
+
+    void cargarReporteCuadroNominal(HttpServletResponse response, String codigoDependencia, String usuarioCN, String nom_depen,Integer anio);
+
+
+    void cargarReporteCuadroNominalTotal(HttpServletResponse response,String usuarioCN,Integer anio);
 
 }
