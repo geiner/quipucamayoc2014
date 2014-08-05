@@ -170,8 +170,7 @@ public class ReportServiceImpl implements ReportService {
         cadena= new String(caracteres);
 
         System.out.println("Mostramos la cadena sin defecto: "+cadena);
-
-
+        System.out.println(context);
 
         String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
         HashMap params = new HashMap();
@@ -179,7 +178,8 @@ public class ReportServiceImpl implements ReportService {
         params.put("usuarioCN", usuarioCN);
         params.put("nom_depen",cadena);
         params.put("anio", anio);
-
+        params.put("sub_dir", context.getRealPath(""));
+        System.out.println(context);
 
         System.out.println(params);
         try {

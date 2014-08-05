@@ -1,10 +1,11 @@
 define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/resoluciones/form/view/servidor-view','apps/servidores/form/view/servidorEstado-view',
         'apps/servidores/form/view/categoriaServidor-view','apps/servidores/form/view/servidorgenericos-view', 'apps/servidores/form/view/servidorTipo-view',
         'apps/servidores/form/view/regimenPensionario-view', 'apps/servidores/form/view/entidadAseguradora-view', 'apps/servidores/form/view/estadosAFP-view',
-        'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view',"apps/planillas/list/view/unidades-dialog"
+        'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view',"apps/planillas/list/view/unidades-dialog","apps/servidores/form/view/tiposOcupaciones_view"
+        ,'apps/servidores/form/model/servidorLaboral'
         ,"jquery","lib/bootstrap-datepicker","lib/jquery.dataTables.min","bootstrap"],
     function (ErzaManager, layoutTpl,listaServView,servidorEstadoView,categoriaServidorView,servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView,
-              tipoPagoView, condicionPlanillaView,TablaModalDependencias) {
+              tipoPagoView, condicionPlanillaView,TablaModalDependencias,tipoOcupacionView,ServidorLaboral) {
         ErzaManager.module('AsistenciaApp.Numserest.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
@@ -20,6 +21,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                 tipoPago: new tipoPagoView(),
                 CondicionPlanView: new condicionPlanillaView(),
                 tablaDependencias:new TablaModalDependencias(),
+                tipoOcupacionView: new tipoOcupacionView(),
 
                 elementoClickeado: null,
                 unidadClicked: {
@@ -30,6 +32,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     unidadId:10225,
                     unidadDesc:"C0319 - PROYECTO QUIPUCAMAYOC"
                 },
+                num_ser_estado :0,
                 regions: {
                     listServ: "#list_servidores",
                     div_serv_estado: "#div_serv_est",
@@ -41,6 +44,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     div_estado_apf: "#div_est_afp",
                     div_tipo_pago: "#div_tip_pag",
                     div_condicion_plan: "#div_cond_pla",
+                    div_tipos_ocupaciones: "#div_tip_ocup",
                     dependModal:"#show_depend"
                 },
 
@@ -58,7 +62,8 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     "click #reg_pen_clos":"limpiar_reg_pen_clos",
                     "click #reg_pen_show": "fun_reg_pen_show",
                     "click #reg_lab_clos": "fun_reg_lab_clos",
-                    "click #reg_lab_show": "fun_reg_lab_show"
+                    "click #reg_lab_show": "fun_reg_lab_show",
+                    "click #save_numserest": "save_numserest"
                 },
 
                 onRender: function () {
@@ -79,9 +84,15 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     this.div_tipo_pago.show(this.tipoPago);
 
                     this.div_condicion_plan.show(this.CondicionPlanView);
+
+                    this.div_tipos_ocupaciones.show(this.tipoOcupacionView);
                 },
                 initialize: function () {
+                    this.model = new Backbone.Model();
 
+                    this.model.set({
+                        "servidorlaboral": new ServidorLaboral()
+                    });
                 },
 
                 initialFetch: function () {
@@ -159,7 +170,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     var cod_serv = clickedElement.children(':nth-child(8)').text();
                     var dni_serv = clickedElement.children(':nth-child(2)').text();
                     var nom_serv = clickedElement.children(':nth-child(1)').text();
-
+                    this.num_ser_estado=clickedElement.children(':nth-child(7)').text();
                     $("#block-descr_serv").show();
                     $('#cod_serv_lab').text(cod_serv);
                     $('#dni_serv_lab').text(dni_serv);
@@ -333,7 +344,586 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     });
 
                     temp_reg_lab.datepicker('show');
+                },
+
+                save_numserest:function () {
+                    var self = this;
+                    var fullDate = new Date();
+                    var dia = fullDate.getDate() + "";
+                    var mes = (fullDate.getMonth() + 1) + "";
+                    var anio = fullDate.getFullYear() + "";
+                    if (dia.length == 1) {
+                        dia = '0' + fullDate.getDate();
+                    }
+                    if (mes.length == 1) {
+                        mes = '0' + (fullDate.getMonth() + 1);
+                    }
+                    var currentDate = dia + "/" + mes + "/" + anio;
+
+                    if ($("#serv_est").val() != "999" & $("#serv_gen").val() != "999" & $("#serv_tip").val() != "999" & $("#serv_cat").val() != "999" & $("#rpe").val() != "999" & $('#codigo').val() != "") {
+
+                        if ($("#rpe").val() == "5" || $("#rpe").val() == "6") {
+                            if ($('#tip_pag').val() != "999") {
+                                if ($('#tip_pag').val() == "2") {
+                                    if ($('#cond_pla').val() != "999") {
+                                        if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                            if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                if ($('#serv_tip_ocup').val() != "999") {
+                                                    if ($('#origen').val() != "") {
+                                                        if ($('#serv_est').val() != 7) {
+                                                            self.ingresar_datos_laborales();
+                                                        } else {
+                                                            if ($('#serv_ruc').val() != "") {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                $('#mensaje').removeClass('alert-danger');
+                                                                $('#mensaje').removeClass('alert-success');
+                                                                $('#mensaje').addClass("alert-warning");
+                                                                $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                $('#mensaje').show();
+                                                            }
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    } else {
+                                        $('#mensaje').removeClass('alert-danger');
+                                        $('#mensaje').removeClass('alert-success');
+                                        $('#mensaje').addClass("alert-warning");
+                                        $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                        $('#mensaje').show();
+                                    }
+                                } else {
+                                    if ($('#tip_pag').val() == "1" & $('#cta_ban').val() != "") {
+                                        if ($('#cond_pla').val() != "999") {
+                                            if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                                if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                    if ($('#serv_tip_ocup').val() != "999") {
+                                                        if ($('#origen').val() != "") {
+                                                            if ($('#serv_est').val() != 7) {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                if ($('#serv_ruc').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#mensaje').removeClass('alert-danger');
+                                                                    $('#mensaje').removeClass('alert-success');
+                                                                    $('#mensaje').addClass("alert-warning");
+                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#mensaje').show();
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $('#mensaje').removeClass('alert-danger');
+                                                            $('#mensaje').removeClass('alert-success');
+                                                            $('#mensaje').addClass("alert-warning");
+                                                            $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                            $('#mensaje').show();
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    } else {
+                                        $('#mensaje').removeClass('alert-danger');
+                                        $('#mensaje').removeClass('alert-success');
+                                        $('#mensaje').addClass("alert-warning");
+                                        $('#mensaje').html('<strong>Es necesario ingresar el numero de cuenta</strong>')
+                                        $('#mensaje').show();
+                                    }
+                                }
+                            } else {
+                                $('#mensaje').removeClass('alert-danger');
+                                $('#mensaje').removeClass('alert-success');
+                                $('#mensaje').addClass("alert-warning");
+                                $('#mensaje').html('<strong>Es necesario ingresar el tipo de pago</strong>')
+                                $('#mensaje').show();
+                            }
+                        }
+                        ;
+
+                        if ($("#rpe").val() == "4") {
+                            if ($('#ent_aseg').val() != "999" & $('#est_afp').val() != "999" & $('#num_sis_pri_pen').val() != "") {
+                                if ($('#tip_pag').val() != "999") {
+                                    if ($('#tip_pag').val() == "2") {
+                                        if ($('#cond_pla').val() != "999") {
+                                            if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                                if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                    if ($('#serv_tip_ocup').val() != "999") {
+                                                        if ($('#origen').val() != "") {
+                                                            if ($('#serv_est').val() != 7) {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                if ($('#serv_ruc').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#mensaje').removeClass('alert-danger');
+                                                                    $('#mensaje').removeClass('alert-success');
+                                                                    $('#mensaje').addClass("alert-warning");
+                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#mensaje').show();
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $('#mensaje').removeClass('alert-danger');
+                                                            $('#mensaje').removeClass('alert-success');
+                                                            $('#mensaje').addClass("alert-warning");
+                                                            $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                            $('#mensaje').show();
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    } else {
+                                        if ($('#tip_pag').val() == "1" & $('#cta_ban').val() != "") {
+                                            if ($('#cond_pla').val() != "999") {
+                                                if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                                    if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                        if ($('#serv_tip_ocup').val() != "999") {
+                                                            if ($('#origen').val() != "") {
+                                                                if ($('#serv_est').val() != 7) {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    if ($('#serv_ruc').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#mensaje').removeClass('alert-danger');
+                                                                        $('#mensaje').removeClass('alert-success');
+                                                                        $('#mensaje').addClass("alert-warning");
+                                                                        $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                        $('#mensaje').show();
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                $('#mensaje').removeClass('alert-danger');
+                                                                $('#mensaje').removeClass('alert-success');
+                                                                $('#mensaje').addClass("alert-warning");
+                                                                $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                                $('#mensaje').show();
+                                                            }
+                                                        } else {
+                                                            $('#mensaje').removeClass('alert-danger');
+                                                            $('#mensaje').removeClass('alert-success');
+                                                            $('#mensaje').addClass("alert-warning");
+                                                            $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                            $('#mensaje').show();
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>Es necesario ingresar el numero de cuenta</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    }
+                                } else {
+                                    $('#mensaje').removeClass('alert-danger');
+                                    $('#mensaje').removeClass('alert-success');
+                                    $('#mensaje').addClass("alert-warning");
+                                    $('#mensaje').html('<strong>Es necesario ingresar el tipo de pago</strong>')
+                                    $('#mensaje').show();
+                                }
+                            } else {
+                                $('#mensaje').removeClass('alert-danger');
+                                $('#mensaje').removeClass('alert-success');
+                                $('#mensaje').addClass("alert-warning");
+                                $('#mensaje').html('<strong>Es necesario ingresar entidad aseguradora ,estados AFP y numero de Sistema privado de pensiones</strong>')
+                                $('#mensaje').show();
+                            }
+                        };
+
+                        if ($("#rpe").val() == "2" || $("#rpe").val() == "3" || $("#rpe").val() == "1") {
+                            if ($('#ent_aseg').val() != "999") {
+                                if ($('#tip_pag').val() != "999") {
+                                    if ($('#tip_pag').val() == "2") {
+                                        if ($('#cond_pla').val() != "999") {
+                                            if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                                if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                    if ($('#serv_tip_ocup').val() != "999") {
+                                                        if ($('#origen').val() != "") {
+                                                            if ($('#serv_est').val() != 7) {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                if ($('#serv_ruc').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#mensaje').removeClass('alert-danger');
+                                                                    $('#mensaje').removeClass('alert-success');
+                                                                    $('#mensaje').addClass("alert-warning");
+                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#mensaje').show();
+                                                                }
+                                                            }
+                                                        } else {
+                                                            $('#mensaje').removeClass('alert-danger');
+                                                            $('#mensaje').removeClass('alert-success');
+                                                            $('#mensaje').addClass("alert-warning");
+                                                            $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                            $('#mensaje').show();
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    } else {
+                                        if ($('#tip_pag').val() == "1" & $('#cta_ban').val() != "") {
+                                            if ($('#cond_pla').val() != "999") {
+                                                if ($('#reg_lab').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_lab').val())) {
+                                                    if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
+                                                        if ($('#serv_tip_ocup').val() != "999") {
+                                                            if ($('#origen').val() != "") {
+                                                                if ($('#serv_est').val() != 7) {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    if ($('#serv_ruc').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#mensaje').removeClass('alert-danger');
+                                                                        $('#mensaje').removeClass('alert-success');
+                                                                        $('#mensaje').addClass("alert-warning");
+                                                                        $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                        $('#mensaje').show();
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                $('#mensaje').removeClass('alert-danger');
+                                                                $('#mensaje').removeClass('alert-success');
+                                                                $('#mensaje').addClass("alert-warning");
+                                                                $('#mensaje').html('<strong>Es necesario ingresar la dependencia</strong>')
+                                                                $('#mensaje').show();
+                                                            }
+                                                        } else {
+                                                            $('#mensaje').removeClass('alert-danger');
+                                                            $('#mensaje').removeClass('alert-success');
+                                                            $('#mensaje').addClass("alert-warning");
+                                                            $('#mensaje').html('<strong>Es necesario ingresar el tipo de ocupacion universitaria</strong>')
+                                                            $('#mensaje').show();
+                                                        }
+                                                    } else {
+                                                        $('#mensaje').removeClass('alert-danger');
+                                                        $('#mensaje').removeClass('alert-success');
+                                                        $('#mensaje').addClass("alert-warning");
+                                                        $('#mensaje').html('<strong>La fecha de inscripcion de regimen pensionario esta mal ingresada</strong>')
+                                                        $('#mensaje').show();
+                                                    }
+                                                } else {
+                                                    $('#mensaje').removeClass('alert-danger');
+                                                    $('#mensaje').removeClass('alert-success');
+                                                    $('#mensaje').addClass("alert-warning");
+                                                    $('#mensaje').html('<strong>La fecha de registro laboral esta mal ingresada</strong>')
+                                                    $('#mensaje').show();
+                                                }
+                                            } else {
+                                                $('#mensaje').removeClass('alert-danger');
+                                                $('#mensaje').removeClass('alert-success');
+                                                $('#mensaje').addClass("alert-warning");
+                                                $('#mensaje').html('<strong>Es necesario ingresar condicion de la planilla</strong>')
+                                                $('#mensaje').show();
+                                            }
+                                        } else {
+                                            $('#mensaje').removeClass('alert-danger');
+                                            $('#mensaje').removeClass('alert-success');
+                                            $('#mensaje').addClass("alert-warning");
+                                            $('#mensaje').html('<strong>Es necesario ingresar el numero de cuenta</strong>')
+                                            $('#mensaje').show();
+                                        }
+                                    }
+                                }else {
+                                    $('#mensaje').removeClass('alert-danger');
+                                    $('#mensaje').removeClass('alert-success');
+                                    $('#mensaje').addClass("alert-warning");
+                                    $('#mensaje').html('<strong>Es necesario ingresar el tipo de pago</strong>')
+                                    $('#mensaje').show();
+                                }
+                            }else {
+                                $('#mensaje').removeClass('alert-danger');
+                                $('#mensaje').removeClass('alert-success');
+                                $('#mensaje').addClass("alert-warning");
+                                $('#mensaje').html('<strong>Es necesario ingresar la entidad aseguradora</strong>')
+                                $('#mensaje').show();
+                            }
+                        }
+
+                    } else {
+                        $('#mensaje').removeClass('alert-danger');
+                        $('#mensaje').removeClass('alert-success');
+                        $('#mensaje').addClass("alert-warning");
+                        $('#mensaje').html('<strong>Falta ingresar campos obligatorios</strong>')
+                        $('#mensaje').show();
+                    }
+
+                },
+
+                Comparar_Fecha: function (fecha, fecha2) {
+                    var xMonth = fecha.substring(3, 5);
+                    var xDay = fecha.substring(0, 2);
+                    var xYear = fecha.substring(6, 10);
+                    var yMonth = fecha2.substring(3, 5);
+                    var yDay = fecha2.substring(0, 2);
+                    var yYear = fecha2.substring(6, 10);
+
+                    if (parseInt(xYear) > parseInt(yYear)) {
+                        return(true)
+                    }
+                    else {
+                        if (parseInt(xYear) == parseInt(yYear)) {
+                            if (parseInt(xMonth) > parseInt(yMonth)) {
+                                return(true)
+                            }
+                            else {
+                                if (parseInt(xMonth) == parseInt(yMonth)) {
+                                    if (parseInt(xDay) >= parseInt(yDay))
+                                        return(true);
+                                    else
+                                        return(false);
+                                }
+                                else
+                                    return(false);
+                            }
+                        }
+                        else
+                            return(false);
+                    }
+
+                },
+
+                ingresar_datos_laborales: function () {
+                    var self = this;
+                    $('#mensaje').hide();
+                    var codigo = $("#cod_serv_lab").text();
+                    console.log(codigo+" 5555555555555555555555555555")
+                    if ($("#ent_aseg").val() == "999") {
+                        $("#ent_aseg").val("");
+                    }
+                    console.log(self.num_ser_estado+" ---numserest")
+
+                    this.model.get("servidorlaboral").set({
+                        "cod": codigo,
+                        "estLab": $("#serv_est").val(),
+                        "num_ser_est":self.num_ser_estado,
+                        "tipGen": $("#serv_gen").val(),
+                        "tip": $("#serv_tip").val(),
+                        "cat": $("#serv_cat").val(),
+                        "regPen": $("#rpe").val(),
+                        "entAse": $("#ent_aseg").val(),
+                        "estAfp": $("#est_afp").val(),
+                        "numPen": $("#num_sis_pri_pen").val(),
+                        "tipPag": $("#tip_pag").val(),
+                        "cueBan": $("#cta_ban").val(),
+                        "titcueBan": $("#serv_tit_ban").val(),
+                        "conPla": $("#cond_pla").val(),
+                        "regLab": $("#reg_lab").val(),
+                        "insregpen": $("#reg_pen").val(),
+                        "tipocupuni": $("#serv_tip_ocup").val(),
+                        "sindic": $("#serv_sind").val(),
+                        "ruc": $("#serv_ruc").val(),
+                        "dependencia": self.unidadSelected.unidadId
+                    });
+                    console.log($("#serv_ruc").val() + " akaaa");
+//                    if (self.guar_o_actu2 == 0) {
+                        self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
+
+
+                        var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
+
+                        self_l.done(function () {
+
+                            var temp_serv_save = $("#mensaje");
+                            temp_serv_save.removeClass("alert-warning");
+                            temp_serv_save.removeClass("alert-danger");
+                            temp_serv_save.addClass("alert-success");
+                            temp_serv_save.show();
+                            temp_serv_save.text("Se completaron satisfactoriamente los datos del servidor!");
+                            $('#cancel_laboral').click();
+                            self.initialFetch();
+                        });
+
+                        self_l.fail(function () {
+
+                            var temp_serv_cod = $("#serv_cod");
+
+                            temp_serv_cod.removeClass('alert-warning');
+                            temp_serv_cod.addClass('alert-danger');
+                            temp_serv_cod.show();
+                            temp_serv_cod.text("Error de registro laboral.!");
+
+
+                        });
+                    /*} else {
+                        console.log("actualizar  ...................")
+                        self.numregistros.fetchNumRegistros(codigo,self.num_ser_estado, function(){
+                            var num1=self.numregistros.collection.at(0).get('num1');
+                            var num2=self.numregistros.collection.at(0).get('num2');
+                            var num3=self.numregistros.collection.at(0).get('num3');
+                            var num4=self.numregistros.collection.at(0).get('num4');
+                            var num5=self.numregistros.collection.at(0).get('num5');
+                            console.log(num1+"/"+num2+"/"+num3+"/"+num4+"/"+num5);
+                            if((num1>1) || (num2>1) || (num3>1) || (num4>1) || (num5>1)){
+                                $('#texto').html('<strong>No es posible actualizar los datos laborales debido a que ya tiene historial de cambios</strong>')
+                                $('#footer_modal').html(' <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>')
+                                $('#modal_message').modal();
+                            }else{
+                                self.model.get("servidorlaboral").url = "rest/cas/serv/updateservidorlaboral";
+
+
+                                var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
+
+                                self_l.done(function () {
+
+                                    var temp_serv_cod = $("#serv_cod");
+
+                                    temp_serv_cod.removeClass('alert-warning');
+                                    temp_serv_cod.addClass('alert-danger');
+                                    temp_serv_cod.show();
+                                    temp_serv_cod.text("Error en la actualizacion laboral.!");
+                                });
+
+                                self_l.fail(function () {
+
+                                    var temp_serv_save = $("#serv_save");
+
+                                    temp_serv_save.show();
+                                    temp_serv_save.text("Datos laborales actualizados!");
+                                    $('#cancel_laboral').click();
+                                });
+                            }
+
+                        })
+
+                    }*/
+
+                },
+                cancelar_inf_gen2: function () {
+                    $("#block-descr_serv").hide();
+
+                    /*$('.tab_a').click();
+                    setTimeout(function () {
+                        $('#cancel_servidor').click();
+                    }, 1000);*/
+
+//                    this.fun_validar_codigo();
                 }
+
+
 
             });
         });
