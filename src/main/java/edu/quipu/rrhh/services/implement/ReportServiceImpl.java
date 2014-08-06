@@ -146,12 +146,12 @@ public class ReportServiceImpl implements ReportService {
         String cadena=nom_depen;
 
 
-        cadena=cadena.replaceAll("Ã¡","á");
-        cadena=cadena.replaceAll("Ã©","é");
-        cadena=cadena.replaceAll("Ã­","í");
-        cadena=cadena.replaceAll("Ã³","ó");
-        cadena=cadena.replaceAll("Ãº","ú");
-        cadena=cadena.replaceAll("Ã±","ñ");
+        cadena=cadena.replaceAll("á","?");
+        cadena=cadena.replaceAll("é","?");
+        cadena=cadena.replaceAll("í","?");
+        cadena=cadena.replaceAll("ó","?");
+        cadena=cadena.replaceAll("ú","?");
+        cadena=cadena.replaceAll("ñ","?");
 
 
         char[] caracteres = cadena.toCharArray();
@@ -170,7 +170,15 @@ public class ReportServiceImpl implements ReportService {
         cadena= new String(caracteres);
 
         System.out.println("Mostramos la cadena sin defecto: "+cadena);
-        System.out.println(context);
+
+        String valor = context.getRealPath("WEB-INF/classes/reportes/subReportCuadroNominal.jasper");
+        System.out.println("Context: ********************************************************************************************* "+context);
+
+        // String realpath = ServletActionContext.getServletContext ().getRealPath ("/");
+
+        System.out.println("Ruta 8888888888888888888888888888888888888888888888888888888888888888888888888888888888888: "+valor);
+
+
 
         String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
         HashMap params = new HashMap();
@@ -178,8 +186,15 @@ public class ReportServiceImpl implements ReportService {
         params.put("usuarioCN", usuarioCN);
         params.put("nom_depen",cadena);
         params.put("anio", anio);
-        params.put("sub_dir", context.getRealPath(""));
-        System.out.println(context);
+
+
+
+        //String  valor="C:/ultimo/quipucamayoc2014/src/main/resources/reportes/subReportCuadroNominal.jasper";
+
+
+
+
+        params.put("SUBREPORT_DIR",valor);
 
         System.out.println(params);
         try {

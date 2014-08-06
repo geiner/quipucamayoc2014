@@ -119,7 +119,7 @@
 						<subreportParameterExpression><![CDATA[$P{codDep}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA["/subReportCuadroNominal.jasper"]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupFooter>
