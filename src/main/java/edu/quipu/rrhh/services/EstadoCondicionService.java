@@ -29,7 +29,7 @@ public interface EstadoCondicionService {
     public void addAlertPend(String codigo, Integer numserest, Integer tipalert, String email);
     public void addCondAseg(String codigo, String numserest, String numResol, Integer regPen, String numPen, Integer entAseg, Integer estAFP);
 
-    public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago);
+    public void addPagoBanco(String codigo,String  numserest, Integer codPago,String numCuenta);
     public void addCondPla(String codigo, String numserest, String numResol, Integer condPlani, String fechcese, String obser);
 
 

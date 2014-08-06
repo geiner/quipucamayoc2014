@@ -414,29 +414,47 @@
     <div class="tab-pane" id="b">
         <form class="form-horizontal well" id="">
 
+            <fieldset>
+                <legend>Datos actuales</legend>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                     <label class="col-md-5 control-label"> Tipo de pago</label>
+                       <div class="col-md-7">
+                           <input class="form-control" id="tipPago" type="text" disabled>
+                       </div>
+                    </div >
 
-            <div class="row form-group">
-                <div class="col-md-6" id="div_tip_pago">
-
+                    <div class="col-md-6" id="div_numCuent" style="display: none;">
+                        <label class="col-md-5 control-label">Nro. Cta. Banco</label>
+                        <div class="col-md-7">
+                             <input class="form-control" id="numCuenta" type="text" disabled>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </fieldset>
 
-            <div class="row form-group" id="div_banco">
+            <fieldset>
+                <legend>Datos a modificar</legend>
+                <div class="row form-group">
+                    <div class="col-md-6" id="div_tip_pago">
 
-                <div class="col-md-6">
-                    <label class="col-md-5 control-label" for="numcta">Nro. Cta. Banco <span style="colr:red;"></span></label>
-                    <div class="col-md-7">
-                             <input class="form-control" type="text" id="numctabanco" >
+                    </div>
+
+                    <div class="col-md-6" id="div_banco" style="display: none;">
+                        <label class="col-md-5 control-label" for="numcta">Nro. Cta. Banco <span style="color:red;"></span></label>
+                        <div class="col-md-7">
+                            <input class="form-control" type="text" id="numctabanco" >
+                        </div>
                     </div>
                 </div>
 
 
-            </div>
+            </fieldset>
 
             <hr>
             <div class="form-actions" id="form_insert3" style="text-align: center;display:none;">
                 <button type="button" class="btn btn-primary left" id="btn-pagobanco">Guardar</button>
-                <button type="reset" class="btn left btn-default" id="cancel_est_traba">Cancelar</button>
+                <button type="reset" class="btn left btn-default reset-condlab">Nuevo</button>
             </div>
         </form>
 

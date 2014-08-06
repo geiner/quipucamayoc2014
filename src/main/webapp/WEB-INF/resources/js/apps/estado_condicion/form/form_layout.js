@@ -128,6 +128,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     "click #condLab":"fun_condLab",
                     "click #condAseg":"fun_condAseg",
+                    "click #tipoPag":"fun_tipoPago",
+
 
                     "dblclick #tabla_contratos >tbody>tr":"selectContr",
 
@@ -229,12 +231,16 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#div_banco').show();
                     } else{
                         $('#div_banco').hide();
+                        $("#numctabanco").val("");
                     }
                 },
                 fun_condAseg:function(){
                     $("#est_cond").hide();
                 },
                 fun_condLab:function(){
+                    $("#est_cond").hide();
+                },
+                fun_tipoPago:function(){
                     $("#est_cond").hide();
                 },
                 clear_fecha:function(){
@@ -342,10 +348,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#est_cond").hide();
                     $("#form_insert4").hide();
                     $("#form_insert2").hide();
+                    $("#form_insert3").hide();
                     this.TCLReg.reset();
                     this.TDReg.reset();
                     this.TCPReg.reset();
                     this.TCAReg.reset();
+                    this.TPBReg.reset();
                     $("#regPens").val("");
                     $("#entAseg").val("");
                     $("#estAFP").val("");
@@ -598,6 +606,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var est=clickedElement.children(':nth-child(6)').text().trim();
                     var cat=clickedElement.attr("data");
 
+                    var tipoPago=clickedElement.attr("data13");
+                    var numCuenta=clickedElement.attr("data14");
+                    var codPago=clickedElement.attr("data15");
+
+
+
                     var dep=clickedElement.children(':nth-child(5)').text().trim();
                     var cod_ant=clickedElement.children(':nth-child(3)').text();
 
@@ -629,6 +643,16 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $("#div_entAseg").show();
                         $("#div_estAFP").show();
                         $("#div_nroPen").show();
+                    }
+
+                    if(codPago=="1"){
+                        $("#tipPago").val(tipoPago);
+                        $("#numCuenta").val(numCuenta);
+                        $("#div_numCuent").show();
+                    }
+                    else{
+                        $("#tipPago").val(tipoPago);
+                        $("#div_numCuent").hide();
                     }
 
 
@@ -1409,38 +1433,123 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                 },
 
-                guardarPagoBanco: function(e){
-                    var clickedElement=$(e.currentTarget);
+                guardarPagoBanco: function(){
+
                     var email=$('#email').text();
-                    var codigo=this.codigo;
-                    var numserest=this.numserest;
-                    this.ctabanco=$('#numctabanco').val();
-                    var codtippago=$('#tipopago').val();
-                    var cod  =this.codigo;
-                    var numest=this.numserest;
-
-                        if(codtippago==1){
-                            if(this.ctabanco!=""){
-                              $("#advertencia").hide();
-                        //Aqui se inserta en la tabla tb_hist_banco
-                        this.model.get("guardarpagobanco").set({
-                            "codigo": codigo,
-                            "numserest": numserest,
-                            "ctabanco": this.ctabanco,
-                            "codtippago": codtippago
-                        })
-                        this.model.get("guardarpagobanco").url='api/estado_condicion/addpagobanco';
-                        var self_s=this.model.get("guardarpagobanco").save({}, {wait: true});
-                        var self=this;
-                        self_s.done(function(){
-
-                        });
-
-                        self_s.fail(function(){
-
-                        });
+                    var self=this;
 
 
+                    var codPago=$('#tipopago').val();
+                    var numCuenta=$("#numctabanco").val();
+
+
+                    if(codPago=="0"){
+                        $("#est_cond").show();
+                        $("#est_cond").removeClass("alert-warning");
+                        $("#est_cond").removeClass("alert-success");
+                        $("#est_cond").html("Seleccione un tipo de pago para el trabajador: <strong>"+$("#employed").text()+"</strong>");
+                        $("#est_cond").addClass("alert-warning");
+                    }
+                    else{
+
+                        if(codPago=="1"){
+                            if(numCuenta==""){
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Ingrese un número de cuenta para el trabajador: <strong>"+$("#employed").text()+"</strong>");
+                                $("#est_cond").addClass("alert-warning");
+                            }
+                            else{
+                                 //Aqui se inserta en la tabla tb_hist_banco
+                                this.model.get("guardarHist").set({
+                                    "codigo": this.codigo,
+                                    "estadoTrabaActual":this.numserest,
+                                    "ctaBanco": numCuenta,
+                                    "codPago": codPago
+                                })
+                                this.model.get("guardarHist").url='api/estado_condicion/addpagobanco';
+                                var self_s=this.model.get("guardarHist").save({}, {wait: true});
+
+                                self_s.done(function(){
+
+                                });
+
+                                self_s.fail(function(){
+                                    self.Tabla_Pago_BancoView.fetchTablaPagoBanco(self.codigo,self.numserest, function(){
+                                        if(self.Tabla_Pago_BancoView.collection.length!=0){
+                                            $("#table-pago-banco").dataTable();
+
+                                            $('#table-pago-banco_wrapper').append("<div id='footer-table'></div>");
+                                            $('#table-pago-banco_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                            $('#table-pago-banco_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+
+                                        }
+                                    });
+                                    self.TPBReg.show(self.Tabla_Pago_BancoView);
+
+                                    self.ListarServidorView.fetchServ();
+                                });
+                                $("#est_cond").show();
+                                $("#est_cond").removeClass("alert-warning");
+                                $("#est_cond").removeClass("alert-success");
+                                $("#est_cond").html("Se cambio correctamente el tipo de pago del trabajador:<strong>"+$("#employed").text()+"</strong>");
+
+                                $("#est_cond").addClass("alert-success");
+                            }
+
+                        }
+                        else{
+                             //Aqui se inserta en la tabla tb_hist_banco
+                            this.model.get("guardarHist").set({
+                                "codigo": this.codigo,
+                                "estadoTrabaActual":this.numserest,
+                                "ctaBanco": numCuenta,
+                                "codPago": codPago
+                            })
+                            this.model.get("guardarHist").url='api/estado_condicion/addpagobanco';
+                            var self_s=this.model.get("guardarHist").save({}, {wait: true});
+
+                            self_s.done(function(){
+
+                            });
+
+                            self_s.fail(function(){
+                                self.Tabla_Pago_BancoView.fetchTablaPagoBanco(self.codigo,self.numserest, function(){
+                                    if(self.Tabla_Pago_BancoView.collection.length!=0){
+                                        $("#table-pago-banco").dataTable();
+
+                                        $('#table-pago-banco_wrapper').append("<div id='footer-table'></div>");
+                                        $('#table-pago-banco_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                        $('#table-pago-banco_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                        $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+
+                                    }
+                                });
+                                self.TPBReg.show(self.Tabla_Pago_BancoView);
+
+                                self.ListarServidorView.fetchServ();
+                            });
+
+                            $("#est_cond").show();
+                            $("#est_cond").removeClass("alert-warning");
+                            $("#est_cond").removeClass("alert-success");
+                            $("#est_cond").html("Se cambio correctamente el tipo de pago del trabajador:<strong>"+$("#employed").text()+"</strong>");
+
+                            $("#est_cond").addClass("alert-success");
+                        }
+
+                    }
+
+
+/*
                         this.model.get("guardaralertpend").set({
                             "codigo": codigo,
                             "numserest": numserest,
@@ -1489,12 +1598,12 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $('#numresol_tipo_pago').val("");
                         $('#numresol_dep').val("");
                         $('#numresol_pla').val("");
-                            }else{
-                           $("#correcto").hide();
-                           $("#advertencia").show();
-                            }
+                                */
 
-                        }  else {
+
+
+
+                      /*  else {
                             //Aqui se inserta en la tabla tb_hist_banco
 
                             $("#advertencia").hide();
@@ -1561,7 +1670,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                             $('#numresol_dep').val("");
                             $('#numresol_pla').val("");
                         }
-
+*/
 
                 },
 

@@ -150,8 +150,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
 
 
     @Override
-    public void addPagoBanco(String codigo, Integer numserest, String ctabanco, Integer codtippago){
-        estadoCondicionMapper.addpagobanco(codigo, numserest, ctabanco, codtippago);
+    public void addPagoBanco(String codigo,String  numserest, Integer codPago,String numCuenta){
+        estadoCondicionMapper.addpagobanco(codigo, numserest, codPago, numCuenta);
     }
 
     @Override

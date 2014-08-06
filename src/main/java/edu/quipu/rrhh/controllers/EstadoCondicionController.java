@@ -233,8 +233,8 @@ public class EstadoCondicionController {
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/addpagobanco")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void addPagoBanco(@RequestBody EstadoCondicion estadoCondicion){
-        estadoCondicionService.addPagoBanco(estadoCondicion.getCodigo(), estadoCondicion.getNumserest(), estadoCondicion.getCtabanco(), estadoCondicion.getCodtippago());
+    public void addPagoBanco(@RequestBody Hist_servidor hist_serv){
+        estadoCondicionService.addPagoBanco(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getCodPago(),hist_serv.getCtaBanco());
     }
 
     //Para insertar en la tabla tb_hist_cond_pla

@@ -16,7 +16,7 @@ public interface EstadoCondicionMapper {
             "            LIST_SERV.DNI AS dni,AUX_SERV.NUM_SEREST AS estadoActual,GEN.DES_TIP_SER_GEN AS descGen,TIPO_SERV.DES_TIP_SER AS cargo,SERV_LAB.NUM_RES AS numResol,\n" +
             "            SERV_CAT.DESC_CATEG AS categoria,EST.DESC_EST AS estado,UNI_DEPEN.UD_DSC AS dep,DEP_CES.DES_DEP_CESANTES AS depCesante,SERV_LAB.COD_TIPO_SER AS codEst,SERV_LAB.TTPO_GEN AS codGen,\n" +
             "            SERV_LAB.COD_EST AS codEs,SERV_LAB.COD_CATEG AS codCateg,HIST_DEPEN.DEP_ACT AS codDep,HIST_DEPEN.DEP_CES codCes,COND_PLAN.DES_CON_PLA AS condPla,REG_PENSION.DESC_REG_PEN AS regPen,\n" +
-            "            ENT_ASEG.DES_ENT_ASEG AS entAseg,ESTA_AFP.DES_EST_AFP AS estAFP,HIST_ASEG.NUM_SIS_PEN AS numPensiones \n" +
+            "            ENT_ASEG.DES_ENT_ASEG AS entAseg,ESTA_AFP.DES_EST_AFP AS estAFP,HIST_ASEG.NUM_SIS_PEN AS numPensiones,TIPO_PAG_SER.DES_TIP_PAG_SER AS descPag,HIST_BANC.CTA_BANCO AS ctaBanco,HIST_BANC.TIPO_PAGO AS codPago \n" +
             "            FROM (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_COND_LAB GROUP BY SER_COD,NUM_SEREST) AUX_SERV         \n" +
             "            INNER JOIN LISTA_SERVIDOR LIST_SERV ON(AUX_SERV.SER_COD=LIST_SERV.SER_COD AND AUX_SERV.NUM_SEREST=LIST_SERV.NUM_SEREST)\n" +
             "            INNER JOIN TB_HIST_COND_LAB SERV_LAB ON(AUX_SERV.NUM_REG=SERV_LAB.NUM_REG AND AUX_SERV.SER_COD=SERV_LAB.SER_COD AND AUX_SERV.NUM_SEREST=SERV_LAB.NUM_SEREST)\n" +
@@ -39,7 +39,12 @@ public interface EstadoCondicionMapper {
             "            ON (HIST_ASEG.SER_COD=AUX_SERV.SER_COD AND HIST_ASEG.NUM_SEREST=AUX_SERV.NUM_SEREST)\n" +
             "            LEFT JOIN REG_PENSION ON(HIST_ASEG.REG_PEN=REG_PENSION.COD_REG_PEN)\n" +
             "            LEFT JOIN ENTIDAD_ASEGURADORA ENT_ASEG ON(HIST_ASEG.ENT_ASEG=ENT_ASEG.ENT_ASEG_COD)\n" +
-            "            LEFT JOIN ESTADOS_AFP ESTA_AFP ON(HIST_ASEG.EST_AFP=ESTA_AFP.COD_EST_AFP)"+
+            "            LEFT JOIN ESTADOS_AFP ESTA_AFP ON(HIST_ASEG.EST_AFP=ESTA_AFP.COD_EST_AFP) \n"+
+            "            INNER JOIN(SELECT BANC.SER_COD,BANC.NUM_SEREST,BANC.NUM_REG,BANC.TIPO_PAGO,BANC.CTA_BANCO \n" +
+            "            FROM (select SER_COD,NUM_SEREST,MAX(NUM_REG) AS NUM_REG from TB_HIST_BANCO  GROUP BY SER_COD,NUM_SEREST) AUX_BANCO\n" +
+            "            INNER JOIN TB_HIST_BANCO BANC ON(AUX_BANCO.NUM_REG=BANC.NUM_REG AND AUX_BANCO.SER_COD=BANC.SER_COD AND AUX_BANCO.NUM_SEREST=BANC.NUM_SEREST) ) HIST_BANC\n" +
+            "            ON(HIST_BANC.SER_COD=AUX_SERV.SER_COD AND HIST_BANC.NUM_SEREST=AUX_SERV.NUM_SEREST)\n" +
+            "            INNER JOIN TIPO_PAG_SER ON(HIST_BANC.TIPO_PAGO=TIPO_PAG_SER.COD_TIP_PAG_SER)"+
             "            ORDER BY LIST_SERV.SER_APE_PAT")
     @Results(value = {
             @Result(javaType = Hist_servidor.class),
@@ -67,7 +72,10 @@ public interface EstadoCondicionMapper {
             @Result(property = "regPen", column = "regPen"),
             @Result(property = "entAseg", column = "entAseg"),
             @Result(property = "estAFP", column = "estAFP"),
-            @Result(property = "numPensiones", column = "numPensiones")
+            @Result(property = "numPensiones", column = "numPensiones"),
+            @Result(property = "descPag", column = "descPag"),
+            @Result(property = "ctaBanco", column = "ctaBanco"),
+            @Result(property = "codPago", column = "codPago")
     })
     List<Hist_servidor> listarServidores();
 
@@ -309,8 +317,10 @@ public interface EstadoCondicionMapper {
 
 
     //Insertar modificacion en la tabla tb_hist_banco
-    @Insert(value = "insert into qpdatagestion.tb_hist_banco values((select max(num_reg)+1 from qpdatagestion.tb_hist_banco where ser_cod=#{codigo} and num_serest=#{numserest}), #{codigo}, #{numserest}, #{ctabanco}, #{codtippago})")
-    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") Integer numserest, @Param("ctabanco") String ctabanco, @Param("codtippago") Integer codtippago) throws DataAccessException;
+    @Insert(value = "insert into qpdatagestion.tb_hist_banco values " +
+            "((select MAX(NUM_REG) from  TB_HIST_BANCO where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +
+            "#{codigo}, #{numserest}, #{numCuenta}, #{codPago})")
+    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("codPago") Integer codPago, @Param("numCuenta") String numCuenta) throws DataAccessException;
 
     //Insertar modificacion en la tabla tb_hist_cond_plani
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select MAX(NUM_REG) from  TB_HIST_COND_PLANI where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +

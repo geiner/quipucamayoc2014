@@ -39,13 +39,38 @@ public class Hist_servidor implements Serializable{
     private String estAFP;
     private Integer idestAFP;
     private String numPensiones;
-
+    private String descPag;
+    private String ctaBanco;
+    private Integer codPago;
 
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
+    public Integer getCodPago() {
+        return codPago;
+    }
+
+    public void setCodPago(Integer codPago) {
+        this.codPago = codPago;
+    }
+
+    public String getDescPag() {
+        return descPag;
+    }
+
+    public void setDescPag(String descPag) {
+        this.descPag = descPag;
+    }
+
+    public String getCtaBanco() {
+        return ctaBanco;
+    }
+
+    public void setCtaBanco(String ctaBanco) {
+        this.ctaBanco = ctaBanco;
+    }
 
     public Integer getIdregPen() {
         return idregPen;
