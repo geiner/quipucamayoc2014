@@ -11,6 +11,64 @@ public interface CuadroNominalMapper {
 
 
 
+
+
+    @Select(value = "SELECT    plaza.C_COD_PLAZA AS CODPLAZA,\n" +
+            "                      cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
+            "                      dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
+            "                      dependencia.UD_DSC  AS DEPENDENCIA,\n" +
+            "                      plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
+            "                      estado.T_DES_ESTADO AS ESTPLAZA,\n" +
+            "                      servidor_pap.SER_COD_ANT AS CODANT,\n" +
+            "                      nominal.SER_COD AS COD_SER,\n" +
+            "                      nominal.NUM_SEREST AS NUMSEREST,\n" +
+            "                      servidor.SER_APE_PAT AS SERPAT,\n" +
+            "                      servidor.SER_APE_MAT AS SERMAT,\n" +
+            "                      servidor.SER_NOM AS SERNOM,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
+            "                      serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
+            "            \n" +
+            "             FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
+            "             INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
+            "             INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
+            "             INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
+            "             LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
+            "             INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
+            "             INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)\n" +
+            "             LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
+            "             LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)\n" +
+            "             LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD\n" +
+            "             \n" +
+            "             WHERE (   cargo.N_UD_ID  IN ( \n" +
+            "             SELECT  dependencia1.ud_id\n" +
+            "             FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
+            "             WHERE (  \n" +
+            "             SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   (#{codDependencia})  ) ) ) \n" +
+            "             LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})  )  )  )   )  AND  plaza.N_ANIO LIKE   (#{anioPlaza})  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
+            "             ORDER BY NOMESTRUC")
+    @Results(value = {
+            @Result(javaType = PlazaCAP.class),
+            @Result(property = "cod_plaza",column = "CODPLAZA"),
+            @Result(property = "nom_estruc",column = "NOMESTRUC"),
+            @Result(property = "id_depend",column = "DEPENDENCIACODD"),
+            @Result(property = "subDep",column = "DEPENDENCIA"),
+            @Result(property = "est_plaza",column = "ESTPLAZA"),
+
+            @Result(property = "cod_ant_ser",column = "CODANT"),
+            @Result(property = "cod_servidor",column = "COD_SER"),
+            @Result(property = "ape_pat",column = "SERPAT"),
+            @Result(property = "ape_mat",column = "SERMAT"),
+            @Result(property = "nom_ser",column = "SERNOM"),
+            @Result(property = "fech_ing",column = "FECH_ING"),
+            @Result(property = "fech_sal",column = "FECH_SAL"),
+            @Result(property = "ser_mod",column = "MODALIDAD"),
+            @Result(property = "cod_est_plaza",column = "IDESTPLAZA")
+    })
+    List<PlazaCAP> plazasPorDepen(@Param("codDependencia") String codDependencia, @Param("anioPlaza") Integer anioPlaza);
+
+
+    /*
     @Select(value = "SELECT  plaza.C_COD_PLAZA AS CODPLAZA,\n" +
             "        cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
             "        dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
@@ -61,6 +119,14 @@ public interface CuadroNominalMapper {
     })
     List<PlazaCAP> plazasPorDepen(@Param("codDependencia") String codDependencia, @Param("anioPlaza") Integer anioPlaza);
 
+      */
+
+
+
+
+
+
+
 
 
 
@@ -83,7 +149,7 @@ public interface CuadroNominalMapper {
             "FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
             "WHERE (  \n" +
             "SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE (#{codDependencia})  ) ) ) \n" +
-            "LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})   )  )  )    )  AND   servidor_plan.COD_CON_PLA IN (1,2,8)  )")
+            "LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})   )  )  )    )  AND   servidor_plan.COD_CON_PLA IN (1,2,8)  )  ORDER BY servidor.SER_APE_PAT")
     @Results(value = {
             @Result(javaType = Servidor.class),
             @Result(property = "codigo",column = "CODIGO"),
@@ -199,7 +265,7 @@ public interface CuadroNominalMapper {
 
 
 
-    @Select(value = "SELECT  dep1.UD_ID   AS UD_ID_HIJO,dep1.UD_COD AS UD_COD_HIJO,dep1.UD_DSC AS UD_DSC_HIJO,dep2.UD_ID  AS UD_ID_PADRE,dep2.UD_COD  AS  UD_COD_PADRE,dep2.UD_DSC  AS UD_DSC_PADRE\n" +
+    @Select(value = "SELECT  dep1.UD_ID   AS UD_ID_HIJO,dep1.UD_COD AS UD_COD_HIJO, LOWER(dep1.UD_DSC)  AS UD_DSC_HIJO,dep2.UD_ID  AS UD_ID_PADRE,dep2.UD_COD  AS  UD_COD_PADRE,  LOWER(dep2.UD_DSC)  AS UD_DSC_PADRE\n" +
             "FROM   QPRODATAQUIPU.UNI_DEP dep1\n" +
             "INNER JOIN QPRODATAQUIPU.UNI_DEP dep2 ON (dep2.UD_COD= SUBSTR(dep1.UD_COD,1,3)  OR dep2.UD_COD= SUBSTR(dep1.UD_COD,1,5)     )\n" +
             "WHERE(dep1.UD_ID  LIKE  (#{codDep})  )")
@@ -215,5 +281,29 @@ public interface CuadroNominalMapper {
     List<EncabezadoDepySubDep> obtenerDepySubDep(@Param("codDep") String codDep);
 
 
+
+    @Select(value = "SELECT COUNT(nominal.COD_PLAZA) AS  NUM_PLAZAS\n" +
+            "FROM QPRODATAPLANI.TB_CUADRO_NOMINAL nominal\n" +
+            "INNER  JOIN  QPRODATAPLANI.TB_NUM_PLAZAS  plazas ON plazas.C_COD_PLAZA=nominal.COD_PLAZA\n" +
+            "WHERE (TRIM(SER_COD) LIKE  (#{dniServidor})  AND plazas.N_ANIO LIKE (#{anio}) )")
+    @Results(value = {
+            @Result(javaType = PlazaCAP.class),
+            @Result(property = "cod_plaza",column = "NUM_PLAZAS")
+    })
+    List<PlazaCAP> obtenerNumPlazasServidor(@Param("dniServidor") String dniServidor, @Param("anio") String anio);
+
+
+
+/*
+    @Select(value = "SELECT COUNT(COD_PLAZA) AS  NUM_PLAZAS\n" +
+            "            FROM QPRODATAPLANI.TB_CUADRO_NOMINAL\n" +
+            "            WHERE (TRIM(SER_COD) LIKE  (#{dniServidor})  )")
+    @Results(value = {
+            @Result(javaType = PlazaCAP.class),
+            @Result(property = "cod_plaza",column = "NUM_PLAZAS")
+    })
+    List<PlazaCAP> obtenerNumPlazasServidor(@Param("dniServidor") String dniServidor);
+
+*/
 
 }

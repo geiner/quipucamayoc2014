@@ -1,5 +1,7 @@
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 
+
+
 <fieldset>
 
   <legend>Cuadro Nominal</legend>
@@ -13,7 +15,7 @@
               <input type="hidden" style="display: none" id="nom_depen" name="nom_depen"  >
               <input type="hidden" style="display: none" id="anio" name="anio" >
 
-              <button id="botonReporteCVN" class="btn btn-warning" type="submit">Descargar Reporte</button>
+              <button id="botonReporteCVN" class="btn btn-warning" type="submit">Reporte C.Nominal</button>
 
 
        </form>
@@ -22,8 +24,26 @@
 
 
 
+ <div class="btn-group col-md-2 pull-right">
+
+        <form  action="rest/reportes/cuadroNominalTotal/pdf"  method="POST" id="form_reporteCN2"  style="display: none" >
+
+                <input type="hidden" style="display: none" id="usuarioCN2" name="usuarioCN" >
+               <input type="hidden" style="display: none" id="anio2" name="anio" >
+
+               <button id="botonReporteCVN2" class="btn btn-warning" type="submit">Rep. C.Nominal Total</button>
+
+
+        </form>
+
+  </div>
+
+
+
 
 <input type="hidden" style="display: none" id="encabezado_id" name="encabezado_id" >
+
+
 
 
 
@@ -57,14 +77,42 @@
 
 
 <div id="advertenciaAnioPlaza" class='alert alert-warning' style="text-align:center;display:none;">
+
 </div>
+
+
+
+
+<div id="el_div" class='alert alert-warning' style="text-align:center;display:none;">
+ <h3>El servidor ya tenia una plaza asignada </h2>
+</div>
+
+
+
+
+<!--
+
+<div>
+           <input type="button"    value="Aceptar"  id="botonEfecto" />
+
+
+            <div id="el_div" style="background-color: #D3EADF; width: 800px;display:none">
+
+
+               <h2>El servidor ya tenia una plaza asignada </h2>
+
+
+            </div>
+</div>
+
+-->
 
 
 </br>
 
 
-<!--
 
+<!--
 <form class="form-horizontal">
      <div class="col-md-12" >
 
@@ -77,9 +125,6 @@
 </form>
 
 -->
-
-
-
 
 
 
@@ -140,3 +185,7 @@
     </div>
 
 </fieldset>
+
+
+
+

@@ -133,6 +133,12 @@ public class ReportServiceImpl implements ReportService {
     }*/
 
 
+
+
+
+
+
+
     @Override
     public void cargarReporteCuadroNominal(HttpServletResponse response ,String codDep,String usuarioCN, String nom_depen,Integer anio) {
 
@@ -140,12 +146,12 @@ public class ReportServiceImpl implements ReportService {
         String cadena=nom_depen;
 
 
-        cadena=cadena.replaceAll("Ã¡","á");
-        cadena=cadena.replaceAll("Ã©","é");
-        cadena=cadena.replaceAll("Ã­","í");
-        cadena=cadena.replaceAll("Ã³","ó");
-        cadena=cadena.replaceAll("Ãº","ú");
-        cadena=cadena.replaceAll("Ã±","ñ");
+        cadena=cadena.replaceAll("á","?");
+        cadena=cadena.replaceAll("é","?");
+        cadena=cadena.replaceAll("í","?");
+        cadena=cadena.replaceAll("ó","?");
+        cadena=cadena.replaceAll("ú","?");
+        cadena=cadena.replaceAll("ñ","?");
 
 
         char[] caracteres = cadena.toCharArray();
@@ -165,6 +171,13 @@ public class ReportServiceImpl implements ReportService {
 
         System.out.println("Mostramos la cadena sin defecto: "+cadena);
 
+        String valor = context.getRealPath("WEB-INF/classes/reportes/subReportCuadroNominal.jasper");
+        System.out.println("Context: ********************************************************************************************* "+context);
+
+        // String realpath = ServletActionContext.getServletContext ().getRealPath ("/");
+
+        System.out.println("Ruta 8888888888888888888888888888888888888888888888888888888888888888888888888888888888888: "+valor);
+
 
 
         String rutaReporte="/reportes/reporteCuadroNominal.jrxml";
@@ -174,6 +187,14 @@ public class ReportServiceImpl implements ReportService {
         params.put("nom_depen",cadena);
         params.put("anio", anio);
 
+
+
+        //String  valor="C:/ultimo/quipucamayoc2014/src/main/resources/reportes/subReportCuadroNominal.jasper";
+
+
+
+
+        params.put("SUBREPORT_DIR",valor);
 
         System.out.println(params);
         try {
@@ -186,6 +207,31 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
+
+    @Override
+    public void cargarReporteCuadroNominalTotal(HttpServletResponse response,String usuarioCN, Integer anio) {
+
+
+        String rutaReporte="/reportes/reporteCuadroNominalTotal.jrxml";
+        HashMap params = new HashMap();
+        // params.put("codDep", codDep);
+        params.put("usuarioCN", usuarioCN);
+        // params.put("nom_depen",cadena);
+        params.put("anio", anio);
+
+
+        System.out.println(params);
+        try {
+            System.out.println("download");
+            reportDownloader.downloadPDF(response, rutaReporte, "reporteCN_Total.pdf", params);
+        } catch (Exception e) {
+            System.out.println("catch");
+            logger.error("No se pudo descargar el reporte: "+rutaReporte);
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 }

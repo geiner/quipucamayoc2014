@@ -93,10 +93,10 @@ public interface ServidorMapper {
             "  SER_ORI_TIP_OCUPUNIV                            AS tipocupuni, " +
             "  SER_ORI_SINDICATO                               AS sindic " +
             "FROM datapersuel.servidor_estado se , " +
-            "  DATAPERSUEL.servidor_origen so, " +
+            "  DATAPERSUEL.tb_servidor_origen so, " +
             "  QPRODATAQUIPU.uni_dep ud " +
             "WHERE trim(se.ser_cod) =trim(#{servidorLaboral.cod}) " +
-            "AND se.ser_cod         =so.ser_cod " +
+            "AND TRIM(se.ser_cod)         =TRIM(so.ser_cod) " +
             "AND trim(ud.UD_COD)          =trim(se.ser_cod_dep_act) " +
             "ORDER BY conPla, " +
             "  cat")
@@ -127,11 +127,12 @@ public interface ServidorMapper {
 
 
     @Insert(value = "INSERT " +
-            "INTO Datapersuel.Servidor_Origen " +
+            "INTO Datapersuel.tb_servidor_origen " +
             "  ( " +
             "    Ser_Cod, " +
             "    Ser_Ori_Tip_Ocupuniv, " +
             "    Ser_Ori_Fech_Insc_Regpen, " +
+            "    num_serest, " +
             "    Ser_Ori_Sindicato " +
             "  ) " +
             "  VALUES " +
@@ -139,15 +140,16 @@ public interface ServidorMapper {
             "    #{ser.cod}, " +
             "    #{ser.tipocupuni}, " +
             "    #{ser.insregpen}, " +
+            "    (SELECT MAX(num_serest) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod}), " +
             "    #{ser.sindic} " +
             "  )")
     void saveLaboral2(@Param("ser") ServidorLaboral servidorLaboral);
 
-    @Update(value ="UPDATE DATAPERSUEL.Servidor_Origen SET " +
+    @Update(value ="UPDATE DATAPERSUEL.tb_servidor_origen SET " +
             "    Ser_Ori_Tip_Ocupuniv=#{ser.tipocupuni}, " +
             "    Ser_Ori_Fech_Insc_Regpen=TO_DATE(#{ser.insregpen},'DD/MM/YY'), " +
             "    Ser_Ori_Sindicato=#{ser.sindic}" +
-            "WHERE trim(SER_COD)=trim(#{ser.cod})")
+            "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(NUM_SEREST)=trim(#{ser.num_ser_est})")
     void updateServidorLaboral2( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Insert(value ="INSERT " +
