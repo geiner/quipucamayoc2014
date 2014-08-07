@@ -96,8 +96,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
     }
 
     @Override
-    public List<EstadoCondicion> buscarbanco(String cod, Integer numest){
-        List<EstadoCondicion> estadoBanc=estadoCondicionMapper.buscarbanco(cod, numest);
+    public List<Hist_servidor> buscarbanco(String cod, Integer numest){
+        List<Hist_servidor> estadoBanc=estadoCondicionMapper.buscarbanco(cod, numest);
         return estadoBanc;
     }
 
@@ -150,8 +150,8 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
 
 
     @Override
-    public void addPagoBanco(String codigo,String  numserest, Integer codPago,String numCuenta){
-        estadoCondicionMapper.addpagobanco(codigo, numserest, codPago, numCuenta);
+    public void addPagoBanco(String codigo,String  numserest, Integer codPago,String numCuenta,String susDoc){
+        estadoCondicionMapper.addpagobanco(codigo, numserest, codPago, numCuenta,susDoc);
     }
 
     @Override

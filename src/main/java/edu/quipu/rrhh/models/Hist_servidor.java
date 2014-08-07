@@ -42,10 +42,19 @@ public class Hist_servidor implements Serializable{
     private String descPag;
     private String ctaBanco;
     private Integer codPago;
+    private String susDoc;
 
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getSusDoc() {
+        return susDoc;
+    }
+
+    public void setSusDoc(String susDoc) {
+        this.susDoc = susDoc;
     }
 
     public Integer getCodPago() {

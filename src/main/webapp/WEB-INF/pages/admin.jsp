@@ -73,65 +73,75 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" style="font-weight: bold;font-size:25px;" href="#" >Recursos Humanos</a>
+            <a class="navbar-brand" style="font-weight: bold;font-size:25px;" href="#">Recursos Humanos</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav" style="margin-left: 3.5%;">
-                <li id="inic" class="active"><a href="#inicio"><strong>INICIO</strong></a></li>
-                <li id="gest_pers" class="dropdown">
+                <li id="inic" class=""><a href="#inicio"><strong>INICIO</strong></a></li>
+
+                <li class="menu-item dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>GESTIÓN PERSONAL</strong><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <sec:authorize access="hasAnyRole('${userAccess}55')">
-                            <li class="dropdown-header" /><strong>Servidores</strong></li>
-                            <li class="divider"></li>
-                            <li><a  href="#servidores">Nuevo Servidor</a>
-                            <li><a  href="#agregar_numserest">Agregar Numserest</a>
+                            <li class="menu-item dropdown dropdown-submenu">
+
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servidores</a>
+                                <ul class="dropdown-menu">
+                                    <li class="menu-item ">
+                                        <a href="#servidores">Nuevo Servidor</a>
+                                    </li>
+                                    <li>
+                                        <a href="#agregar_numserest">Agregar Numserest</a>
+                                    </li>
+
+                                </ul>
+                            </li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}56')">
-                            <li class="divider"></li>
                             <li><a href="#legajos">Legajos</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}60')">
-                            <li class="divider"></li>
+
                             <li><a  href="#resoluciones">Resoluciones</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}57')">
-                            <li class="divider"></li>
+
                             <li><a href="#estado_condicion">Estado y Condicion</a></li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}61')">
-                            <li class="divider"></li>
-                            <li><a href="#cuadro_nominal">Cuadro Nominal</a></li>
-                        </sec:authorize>
 
+                            <li><a href="#cuadro_nominal">Cuadro Nominativo</a></li>
+                        </sec:authorize>
                     </ul>
                 </li>
+
                 <sec:authorize access="hasAnyRole('${userAccess}57')">
-                <li id="gest_timp_pers" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>GESTIÓN TIEMPO PERSONAL</strong><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header"><strong>Asistencia</strong></li>
-                        <li class="divider"></li>
-                        <li><a href="#asistencia_administrativo">Administrativo</a></li>
-                        <li><a href="#asistencia_docente">Docente</a></li>
-                    </ul>
-                </li>
+                    <li id="gest_timp_pers" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>GESTIÓN TIEMPO PERSONAL</strong><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header"><strong>Asistencia</strong></li>
+                            <li class="divider"></li>
+                            <li><a href="#asistencia_administrativo">Administrativo</a></li>
+                            <li><a href="#asistencia_docente">Docente</a></li>
+                        </ul>
+                    </li>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('${userAccess}53')">
-                <li id="planilla"><a  href="#planillas"><strong>PLANILLAS</strong></a></li>
+                    <li id="planilla"><a  href="#planillas"><strong>PLANILLAS</strong></a></li>
                 </sec:authorize>
                 <sec:authorize access="hasAnyRole('${userAccess}54')">
-                <li id="contrat"><a href="#contratos"><strong>CONTRATOS</strong></a></li>
+                    <li id="contrat"><a href="#contratos"><strong>CONTRATOS</strong></a></li>
                 </sec:authorize>
                 <li id="capacitacion"> <a class="" href="#"><strong>CAPACITACIÓN</strong></a></li>
                 <sec:authorize access="hasAnyRole('${userAccess}62')">
-                <li id="tit_beneficio" class="dropdown">
-                    <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>BENEFICIO</strong><b class="caret"></b></a>
-                 <ul class="dropdown-menu">
-                     <li><a  href="#desc_med">Descansos Médicos</a></li>
-                 </ul>
-                </li>
+                    <li id="tit_beneficio" class="dropdown">
+                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>BENEFICIO</strong><b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a  href="#desc_med">Descansos Médicos</a></li>
+                        </ul>
+                    </li>
                 </sec:authorize>
+
 
             </ul>
         </div>

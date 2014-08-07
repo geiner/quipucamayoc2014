@@ -144,12 +144,12 @@ public class EstadoCondicionController {
     //Observacion: aunque se necesite variables dinamicas...usar List ... y no el otro metodo..
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value="/pagobanco/{cod}/{numest}")
     @ResponseBody
-    public List<EstadoCondicion> pago(@PathVariable(value = "cod") String cod, @PathVariable(value = "numest") Integer numest){
+    public List<Hist_servidor> pago(@PathVariable(value = "cod") String cod, @PathVariable(value = "numest") Integer numest){
 
         while(cod.length()<10){
             cod=cod+" ";
         }
-        List<EstadoCondicion> estadoCond = estadoCondicionService.buscarbanco(cod, numest);
+        List<Hist_servidor> estadoCond = estadoCondicionService.buscarbanco(cod, numest);
         return estadoCond;
     }
     //Para la tabla condicion planilla
@@ -234,7 +234,7 @@ public class EstadoCondicionController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void addPagoBanco(@RequestBody Hist_servidor hist_serv){
-        estadoCondicionService.addPagoBanco(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getCodPago(),hist_serv.getCtaBanco());
+        estadoCondicionService.addPagoBanco(hist_serv.getCodigo(),hist_serv.getEstadoTrabaActual(),hist_serv.getCodPago(),hist_serv.getCtaBanco(),hist_serv.getSusDoc());
     }
 
     //Para insertar en la tabla tb_hist_cond_pla

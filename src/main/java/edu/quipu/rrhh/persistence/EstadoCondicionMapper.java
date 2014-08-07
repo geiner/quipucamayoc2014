@@ -270,18 +270,19 @@ public interface EstadoCondicionMapper {
     List<EstadoCondicion>  buscardep(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     //Traemos datos para la tabla hist banco
-    @Select(value = "select b.num_reg as numreg1, b.cta_banco as ctabanco, d.des_tip_pag_ser as destippago from qpdatagestion.tb_hist_banco b, DATAPERSUEL.tipo_pag_ser d " +
+    @Select(value = "select b.num_reg as numreg1, b.cta_banco as ctabanco, d.des_tip_pag_ser as destippago,b.doc_adic as docAdic " +
+            " from qpdatagestion.tb_hist_banco b, DATAPERSUEL.tipo_pag_ser d " +
             " where b.ser_cod=#{cod} and b.num_serest=#{numest} and b.tipo_pago=d.cod_tip_pag_ser ORDER BY numreg1 DESC")
 
-    @Results(value = {@Result(javaType = EstadoCondicion.class),
-            @Result(column = "numreg1", property = "numreg1"),
-            @Result(column = "ctabanco", property = "ctabanco"),
-            @Result(column = "destippago", property = "destippago")
-
+    @Results(value = {@Result(javaType = Hist_servidor.class),
+            @Result(column = "numreg1", property = "numReg"),
+            @Result(column = "ctabanco", property = "ctaBanco"),
+            @Result(column = "destippago", property = "descPag"),
+            @Result(column = "docAdic", property = "susDoc")
     }
 
     )
-    List<EstadoCondicion> buscarbanco(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
+    List<Hist_servidor> buscarbanco(@Param("cod") String cod, @Param("numest") Integer numest) throws DataAccessException;
 
     //Traemos datos para la tabla condicion planilla
     @Select(value = "select b.num_reg as numreg1, b.num_res as numres1, d.DES_CON_PLA as descondpla,TO_CHAR(b.FECHA_CESE,'DD/MM/YYYY') AS  fechcese, b.OBS_PLAN_PERM as obser  " +
@@ -319,8 +320,8 @@ public interface EstadoCondicionMapper {
     //Insertar modificacion en la tabla tb_hist_banco
     @Insert(value = "insert into qpdatagestion.tb_hist_banco values " +
             "((select MAX(NUM_REG) from  TB_HIST_BANCO where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +
-            "#{codigo}, #{numserest}, #{numCuenta}, #{codPago})")
-    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("codPago") Integer codPago, @Param("numCuenta") String numCuenta) throws DataAccessException;
+            "#{codigo}, #{numserest}, #{numCuenta}, #{codPago},#{susDoc})")
+    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("codPago") Integer codPago, @Param("numCuenta") String numCuenta,@Param("susDoc") String susDoc) throws DataAccessException;
 
     //Insertar modificacion en la tabla tb_hist_cond_plani
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select MAX(NUM_REG) from  TB_HIST_COND_PLANI where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +

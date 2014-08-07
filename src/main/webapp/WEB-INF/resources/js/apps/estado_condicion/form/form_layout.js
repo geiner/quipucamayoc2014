@@ -354,6 +354,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     this.TCPReg.reset();
                     this.TCAReg.reset();
                     this.TPBReg.reset();
+                    $("#tipPago").val("");
                     $("#regPens").val("");
                     $("#entAseg").val("");
                     $("#estAFP").val("");
@@ -373,6 +374,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#fech_cese").val("");
                     $("#cond_plani").val("");
                     $("#pla").val("100");
+                    $("#div_numCuent").hide();
 
                     $("#unid_depen").val("");
                     $("#depencia").val("");
@@ -998,16 +1000,6 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         }
                     }
 
-
-
-
-
-
-
-
-
-
-
                 },
 
                 guardarCondAseg: function(){
@@ -1022,7 +1014,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     var estafp=$('#estafp').val();
                     var numPen=$('#nroPensio').val();
-                    var numResol=$("#numresol_aseg").val();
+                    var numResol=$("#docSustento").val();
 
                     if(regpen=="100"){
 
@@ -1069,16 +1061,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                                     }else{
 
-                                        if($("#numresol_aseg").val()==""){
 
-                                            $("#est_cond").show();
-                                            $("#est_cond").removeClass("alert-warning");
-                                            $("#est_cond").removeClass("alert-success");
-                                            $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
-
-                                            $("#est_cond").addClass("alert-warning");
-                                        }
-                                        else{
 
                                             this.model.get("guardarHist").set({
                                                 "codigo":this.codigo,
@@ -1123,7 +1106,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                             $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
 
                                             $("#est_cond").addClass("alert-success");
-                                        }
+
 
                                     }
 
@@ -1142,14 +1125,6 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                                 $("#est_cond").addClass("alert-warning");
                             }else{
-                                if($("#numresol_aseg").val()==""){
-                                    $("#est_cond").show();
-                                    $("#est_cond").removeClass("alert-warning");
-                                    $("#est_cond").removeClass("alert-success");
-                                    $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
-
-                                    $("#est_cond").addClass("alert-warning");
-                                }else{
 
                                     this.model.get("guardarHist").set({
                                         "codigo":this.codigo,
@@ -1191,7 +1166,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                     $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
 
                                     $("#est_cond").addClass("alert-success");
-                                }
+
 
                             }
 
@@ -1199,14 +1174,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                         if(regpen=="5" || regpen=="6"){
 
-                            if($("#numresol_aseg").val()==""){
-                                $("#est_cond").show();
-                                $("#est_cond").removeClass("alert-warning");
-                                $("#est_cond").removeClass("alert-success");
-                                $("#est_cond").html("Ingrese una resolución para el trabajador :<strong>"+$("#employed").text()+"</strong>");
 
-                                $("#est_cond").addClass("alert-warning");
-                            }else{
 
                                 this.model.get("guardarHist").set({
                                     "codigo":this.codigo,
@@ -1249,7 +1217,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                 $("#est_cond").html("Se actualizó correctamente la condición de asegurado del trabajador :<strong>"+$("#employed").text()+"</strong>");
 
                                 $("#est_cond").addClass("alert-success");
-                            }
+
                         }
 
                     }
@@ -1441,6 +1409,7 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     var codPago=$('#tipopago').val();
                     var numCuenta=$("#numctabanco").val();
+                    var susDoc=$("#docSust").val();
 
 
                     if(codPago=="0"){
@@ -1466,7 +1435,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                     "codigo": this.codigo,
                                     "estadoTrabaActual":this.numserest,
                                     "ctaBanco": numCuenta,
-                                    "codPago": codPago
+                                    "codPago": codPago,
+                                    "susDoc":susDoc
                                 })
                                 this.model.get("guardarHist").url='api/estado_condicion/addpagobanco';
                                 var self_s=this.model.get("guardarHist").save({}, {wait: true});
@@ -1500,6 +1470,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                 $("#est_cond").html("Se cambio correctamente el tipo de pago del trabajador:<strong>"+$("#employed").text()+"</strong>");
 
                                 $("#est_cond").addClass("alert-success");
+
+                                $("#docSust").val("");
+                                $("#numctabanco").val("");
+                                $("#tipopago").val("0");
                             }
 
                         }
@@ -1509,7 +1483,8 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                 "codigo": this.codigo,
                                 "estadoTrabaActual":this.numserest,
                                 "ctaBanco": numCuenta,
-                                "codPago": codPago
+                                "codPago": codPago,
+                                "susDoc":susDoc
                             })
                             this.model.get("guardarHist").url='api/estado_condicion/addpagobanco';
                             var self_s=this.model.get("guardarHist").save({}, {wait: true});
@@ -1544,6 +1519,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                             $("#est_cond").html("Se cambio correctamente el tipo de pago del trabajador:<strong>"+$("#employed").text()+"</strong>");
 
                             $("#est_cond").addClass("alert-success");
+
+                            $("#docSust").val("");
+                            $("#numctabanco").val("");
+                            $("#tipopago").val("0");
                         }
 
                     }
