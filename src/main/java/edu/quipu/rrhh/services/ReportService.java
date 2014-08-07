@@ -24,4 +24,5 @@ public interface ReportService {
 
     void cargarReporteCuadroNominalTotal(HttpServletResponse response,String usuarioCN,Integer anio);
 
+    void cargarReporteDescansosxanio(HttpServletResponse response, String anio, String usuario, String[] array_codigos);
 }

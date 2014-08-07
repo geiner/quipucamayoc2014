@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Conformidad" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte de Conformidad" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -9,14 +9,8 @@
 	<parameter name="vectorSeleccionados" class="java.util.Collection" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="mes" class="java.lang.String">
-		<defaultValueExpression><![CDATA[05]]></defaultValueExpression>
-	</parameter>
 	<parameter name="anio" class="java.lang.String">
 		<defaultValueExpression><![CDATA[2014]]></defaultValueExpression>
-	</parameter>
-	<parameter name="nombremes" class="java.lang.String">
-		<defaultValueExpression><![CDATA["Marzo"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select desc_est,
@@ -37,8 +31,7 @@ FECHA_FIN,
 SER_COD,
 TIEMPO,
 TIPO_LIC from DATAPERLIQU.desc_medicos dm,DATAPERSUEL.lista_servidor se
-where to_char(fecha_inicio, 'mm')=$P{mes}
-and to_char(fecha_inicio, 'yyyy')=$P{anio}
+where to_char(fecha_inicio, 'yyyy')=$P{anio}
 and trim(dm.id_serv)=trim(se.ser_cod)
 AND trim(dm.num_serest)=trim(se.num_serest)
 and tiempo <> '0'
@@ -65,14 +58,14 @@ and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 	<pageHeader>
 		<band height="99" splitType="Stretch">
 			<staticText>
-				<reportElement  key="staticText-5" x="122" y="23" width="158" height="13"/>
+				<reportElement key="staticText-5" x="152" y="23" width="158" height="13"/>
 				<textElement textAlignment="Center">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[DESCANSOS MEDICOS ]]></text>
+				<text><![CDATA[DESCANSOS MEDICOS AÑO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  key="staticText-7" x="420" y="36" width="34" height="13"/>
+				<reportElement key="staticText-7" x="420" y="36" width="34" height="13"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
@@ -128,7 +121,7 @@ and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 				<text><![CDATA[FECHA INICIAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-15" x="303" y="80" width="59" height="12"/>
+				<reportElement  key="staticText-15" x="303" y="80" width="59" height="12"/>
 				<textElement>
 					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -152,14 +145,7 @@ and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 				<text><![CDATA[TIPO LIC.]]></text>
 			</staticText>
 			<textField isBlankWhenNull="false">
-				<reportElement  key="textField" x="280" y="23" width="59" height="13"/>
-				<textElement>
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{nombremes}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement  key="textField" x="339" y="23" width="59" height="13"/>
+				<reportElement  key="textField" x="310" y="23" width="59" height="13"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -271,7 +257,7 @@ and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 	<lastPageFooter>
 		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement  key="staticText-17" x="4" y="10" width="288" height="11"/>
+				<reportElement key="staticText-17" x="4" y="10" width="288" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
@@ -285,7 +271,7 @@ and $X{IN,TRIM(id_desc_med),vectorSeleccionados})]]>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement  key="textField-26" x="485" y="13" width="34" height="11"/>
+				<reportElement key="textField-26" x="485" y="13" width="34" height="11"/>
 				<textElement verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>

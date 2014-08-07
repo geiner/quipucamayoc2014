@@ -73,6 +73,13 @@ public class DescansoMedicoController {
         return descansoservice.listarDescansos(anio,mes);
 
     }
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "listarxanio/{anio}")
+    @ResponseBody
+    public List<DescansoMedico> listarDescansosxanio(@PathVariable(value = "anio") String anio){
+        System.out.println("listar x año : "+anio);
+        return descansoservice.listarDescansosxanio(anio);
+
+    }
 
     @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/citts/{citt}")
     @ResponseBody

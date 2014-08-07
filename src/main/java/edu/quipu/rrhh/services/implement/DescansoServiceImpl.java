@@ -257,5 +257,11 @@ public class DescansoServiceImpl implements DescansoService {
         return descansoMapper.buscarCitt(citt);
     }
 
+    @Override
+    public List<DescansoMedico> listarDescansosxanio(String anio) {
+        System.out.println("service");
+       return  descansoMapper.listarDescansosxanio(anio);
+    }
+
 
 }

@@ -20,8 +20,9 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                 dni: null,
 
                 numserest: null,
-
+                tipo_busqueda:0,//0 busqueda por meses - 1 busqueda por año
                 servidoresSeleccionados: [],
+                idSeleccionados: [],
                 fechas_iniciales: [],
                 fechas_finales: [],
                 idDescMed: null,
@@ -57,7 +58,14 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                     "click .a":"cambiar_tab_registrar",
                     "click #option1":"citt_en_tramite",
                     "click #option2":"asignar_citt",
-                    "click #descargar_rep_descansos": "descargarReporteDescansos"
+                    "click #Radios1": "buscarpormeses",
+                    "click #Radios2": "buscarporanio",
+                    "click #descargar_rep_descansos": "descargarReporteDescansos",
+                    "click .paginate_enabled_next":"pintar",
+                    "click .paginate_enabled_previous":"pintar",
+                    "click .paginate_disabled_next":"pintar",
+                    "click .paginate_disabled_previous":"pintar",
+                    "click #descargar_rep_descansos_anio": "descargarReporteDescansosxanio"
 
                 },
 
@@ -87,34 +95,66 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                     $("#footer_med").show();
 
                 },
+                pintar:function(){
+                    if ($("#select-all").is(':checked')) {
+                        for(var i=0;i<this.idSeleccionados.length;i++){
+                            $('#'+this.idSeleccionados[i]).addClass("color_row");
+                            $('#'+this.idSeleccionados[i]).children(':nth-child(1)').children(':nth-child(1)').prop("checked", true);
+                        }
+                    }
+                    else{
+                        if(this.idSeleccionados.length==0){
+                            for(var i=0;i<this.tablaDescansoTotales.collection.length;i++){
+                                $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).removeClass("color_row");
+                                $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).children(':nth-child(1)').children(':nth-child(1)').prop("checked", false);
+                            }
+                        }else{
+                            for(var i=0;i<this.idSeleccionados.length;i++){
+                                $('#'+this.idSeleccionados[i]).addClass("color_row");
+                                $('#'+this.idSeleccionados[i]).children(':nth-child(1)').children(':nth-child(1)').prop("checked", true);
+                            }
+                        }
+
+                    }
+                },
                 seleccionarTodosLosServidores: function (ev) {
 
                     var clickedElement = $(ev.currentTarget);
 
                     if ($("#select-all").is(':checked')) {
 
-                        var parent = $('.check-all').prop('checked', true);
-                        $(".estatic_desc").addClass("color_row");
-                        $(".estatic_desc>td>input").prop("checked", true);
-                        var cant_dnis = parent.parent().parent().children(':nth-child(3)');
+                        for(var i=0;i<this.tablaDescansoTotales.collection.length;i++){
+                            $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).addClass("color_row");
+                            $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).children(':nth-child(1)').children(':nth-child(1)').prop("checked", true);
+                            this.idSeleccionados[i]=this.tablaDescansoTotales.collection.at(i).get("id_desc_med")+"";
+                            this.servidoresSeleccionados[i] = this.tablaDescansoTotales.collection.at(i).get("id_desc_med") + "/";
+                        }
 
-                        for (var i = 0; i < cant_dnis.length; i++) {
-
-                            this.servidoresSeleccionados[i] = cant_dnis[i].innerHTML + "/";
+                        console.log(this.idSeleccionados.length+" cantidad")
+                        for (var i = 0; i < this.idSeleccionados.length; i++) {
+                            console.log(this.idSeleccionados[i]);
+//                            console.log(this.servidoresSeleccionados[i]);
 
                         }
-                        ;
-
-                        for (var i = 0; i < this.servidoresSeleccionados.length; i++) {
-
-                            console.log(this.servidoresSeleccionados[i]);
-
+                        if(this.servidoresSeleccionados.length!=0) {
+                            $('#descargar_rep_descansos').removeAttr("disabled", "disabled")
+                            $('#descargar_rep_descansos_anio').removeAttr("disabled", "disabled")
                         }
 
                     } else {
-                        $(".estatic_desc").removeClass("color_row");
-                        $(".estatic_desc>td>input").prop("checked", false);
+                        for(var i=0;i<this.tablaDescansoTotales.collection.length;i++){
+                            $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).removeClass("color_row");
+                            $('#'+this.tablaDescansoTotales.collection.at(i).get("id_desc_med")).children(':nth-child(1)').children(':nth-child(1)').prop("checked", false);
+                        }
+//                        $(".estatic_desc").removeClass("color_row");
+//                        $(".estatic_desc>td>input").prop("checked", false);
+                        this.idSeleccionados.splice(0, this.idSeleccionados.length);
                         this.servidoresSeleccionados.splice(0, this.servidoresSeleccionados.length);
+                        console.log(this.idSeleccionados.length+" cantidad")
+                        if(this.servidoresSeleccionados.length==0) {
+                            $('#descargar_rep_descansos').attr("disabled", "disabled")
+                            $('#descargar_rep_descansos_anio').attr("disabled", "disabled")
+                        }
 
                     }
                 },
@@ -132,26 +172,32 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                         check.prop('checked', false);
 
                         clickedElement.removeClass('color_row');
-
+                        this.idSeleccionados.splice(this.idSeleccionados.indexOf(dni+""),1);
                         this.servidoresSeleccionados.splice(this.servidoresSeleccionados.indexOf(dni + "/"), 1);
-
-                        for (var i = 0; i < this.servidoresSeleccionados.length; i++) {
-
-                            console.log(this.servidoresSeleccionados[i]);
+                        if(this.idSeleccionados.length==0){
+                            $('#descargar_rep_descansos').attr("disabled","disabled")
+                            $('#descargar_rep_descansos_anio').attr("disabled","disabled")
+                        }
+                        console.log(this.idSeleccionados.length+" cantidad")
+                        for (var i = 0; i < this.idSeleccionados.length; i++) {
+                            console.log(this.idSeleccionados[i]);
+//                            console.log(this.servidoresSeleccionados[i]);
 
                         }
-                    }
-                    else {
+                    }else {
                         check.prop('checked', true);
                         clickedElement.addClass('color_row');
+                        this.idSeleccionados.push(dni+"");
                         this.servidoresSeleccionados.push(dni + "/");
+                        if(this.idSeleccionados.length!=0){
+                            $('#descargar_rep_descansos').removeAttr("disabled","disabled")
+                            $('#descargar_rep_descansos_anio').removeAttr("disabled","disabled")
+                        }
                         console.log("chekear")
-
-                        for (var i = 0; i < this.servidoresSeleccionados.length; i++) {
-
-                            console.log(this.servidoresSeleccionados[i]);
-
-
+                        console.log(this.idSeleccionados.length+" cantidad")
+                        for (var i = 0; i < this.idSeleccionados.length; i++) {
+                            console.log(this.idSeleccionados[i]);
+//                            console.log(this.servidoresSeleccionados[i]);
                         }
                     }
 
@@ -182,12 +228,32 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                         for (var i = 0; i < this.servidoresSeleccionados.length; i++) {
                             dnis = dnis + this.servidoresSeleccionados[i].trim();
                             console.log(this.servidoresSeleccionados[i]);
-                        }
-                        ;
+                        };
                         $('#pks').val(dnis);
                     }
                     ;
 
+                },
+
+                descargarReporteDescansosxanio:function(){
+                    var dnis = "";
+                    if (this.servidoresSeleccionados.length == 0) {
+                        $("#descMed_message").removeClass("alert-success");
+                        $("#descMed_message").removeClass("alert-danger");
+                        $("#descMed_message").addClass("alert-warning");
+                        $("#descMed_message").html("<strong>debe seleccionar al menos un DNI</strong>");
+                        $("#descMed_message").show();
+                    } else {
+
+                        $("#anio_anio").val($("#anio_select").val());
+
+                        $("#usuario_report_anio").val($("#email").text());
+                        for (var i = 0; i < this.servidoresSeleccionados.length; i++) {
+                            dnis = dnis + this.servidoresSeleccionados[i].trim();
+                            console.log(this.servidoresSeleccionados[i]);
+                        };
+                        $('#pks_anio').val(dnis);
+                    };
                 },
 
                 lista_servidor: function (ev) {
@@ -436,14 +502,14 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                         });
                         for (var i = 0; i < self.descansosServ.collection.length; i++) {
                             if (self.descansosServ.collection.at(i).get("tipo_lic") == "MATERNIDAD") {
-
+                                $("#"+self.descansosServ.collection.at(i).get("id_desc_med")).addClass('maternidad');
                                 var palabra1 = self.descansosServ.collection.at(i).get("tiempo");
 
                                 self.cant_mat = self.cant_mat + parseInt(palabra1);
                             }
                             if (self.descansosServ.collection.at(i).get("tipo_lic") == "ENFERMEDAD") {
+                                $("#"+self.descansosServ.collection.at(i).get("id_desc_med")).addClass('enfermedad');
                                 var palabra2 = self.descansosServ.collection.at(i).get("tiempo");
-
 
                                 self.cant_enf = self.cant_enf + parseInt(palabra2);
                             }
@@ -1135,19 +1201,53 @@ define(['app', 'hbs!apps/desc_medicos/form/templates/inicio_desc_medicos', 'apps
                 fun_buscar_desc: function () {
                     var self = this;
 
-                    self.tablaDescansoTotales.fetchDescansostotales($("#mes_desc").val(), $("#anio_desc").val(), function () {
-                        if (self.tablaDescansoTotales.collection.length != 0) {
-                            $("#reporte_show").show();
-                            $("#table-descansos-totales").dataTable();
-                            $('#table-descansos-totales_wrapper').append("<div id='footer-table'></div>");
-                            $('#table-descansos-totales_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                            $('#table-descansos-totales_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                            $('.dataTables_filter input').attr('placeholder', 'Buscar..');
-                        }
-                    });
+                    if(this.tipo_busqueda==0){
+                        self.tablaDescansoTotales.fetchDescansostotales($("#mes_desc").val(), $("#anio_desc").val(), function () {
+                            if (self.tablaDescansoTotales.collection.length != 0) {
+                                $("#reporte_show").show();
+                                $("#table-descansos-totales").dataTable();
+                                $('#table-descansos-totales_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-descansos-totales_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#table-descansos-totales_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+                            }
+                        });
+                        self.regiontabladescansostotales.show(self.tablaDescansoTotales);
+                    }else{
+                        self.tablaDescansoTotales.fetchDescansosxanio($("#anio_select").val(), function () {
+                            if (self.tablaDescansoTotales.collection.length != 0) {
+                                $("#reporte_show_anio").show();
+                                $("#table-descansos-totales").dataTable();
+                                $('#table-descansos-totales_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-descansos-totales_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                $('#table-descansos-totales_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+                            }
+                        });
+                        self.regiontabladescansostotales.show(self.tablaDescansoTotales);
+                    }
 
-                    self.regiontabladescansostotales.show(self.tablaDescansoTotales);
 
+                },
+                buscarpormeses:function(){
+                    this.servidoresSeleccionados.length=0;
+                    this.tablaDescansoTotales.collection.reset()
+                    this.regiontabladescansostotales.reset();
+                    $("#reporte_show").hide();
+                    $("#reporte_show_anio").hide();
+                    this.tipo_busqueda=0;
+                    $('#xanio').hide();
+                    $('#xmeses').show();
+                },
+                buscarporanio:function(){
+                    this.servidoresSeleccionados.length=0;
+                    this.tablaDescansoTotales.collection.reset();
+                    this.regiontabladescansostotales.reset();
+                    $("#reporte_show_anio").hide();
+                    $("#reporte_show").hide();
+                    this.tipo_busqueda=1;
+                    $('#xmeses').hide();
+                    $('#xanio').show();
                 }
 
 

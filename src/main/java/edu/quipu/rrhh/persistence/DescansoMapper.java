@@ -74,6 +74,7 @@ public interface DescansoMapper {
             "WHERE TO_CHAR(fecha_inicio, 'mm')=#{mes} " +
             "AND TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
             "AND trim(dm.id_serv)=trim(se.ser_cod)" +
+            "AND trim(dm.num_serest)=trim(se.num_serest)" +
             " and tiempo<>'0' ORDER BY FECHA_INICIO ")
     @Results(value = {
             @Result(javaType = DescansoMedico.class),
@@ -136,4 +137,36 @@ public interface DescansoMapper {
             @Result(property = "citt" , column = "citt"),
     })
     List<DescansoMedico> buscarCitt(@Param("citt") String citt);
+
+    @Select(value ="SELECT ID_DESC_MED,desc_est, " +
+            "  SER_APE_PAT, " +
+            "  SER_APE_MAT, " +
+            "  SER_NOM, " +
+            "  ID_SERV, " +
+            "  CITT, " +
+            "  TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') AS FECHA_INI, " +
+            "  TO_CHAR(FECHA_FIN,'DD/MM/YYYY') AS FECHA_FIN, " +
+            "  TIPO_LIC," +
+            " dm.NUM_CITT, " +
+            " dm.FECHA_INICIO " +
+            "FROM DATAPERLIQU.desc_medicos dm, " +
+            "  DATAPERSUEL.lista_servidor se " +
+            "WHERE TO_CHAR(fecha_inicio, 'yyyy')=#{anio} " +
+            "AND trim(dm.id_serv)=trim(se.ser_cod)" +
+            "AND trim(dm.num_serest)=trim(se.num_serest)" +
+            " and tiempo<>'0' ORDER BY FECHA_INICIO ")
+    @Results(value = {
+            @Result(javaType = DescansoMedico.class),
+            @Result(property = "desc_est" , column = "DESC_EST"),
+            @Result(property = "ser_ape_pat" , column = "SER_APE_PAT"),
+            @Result(property = "ser_ape_mat" , column = "SER_APE_MAT"),
+            @Result(property = "ser_nom" , column = "SER_NOM"),
+            @Result(property = "dni" , column = "ID_SERV"),
+            @Result(property = "citt" , column = "CITT"),
+            @Result(property = "f_inicio" , column = "FECHA_INI"),
+            @Result(property = "f_fin" , column = "FECHA_FIN"),
+            @Result(property = "tipo_lic" , column = "TIPO_LIC"),
+            @Result(property = "id_desc_med" , column = "ID_DESC_MED")
+    })
+    List<DescansoMedico> listarDescansosxanio(@Param("anio")String anio);
 }
