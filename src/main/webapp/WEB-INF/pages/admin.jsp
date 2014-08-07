@@ -115,17 +115,35 @@
                     </ul>
                 </li>
 
-                <sec:authorize access="hasAnyRole('${userAccess}57')">
+
                     <li id="gest_timp_pers" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><strong>GESTIÓN TIEMPO PERSONAL</strong><b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-header"><strong>Asistencia</strong></li>
-                            <li class="divider"></li>
-                            <li><a href="#asistencia_administrativo">Administrativo</a></li>
-                            <li><a href="#asistencia_docente">Docente</a></li>
+                            <sec:authorize access="hasAnyRole('${userAccess}57')">
+                            <li class="menu-item dropdown dropdown-submenu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Asistencia</a>
+                                <ul class="dropdown-menu">
+
+                                    <li class="menu-item ">
+                                        <a href="#asistencia_administrativo">Administrativo</a>
+                                    </li>
+                                    <li>
+                                        <a href="#asistencia_docente">Docente</a>
+                                    </li>
+
+
+                                </ul>
+                             </li>
+                            </sec:authorize>
+                            <sec:authorize access="hasAnyRole('${userAccess}64')">
+                            <li><a href="#">Consolidado</a></li>
+                            </sec:authorize>
+                            <sec:authorize access="hasAnyRole('${userAccess}65')">
+                            <li><a href="#vacaciones">Vacaciones</a></li>
+                            </sec:authorize>
                         </ul>
                     </li>
-                </sec:authorize>
+
                 <sec:authorize access="hasAnyRole('${userAccess}53')">
                     <li id="planilla"><a  href="#planillas"><strong>PLANILLAS</strong></a></li>
                 </sec:authorize>

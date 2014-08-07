@@ -1,7 +1,7 @@
 define(["app", "hbs!apps/contratos/adendas/templates/plazas-layout","apps/contratos/adendas/view/unidades-view",
         "lib/bootstrap-datepicker","apps/contratos/adendas/view/contratoscas-view","apps/contratos/adendas/view/plazas-view",
         "apps/contratos/adendas/view/servidortipos-view", "apps/contratos/adendas/view/servidorgenericos-view", "apps/contratos/adendas/view/servidorcargos-view",
-    , "apps/contratos/adendas/model/servidor", "apps/contratos/adendas/model/servidorlaboral", "apps/contratos/adendas/model/contratocas"
+        "apps/contratos/adendas/model/servidor", "apps/contratos/adendas/model/servidorlaboral", "apps/contratos/adendas/model/contratocas"
         ,"backbone-validation","jquery","bootstrap"],function (ErzaManager, layoutTpl,UnidadesView,datepicker,ContratosCASView,PlazasView,ServidorTiposView, ServidorGenericosView, ServidorCargosView, Servidor, ServidorLaboral, ContratoCAS) {
 
     ErzaManager.module('ContratosApp.Adendas.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
