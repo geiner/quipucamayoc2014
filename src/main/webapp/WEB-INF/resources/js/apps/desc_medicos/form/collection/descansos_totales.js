@@ -6,6 +6,9 @@ define(['backbone', 'apps/desc_medicos/form/model/descanso_total'], function (Ba
         model: DescansoTotal,
         setUrl: function(mes,anio){
             this.url='rest/descansos/listar/'+mes+'/'+anio;
+        },
+        setUrl2: function(anio){
+            this.url='rest/descansos/listarxanio/'+anio;
         }
     });
     return DescansosTotales;

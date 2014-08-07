@@ -189,12 +189,12 @@
 <script language="JavaScript" src="resources/js/lib/shortcut.js"></script>
 <script language="JavaScript" src="resources/js/lib/jquery-lazymouse.js"></script>
 
-<div id="inactividad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="inactividad" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
 
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
                 <h4 class="modal-title" id="myModalLabel">SESION CADUCADA</h4>
             </div>
             <div class="modal-body" id="texto">

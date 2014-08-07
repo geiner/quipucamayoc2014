@@ -9,6 +9,11 @@ define([ 'backbone', 'marionette','hbs!apps/desc_medicos/form/templates/table-de
                 this.collection.setUrl(mes,anio);
                 this.collection.on("sync", this.render, this);
                 this.collection.fetch().done(callback);
+            },
+            fetchDescansosxanio: function(anio,callback){
+                this.collection.setUrl2(anio);
+                this.collection.on("sync", this.render, this);
+                this.collection.fetch().done(callback);
             }
 
         })
