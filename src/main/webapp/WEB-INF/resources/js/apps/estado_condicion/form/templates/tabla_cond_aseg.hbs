@@ -2,22 +2,22 @@
     <thead class="header" style="color: #040404;background-color:#f5f5f5">
     <tr>
         <th>Nº Registro</th>
-        <th>Nº Resolucion</th>
         <th>Reg. Pensionario</th>
         <th>Nº Sist. Pen.</th>
         <th>Entidad Aseg.</th>
         <th>Estado AFP</th>
+        <th>Documento de sustento</th>
     </tr>
     </thead>
     <tbody id="">
         {{#each items}}
-        <tr id="{{cod}}" class="">
+        <tr class="">
             <td>{{numreg1}}</td>
-            <td>{{numres1}}</td>
             <td>{{regpen}}</td>
             <td>{{numsispen}}</td>
             <td>{{entaseg}}</td>
             <td>{{estafp}}</td>
+            <td>{{numres1}}</td>
         </tr>
         {{else}}
         <td colspan="6">No existen registros para este Trabajador</td>

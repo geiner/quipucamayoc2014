@@ -11,12 +11,12 @@
 <div class="tabbable tabs-left" id="header_est_cod">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#cl" id="est_trab" data-toggle="tab">Estado del Trabajador</a></li>
-        <li class=""><a href="#d" id="depen" data-toggle="tab">Dependencia</a></li>
         <li class=""><a href="#cp" id="condLab" data-toggle="tab">Condicion Laboral</a></li>
         <li class=""><a href="#ca" id="condAseg" data-toggle="tab">Condicion del Asegurado</a></li>
         <li class=""><a href="#b" id="tipoPag" data-toggle="tab">Tipo Pago</a></li>
 
         <li class=""><a href="#rp" data-toggle="tab">Rotación Plaza</a></li>
+        <li class=""><a href="#d" id="depen" data-toggle="tab">Dependencia (CAS)</a></li>
         <button id="search" class="btn btn-primary pull-right" type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
     </ul>
 
@@ -332,7 +332,7 @@
 
                     </div>
                     <div class="col-md-6" id="div_numPen" style="display: none;">
-                        <label class="col-md-5 control-label">Nro.Sis.Pensiones</label>
+                        <label class="col-md-5 control-label">Nro.Sis.Pensiones <span style="color:red;">*</span></label>
                         <div class="col-md-7">
                             <input class="form-control" id="nroPensio" type="text">
                         </div>
@@ -340,15 +340,10 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-md-6">
-                        <label class="col-md-5 control-label" for="numresol_aseg">Nro. Resolución <span style="color: red;">*</span></label>
+                        <label class="col-md-5 control-label" for="numresol_aseg">Documento de sustento</label>
                         <div class="col-md-7">
-                            <div class="input-group">
-                                <input class="form-control" type="text" id="numresol_aseg" disabled>
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
-                                </div>
+                                <input class="form-control" type="text" id="docSustento" >
 
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -441,9 +436,18 @@
                     </div>
 
                     <div class="col-md-6" id="div_banco" style="display: none;">
-                        <label class="col-md-5 control-label" for="numcta">Nro. Cta. Banco <span style="color:red;"></span></label>
+                        <label class="col-md-5 control-label" for="numcta">Nro. Cta. Banco <span style="color:red;">*</span></label>
                         <div class="col-md-7">
                             <input class="form-control" type="text" id="numctabanco" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label class="col-md-5 control-label">Documento de sustento</label>
+                        <div class="col-md-7">
+                            <input class="form-control" type="text" id="docSust">
                         </div>
                     </div>
                 </div>

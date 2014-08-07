@@ -581,7 +581,16 @@ define(['app',
 
                     $('#usuarioCN2').val($('#email').text());
                     $('#anio2').val($('#anio_plazas').val());
-                    $('#form_reporteCN2').show();
+                   // $('#form_reporteCN2').show();
+
+
+
+                    if(this.perfilUsuario=="ADMIN"){
+
+                        $('#form_reporteCN2').show();
+
+
+                    }
 
 
 
