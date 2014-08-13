@@ -7,6 +7,7 @@ import java.util.Date;
 public class ServidorLaboral {
 
     String cod;
+    String cod_antiguo;
     Integer estLab;
     Integer regPen;
     Integer num_ser_est;
@@ -33,6 +34,14 @@ public class ServidorLaboral {
     private int num3;
     private int num4;
     private int num5;
+
+    public String getCod_antiguo() {
+        return cod_antiguo;
+    }
+
+    public void setCod_antiguo(String cod_antiguo) {
+        this.cod_antiguo = cod_antiguo;
+    }
 
     public Integer getNum_ser_est() {
         return num_ser_est;

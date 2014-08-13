@@ -6,7 +6,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
         ,"jquery","lib/bootstrap-datepicker","lib/jquery.dataTables.min","bootstrap"],
     function (ErzaManager, layoutTpl,listaServView,servidorEstadoView,categoriaServidorView,servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView,
               tipoPagoView, condicionPlanillaView,TablaModalDependencias,tipoOcupacionView,ServidorLaboral) {
-        ErzaManager.module('AsistenciaApp.Numserest.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
+        ErzaManager.module('ServidoresApp.Numserest.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
                 template: layoutTpl,
@@ -137,7 +137,9 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                     this.entidadesAseguradoraView.initialize();
                     this.estadosAFP.initialize();
                     this.tipoPago.initialize();
-                    this.CondicionPlanView.initialize();
+                    this.CondicionPlanView.initialize(function(){
+                        $('#cond_pla').attr('disabled', 'disabled');
+                    });
                 },
                 lista_servidor: function (ev) {
                     var self = this;
@@ -238,20 +240,23 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                         tem_tit_ban.parent().parent().hide();
                     }
                 },
-                fun_serv_est:function(){
-                    if($('#serv_est').val()==7){
+                fun_serv_est: function () {
+                    if ($('#serv_est').val() == 7 || $('#serv_est').val() == 6 || $('#serv_est').val() == 4) {
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#div_ruc').show();
-                        $('#serv_gen  > option'). eq(2).hide();
-                        $('#serv_gen  > option'). eq(4).hide();
-                        $('#serv_gen  > option'). eq(5).hide();
-                    }else{
-                        $('#serv_gen  > option'). eq(2).show();
-                        $('#serv_gen  > option'). eq(4).show();
-                        $('#serv_gen  > option'). eq(5).show();
+                        $('#div_cod_ant').hide();
+                        $('#codigo_antiguo').val("");
+                        $('#serv_gen  > option').eq(2).hide();
+                        $('#serv_gen  > option').eq(4).hide();
+                        $('#serv_gen  > option').eq(5).hide();
+                    } else {
+                        $('#serv_gen  > option').eq(2).show();
+                        $('#serv_gen  > option').eq(4).show();
+                        $('#serv_gen  > option').eq(5).show();
                         $('#serv_ruc').val("");
                         $('#div_ruc').hide();
+                        $('#div_cod_ant').show();
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#serv_gen').trigger('change');
@@ -370,17 +375,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                             if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                 if ($('#serv_tip_ocup').val() != "999") {
                                                     if ($('#origen').val() != "") {
-                                                        if ($('#serv_est').val() != 7) {
-                                                            self.ingresar_datos_laborales();
+                                                        if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                            if ($('#codigo_antiguo').val() != "") {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                $('#advertencia').addClass("alert-warning");
+                                                                $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                $('#advertencia').show();
+                                                            }
                                                         } else {
                                                             if ($('#serv_ruc').val() != "") {
                                                                 self.ingresar_datos_laborales();
                                                             } else {
-                                                                $('#mensaje').removeClass('alert-danger');
-                                                                $('#mensaje').removeClass('alert-success');
-                                                                $('#mensaje').addClass("alert-warning");
-                                                                $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                $('#mensaje').show();
+                                                                $('#advertencia').addClass("alert-warning");
+                                                                $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                $('#advertencia').show();
                                                             }
                                                         }
                                                     } else {
@@ -425,17 +434,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
                                                                 } else {
-                                                                    $('#mensaje').removeClass('alert-danger');
-                                                                    $('#mensaje').removeClass('alert-success');
-                                                                    $('#mensaje').addClass("alert-warning");
-                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                    $('#mensaje').show();
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#advertencia').show();
                                                                 }
                                                             }
                                                         } else {
@@ -500,17 +513,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
                                                                 } else {
-                                                                    $('#mensaje').removeClass('alert-danger');
-                                                                    $('#mensaje').removeClass('alert-success');
-                                                                    $('#mensaje').addClass("alert-warning");
-                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                    $('#mensaje').show();
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#advertencia').show();
                                                                 }
                                                             }
                                                         } else {
@@ -555,17 +572,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                                     if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                         if ($('#serv_tip_ocup').val() != "999") {
                                                             if ($('#origen').val() != "") {
-                                                                if ($('#serv_est').val() != 7) {
-                                                                    self.ingresar_datos_laborales();
+                                                                if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                    if ($('#codigo_antiguo').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                        $('#advertencia').show();
+                                                                    }
                                                                 } else {
                                                                     if ($('#serv_ruc').val() != "") {
                                                                         self.ingresar_datos_laborales();
                                                                     } else {
-                                                                        $('#mensaje').removeClass('alert-danger');
-                                                                        $('#mensaje').removeClass('alert-success');
-                                                                        $('#mensaje').addClass("alert-warning");
-                                                                        $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                        $('#mensaje').show();
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                        $('#advertencia').show();
                                                                     }
                                                                 }
                                                             } else {
@@ -636,17 +657,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
                                                                 } else {
-                                                                    $('#mensaje').removeClass('alert-danger');
-                                                                    $('#mensaje').removeClass('alert-success');
-                                                                    $('#mensaje').addClass("alert-warning");
-                                                                    $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                    $('#mensaje').show();
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                    $('#advertencia').show();
                                                                 }
                                                             }
                                                         } else {
@@ -691,17 +716,21 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                                                     if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                         if ($('#serv_tip_ocup').val() != "999") {
                                                             if ($('#origen').val() != "") {
-                                                                if ($('#serv_est').val() != 7) {
-                                                                    self.ingresar_datos_laborales();
+                                                                if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                    if ($('#codigo_antiguo').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                        $('#advertencia').show();
+                                                                    }
                                                                 } else {
                                                                     if ($('#serv_ruc').val() != "") {
                                                                         self.ingresar_datos_laborales();
                                                                     } else {
-                                                                        $('#mensaje').removeClass('alert-danger');
-                                                                        $('#mensaje').removeClass('alert-success');
-                                                                        $('#mensaje').addClass("alert-warning");
-                                                                        $('#mensaje').html('<strong>Es necesario ingresar el numero de RUC</strong>')
-                                                                        $('#mensaje').show();
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el numero de RUC</strong>')
+                                                                        $('#advertencia').show();
                                                                     }
                                                                 }
                                                             } else {
@@ -836,6 +865,7 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
                         "tipocupuni": $("#serv_tip_ocup").val(),
                         "sindic": $("#serv_sind").val(),
                         "ruc": $("#serv_ruc").val(),
+                        "cod_antiguo": $("#codigo_antiguo").val(),
                         "dependencia": self.unidadSelected.unidadId
                     });
                     console.log($("#serv_ruc").val() + " akaaa");
@@ -927,5 +957,5 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
 
             });
         });
-        return ErzaManager.AsistenciaApp.Numserest.View;
+        return ErzaManager.ServidoresApp.Numserest.View;
     });

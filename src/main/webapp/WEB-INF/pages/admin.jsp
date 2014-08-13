@@ -88,10 +88,10 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servidores</a>
                                 <ul class="dropdown-menu">
                                     <li class="menu-item ">
-                                        <a href="#servidores">Nuevo Servidor</a>
+                                        <a href="#servidores">Registrar Nuevo Trabajador</a>
                                     </li>
                                     <li>
-                                        <a href="#agregar_numserest">Agregar Numserest</a>
+                                        <a href="#agregar_numserest">Agregar Tipo de Trabajo</a>
                                     </li>
 
                                 </ul>

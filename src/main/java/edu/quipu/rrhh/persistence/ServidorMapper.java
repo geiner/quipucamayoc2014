@@ -91,11 +91,13 @@ public interface ServidorMapper {
             "  ser_num_sis_pri_pen                             AS numPen , " +
             "  TO_CHAR(SER_ORI_FECH_INSC_REGPEN,'DD/MM/YYYY' ) AS insregpen, " +
             "  SER_ORI_TIP_OCUPUNIV                            AS tipocupuni, " +
+            "  SER_COD_ANT                                     AS cod_antiguo, " +
             "  SER_ORI_SINDICATO                               AS sindic " +
             "FROM datapersuel.servidor_estado se , " +
             "  DATAPERSUEL.tb_servidor_origen so, " +
             "  QPRODATAQUIPU.uni_dep ud " +
             "WHERE trim(se.ser_cod) =trim(#{servidorLaboral.cod}) " +
+            "AND TRIM(se.num_serest)         =trim(#{servidorLaboral.num_ser_est}) " +
             "AND TRIM(se.ser_cod)         =TRIM(so.ser_cod) " +
             "AND trim(ud.UD_COD)          =trim(se.ser_cod_dep_act) " +
             "ORDER BY conPla, " +
@@ -118,6 +120,7 @@ public interface ServidorMapper {
             @Result(column = "numPen", property = "numPen"),
             @Result(column = "insregpen", property = "insregpen"),
             @Result(column = "tipocupuni", property = "tipocupuni"),
+            @Result(column = "cod_antiguo", property = "cod_antiguo"),
             @Result(column = "dependencia", property = "dependencia"),
             @Result(column = "des_depend", property = "des_depend"),
             @Result(column = "sindic", property = "sindic"),
@@ -156,6 +159,7 @@ public interface ServidorMapper {
             "INTO DATAPERSUEL.SERVIDOR_ESTADO " +
             "  ( " +
             "    ser_cod, " +
+            "    ser_cod_ant, " +
             "    num_serest, " +
             "    ser_est_act, " +
             "    ser_cat_act, " +
@@ -177,6 +181,7 @@ public interface ServidorMapper {
             "  VALUES " +
             "  ( " +
             "    #{ser.cod}, " +
+            "    #{ser.cod_antiguo}, " +
             "    (SELECT COUNT(ser_Cod)+1 FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod}), " +
             "    #{ser.estLab}, " +
             "    #{ser.cat}, " +
@@ -199,6 +204,7 @@ public interface ServidorMapper {
 
     @Update(value ="UPDATE DATAPERSUEL.SERVIDOR_ESTADO SET " +
             "    ser_est_act=#{ser.estLab}, " +
+            "    ser_cod_ant=#{ser.cod_antiguo}, " +
             "    ser_cat_act=#{ser.cat}, " +
             "    ser_tip_act=#{ser.tip}, " +
             "    ser_rpe_act=#{ser.regPen}, " +

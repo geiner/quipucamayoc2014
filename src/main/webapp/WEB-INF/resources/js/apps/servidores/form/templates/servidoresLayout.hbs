@@ -38,9 +38,13 @@
                     style="color:red;">*</span></label>
 
             <div class="controls col-md-7">
-                <input type="text" id="codigo" placeholder="Ingrese Código Servidor" class="form-control pull-right">
+                <input type="text" id="codigo" placeholder="Ingrese Código Servidor" class="form-control pull-right" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
             </div>
         </div>
+        <div class="col-md-6" >
+            <span class="col-md-12" style="color: #b94a48 ;">El código ingresado sera el numero de documento del Servidor </span>
+        </div>
+
 
     </div>
     <div class="row form-group">
@@ -315,16 +319,6 @@
         <fieldset>
             <br/>
             <legend>Informacion Laboral</legend>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <label class="control-label col-md-5" for="codigo_antiguo">Código Antiguo<span
-                            style="color:red;">*</span></label>
-
-                    <div class="controls col-md-7">
-                        <input type="text" id="codigo_antiguo" placeholder="Ingrese Código Antiguo" class="form-control pull-right">
-                    </div>
-                </div>
-            </div>
         <div class="row form-group">
             <div class="col-md-6" id="div_serv_est">
 
@@ -481,12 +475,23 @@
 
         </div>
             <br/>
-        <div class="row control-group" id="div_ruc" style="display: none;">
-            <div class="col-md-6">
+        <div class="row control-group" >
+            <div class="col-md-6" id="div_ruc" style="display: none;">
                 <label class="control-label col-md-5">RUC <span style="color:red;">*</span></label>
 
                 <div class="col-md-7">
                     <input type="text" id="serv_ruc" class="form-control">
+                </div>
+            </div>
+
+            <div class="row form-group" id="div_cod_ant" style="display: none;">
+                <div class="col-md-6">
+                    <label class="control-label col-md-5" for="codigo_antiguo">Código Antiguo<span
+                            style="color:red;">*</span></label>
+
+                    <div class="controls col-md-7">
+                        <input type="text" id="codigo_antiguo" class="form-control">
+                    </div>
                 </div>
             </div>
         </div>

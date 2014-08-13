@@ -4,12 +4,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
         'apps/servidores/form/view/servidorEstado-view', 'apps/servidores/form/view/categoriaServidor-view', 'apps/servidores/form/view/servidorgenericos-view', 'apps/servidores/form/view/servidorTipo-view',
         'apps/servidores/form/view/regimenPensionario-view', 'apps/servidores/form/view/entidadAseguradora-view', 'apps/servidores/form/view/estadosAFP-view',
         'apps/servidores/form/view/tipoPago-view', 'apps/servidores/form/view/condicionPlanilla-view', 'apps/servidores/form/view/tiposOcupaciones_view', "apps/servidores/form/model/servidor",
-        'apps/servidores/form/model/servidorLaboral', 'apps/resoluciones/form/view/servidor-view', "apps/planillas/list/view/unidades-dialog","apps/servidores/form/view/numregistros",
+        'apps/servidores/form/model/servidorLaboral', 'apps/resoluciones/form/view/servidor-view', "apps/planillas/list/view/unidades-dialog", "apps/servidores/form/view/numregistros",
         "lib/core/validXtrem", "lib/bootstrap-datepicker", "lib/typeahead.min", "lib/jquery.dataTables.min", "bootstrap"],
-    function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView,
-              provNacimientoView, distrNacimientoView, deptActualView, provActualView, distrActualView, servidorEstadoView, categoriaServidorView,
-              servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView, tipoPagoView, condicionPlanillaView,
-              tipoOcupacionView, Servidor, ServidorLaboral, listaServView, TablaModalDependencias,Numregistros) {
+    function (ErzaManager, layoutTpl, datepicker, tab, estadoCivilView, tipoDocumentoView, paisNacimientoView, deptNacimientoView, provNacimientoView, distrNacimientoView, deptActualView, provActualView, distrActualView, servidorEstadoView, categoriaServidorView, servidorGenericoView, servidorTipoView, regimenPensionView, entidadAseguradoraView, estadoAFPView, tipoPagoView, condicionPlanillaView, tipoOcupacionView, Servidor, ServidorLaboral, listaServView, TablaModalDependencias, Numregistros) {
         ErzaManager.module('ServidoresApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
             View.Layout = Marionette.Layout.extend({
@@ -35,7 +32,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 tipoOcupacionView: new tipoOcupacionView(),
                 listaServView: new listaServView(),
                 tablaDependencias: new TablaModalDependencias(),
-                numregistros:new Numregistros(),
+                numregistros: new Numregistros(),
 
                 tab: 0,
                 prov_act: null,
@@ -43,7 +40,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 cod_paisNac: 120,
                 guar_o_actu: 0,//0 guarda - 1 actualiza I.General
                 guar_o_actu2: 0,//guarda o actualiza I.laboral
-                num_ser_estado:0,
+                num_ser_estado: 0,
                 elementoClickeado: null,
                 unidadClicked: {
                     unidadId: 10002,
@@ -107,7 +104,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #unidad": "modal_depend",
                     "click .tab_b": "fun_camb_tab_b",
                     "click #continuar": "continuar_datos_lab",
-//                    "keyup :input#codigo":"fun_validar_codigo",
+                    "keyup :input#codigo": "duplicar_dni",
                     "click #cancel_servidor": "cancelar_inf_gen",
                     "click #cancel_laboral": "cancelar_inf_gen2",
                     "click #table-servidor > tbody >tr": "hide_lista_serv",
@@ -143,7 +140,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.div_condicion_plan.show(this.CondicionPlanView);
 
                     this.div_tipos_ocupaciones.show(this.tipoOcupacionView);
-
 
                 },
                 initialize: function () {
@@ -190,6 +186,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         function three() {
 
+                            $('#serv_est_vit').attr('disabled', 'disabled');
+                            $('#num_document').attr('disabled', 'disabled');
 
                             $("#autocom").keyup(function () {
 
@@ -311,7 +309,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.tipoPago.initialize(
 
                     );
-                    this.CondicionPlanView.initialize();
+                    this.CondicionPlanView.initialize(function () {
+                        $('#cond_pla').attr('disabled', 'disabled');
+                    });
                     this.tipoOcupacionView.initialize();
 
                 },
@@ -337,6 +337,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $("#origen").val(aux[1].trim());
 
 
+                },
+                duplicar_dni: function () {
+                    $('#num_document').val($('#codigo').val())
                 },
                 clickUnidad: function (e) {
 
@@ -384,6 +387,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#ser_act_domi').val("");
                     $('#codigo').val("");
                     $('#codigo').removeAttr('disabled');
+                    $('#num_document').attr('disabled', 'disabled')
 //                    this.fun_validar_codigo();
                 },
                 cancelar_inf_gen2: function () {
@@ -399,10 +403,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 //                    this.fun_validar_codigo();
                 },
                 fun_serv_est: function () {
-                    if ($('#serv_est').val() == 7) {
+                    if ($('#serv_est').val() == 7 || $('#serv_est').val() == 6 || $('#serv_est').val() == 4) {
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#div_ruc').show();
+                        $('#div_cod_ant').hide();
+                        $('#codigo_antiguo').val("");
                         $('#serv_gen  > option').eq(2).hide();
                         $('#serv_gen  > option').eq(4).hide();
                         $('#serv_gen  > option').eq(5).hide();
@@ -412,6 +418,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $('#serv_gen  > option').eq(5).show();
                         $('#serv_ruc').val("");
                         $('#div_ruc').hide();
+                        $('#div_cod_ant').show();
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#serv_gen').trigger('change');
@@ -981,12 +988,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if ($("#ent_aseg").val() == "999") {
                         $("#ent_aseg").val("");
                     }
-                    console.log(self.num_ser_estado+" ---numserest")
+                    console.log(self.num_ser_estado + " ---numserest")
 
                     this.model.get("servidorlaboral").set({
                         "cod": codigo,
                         "estLab": $("#serv_est").val(),
-                        "num_ser_est":self.num_ser_estado,
+                        "num_ser_est": self.num_ser_estado,
                         "tipGen": $("#serv_gen").val(),
                         "tip": $("#serv_tip").val(),
                         "cat": $("#serv_cat").val(),
@@ -1003,6 +1010,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "tipocupuni": $("#serv_tip_ocup").val(),
                         "sindic": $("#serv_sind").val(),
                         "ruc": $("#serv_ruc").val(),
+                        "cod_antiguo": $("#codigo_antiguo").val(),
                         "dependencia": self.unidadSelected.unidadId
                     });
                     console.log($("#serv_ruc").val() + " akaaa");
@@ -1035,41 +1043,41 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         });
                     } else {
                         console.log("actualizar  ...................")
-                        self.numregistros.fetchNumRegistros(codigo,self.num_ser_estado, function(){
-                            var num1=self.numregistros.collection.at(0).get('num1');
-                            var num2=self.numregistros.collection.at(0).get('num2');
-                            var num3=self.numregistros.collection.at(0).get('num3');
-                            var num4=self.numregistros.collection.at(0).get('num4');
-                            var num5=self.numregistros.collection.at(0).get('num5');
-                            console.log(num1+"/"+num2+"/"+num3+"/"+num4+"/"+num5);
-                            if((num1>1) || (num2>1) || (num3>1) || (num4>1) || (num5>1)){
+                        self.numregistros.fetchNumRegistros(codigo, self.num_ser_estado, function () {
+                            var num1 = self.numregistros.collection.at(0).get('num1');
+                            var num2 = self.numregistros.collection.at(0).get('num2');
+                            var num3 = self.numregistros.collection.at(0).get('num3');
+                            var num4 = self.numregistros.collection.at(0).get('num4');
+                            var num5 = self.numregistros.collection.at(0).get('num5');
+                            console.log(num1 + "/" + num2 + "/" + num3 + "/" + num4 + "/" + num5);
+                            if ((num1 > 1) || (num2 > 1) || (num3 > 1) || (num4 > 1) || (num5 > 1)) {
                                 $('#texto').html('<strong>No es posible actualizar los datos laborales debido a que ya tiene historial de cambios</strong>')
                                 $('#footer_modal').html(' <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>')
                                 $('#modal_message').modal();
-                            }else{
+                            } else {
                                 self.model.get("servidorlaboral").url = "rest/cas/serv/updateservidorlaboral";
 
 
-                                 var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
+                                var self_l = self.model.get("servidorlaboral").save({}, {wait: true});
 
-                                 self_l.done(function () {
+                                self_l.done(function () {
 
-                                 var temp_serv_cod = $("#serv_cod");
+                                    var temp_serv_cod = $("#serv_cod");
 
-                                 temp_serv_cod.removeClass('alert-warning');
-                                 temp_serv_cod.addClass('alert-danger');
-                                 temp_serv_cod.show();
-                                 temp_serv_cod.text("Error en la actualizacion laboral.!");
-                                 });
+                                    temp_serv_cod.removeClass('alert-warning');
+                                    temp_serv_cod.addClass('alert-danger');
+                                    temp_serv_cod.show();
+                                    temp_serv_cod.text("Error en la actualizacion laboral.!");
+                                });
 
-                                 self_l.fail(function () {
+                                self_l.fail(function () {
 
-                                 var temp_serv_save = $("#serv_save");
+                                    var temp_serv_save = $("#serv_save");
 
-                                 temp_serv_save.show();
-                                 temp_serv_save.text("Datos laborales actualizados!");
-                                 $('#cancel_laboral').click();
-                                 });
+                                    temp_serv_save.show();
+                                    temp_serv_save.text("Datos laborales actualizados!");
+                                    $('#cancel_laboral').click();
+                                });
                             }
 
                         })
@@ -1101,8 +1109,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                 if ($('#serv_tip_ocup').val() != "999") {
                                                     if ($('#origen').val() != "") {
-                                                        if ($('#serv_est').val() != 7) {
-                                                            self.ingresar_datos_laborales();
+                                                        if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                            if ($('#codigo_antiguo').val() != "") {
+                                                                self.ingresar_datos_laborales();
+                                                            } else {
+                                                                $('#advertencia').addClass("alert-warning");
+                                                                $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                $('#advertencia').show();
+                                                            }
                                                         } else {
                                                             if ($('#serv_ruc').val() != "") {
                                                                 self.ingresar_datos_laborales();
@@ -1144,8 +1158,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
@@ -1203,8 +1223,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
@@ -1246,8 +1272,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                     if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                         if ($('#serv_tip_ocup').val() != "999") {
                                                             if ($('#origen').val() != "") {
-                                                                if ($('#serv_est').val() != 7) {
-                                                                    self.ingresar_datos_laborales();
+                                                                if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                    if ($('#codigo_antiguo').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                        $('#advertencia').show();
+                                                                    }
                                                                 } else {
                                                                     if ($('#serv_ruc').val() != "") {
                                                                         self.ingresar_datos_laborales();
@@ -1298,7 +1330,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 $('#advertencia').html('<strong>Es necesario ingresar entidad aseguradora ,estados AFP y numero de Sistema privado de pensiones</strong>')
                                 $('#advertencia').show();
                             }
-                        };
+                        }
+                        ;
 
                         if ($("#rpe").val() == "2" || $("#rpe").val() == "3" || $("#rpe").val() == "1") {
                             if ($('#ent_aseg').val() != "999") {
@@ -1309,8 +1342,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                 if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                     if ($('#serv_tip_ocup').val() != "999") {
                                                         if ($('#origen').val() != "") {
-                                                            if ($('#serv_est').val() != 7) {
-                                                                self.ingresar_datos_laborales();
+                                                            if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                if ($('#codigo_antiguo').val() != "") {
+                                                                    self.ingresar_datos_laborales();
+                                                                } else {
+                                                                    $('#advertencia').addClass("alert-warning");
+                                                                    $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                    $('#advertencia').show();
+                                                                }
                                                             } else {
                                                                 if ($('#serv_ruc').val() != "") {
                                                                     self.ingresar_datos_laborales();
@@ -1352,8 +1391,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                                     if ($('#reg_pen').val() != "" & self.Comparar_Fecha(currentDate, $('#reg_pen').val())) {
                                                         if ($('#serv_tip_ocup').val() != "999") {
                                                             if ($('#origen').val() != "") {
-                                                                if ($('#serv_est').val() != 7) {
-                                                                    self.ingresar_datos_laborales();
+                                                                if ($('#serv_est').val() != 7 & $('#serv_est').val() != 6 & $('#serv_est').val() != 4) {
+                                                                    if ($('#codigo_antiguo').val() != "") {
+                                                                        self.ingresar_datos_laborales();
+                                                                    } else {
+                                                                        $('#advertencia').addClass("alert-warning");
+                                                                        $('#advertencia').html('<strong>Es necesario ingresar el codigo antiguo</strong>')
+                                                                        $('#advertencia').show();
+                                                                    }
                                                                 } else {
                                                                     if ($('#serv_ruc').val() != "") {
                                                                         self.ingresar_datos_laborales();
@@ -1394,12 +1439,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             $('#advertencia').show();
                                         }
                                     }
-                                }else {
+                                } else {
                                     $('#advertencia').addClass("alert-warning");
                                     $('#advertencia').html('<strong>Es necesario ingresar el tipo de pago</strong>')
                                     $('#advertencia').show();
                                 }
-                            }else {
+                            } else {
                                 $('#advertencia').addClass("alert-warning");
                                 $('#advertencia').html('<strong>Es necesario ingresar la entidad aseguradora</strong>')
                                 $('#advertencia').show();
@@ -1525,19 +1570,23 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var self = this;
                     var clickedElement = $(e.currentTarget);
                     var dni_serv = clickedElement.children(':nth-child(8)').text();
-                    this.num_ser_estado=clickedElement.children(':nth-child(7)').text();
+                    this.num_ser_estado = clickedElement.children(':nth-child(7)').text();
                     $("#codigo").val(dni_serv);
                     $('#codigo').attr('disabled', 'disabled');
-                    this.fun_search_servidor();
+                    $('#num_document').removeAttr('disabled');
+                    setTimeout(function () {
+                        self.fun_search_servidor();
+                    }, 1000);
                     $("#list_servidores").modal("hide");
                 },
                 fun_search_servidor: function (ev) {
 
+                    console.log("este numserest "+parseInt(this.num_ser_estado))
                     var codigo = $("#codigo").val();
 
                     this.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
-                    this.model.get("servidorlaboral").url = "rest/cas/serv/laboral/codigo/" + codigo;
+                    this.model.get("servidorlaboral").url = "rest/cas/serv/laboral/codigo/" + codigo+'/'+parseInt(this.num_ser_estado);
 
                     var fetch_s = this.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
 
@@ -1697,6 +1746,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         }, 1000);
 
                         $("#cond_pla").val(self.model.get("servidorlaboral").get("conPla"));
+
                         $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag"));
                         $("#reg_lab").val(self.model.get("servidorlaboral").get("regLab"));
                         $("#rpe").val(self.model.get("servidorlaboral").get("regPen"));
@@ -1708,8 +1758,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         console.log(self.unidadSelected.unidadId + " ññññññññ");
 
                         temp_cue_ban.val(self.model.get("servidorlaboral").get("cueBan"));
-                        $('#serv_tit_ban').val(self.model.get("servidorlaboral").get("titcueBan"))
-                        $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"))
+                        $('#serv_tit_ban').val(self.model.get("servidorlaboral").get("titcueBan"));
+                        $('#cond_pla').attr('disabled','disabled');
+                        $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"));
+                        $('#codigo_antiguo').val(self.model.get("servidorlaboral").get("cod_antiguo"))
                         temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
 
                         //render result
