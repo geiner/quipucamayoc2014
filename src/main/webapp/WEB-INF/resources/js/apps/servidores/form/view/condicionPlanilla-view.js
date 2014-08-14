@@ -7,7 +7,7 @@ define([ 'backbone', 'marionette', 'apps/servidores/form/collection/condicionesP
             template: condicionesplanillaTemplate,
 
 
-            initialize: function () {
+            initialize: function (callback) {
 
                 //initialize the collection
                 this.collection = new CondicionesPlanilla();
@@ -16,7 +16,7 @@ define([ 'backbone', 'marionette', 'apps/servidores/form/collection/condicionesP
                 this.listenTo(this.collection, 'sync', this.render);
 
                 // Request unpaginated URL
-                this.collection.fetch({ data: { page: 'no'} });
+                this.collection.fetch({ data: { page: 'no'} }).done(callback);
             }
 
         });

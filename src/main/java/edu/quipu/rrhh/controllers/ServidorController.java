@@ -155,12 +155,13 @@ public class ServidorController {
         servidorGenerico.setCod(codTipGen);
         return servidorService.findByTipGen(servidorGenerico);
     }
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/laboral/codigo/{codigo}")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/laboral/codigo/{codigo}/{num_ser_est}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody
-    public ServidorLaboral findLaboralByCod(@PathVariable(value = "codigo") String codigo) {
+    public ServidorLaboral findLaboralByCod(@PathVariable(value = "codigo") String codigo , @PathVariable(value = "num_ser_est") Integer num_ser_est) {
         ServidorLaboral servidorLaboral = new ServidorLaboral();
         servidorLaboral.setCod(codigo);
+        servidorLaboral.setNum_ser_est(num_ser_est);
         List<ServidorLaboral> servidores = servidorService.findByCodLaboral(servidorLaboral);
         if (servidores.size() == 0)
             return null;
