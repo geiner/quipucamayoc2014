@@ -98,7 +98,17 @@
                             </li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}56')">
-                            <li><a href="#legajos">Legajos</a></li>
+                            <li class="menu-item dropdown dropdown-submenu">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Legajos</a>
+                               <ul class="dropdown-menu">
+                                   <li class="menu-item">
+                                      <a href="#info_personal">Información personal</a>
+                                   </li>
+                                   <li class="menu-item">
+                                       <a href="#info_laboral">Información laboral</a>
+                                   </li>
+                               </ul>
+                            </li>
                         </sec:authorize>
                         <sec:authorize access="hasAnyRole('${userAccess}60')">
 

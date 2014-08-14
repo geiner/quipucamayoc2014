@@ -53,10 +53,80 @@ public class Servidor implements Serializable {
     private String abv_est;
     private String abv_tip_ser;
 
+    //para las opcion de Datos Personales en Legajos
+    private String nombreCompleto;
+    private String docTipDescri;
+    private String sexDescrip;
+    private String estCivDescrip;
+    private String paisDescri;
+    private String deparDescri;
+    private String provinDescri;
+    private String distriDescri;
 
 
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
 
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
 
+    public String getDocTipDescri() {
+        return docTipDescri;
+    }
+
+    public void setDocTipDescri(String docTipDescri) {
+        this.docTipDescri = docTipDescri;
+    }
+
+    public String getSexDescrip() {
+        return sexDescrip;
+    }
+
+    public void setSexDescrip(String sexDescrip) {
+        this.sexDescrip = sexDescrip;
+    }
+
+    public String getEstCivDescrip() {
+        return estCivDescrip;
+    }
+
+    public void setEstCivDescrip(String estCivDescrip) {
+        this.estCivDescrip = estCivDescrip;
+    }
+
+    public String getPaisDescri() {
+        return paisDescri;
+    }
+
+    public void setPaisDescri(String paisDescri) {
+        this.paisDescri = paisDescri;
+    }
+
+    public String getDeparDescri() {
+        return deparDescri;
+    }
+
+    public void setDeparDescri(String deparDescri) {
+        this.deparDescri = deparDescri;
+    }
+
+    public String getProvinDescri() {
+        return provinDescri;
+    }
+
+    public void setProvinDescri(String provinDescri) {
+        this.provinDescri = provinDescri;
+    }
+
+    public String getDistriDescri() {
+        return distriDescri;
+    }
+
+    public void setDistriDescri(String distriDescri) {
+        this.distriDescri = distriDescri;
+    }
 
     public Integer getCodEst() {
         return codEst;

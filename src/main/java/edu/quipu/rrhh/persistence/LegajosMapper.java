@@ -347,9 +347,12 @@ public interface LegajosMapper {
     public  void  addCargaFam(@Param("nId") String id, @Param("email") String email, @Param("name") String name, @Param("lastname") String lastname) throws DataAccessException;
 
 
-    @Select(value = "select carfamnom AS NOMAPE,carfamsec AS IDFAMILIAR,tipo_beneficio AS TIPBENEFICIO,cod_resol AS CODRESOL, titularcuent AS TITUTCUEN,carfamtel AS TELEF,tipopago AS TIPOPAGO,carfamben AS BENEF,numcuent AS NUMCUENT,TO_CHAR(carfamfecnac,'DD/MM/YYYY' ) AS FAMFECH,carfamdep AS DEP,carfarestciv AS ESTADOCIVIL,carfamnumessal AS NUMSEGU,carfamdocid as TIPDOC,carfampar AS IDPARENT,carfamdir AS DIREC,desc_paren AS PARENT,des_doc_id AS DOC," +
+    @Select(value = "select carfamnom AS NOMAPE,carfamsec AS IDFAMILIAR,tipo_beneficio AS TIPBENEFICIO,cod_resol AS CODRESOL, titularcuent AS TITUTCUEN," +
+            "carfamtel AS TELEF,tipopago AS TIPOPAGO,carfamben AS BENEF,numcuent AS NUMCUENT,TO_CHAR(carfamfecnac,'DD/MM/YYYY' ) AS FAMFECH,carfamdep AS DEP," +
+            "carfarestciv AS ESTADOCIVIL,carfamnumessal AS NUMSEGU,carfamdocid as TIPDOC,carfampar AS IDPARENT,carfamdir AS DIREC,desc_paren AS PARENT,des_doc_id AS DOC," +
             "carfamdni AS NUMDOC,carfamsex AS SEX " +
-            "from(( ( DATAPERLIQU.tb_carga_familiar inner join  DATAPERLIQU.tipo_parentesco on( dataperliqu.tb_carga_familiar.carfampar =dataperliqu.tipo_parentesco.cod_paren))left join DATAPERSUEL.doc_identidad on dataperliqu.tb_carga_familiar.carfamdocid= datapersuel.doc_identidad.cod_doc_id)left join DATAPERLIQU.tb_beneficiario on carfamsec=codbenf)where CARFAMCODSER=#{dni}")
+            "from(( ( DATAPERLIQU.tb_carga_familiar inner join  DATAPERLIQU.tipo_parentesco on( dataperliqu.tb_carga_familiar.carfampar =dataperliqu.tipo_parentesco.cod_paren))" +
+            " left join DATAPERSUEL.doc_identidad on dataperliqu.tb_carga_familiar.carfamdocid= datapersuel.doc_identidad.cod_doc_id)left join DATAPERLIQU.tb_beneficiario on carfamsec=codbenf)where CARFAMCODSER=#{dni}")
     @Results(value = {
 
             @Result(javaType = LegajosCargaFamiliar.class),
@@ -431,4 +434,139 @@ public interface LegajosMapper {
 
     })
     List<LegajosCargaFamiliar> validarEditDocumento(@Param("numdoc") String numdoc,@Param("carfamsec") String carfamsec);
+
+    @Select(value = "select ser.ser_cod,ser.ser_ape_pat, ser.ser_ape_mat,ser.ser_nom, doc.des_doc_id, ser.SER_DOC_ID_ACT, (case when ser.ser_sexo='M' then 'MASCULINO' else 'FEMENINO' end) as ser_sexo, " +
+            "ci.DESC_ESTCIV,TO_CHAR(ser.SER_FECH_NAC ,'DD/MM/YYYY') AS SER_FECH_NAC, ser.SER_UBI_PAIS_NAC, ser.SER_UBI_DEPT_NAC, ser.SER_UBI_PROV_NAC, ser.SER_UBI_DIST_NAC, ser.SER_DOM, ser.SER_TELEF, ser.SER_TELEF_CELL, ser.SER_MAIL " +
+            "from DATAPERSUEL.servidor ser left join DATAPERSUEL.doc_identidad doc on ser.SER_TIP_DOC_ID_ACT=doc.cod_doc_id " +
+            "left join DATAPERSUEL.estado_civil ci on ser.SER_ECV_ACT=ci.cod_estciv " +
+            "where trim(ser_cod)=trim(#{codSerPer})")
+    @Results(value = {
+            @Result(javaType = Servidor.class),
+            @Result(property = "codigo",column = "ser_cod"),
+            @Result(property = "paterno",column = "ser_ape_pat"),
+            @Result(property = "materno",column = "ser_ape_mat"),
+            @Result(property = "nombre",column = "ser_nom"),
+            @Result(property = "docTipDescri",column = "des_doc_id"),
+            @Result(property = "numDoc",column = "SER_DOC_ID_ACT"),
+            @Result(property = "sexDescrip",column = "ser_sexo"),
+            @Result(property = "estCivDescrip",column = "DESC_ESTCIV"),
+            @Result(property = "nacimiento",column = "SER_FECH_NAC"),
+            @Result(property = "paisDescri",column = "SER_UBI_PAIS_NAC"),
+            @Result(property = "deparDescri",column = "SER_UBI_DEPT_NAC"),
+            @Result(property = "provinDescri",column = "SER_UBI_PROV_NAC"),
+            @Result(property = "distriDescri",column = "SER_UBI_DIST_NAC"),
+            @Result(property = "domicilio",column = "SER_DOM"),
+            @Result(property = "telefono",column = "SER_TELEF"),
+            @Result(property = "celular",column = "SER_TELEF_CELL"),
+            @Result(property = "correo",column = "SER_MAIL")
+    })
+    List<Servidor> getDatosPersonalesServidor(@Param("codSerPer") String codSerPer);
+
+    @Select(value = "select reT.restranum,reT.tipresmotcod,mo.tipresmotdes,to_char(re.restrafec,'dd/mm/yyyy') as restrafec,to_char(reT.restrafecini,'dd/mm/yyyy') as restrafecini," +
+            " to_char(reT.restrafecfin,'dd/mm/yyyy') as restrafecfin,reT.restrades, " +
+            "(reT.restrafecfin-reT.restrafecini) as PeriodoDias " +
+            "from DATAPERLIQU.resol_trabajador_detalle_id reT " +
+            "left join DATAPERLIQU.tipores_motivo mo on ret.tipresmotcod=mo.tipresmotcod " +
+            "left join DATAPERLIQU.resolucion_id re on ret.restranum=re.restranum " +
+            "where trim(ser_cod)=trim(#{codSerPer}) " +
+            "and mo.tipresmotclas in "+
+            "(select tipcodleg from DATAPERLIQU.tipo_legajo where estado=1 and agrupacion=1)")
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "numero_resol",column = "restranum"),
+            @Result(property = "motivo",column = "tipresmotcod"),
+            @Result(property = "motivodesc",column = "tipresmotdes"),
+            @Result(property = "fecha_expedicion",column = "restrafec"),
+            @Result(property = "fecha_inicio",column = "restrafecini"),
+            @Result(property = "fecha_fin",column = "restrafecfin"),
+            @Result(property = "obliga",column = "restrades"),
+            @Result(property = "periodoDias",column = "PeriodoDias"),
+
+    })
+    List<Resolucion> getResolsxMotivoPers(@Param("codSerPer") String codSerPer);
+
+    @Select(value = "select reT.restranum,reT.tipresmotcod,mo.tipresmotdes, to_char(re.restrafec,'dd/mm/yyyy') as restrafec,reT.restrades " +
+            "from DATAPERLIQU.resol_trabajador_detalle_id reT " +
+            "      left join DATAPERLIQU.tipores_motivo mo on ret.tipresmotcod=mo.tipresmotcod  " +
+            "      left join DATAPERLIQU.resolucion_id re on ret.restranum=re.restranum  " +
+            "      where trim(ser_cod)=trim(#{codSerPer}) and ret.NUM_SEREST=#{numserest} " +
+            "      and mo.tipresmotclas in  " +
+            "      (select tipcodleg from DATAPERLIQU.tipo_legajo where estado=1 and agrupacion=2)" )
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "numero_resol",column = "restranum"),
+            @Result(property = "motivo",column = "tipresmotcod"),
+            @Result(property = "motivodesc",column = "tipresmotdes"),
+            @Result(property = "fecha_expedicion",column = "restrafec"),
+            @Result(property = "obliga",column = "restrades"),
+
+    })
+    List<Resolucion> getBeneficiosXPers(@Param("codSerPer") String codSerPer,@Param("numserest") Integer numserest);
+
+    @Select(value = " select reT.restranum,reT.tipresmotcod,mo.tipresmotdes, to_char(re.restrafec,'dd/mm/yyyy') as restrafec,reT.restrades " +
+            "      from DATAPERLIQU.resol_trabajador_detalle_id reT " +
+            "      left join DATAPERLIQU.tipores_motivo mo on ret.tipresmotcod=mo.tipresmotcod  " +
+            "      left join DATAPERLIQU.resolucion_id re on ret.restranum=re.restranum  " +
+            "      where trim(ser_cod)=trim(#{codSerPer}) and reT.NUM_SEREST=#{numserest}" +
+            "      and mo.tipresmotclas in  " +
+            "      (select tipcodleg from DATAPERLIQU.tipo_legajo where estado=1 and agrupacion=3)" )
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "numero_resol",column = "restranum"),
+            @Result(property = "motivo",column = "tipresmotcod"),
+            @Result(property = "motivodesc",column = "tipresmotdes"),
+            @Result(property = "fecha_expedicion",column = "restrafec"),
+            @Result(property = "obliga",column = "restrades"),
+
+    })
+    List<Resolucion> getLicenciasXPers(@Param("codSerPer") String codSerPer,@Param("numserest") Integer numserest);
+
+    @Select(value = "select reT.restranum,reT.tipresmotcod,mo.tipresmotdes,to_char(re.restrafec,'dd/mm/yyyy') as restrafec," +
+            " to_char(reT.restrafecini,'dd/mm/yyyy') as restrafecini, to_char(reT.restrafecfin,'dd/mm/yyyy') as restrafecfin,reT.restrades, " +
+            "      (reT.restrafecfin-reT.restrafecini) as PeriodoDias " +
+            " from DATAPERLIQU.resol_trabajador_detalle_id reT " +
+            "      left join DATAPERLIQU.tipores_motivo mo on ret.tipresmotcod=mo.tipresmotcod  " +
+            "      left join DATAPERLIQU.resolucion_id re on ret.restranum=re.restranum  " +
+            "      where trim(ser_cod)=trim(#{codSerPer}) and reT.NUM_SEREST=#{numserest} " +
+            "      and mo.tipresmotclas in  " +
+            "      (select tipcodleg from DATAPERLIQU.tipo_legajo where estado=1 and agrupacion=4)" )
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "numero_resol",column = "restranum"),
+            @Result(property = "motivo",column = "tipresmotcod"),
+            @Result(property = "motivodesc",column = "tipresmotdes"),
+            @Result(property = "fecha_expedicion",column = "restrafec"),
+            @Result(property = "fecha_inicio",column = "restrafecini"),
+            @Result(property = "fecha_fin",column = "restrafecfin"),
+            @Result(property = "obliga",column = "restrades"),
+            @Result(property = "periodoDias",column = "PeriodoDias"),
+
+    })
+    List<Resolucion> getInvesXPers(@Param("codSerPer") String codSerPer,@Param("numserest") Integer numserest);
+
+
+    @Select(value = "select reT.restranum,reT.tipresmotcod,leg.tipdesleg as tipoLegajo,mo.tipresmotdes,to_char(re.restrafec,'dd/mm/yyyy') as restrafec," +
+            "   to_char(reT.restrafecini,'dd/mm/yyyy') as restrafecini, to_char(reT.restrafecfin,'dd/mm/yyyy') as restrafecfin,reT.restrades, " +
+            "      (reT.restrafecfin-reT.restrafecini) as PeriodoDias " +
+            "      from DATAPERLIQU.resol_trabajador_detalle_id reT " +
+            "      left join DATAPERLIQU.tipores_motivo mo on ret.tipresmotcod=mo.tipresmotcod " +
+            "      left join DATAPERLIQU.resolucion_id re on ret.restranum=re.restranum " +
+            "      left join DATAPERLIQU.tipo_legajo leg on mo.tipresmotclas=leg.tipcodleg " +
+            "      where trim(ser_cod)=trim(#{codSerPer}) and ret.NUM_SEREST=#{numserest}" +
+            "      and mo.tipresmotclas in " +
+            "     (select tipcodleg from DATAPERLIQU.tipo_legajo where estado=1 and (agrupacion=5 or agrupacion=6 or (agrupacion=1 and tipcodleg in(29,30))))" )
+    @Results(value = {
+            @Result(javaType = Resolucion.class),
+            @Result(property = "numero_resol",column = "restranum"),
+            @Result(property = "motivo",column = "tipresmotcod"),
+            @Result(property = "motivodesc",column = "tipresmotdes"),
+            @Result(property = "fecha_expedicion",column = "restrafec"),
+            @Result(property = "fecha_inicio",column = "restrafecini"),
+            @Result(property = "fecha_fin",column = "restrafecfin"),
+            @Result(property = "obliga",column = "restrades"),
+            @Result(property = "periodoDias",column = "PeriodoDias"),
+            @Result(property = "adicional",column = "tipoLegajo"),
+
+    })
+    List<Resolucion> getMeriDemeXPers(@Param("codSerPer") String codSerPer,@Param("numserest") Integer numserest);
 }

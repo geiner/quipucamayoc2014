@@ -1,14 +1,17 @@
 define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/form/view/servidores-table","apps/legajos/form/view/legajos-tipoestudio",
     "apps/legajos/form/view/nivel-estudio","apps/legajos/form/view/pais-estudio","apps/legajos/form/view/table-estudio","apps/legajos/form/view/estado-civil","apps/legajos/form/view/tipo-beneficio",
     "apps/legajos/form/view/tipo-documento","apps/legajos/form/view/tipo-parentesco","apps/legajos/form/view/carrera-especialidad","apps/legajos/form/view/idioma-estudiado",
-    "apps/legajos/form/model/addEstudio","apps/legajos/form/model/updateEstudio","apps/legajos/form/view/tipo-tiempo-servicio","apps/legajos/form/view/tipo-tiempo-reconoc","apps/legajos/form/view/resoluciones-table","apps/legajos/form/view/resoluciones-fam",
+    "apps/legajos/form/model/addEstudio","apps/legajos/form/model/updateEstudio","apps/legajos/form/view/tipo-tiempo-servicio","apps/legajos/form/view/tipo-tiempo-reconoc",
+     "apps/legajos/form/view/resoluciones-table","apps/legajos/form/view/resoluciones-fam",
     "apps/legajos/form/model/addResolucion","apps/legajos/form/view/table-resolucion","apps/legajos/form/model/updateResolucion","apps/legajos/form/view/table-familiar",
     "apps/legajos/form/view/tipo-pago","apps/legajos/form/model/addDatosFamiliares","apps/legajos/form/model/editDatosFamiliares","apps/legajos/form/model/beneficiario",
-    "apps/legajos/form/model/updateBenef","apps/legajos/form/view/validarDocumento","apps/legajos/form/view/validarEditDocument","lib/jquery.dataTables.min","lib/core/validXtrem","lib/bootstrap-datepicker","bootstrap"],
+    "apps/legajos/form/model/updateBenef","apps/legajos/form/view/validarDocumento","apps/legajos/form/view/validarEditDocument","apps/servidores/form/model/servidor",
+    "apps/legajos/form/view/resolsXMotivoPers-view",
+    "lib/jquery.dataTables.min","lib/core/validXtrem","lib/bootstrap-datepicker","bootstrap"],
     function (ErzaManager, layoutTpl,ServidoresTableView,TipoEstudioView,NivelEstudioView,PaisEstudioView,TableEstudioView,
               EstadoCivilView,TipoBeneficioView,TipDocumentView,TipoParentescoView,CarreraEstudioView,IdiomaEstudioView,AddEstudio,UpdateEstudio,
               TipoTiempoServicioView,TipoTiempoReconciView,ResolucionesTableView,ResolucionesFamiliar,AddResolucion,TableResolucionView,UpdateResolucion,TableFamiliarView,TipoPagoView,
-              AddDatosFami,EditDatosFami,AddBeneficiario,UpdateBenef,validarDocumento,validarEditDocumento) {
+              AddDatosFami,EditDatosFami,AddBeneficiario,UpdateBenef,validarDocumento,validarEditDocumento,DatoPersServidor,TableResoXMotivoView) {
     ErzaManager.module('LegajosApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
         View.Layout = Marionette.Layout.extend({
@@ -35,6 +38,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             validarExistenteDocument:new validarDocumento(),
             validarEditDocument:new validarEditDocumento(),
             tableFamiliarView:new TableFamiliarView(),
+            tablaResoXMotivoView :new TableResoXMotivoView(),
+
 
             tipo:'001',
             tipo_antiguo:null,
@@ -81,7 +86,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 tipoTiempoServicio:"#tipo_tpo_serv",
                 tipoReconocimientoServicio:"#tipo_reconocimiento",
                 tablaResoluciones:"#table-resol",
-                tipoPago:"#div_tip_pagos"
+                tipoPago:"#div_tip_pagos",
+                tablaResolsXmotivoPer:"#tabla_carreLab_per"
             },
 
             events: {
@@ -133,7 +139,9 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 "click #modalAV2":"avmodal2",
                 "click #navLegajos > li >a":"limpiar_navtab",
                 "click #modalBV":"bvmodal",
-                "click #legaj_fing_clos":"fun_close_fechIng"
+                "click #legaj_fing_clos":"fun_close_fechIng",
+
+                "dblclick #table-carrera-laboral > tbody > tr":"selectCarreraLaboral"
             },
 
             onRender: function(){
@@ -163,7 +171,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                     "datosfamiliares": new AddDatosFami(),
                     "beneficiarios":new AddBeneficiario(),
                     "editdatosfamiliares":new EditDatosFami(),
-                    "updatebenefam":new UpdateBenef()
+                    "updatebenefam":new UpdateBenef(),
+                    "datoPersServidor":new DatoPersServidor()
                 });
             },
 
@@ -312,6 +321,18 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                 $('#resol-table-fam').modal('hide');
             },
+            selectCarreraLaboral:function(e){
+                var clickedElement=$(e.currentTarget);
+                var descrip=clickedElement.attr("data2");
+                var tipo=clickedElement.children(':nth-child(2)').text();
+                var periodo=clickedElement.attr("data3");
+
+
+                $("#tipo_lab").val(tipo);
+                $("#periodo_lab").val(periodo);
+                $("#resolutivo").val(descrip);
+
+               },
             seleccionarServidor: function(e){
 
                 var self=this;
@@ -326,7 +347,10 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 var estado=clickedElement.children(':nth-child(6)').text();
 
                 var dni_emp=clickedElement.children(':nth-child(2)').text();
-
+                $("#sec_div").hide();
+                $("#tipo_lab").val("");
+                $("#periodo_lab").val("");
+                $("#resolutivo").val("");
                 $('#desc-servidor').text(nombre);
                 $("#text-cod").text(dni_emp);
                 $("#cod-ant").text(cod_ant);
@@ -386,6 +410,44 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                         }
                 });
                 this.tablaResoluciones.show(this.tableResolucionView);
+
+
+                this.model.get("datoPersServidor").url ="api/legajos/datPers/" + this.codigo;
+
+                var fetch_s = this.model.get("datoPersServidor").fetch({ data: $.param({"codigo": this.codigo}) });
+
+
+
+                fetch_s.done(function(){
+                    $("#legaj_nom_ape_per").val(self.model.get("datoPersServidor").get("paterno")+" "+self.model.get("datoPersServidor").get("materno")+" "+self.model.get("datoPersServidor").get("nombre"));
+                    $("#dni_per").val(self.model.get("datoPersServidor").get("docTipDescri"));
+                    $("#nro_dni_per").val(self.model.get("datoPersServidor").get("numDoc"));
+                    $("#sex_per").val(self.model.get("datoPersServidor").get("sexDescrip"));
+                    $("#est_civ_per").val(self.model.get("datoPersServidor").get("estCivDescrip"));
+                    $("#legaj_naci_per").val(self.model.get("datoPersServidor").get("nacimiento"));
+                    $("#pais_nac_per").val(self.model.get("datoPersServidor").get("paisDescri"));
+                    $("#depar_nac_per").val(self.model.get("datoPersServidor").get("deparDescri"));
+                    $("#prov_nac_per").val(self.model.get("datoPersServidor").get("provinDescri"));
+                    $("#dist_nac_per").val(self.model.get("datoPersServidor").get("distriDescri"));
+                    $("#domi_per").val(self.model.get("datoPersServidor").get("domicilio"));
+                    $("#fono_per").val(self.model.get("datoPersServidor").get("telefono"));
+                    $("#cel_per").val(self.model.get("datoPersServidor").get("celular"));
+                    $("#email_per").val(self.model.get("datoPersServidor").get("correo"));
+                });
+                //APARECE EN CARRERA LABORAL
+                this.tablaResoXMotivoView.fetchResolsXMotivoPers(this.codigo,
+                    function(){
+                        if(self.tablaResoXMotivoView.collection.length!=0){
+                            $("#table-carrera-laboral").dataTable();
+
+                            $('#table-carrera-laboral_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-carrera-laboral_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#table-carrera-laboral_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+                        }
+                    });
+                this.tablaResolsXmotivoPer.show(this.tablaResoXMotivoView);
 
 
 

@@ -298,4 +298,47 @@ public class LegajosController {
 
         return "";
     }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/datPers/{codSerPer}")
+    @ResponseBody
+    public Servidor getDatosPersonalesServidor(@PathVariable(value = "codSerPer") String codSerPer){
+
+        return legajosService.getDatosPersonalesServidor(codSerPer).get(0);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/resolsMotivo/{codSerPer}")
+    @ResponseBody
+    public List<Resolucion> getResolsxMotivoPers(@PathVariable(value = "codSerPer") String codSerPer){
+
+        return legajosService.getResolsxMotivoPers(codSerPer) ;
+    }
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/benefPers/{codSerPer}/{numserest}")
+    @ResponseBody
+    public List<Resolucion> getBeneficiosXPers(@PathVariable(value = "codSerPer") String codSerPer,@PathVariable(value = "numserest") Integer numserest){
+
+        return legajosService.getBeneficiosXPers(codSerPer,numserest) ;
+    }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/licPers/{codSerPer}/{numserest}")
+    @ResponseBody
+    public List<Resolucion> getLicenciasXPers(@PathVariable(value = "codSerPer") String codSerPer,@PathVariable(value = "numserest") Integer numserest){
+
+        return legajosService.getLicenciasXPers(codSerPer,numserest);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/invesPers/{codSerPer}/{numserest}")
+    @ResponseBody
+    public List<Resolucion> getInvesXPers(@PathVariable(value = "codSerPer") String codSerPer,@PathVariable(value = "numserest") Integer numserest){
+
+        return legajosService.getInvesXPers(codSerPer,numserest);
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/meriDemePers/{codSerPer}/{numserest}")
+    @ResponseBody
+    public List<Resolucion> getMeriDemeXPers(@PathVariable(value = "codSerPer") String codSerPer,@PathVariable(value = "numserest") Integer numserest){
+
+        return legajosService.getMeriDemeXPers(codSerPer,numserest);
+
+    }
 }

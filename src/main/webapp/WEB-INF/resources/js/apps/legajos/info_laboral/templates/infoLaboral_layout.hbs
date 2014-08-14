@@ -1,0 +1,465 @@
+<fieldset class="avgrund-contents">
+<legend>Legajos</legend>
+
+<div id="fam-advertencia" class="alert" style="text-align: center; display: none;"></div>
+
+
+<div class="tabbable tabs-left" id="tabLegajos">
+<ul class="nav nav-tabs" id="navLegajos">
+    <li class="active"><a href="#lF" data-toggle="tab">Beneficios</a></li>
+    <li class=""><a href="#lG" data-toggle="tab">Licencias</a></li>
+    <li class=""><a href="#lI" data-toggle="tab">Inves. y Publics.</a></li>
+    <li class=""><a href="#lH" data-toggle="tab">Méritos y Deméritos</a></li>
+   <!-- <li class=""><a href="#lD" data-toggle="tab">T y R de Servicio</a></li>-->
+
+
+    <button id="search" class="btn btn-primary pull-right"  type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
+</ul>
+<div class="tab-content">
+<br>
+<div class="row form-group" id="block-descr" style="display: none;">
+    <div class="col-md-2">
+        <strong style="font-size: 15px;">DNI:<strong id="text-cod" style="font-size: 15px;color: #00585f;"></strong></strong>
+    </div>
+    <div class="col-md-4">
+        <strong style="font-size: 15px;">Servidor:<strong id="desc-servidor" style="font-size: 15px; color: #00585f;"></strong></strong>
+    </div>
+    <div class="col-md-3">
+        <strong style="font-size: 15px;">Cod Antiguo:<strong id="cod-ant" style="font-size: 15px; color: #00585f;"></strong></strong>
+
+    </div>
+    <div class="col-md-3">
+        <strong style="font-size: 15px;">Estado:<strong id="estado" style="font-size: 15px; color: #00585f;"></strong></strong>
+
+    </div>
+
+    <br>
+</div>
+
+
+
+<div class="tab-pane active" id="lF">
+
+    <div class="row">
+        <div class="col-md-5">
+            <fieldset>
+                <legend>Beneficios</legend>
+                <form class="form-horizontal" id="form_tabla_benefic_per">
+                    <div id="tabla_benefic_per">
+
+                    </div>
+                </form>
+                <div id="sec_div" style="background: #f5f5f5;height: 482%;color: #B6D8C9;margin-top: 6.3%;width: 93%;text-align: center;padding-top: 19%;position: absolute;border: 1px solid #e3e3e3;">
+                    <span style=" font-size: 31px;">Seleccione Servidor</span>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="col-md-7">
+            <fieldset>
+                <legend>Detalle</legend>
+
+                <form class="form-horizontal well" id="carrera_laboral" style="margin-top:4.6%;" onsubmit="return false">
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_depen_carre">
+                            <label class="col-md-3 control-label" for="depen_carr">Tipo</label>
+
+                            <div class="col-md-8">
+                                <input type="text" id="tipo_benf" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_period_carre">
+                            <label class="col-md-3 control-label" for="perio_carr">Periodo</label>
+                            <div class="col-md-8">
+                                <input type="text" id="periodo_benf" class="form-control" disabled="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_resol_carre">
+                            <label class="col-md-3 control-label" for="resolu_carr">Resolutivo</label>
+                            <div class="col-md-7">
+
+                                <textarea type="text" id="resol_benf" class="form-control" rows="4" style="width: 116%;" disabled=""></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </fieldset>
+
+        </div>
+    </div>
+
+
+</div>
+<!--
+<div class="tab-pane " id="lD">
+
+
+    <form class="form-horizontal" id="">
+        <div class="row form-group" >
+            <div class="col-md-3">
+                <label class="control-label" style="margin-left: 48%;"> Tipo</label>
+            </div>
+            <div class="col-md-3">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tipos_servicio" id="option_ts" value="001" checked="">
+                        Tiempo de Servicio
+                    </label>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tipos_servicio" id="option_rts" value="002">
+                        Reconocimiento de tiempo de Servicio
+                    </label>
+
+                </div>
+            </div>
+        </div>
+        <br>
+    </form>
+
+    <form class="form-horizontal well" id="por_tiempo_servicio" onsubmit="return false">
+        <div class="row form-group">
+            <div class="col-md-6" id="tipo_tpo_serv">
+
+            </div>
+            <div class="col-md-6">
+                <label class="col-md-5 control-label">Fecha Ingreso <span style="color:red;">*</span> </label>
+
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input type="text" value="" id="f_ingreso" class="form-control" placeholder="Ejm. 11/05/2004" readonly="" >
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="legaj_ing_show"><span class="glyphicon glyphicon-calendar"></span></button>
+                            <button class="btn btn-default" type="button" id="legaj_fing_clos"><span class="glyphicon glyphicon-refresh"></span></button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-6" id="sel_resol">
+                <label class="col-md-5 control-label">Resolucion  <span style="color: red;">*</span></label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input  id="resolucion" type="text"  class="form-control"  readonly>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="col-md-5 control-label">Fecha Resolucion  <span style="color: red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" class="form-control" id="fecha_resolt" disabled="disabled">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="form-actions" id="form_insert_ts" style="text-align:center;">
+            <button type="button" class="btn btn-primary left" id="save_resolucion">Guardar</button>
+            <button type="reset" class="btn  btn-default left" id="cancel_resolucion">Cancelar</button>
+        </div>
+        <div class="form-actions" id="form_update_ts" style="text-align:center;">
+            <button type="button" class="btn btn-primary left" id="update_resolucion">Actualizar</button>
+            <button type="reset" class="btn btn-default left" id="cancel_resolucion">Cancelar</button>
+        </div>
+    </form>
+
+    <form class="form-horizontal well" id="por_reconocimiento" onsubmit="return false">
+        <div class="row form-group">
+            <div class="col-md-6" id="tipo_reconocimiento">
+
+            </div>
+
+            <div class="col-md-6">
+                <label  class="col-md-5 control-label">Fecha Reconocimiento <span style="color: red;">*</span></label>
+
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input  type="text" value="" id="f_recono" class="form-control" placeholder="Ejm. 11/05/2004" readonly="" >
+                            <span class="input-group-btn">
+                                   <button class="btn btn-default" type="button" id="legaj_rec_show" ><span class="glyphicon glyphicon-calendar"></span></button>
+                            <button class="btn btn-default" type="button" id="legaj_rec_clos"><span class="glyphicon glyphicon-refresh"></span></button>
+                            </span>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-md-6" id="sel_resol">
+                <label class="col-md-5 control-label">Resolucion <span style="color: red;">*</span></label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input  id="resolucion_recono" class="form-control" type="text"  readonly>
+                            <span class="input-group-btn">
+
+                            <button class="btn btn-default" type="button" id="bus_resol"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="col-md-5 control-label">Fecha de Resolucion <span style="color: red;">*</span> </label>
+
+                <div class="col-md-7">
+                    <input type="text" class="form-control" id="fecha_resolt_recono" disabled="disabled">
+                </div>
+            </div>
+        </div>
+
+        <div class="row forml-group">
+            <div class="col-md-3" style="margin-left: 10.4%;">
+                <label class="col-md-5 control-label">Año <span style="color: red;">*</span> </label>
+
+                <div class="col-md-7">
+                    <input type="text" id="fecha_resolt_anio" class="form-control" >
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-md-5 control-label">Mes <span style="color: red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" id="fecha_resolt_mes" class="form-control" >
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-md-5 control-label"  >Dias <span style="color: red;">*</span></label>
+
+                <div class="col-md-7">
+                    <input type="text" id="fecha_resolt_dia"class="form-control">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="form-actions" id="form_insert_rts" style="text-align:center;">
+            <button type="submit" class="btn btn-primary left" id="save_resolucion">Guardar</button>
+            <button type="reset" class="btn btn-default left" id="cancel_resolucion">Cancelar</button>
+        </div>
+        <div class="form-actions" id="form_update_rts" style="text-align:center;">
+            <button type="submit" class="btn btn-primary left" id="update_resolucion">Actualizar</button>
+            <button type="reset" class="btn btn-default left" id="cancel_resolucion">Cancelar</button>
+        </div>
+
+    </form>
+
+    <form class="form-horizontal" id="form_tabla_resol">
+        <div id="table-resol">
+
+        </div>
+    </form>
+
+</div>
+
+-->
+
+<div class="tab-pane" id="lG">
+
+    <div class="row">
+        <div class="col-md-5">
+            <fieldset>
+                <legend>Licencias</legend>
+                <form class="form-horizontal" id="form_tabla_lic_per">
+                    <div id="tabla_lic_per">
+
+                    </div>
+                </form>
+                <div id="sec_licen" style="background: #f5f5f5;height: 482%;color: #B6D8C9;margin-top: 6.3%;width: 93%;text-align: center;padding-top: 19%;position: absolute;border: 1px solid #e3e3e3;">
+                    <span style=" font-size: 31px;">Seleccione Servidor</span>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-7">
+            <fieldset>
+                <legend>Detalle</legend>
+
+                <form class="form-horizontal well" id="carrera_laboral" style="margin-top:4.6%;" onsubmit="return false">
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_depen_carre">
+                            <label class="col-md-3 control-label" >Tipo</label>
+
+                            <div class="col-md-8">
+                                <input type="text" id="tipo_licen" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_period_carre">
+                            <label class="col-md-3 control-label">Periodo</label>
+                            <div class="col-md-8">
+                                <input type="text" id="periodo_licen" class="form-control" disabled="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_resol_carre">
+                            <label class="col-md-3 control-label">Resolutivo</label>
+                            <div class="col-md-7">
+
+                                <textarea type="text" id="resol_licen" class="form-control" rows="4" style="width: 116%;" disabled=""></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </fieldset>
+        </div>
+    </div>
+
+</div>
+
+<div class="tab-pane" id="lI">
+
+    <div class="row">
+        <div class="col-md-5">
+            <fieldset>
+                <legend>Investigaciones y publicaciones</legend>
+                <form class="form-horizontal" id="form_tabla_inves_per">
+                    <div id="tabla_inves_per">
+
+                    </div>
+                </form>
+                <div id="sec_invest" style="background: #f5f5f5;height: 482%;color: #B6D8C9;margin-top: 6.3%;width: 93%;text-align: center;padding-top: 19%;position: absolute;border: 1px solid #e3e3e3;">
+                    <span style=" font-size: 31px;">Seleccione Servidor</span>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-7">
+            <fieldset>
+                <legend>Detalle</legend>
+                <form class="form-horizontal well" id="carrera_laboral" style="margin-top:4.6%;" >
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_depen_carre">
+                            <label class="col-md-3 control-label" >Tipo</label>
+
+                            <div class="col-md-8">
+                                <input type="text" id="tipo_invest" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_period_carre">
+                            <label class="col-md-3 control-label">Periodo</label>
+                            <div class="col-md-8">
+                                <input type="text" id="periodo_invest" class="form-control" disabled="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_resol_carre">
+                            <label class="col-md-3 control-label">Resolutivo</label>
+                            <div class="col-md-7">
+
+                                <textarea type="text" id="resol_invest" class="form-control" rows="4" style="width: 116%;" disabled=""></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </fieldset>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="tab-pane" id="lH">
+
+    <div class="row">
+        <div class="col-md-5">
+            <fieldset>
+                <legend>Méritos y deméritos</legend>
+                <form class="form-horizontal" id="form_tabla_meriDeme_per">
+                    <div id="tabla_meriDeme_per">
+
+                    </div>
+                </form>
+                <div id="sec_merito" style="background: #f5f5f5;height: 482%;color: #B6D8C9;margin-top: 6.3%;width: 93%;text-align: center;padding-top: 19%;position: absolute;border: 1px solid #e3e3e3;">
+                    <span style=" font-size: 31px;">Seleccione Servidor</span>
+                </div>
+            </fieldset>
+
+        </div>
+        <div class="col-md-7">
+            <fieldset>
+                <legend>Detalle</legend>
+                <form class="form-horizontal well" id="carrera_laboral" style="margin-top:4.6%;" >
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_depen_carre">
+                            <label class="col-md-3 control-label" >Tipo</label>
+
+                            <div class="col-md-8">
+                                <input type="text" id="tipo_merito" class="form-control" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_period_carre">
+                            <label class="col-md-3 control-label">Periodo</label>
+                            <div class="col-md-8">
+                                <input type="text" id="periodo_merito" class="form-control" disabled="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12" id="div_resol_carre">
+                            <label class="col-md-3 control-label">Resolutivo</label>
+                            <div class="col-md-7">
+
+                                <textarea type="text" id="resol_merito" class="form-control" rows="4" style="width: 116%;" disabled=""></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </fieldset>
+        </div>
+    </div>
+
+
+</div>
+
+
+</div>
+</div>
+
+<div id="serv-table-modal1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+</fieldset>

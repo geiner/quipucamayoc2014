@@ -37,7 +37,10 @@ public class LegajosServiceImpl implements LegajosService{
         System.out.println(legajosMapper.TipEstudio().size());
         return legajosMapper.TipEstudio();
     }
-
+    @Override
+    public List<Servidor> getDatosPersonalesServidor(String codSerPer) {
+        return legajosMapper.getDatosPersonalesServidor(codSerPer);  //To change body of implemented methods use File | Settings | File Templates.
+    }
     @Override
     public List<Legajos> nivelEstudio(String tipo) {
         return legajosMapper.nivelEstudio(tipo);
@@ -197,5 +200,27 @@ public class LegajosServiceImpl implements LegajosService{
     public List<LegajosCargaFamiliar> validarEditDocumento(String numdoc, String carfamsec) {
         return legajosMapper.validarEditDocumento(numdoc,carfamsec);
     }
+    @Override
+    public List<Resolucion> getResolsxMotivoPers(String codSerPer) {
+        return legajosMapper.getResolsxMotivoPers(codSerPer);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    @Override
+    public List<Resolucion> getBeneficiosXPers(String codSerPer,Integer numserest) {
+        return legajosMapper.getBeneficiosXPers(codSerPer,numserest);  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
+    @Override
+    public List<Resolucion> getLicenciasXPers(String codSerPer,Integer numserest) {
+        return legajosMapper.getLicenciasXPers(codSerPer,numserest);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Resolucion> getInvesXPers(String codSerPer,Integer numserest) {
+        return legajosMapper.getInvesXPers(codSerPer,numserest);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Resolucion> getMeriDemeXPers(String codSerPer,Integer numserest) {
+        return legajosMapper.getMeriDemeXPers(codSerPer,numserest);  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

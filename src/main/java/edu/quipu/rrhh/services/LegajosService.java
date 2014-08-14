@@ -33,6 +33,8 @@ public interface LegajosService {
 
     List<TiempoServicio> TipoTiempoServicio(String tipo);
 
+    List<Servidor> getDatosPersonalesServidor(String codSerPer);
+
     List<Resoluciones> buscarResoluciones(String codigo,Integer numserest);
 
     void addResolucion(Resoluciones resoluciones);
@@ -60,4 +62,10 @@ public interface LegajosService {
     void removeBeneficiario(Integer idfam);
 
    List<LegajosCargaFamiliar> validarEditDocumento(String numdoc, String carfamsec);
+
+    List<Resolucion> getResolsxMotivoPers(String codSerPer);
+    List<Resolucion> getBeneficiosXPers(String codSerPer,Integer numserest);
+    List<Resolucion> getLicenciasXPers(String codSerPer,Integer numserest);
+    List<Resolucion> getInvesXPers(String codSerPer,Integer numserest);
+    List<Resolucion> getMeriDemeXPers(String codSerPer,Integer numserest);
 }

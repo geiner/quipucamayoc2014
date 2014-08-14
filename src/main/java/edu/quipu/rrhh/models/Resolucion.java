@@ -12,6 +12,17 @@ public class Resolucion {
     private String obliga;
     private String adicional;
 
+    //variables creadas para legajos:carrera laboral
+    private String periodoDias;
+
+    public String getPeriodoDias() {
+        return periodoDias;
+    }
+
+    public void setPeriodoDias(String periodoDias) {
+        this.periodoDias = periodoDias;
+    }
+
     public String getMotivodesc() {
         return motivodesc;
     }
