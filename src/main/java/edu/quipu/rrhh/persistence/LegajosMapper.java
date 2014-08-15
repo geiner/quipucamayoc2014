@@ -435,11 +435,16 @@ public interface LegajosMapper {
     })
     List<LegajosCargaFamiliar> validarEditDocumento(@Param("numdoc") String numdoc,@Param("carfamsec") String carfamsec);
 
-    @Select(value = "select ser.ser_cod,ser.ser_ape_pat, ser.ser_ape_mat,ser.ser_nom, doc.des_doc_id, ser.SER_DOC_ID_ACT, (case when ser.ser_sexo='M' then 'MASCULINO' else 'FEMENINO' end) as ser_sexo, " +
-            "ci.DESC_ESTCIV,TO_CHAR(ser.SER_FECH_NAC ,'DD/MM/YYYY') AS SER_FECH_NAC, ser.SER_UBI_PAIS_NAC, ser.SER_UBI_DEPT_NAC, ser.SER_UBI_PROV_NAC, ser.SER_UBI_DIST_NAC, ser.SER_DOM, ser.SER_TELEF, ser.SER_TELEF_CELL, ser.SER_MAIL " +
-            "from DATAPERSUEL.servidor ser left join DATAPERSUEL.doc_identidad doc on ser.SER_TIP_DOC_ID_ACT=doc.cod_doc_id " +
-            "left join DATAPERSUEL.estado_civil ci on ser.SER_ECV_ACT=ci.cod_estciv " +
-            "where trim(ser_cod)=trim(#{codSerPer})")
+    @Select(value = "select ser.ser_cod,ser.ser_ape_pat, ser.ser_ape_mat,ser.ser_nom, doc.des_doc_id, ser.SER_DOC_ID_ACT, (case when ser.ser_sexo='M' then 'MASCULINO' else 'FEMENINO' end) as ser_sexo, \n" +
+            "            ci.DESC_ESTCIV,TO_CHAR(ser.SER_FECH_NAC ,'DD/MM/YYYY') AS SER_FECH_NAC, pais.T_NACNOM as SER_UBI_PAIS_NAC,dep.T_UBI_DES as SER_UBI_DEPT_NAC,prov.T_UBI_DES as SER_UBI_PROV_NAC,distr.T_UBI_DES as SER_UBI_DIST_NAC,\n" +
+            "            ser.SER_DOM,ser.SER_TELEF, ser.SER_TELEF_CELL, ser.SER_MAIL \n" +
+            "            from DATAPERSUEL.servidor ser left join DATAPERSUEL.doc_identidad doc on ser.SER_TIP_DOC_ID_ACT=doc.cod_doc_id \n" +
+            "            left join DATAPERSUEL.estado_civil ci on ser.SER_ECV_ACT=ci.cod_estciv\n" +
+            "            left join TB_NACIONALIDAD pais on ser.SER_UBI_PAIS_NAC=pais.C_NACCOD\n" +
+            "            left join TB_UBIGEO dep on ser.SER_UBI_DEPT_NAC=dep.C_UBI_ID\n" +
+            "            left join TB_UBIGEO prov on ser.SER_UBI_PROV_NAC=prov.C_UBI_ID\n" +
+            "            left join TB_UBIGEO distr on ser.SER_UBI_DIST_NAC=distr.C_UBI_ID " +
+            "            where trim(ser_cod)=trim(#{codSerPer})")
     @Results(value = {
             @Result(javaType = Servidor.class),
             @Result(property = "codigo",column = "ser_cod"),

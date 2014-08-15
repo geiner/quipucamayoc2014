@@ -141,7 +141,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 "click #modalBV":"bvmodal",
                 "click #legaj_fing_clos":"fun_close_fechIng",
 
-                "dblclick #table-carrera-laboral > tbody > tr":"selectCarreraLaboral"
+                "click #table-carrera-laboral > tbody > tr":"selectCarreraLaboral"
             },
 
             onRender: function(){

@@ -31,10 +31,10 @@ define(['app', 'hbs!apps/legajos/info_laboral/templates/infoLaboral_layout',"app
                 events:{
                     "click #search": "invokeModalServ",
                     "dblclick #table-servidores2 > tbody > tr ": "seleccionarServidor",
-                    "dblclick #table-beneficios_per > tbody > tr":"selectBenf",
-                    "dblclick #table-licencia_per > tbody > tr":"selectLicencia",
-                    "dblclick #table-inves_per > tbody > tr":"selectInvestigacion",
-                    "dblclick #table-meriDeme_per > tbody > tr":"selectMerito"
+                    "click #table-beneficios_per > tbody > tr":"selectBenf",
+                    "click #table-licencia_per > tbody > tr":"selectLicencia",
+                    "click #table-inves_per > tbody > tr":"selectInvestigacion",
+                    "click #table-meriDeme_per > tbody > tr":"selectMerito"
                 },
                 onRender:function(){
                     this.initialFetch();
