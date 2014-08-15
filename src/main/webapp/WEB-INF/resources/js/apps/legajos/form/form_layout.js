@@ -214,6 +214,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
 
             invokeModalServ: function(e){
+                $('#cancel_estudio').click();
+                $('#cancel_fam').click();
                 var self=this;
                 var clickedElement=$(e.currentTarget);
 
@@ -238,8 +240,6 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                     $('#serv-table-modal1').modal();
                 }, 2000);
-
-
 
             },
 
