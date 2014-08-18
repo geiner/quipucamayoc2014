@@ -1,0 +1,78 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+            <div id="noFechas" class="alert alert-warning" style="text-align: center; display:none;"><strong>No indica Fechas.Se tomarán todas las fechas existentes.</strong></div>
+            <div id="noFechIni" class="alert alert-warning" style="text-align: center; display:none;"><strong>No indica Fecha Inicial.Se tomarán las fechas menores a la Fecha Final ingresada.</strong></div>
+            <div id="noFechFin" class="alert alert-warning" style="text-align: center; display:none;"><strong>No indica Fecha Final.Se tomarán las fechas mayores a la Fecha Inicial ingresada.</strong></div>
+            <div id="noTipoNiEstado" class="alert alert-warning" style="text-align: center; display:none;"><strong>Usted no seleccionó ningun Tipo, ni Estado.Se tomarán todos en ambos casos.</strong></div>
+            <div id="noTipo" class="alert alert-warning" style="text-align: center; display:none;"><strong>Usted no seleccionó ningun Tipo.Se tomarán todos.</strong></div>
+            <div id="noEstado" class="alert alert-warning" style="text-align: center; display:none;"><strong>Usted no seleccionó ningun Estado.Se tomarán todos.</strong></div>
+
+            <h4 class="modal-title" id="myModalLabel">Seleccionar uno o más tipos de cambio</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="chtodos" class="todos" value="9" checked>
+                        Todos
+                    </label>
+                </div>
+            </div>
+            <div class="row form-group">
+
+                <div class="col-md-4">
+                <label class="checkbox-inline" >
+                    <input type="checkbox" id="chestado" class="checkitos" value="1">
+                    Estado en Planilla
+                </label>
+                </div>
+
+                <div class="col-md-4">
+                <label class="checkbox-inline" >
+                    <input type="checkbox" id="chcateg" class="checkitos"  value="2">
+                    Categoria
+                </label>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="chdep" class="checkitos"  value="3">
+                        Dependencia
+                    </label>
+                </div>
+
+
+            </div>
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="chreg" class="checkitos"  value="4">
+                        Régimen Pensionario
+                    </label>
+                </div>
+
+
+                <div class="col-md-4">
+                <label class="checkbox-inline" >
+                    <input type="checkbox" id="chaseg" class="checkitos"  value="6">
+                    Entidad Aseguradora
+                </label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6" >
+                    <a class="btn btn-primary " id="mostrar_serv" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Listar</a>
+                </div>
+
+                <div class="input-group  pull-right " style="margin-right: 2%" >
+                    <a class="btn btn-primary pull-right" id="cancel_seleccion" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-new-window"></span> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

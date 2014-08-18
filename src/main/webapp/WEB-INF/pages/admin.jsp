@@ -122,6 +122,9 @@
 
                             <li><a href="#cuadro_nominal">Cuadro Nominativo</a></li>
                         </sec:authorize>
+                        <sec:authorize access="hasAnyRole('${userAccess}61')">
+                            <li><a href="#reportes">Reportes</a></li>
+                        </sec:authorize>
                     </ul>
                 </li>
 

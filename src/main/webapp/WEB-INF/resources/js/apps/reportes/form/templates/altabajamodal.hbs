@@ -1,0 +1,50 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <!--mensajes JEAN -->
+            <div id="tipoServidor_ccp_vacio" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó un tipo de trabajador, se tomarán todos</strong></div>
+            <div id="tipoEstado_ccp_vacio" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó un tipo de estado, se tomarán todos</strong></div>
+            <div id="tipoSer_Est_cpp_vacios" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó tipo de trabajador ni tipo de estado, se tomarán todos</strong></div>
+            <div id="fecha_fin_cpp_vacio" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de fin, se tomará hasta la fecha actual</strong></div>
+            <div id="fecha_inicio_cpp_vacio" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de inicio, se tomará desde la fecha inicial</strong></div>
+            <div id="fecha_ini_fin_cpp_vacios" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de inicio ni fin, se tomará todas las fechas</strong></div>
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Alta</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="todos_alta_ccp" class="todosCCP" value="99" hidden="hidden">
+                       <!-- TODOS -->
+                    </label>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" hidden="hidden" >
+                        <input type="checkbox" id="activo" class="checkCCP" value="1" checked hidden="hidden">
+                        <!--  ACTIVO -->
+                      </label>
+                  </div>
+              </div>
+              <div class="row form-group">
+
+
+              </div>
+              <div class="row form-group">
+                  <div class="col-md-2" >
+                      <a class="btn btn-primary " id="mostrar_serv_cond_pla1" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Listar</a>
+                  </div>
+
+                  <div class="input-group  pull-right " style="margin-right: 2%" >
+                      <a class="btn btn-primary pull-right" id="cancelarCCP" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-new-window"></span> Cancelar</a>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </div>

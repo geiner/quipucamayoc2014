@@ -1,0 +1,646 @@
+<fieldset>
+   <legend>Reportes de Informacón del Servidor </legend>
+
+
+   <div id="errorFech" class="alert alert-warning" style="text-align: center; display:none;"><strong>Error... La Fecha Final es menor que la Fecha Inicial.</strong></div>
+   <div id="errorFechNac" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Incio Mayor que Fecha Fin</strong></div>
+   <div id="errorFechNacIV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Inicio Vacio</strong></div>
+   <div id="errorFechNacFV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Fin Vacio</strong></div>
+
+   <div id="errorFechIng" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Incio Mayor que Fin</strong></div>
+   <div id="errorFechIngIV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Inicio Vacio</strong></div>
+   <div id="errorFechIngFV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Fin Vacio</strong></div>
+   <div id="errorSel" class="alert alert-warning" style="text-align: center; display:none;"><strong>No ha Seleccionado</strong></div>
+
+
+
+
+
+   <div class="tabReport tabs-left" id="header_est_cod">
+       <ul class="nav nav-tabs">
+           <li class="active"><a href="#ccp" data-toggle="tab" class="tabUno">Cambios de la Condición en Planilla</a></li>
+           <li class=""><a href="#cis" data-toggle="tab" class="tabUno">Cambios en la Información del Servidor</a></li>
+           <li class=""><a href="#ias" data-toggle="tab" class="tabDos">Información Actual de los Servidores</a></li>
+           <a class="btn btn-primary pull-right" id="list_serv_cis" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
+
+       </ul>
+
+
+
+               <div class="tab-content" >
+
+               <br>
+               <div class="row form-group" id="datoServ" style="display: none;">
+                   <div class="col-md-2">
+                       <strong style="font-size: 13px;">DNI: <strong id="dniServ" style="font-size: 13px;color: #00585f;"></strong></strong>
+                   </div>
+                   <div class="col-md-4">
+                       <strong style="font-size: 13px;">Servidor: <strong id="nomServ" style="font-size: 13px;color: #00585f;"></strong></strong>
+                   </div>
+
+                   <div class="col-md-2">
+                       <strong style="font-size: 13px;">Cod Antiguo: <strong id="codAnt" style="font-size: 13px;color: #00585f;"> </strong> </strong>
+                   </div>
+                   <div class="col-md-2">
+                       <strong style="font-size: 13px;">Tipo: <strong id="tipTrabCCP" style="font-size:13px;color: #00585f; "></strong></strong>
+                   </div>
+                   <div class="col-md-2">
+                       <strong style="font-size: 13px;">Estado: <strong id="estServ" style="font-size:13px;color: #00585f; "></strong></strong>
+                   </div>
+               </div>
+
+               <div class="tab-pane active" id="ccp">
+                   <br>
+                   <form class="form-horizontal well" id="cambios_planilla" onsubmit="return">
+
+                       <div class="row form-group">
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>F. Inicio: </label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div class="input-group" style=" width: 91%">
+                                       <input type="text" value="" id="ingres_ini_plani" placeholder="Ejm. 11/05/2004" readonly
+                                              class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_ini_plani_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_ini_plani_refresh"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                                   </div>
+                                   <div id="help_nac" class='alert alert-error'
+                                        style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                               </div>
+                           </div>
+
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>F. Fin: </label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div class="input-group" style=" width: 91%">
+                                       <input type="text" value="" id="ingres_fin_plani" placeholder="Ejm. 11/05/2004" readonly
+                                              class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_fin_plani_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_fin_plani_refresh"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                                   </div>
+                                   <div id="help_nac" class='alert alert-error'
+                                        style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class="row form-group" id="tipYestCCP">
+
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>Tipo:</label>
+                                   <span style="color: red">*</span>
+                               </div>
+                               <div class="col-md-9" id="tiposervpla" >
+
+                               </div>
+
+                           </div>
+
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>Estado: </label>
+                               </div>
+                               <div class="col-md-9" id="tipoestpla">
+
+                               </div>
+                           </div>
+                       </div>
+
+                       <div class="row form-group">
+                           <div class="col-md-6">
+                               <div class="col-md-5">
+                                   <label>Condicion en Planilla: </label>
+                               </div>
+                               <div class="col-md-3" id="condpla" style="margin-left: -9%" >
+
+                                   <input type="radio" name=myradio value="1" id="cond_pla_alta">Alta(Activos)
+                                   <p>
+                                       <input type="radio" name=myradio value="2" id="cond_pla_baja">Bajas
+                                   </p>
+                               </div>
+
+                           </div>
+
+                       </div>
+                       <div class="row form-group">
+
+
+
+                           <div class="input-group  pull-left ">
+                               <a class="btn btn-primary pull-left" id="list_serv_pla_limpiar" data-target=".bs-example-modal-lg" style="margin-left: 60%"><span class="glyphicon glyphicon-refresh"></span> Limpiar</a>
+                           </div>
+                       </div>
+                   </form>
+                   <div class="input-group  pull-right " id="div_todos_trabajadores">
+                       <form action="api/reportes/condicionplanilla/reportecondplanilla/pdf"  method="POST" id="form_reporte_cond_pla" style="">
+                           <input type="hidden" style="display: none" id="sanc_disc_form" name="sanc_disc" >
+                           <input type="hidden" style="display: none" id="susp_ina_form" name="susp_ina" >
+                           <input type="hidden" style="display: none" id="cese_form" name="cese" >
+                           <input type="hidden" style="display: none" id="fallecido_form" name="fallecido" >
+                           <input type="hidden" style="display: none" id="funmsm_form" name="funmsm" >
+                           <input type="hidden" style="display: none" id="fplani_form" name="fplani" >
+                           <input type="hidden" style="display: none" id="term_cont_form" name="term_cont" >
+                           <input type="hidden" style="display: none" id="ren_form" name="ren">
+                           <input type="hidden" style="display: none" id="pen_susp_form" name="pen_susp" >
+                           <input type="hidden" style="display: none" id="lsgh_form" name="lsgh" >
+                           <input type="hidden" style="display: none" id="noRat_form" name="noRat" >
+                           <input type="hidden" style="display: none" id="destac_form" name="destac" >
+                           <input type="hidden" style="display: none" id="lcgh_form" name="lcgh" >
+                           <input type="hidden" style="display: none" id="exclu_form" name="exclu" >
+                           <input type="hidden" style="display: none" id="cadPen_form" name="cadPen" >
+
+                           <input type="hidden" style="display: none" id="tipCCP_form" name="tipCCP" >
+
+                           <input type="hidden" style="display: none" id="permCCP_form" name="permCCP" >
+                           <input type="hidden" style="display: none" id="contrat_form" name="contrat" >
+                           <input type="hidden" style="display: none" id="cesa_form" name="cesa" >
+                           <input type="hidden" style="display: none" id="snp_form" name="snp" >
+                           <input type="hidden" style="display: none" id="sinEst_form" name="sinEst" >
+                           <input type="hidden" style="display: none" id="contrPers_form" name="contrPers" >
+                           <input type="hidden" style="display: none" id="cas_form" name="cas" >
+                           <input type="hidden" style="display: none" id="amc_form" name="amc" >
+
+                           <input type="hidden" style="display: none" id="anioIniCCP_form" name="anioIniCCP" >
+                           <input type="hidden" style="display: none" id="mesIniCCP_form" name="mesIniCCP" >
+                           <input type="hidden" style="display: none" id="anioFinCCP_form" name="anioFinCCP" >
+                           <input type="hidden" style="display: none" id="mesFinCCP_form" name="mesFinCCP" >
+                           <!--  <textarea style="display: none" id="pks" name="codigos" values=""></textarea>-->
+                           <button id="descargar_serv_cond_pla" class="btn btn-warning">Descargar Reporte</button>
+                           <!--  <a class="btn btn-primary pull-left" id="descargar_serv_cond_pla" data-target=".bs-example-modal-lg" style="margin-left: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</a>-->
+                       </form>
+                   </div>
+
+                   <div class="input-group  pull-right " id="div_un_trabajador" style="display: none">
+                       <form action="api/reportes/condicionplanilla/reportecondplanillauntrab/pdf"  method="POST" id="form_reporte_cond_pla_un_trab" style="">
+                           <input type="hidden" style="display: none" id="sanc_di_form" name="sanc_disc" >
+                           <input type="hidden" style="display: none" id="susp_in_form" name="susp_ina" >
+                           <input type="hidden" style="display: none" id="ces_form" name="cese" >
+                           <input type="hidden" style="display: none" id="fallec_form" name="fallecido" >
+                           <input type="hidden" style="display: none" id="fun_form" name="funmsm" >
+                           <input type="hidden" style="display: none" id="fpla_form" name="fplani" >
+                           <input type="hidden" style="display: none" id="term_con_form" name="term_cont" >
+                           <input type="hidden" style="display: none" id="re_form" name="ren">
+                           <input type="hidden" style="display: none" id="pen_sus_form" name="pen_susp" >
+                           <input type="hidden" style="display: none" id="lsgh_2_form" name="lsgh" >
+                           <input type="hidden" style="display: none" id="noRa_form" name="noRat" >
+                           <input type="hidden" style="display: none" id="desta_form" name="destac" >
+                           <input type="hidden" style="display: none" id="lcgh_2_form" name="lcgh" >
+                           <input type="hidden" style="display: none" id="excl_form" name="exclu" >
+                           <input type="hidden" style="display: none" id="cadP_form" name="cadPen" >
+
+                           <input type="hidden" style="display: none" id="tiCCP_form" name="tipCCP" >
+
+                           <input type="hidden" style="display: none" id="estCCP_form" name="estCCP" >
+
+
+                           <input type="hidden" style="display: none" id="anoIniCCP_form" name="anioIniCCP" >
+                           <input type="hidden" style="display: none" id="meesIniCCP_form" name="mesIniCCP" >
+                           <input type="hidden" style="display: none" id="anoFinCCP_form" name="anioFinCCP" >
+                           <input type="hidden" style="display: none" id="meesFinCCP_form" name="mesFinCCP" >
+                           <input type="hidden" style="display: none" id="dniCCP_form" name="dniCCP">
+                           <!--  <textarea style="display: none" id="pks" name="codigos" values=""></textarea>-->
+                           <button id="descargar_un_serv_cond_pla" class="btn btn-warning" hidden="hidden">Descargar Reporte de un trab.</button>
+                           <!--  <a class="btn btn-primary pull-left" id="descargar_serv_cond_pla" data-target=".bs-example-modal-lg" style="margin-left: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</a>-->
+                       </form>
+                   </div>
+
+                   <br>
+                   <form class="form-horizontal well" id="listar_servidores_cond_planilla" onsubmit="return" hidden="" style="margin-top: 3%">
+                       <div id="listar_cond_plani">
+
+                       </div>
+
+                       <div id="listar_cond_plani2"> <!-- para mostrar la tabla de baja-->
+
+                       </div>
+
+                   </form>
+
+               </div>
+
+
+               <div class="tab-pane " id="cis">
+
+                    <br>
+                    <form class="form-horizontal well" id="cambios_informacion" onsubmit="return">
+                        <div class="row form-group">
+
+                        </div>
+
+
+
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label>Fecha Inicio: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="input-group" style=" width: 91%">
+                                        <input type="text" value="" id="ingres_ini_info" placeholder="Ejm. 11/05/2004" readonly=""
+                                               class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_ini_info_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_ini_info_clos"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label>Fecha Fin: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="input-group" style=" width: 91%">
+                                        <input type="text" value="" id="ingres_fin_info" placeholder="Ejm. 11/05/2004" readonly=""
+                                               class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_fin_info_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_fin_info_clos"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row form-group" id="tipYest" style="display: true;">
+
+                            <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label>Tipo:
+                                        <span style="color:red;">*</span>
+                                    </label>
+                                </div>
+                                <div id="tiposerinfo" class="col-md-9" style="margin-left: -3%">
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="col-md-3" >
+                                    <label>Estado:
+
+                                    </label>
+                                </div>
+                                <div id="estserinfo" class="col-md-9" style="margin-left: -3%">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-4" style="margin-left:1% ; margin-top:1%">
+                                <label>Cambios en la Información del Servidor :</label>
+                            </div>
+                            <div class="col-md-2" style="margin-left: -3%">
+                                <a class="btn btn-primary pull-left" id="btn_selec_cis" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Seleccionar</a>
+                            </div>
+
+                            <div class="col-md-2" >
+                                <a class="btn btn-primary pull-right" id="btn_limpiar_cis" style="margin-right: -222%;" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Limpiar</a>
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                   <div class="button-group  pull-right " id="reporte_grupal_show_cis" style="margin-right: 5%;">
+                       <form action="api/reportes/reporteGrupal/cis/pdf"  method="POST" id="form_reporte_grupal_cis" style="">
+                           <input type="hidden" style="display: none" id="anioIni" name="anioIni" >
+                           <input type="hidden" style="display: none" id="anioFin" name="anioFin" >
+                           <input type="hidden" style="display: none" id="mesIni" name="mesIni" >
+                           <input type="hidden" style="display: none" id="mesFin" name="mesFin" >
+                           <input type="hidden" style="display: none" id="tipo" name="tipito" >
+                           <input type="hidden" style="display: none" id="e1" name="e1" >
+                           <input type="hidden" style="display: none" id="e2" name="e2" >
+                           <input type="hidden" style="display: none" id="e3" name="e3" >
+                           <input type="hidden" style="display: none" id="e4" name="e4" >
+                           <input type="hidden" style="display: none" id="e5" name="e5" >
+                           <input type="hidden" style="display: none" id="e6" name="e6" >
+                           <input type="hidden" style="display: none" id="e7" name="e7" >
+                           <input type="hidden" style="display: none" id="e8" name="e8" >
+                           <input type="hidden" style="display: none" id="ParEst" name="ParEst" >
+                           <input type="hidden" style="display: none" id="ParCat" name="ParCat" >
+                           <input type="hidden" style="display: none" id="ParDep" name="ParDep" >
+                           <input type="hidden" style="display: none" id="ParRegPen" name="ParRegPen" >
+                           <input type="hidden" style="display: none" id="ParEntAseg" name="ParEntAseg" >
+                           <input type="hidden" style="display: none" id="usuario" name="usuario" >
+                           <button class="btn btn-warning pull-right" id="btn_desc_cis" data-target=".bs-example-modal-lg" style="margin-right: -33%;"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+                       </form>
+                   </div>
+                   <div class="button-group  pull-right " id="reporte_servidor_show_cis" style="margin-right: 5%;display: none">
+                       <form action="api/reportes/reporteServidor/cis/pdf"  method="POST" id="form_reporte_servidor_cis" style="">
+                           <input type="hidden" style="display: none" id="anioIni1" name="anioIni" >
+                           <input type="hidden" style="display: none" id="anioFin1" name="anioFin" >
+                           <input type="hidden" style="display: none" id="mesIni1" name="mesIni" >
+                           <input type="hidden" style="display: none" id="mesFin1" name="mesFin" >
+                           <input type="hidden" style="display: none" id="tipito1" name="tipito" >
+                           <input type="hidden" style="display: none" id="estito1" name="estito" >
+                           <input type="hidden" style="display: none" id="dni1" name="dni" >
+                           <input type="hidden" style="display: none" id="ParEst1" name="ParEst" >
+                           <input type="hidden" style="display: none" id="ParCat1" name="ParCat" >
+                           <input type="hidden" style="display: none" id="ParDep1" name="ParDep" >
+                           <input type="hidden" style="display: none" id="ParRegPen1" name="ParRegPen" >
+                           <input type="hidden" style="display: none" id="ParEntAseg1" name="ParEntAseg" >
+                           <input type="hidden" style="display: none" id="usuario1" name="usuario" >
+                           <button class="btn btn-warning pull-right" id="btn_desc_cis1" data-target=".bs-example-modal-lg"  style="margin-right: -28%;"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+                       </form>
+                   </div>
+                   <br>
+                   <br>
+                   <br>
+                   <form class="form-horizontal well" id="listar_cis" onsubmit="return" hidden="">
+                       <div id="tabla_cis">
+
+                       </div>
+
+                   </form>
+                </div>
+
+               <div class="tab-pane " id="ias">
+               <br>
+               <form class="form-horizontal well" id="datos_serv" onsubmit="return false">
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline col-md-5">
+                               <input type="checkbox" id="chedad" value="0" >
+                               Edad
+                           </label>
+                       </div>
+                       <div class="col-md-4">
+                           <div class="input-group" style="margin-left: 4%; width: 91%">
+                               <input type="text" value="" id="nac_ini" placeholder="Fecha Inicio" readonly
+                                      class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="nac_ini_show" disabled="true"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="nac_ini_clos" disabled="true"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                              </span>
+                           </div>
+                           <div id="help_nac" class='alert alert-error'
+                                style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                       </div>
+
+                       <div class="col-md-1" style="text-align: center">
+                           A
+
+                       </div>
+
+                       <div class="col-md-4">
+                           <div class="input-group" style="margin-left: 4%; width: 91%">
+                               <input type="text" value="" id="nac_fin" placeholder="Fecha Fin" readonly
+                                      class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="nac_fin_show" disabled="true"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="nac_fin_clos" disabled="true"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                              </span>
+                           </div>
+                           <div id="help_nac" class='alert alert-error'
+                                style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                       </div>
+
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chsex" value="1">
+                               Sexo
+                           </label>
+                       </div>
+
+                       <div class="col-md-4" style="margin-left: 1.3%; width: 30.5%" >
+                           <select id="cboxsex" class="form-control" disabled="true">
+                               <option value="T">Todos</option>
+                               <option value="M">Masculino</option>
+                               <option value="F">Femenino</option>
+                           </select>
+                       </div >
+
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chtipo" value="2">
+                               Tipo de Servidor
+                           </label>
+                       </div>
+
+                       <div id="tiposer" class="col-md-4">
+                       </div>
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chest" value="3">
+                               Estado
+                           </label>
+                       </div>
+
+                       <div id="estser" class="col-md-4">
+
+                       </div>
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chcat" value="4">
+                               Categoria
+                           </label>
+                       </div>
+
+                       <div id="catser" class="col-md-4">
+
+                       </div>
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chreg" value="5">
+                               Régimen Pensionario
+                           </label>
+                       </div>
+                       <div id="regpenser" class="col-md-4">
+
+                       </div>
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chtpago" value="6">
+                               Tipo de Pago
+                           </label>
+                       </div>
+                       <div id="tipagoser" class="col-md-4">
+
+                       </div>
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chdep" value="7">
+                               Dependencia
+                           </label>
+                       </div>
+                       <div id="depser" class="col-md-4">
+                       </div>
+
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="col-md-2" style="margin-left:4%">
+                           <label class="checkbox-inline" >
+                               <input type="checkbox" id="chfing" value="8">
+                               Fecha de Ingreso
+                           </label>
+                       </div>
+
+                       <div class="col-md-4">
+                           <div class="input-group" style="margin-left: 4%; width: 91%">
+                               <input type="text" value="" id="ingres_ini" placeholder="Fecha Inicio" readonly
+                                      class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_ini_show" disabled="true"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_ini_clos" disabled="true"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                              </span>
+                           </div>
+                           <div id="help_nac" class='alert alert-error'
+                                style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                       </div>
+
+                       <div class="col-md-1" style="text-align: center">
+                           A
+
+                       </div>
+
+                       <div class="col-md-4">
+                           <div class="input-group" style="margin-left: 4%; width: 91%">
+                               <input type="text" value="" id="ingres_fin" placeholder="Fecha Fin" readonly
+                                      class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_fin_show" disabled="true"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_fin_clos" disabled="true"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                              </span>
+                           </div>
+                           <div id="help_nac" class='alert alert-error'
+                                style="padding: 4px 6px 4px 6px;margin: 4px 0px 0px 0px;border:1px;display:none;"></div>
+                       </div>
+
+                   </div>
+
+                   <div class="row form-group">
+                       <div class="input-group col-md-2 pull-left " style="margin-left:5%">
+                           <a class="btn btn-primary pull-left" id="list_serv_ias" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar</a>
+                       </div>
+
+                   </div>
+
+               </form>
+               <div class="button-group  pull-right" id="reporte_show_ias" style="margin-right: 5%;" >
+                   <form action="api/reportes/reporteser/ias/pdf" method="POST" id="form_reporte_ias" style="">
+                       <input type="hidden" style="display: none" id="dia1" name="dia1">
+                       <input type="hidden" style="display: none" id="mes1" name="mes1">
+                       <input type="hidden" style="display: none" id="anio1" name="anio1">
+                       <input type="hidden" style="display: none" id="dia2" name="dia2">
+                       <input type="hidden" style="display: none" id="mes2" name="mes2">
+                       <input type="hidden" style="display: none" id="anio2" name="anio2">
+                       <input type="hidden" style="display: none" id="dia3" name="dia3">
+                       <input type="hidden" style="display: none" id="mes3" name="mes3">
+                       <input type="hidden" style="display: none" id="anio3" name="anio3">
+                       <input type="hidden" style="display: none" id="dia4" name="dia4">
+                       <input type="hidden" style="display: none" id="mes4" name="mes4">
+                       <input type="hidden" style="display: none" id="anio4" name="anio4">
+                       <input type="hidden" style="display: none" id="sexo1ias" name="sexo1ias">
+                       <input type="hidden" style="display: none" id="sexo2ias" name="sexo2ias">
+                       <input type="hidden" style="display: none" id="tipoias" name="tipoias">
+                       <input type="hidden" style="display: none" id="estaias" name="estaias">
+                       <input type="hidden" style="display: none" id="catias" name="catias">
+                       <input type="hidden" style="display: none" id="regias" name="regias">
+                       <input type="hidden" style="display: none" id="pagias" name="pagias">
+                       <input type="hidden" style="display: none" id="depias" name="depias">
+                       <input type="hidden" style="display: none" id="usuarias" name="usuarias">
+                       <input type="hidden" style="display: none" id="fedad" name="fedad">
+                       <input type="hidden" style="display: none" id="fsexo" name="fsexo">
+                       <input type="hidden" style="display: none" id="fcategoria" name="fcategoria">
+                       <input type="hidden" style="display: none" id="fregimen" name="fregimen">
+                       <input type="hidden" style="display: none" id="ftipopago" name="ftipopago">
+                       <input type="hidden" style="display: none" id="fdependencia" name="fdependencia">
+                       <input type="hidden" style="display: none" id="funmsm" name="funmsm">
+                       <input type="hidden" style="display: none" id="usuarias" name="usuarias">
+                       <button class="btn btn-warning pull-right" id="desc_reporte_ias" data-target=".bs-example-modal-lg" style="margin-right: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+
+                   </form>
+               </div>
+
+               <div class="row form-group">
+                   <div id="tablainfoser">
+
+                   </div>
+               </div>
+               </div>
+             </div>
+
+
+
+       </div>
+
+</fieldset>
+
+<div id="seleccionModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<div id="servidoresModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<div id="modal-altabaja" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+<div id="modal-altabaja2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+<div id="servidoresccpModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+<style type="text/css">
+    .controls > .error {
+        color: #b94a48;
+        display: inline-block;
+        *display: inline;
+        padding-left: 5px;
+        vertical-align: middle;
+        *zoom: 1;
+    }
+
+</style>

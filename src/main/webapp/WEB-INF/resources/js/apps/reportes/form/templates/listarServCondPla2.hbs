@@ -1,0 +1,80 @@
+<table id="table-cond-pla2" class="table table-bordered table-hover" style="font-size: 12px;">
+    <thead class="header" style="color: #040404;background-color:#f5f5f5">
+    <tr>
+        <th id="tipodoc">Tipo Doc. Ident.</th>
+        <th id="numdoc" >Num. Doc. Ident.</th>
+        <th id="codserv">Cod. Servidor</th>
+        <th id="nomb">Apellidos y Nombres</th>
+        <th id="condfech"  >Cond. a Fechas</th> <!--  se muestra cuando selecciona alta o baja -->
+        <th id="fechcamb"  >Fecha Cambio Cond.</th> <!--  se muestra cuando selecciona alta o baja -->
+     <!--   <th id="adendaVigCCP">Adenda Vigente</th>  -->
+        <th id="estad">Estado</th>
+        <th id="tipserv">Tipo Servidor</th>
+    </tr>
+    </thead>
+
+    <tbody class="body-table " id="lista_serv_cond_body">
+
+    {{#each items}}
+    <tr id="{{codSer}}" class="">
+
+        <td>{{tipoDoc}}</td>
+        <td>{{numDoc}}</td>
+        <td> {{codSer}}   </td>
+        <td>{{apePat}} {{apeMat}} {{nombre}}</td>
+        <td    >{{condFech}} </td>
+        <td   >{{mes}}/{{anio}}</td>
+        <td>{{est}} </td>
+        <td> {{tipSer}}</td>
+
+    </tr>
+    {{else}}
+        <td colspan="6">No existen plazas en esta dependencia</td>
+    {{/each}}
+    </tbody>
+</table>
+
+
+<style type="text/css">
+    #table-cond-pla2_length{
+        display:none;
+    }
+
+    #table-cond-pla2_paginate{
+        position: absolute;
+        margin-top: -17px;
+        left: 52%;
+    }
+    #table-cond-pla2_info{
+        float: left;
+        margin-top: -12px;
+        margin-left: 18px;
+        font-size: 10px;
+        color: rgb(2, 2, 2);
+    }
+    #fam_content>tr{
+        cursor: pointer;
+    }
+
+    #table-cond-pla2_previous{
+        cursor: pointer;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+    #table-cond-pla2_next{
+        cursor: pointer;
+        margin-left: 19px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+
+
+</style>

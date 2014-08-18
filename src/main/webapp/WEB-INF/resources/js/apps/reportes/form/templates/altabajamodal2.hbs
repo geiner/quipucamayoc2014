@@ -1,0 +1,149 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <!--mensajes JEAN -->
+            <div id="tipoServidor_ccp_vacio2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó un tipo de trabajador, se tomarán todos</strong></div>
+            <div id="tipoEstado_ccp_vacio2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó un tipo de estado, se tomarán todos</strong></div>
+            <div id="tipoSer_Est_cpp_vacios2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó tipo de trabajador ni tipo de estado, se tomarán todos</strong></div>
+            <div id="fecha_fin_cpp_vacio2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de fin, se tomará hasta la fecha actual</strong></div>
+            <div id="fecha_inicio_cpp_vacio2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de inicio, se tomará desde la fecha inicial</strong></div>
+            <div id="fecha_ini_fin_cpp_vacios2" class="alert alert-warning" style="text-align: center; display: none;"><strong>No Seleccionó fecha de inicio ni fin, se tomará todas las fechas</strong></div>
+
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Baja</h4>
+        </div>
+        <div class="modal-body" id="cond_en_plani">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="todos_baja_ccp" class="todosBajas" value="11" checked>
+                        TODOS
+                    </label>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="pen_susp" class="bajas" value="11">
+                        PENSION SUSPENDIDA
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="lsgh" class="bajas" value="2">
+                        LSGH
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="noRat" class="bajas" value="15">
+                        NO RATIFICADO
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="sanc_disc" class="bajas" value="3">
+                        SANC. DISCIPLINARIA
+                    </label>
+                </div>
+               </div>
+              <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="susp_ina" class="bajas" value="4">
+                        SUSP. INASISTENCIA
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="cese" class="bajas" value="5">
+                        CESE
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="fall" class="bajas" value="6">
+                        FALLECIDO
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="destac" class="bajas" value="12">
+                        DESTACADO
+                    </label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="lcgh" class="bajas" value="8">
+                        LCGH
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="exclu" class="bajas" value="13">
+                        EXCLUIDO-SPR
+                    </label>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="ren" class="bajas" value="10">
+                        RENUNCIA
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="funmsm" class="bajas" value="7">
+                        FUERA UNMSM
+                    </label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="fplani" class="bajas" value="0">
+                        FUERA DE PLANILLA
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="term_cont" class="bajas" value="9">
+                        TERMINO CONTRATO
+                    </label>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="checkbox-inline" >
+                        <input type="checkbox" id="cadPen" class="bajas" value="14">
+                        CADUCIDAD DE PENSION
+                    </label>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2" >
+                    <a class="btn btn-primary " id="mostrar_serv_cond_pla2" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Listar</a>
+                </div>
+
+                <div class="input-group  pull-right " style="margin-right: 2%" >
+                    <a class="btn btn-primary pull-right" id="cancelarCCP2" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-new-window"></span> Cancelar</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

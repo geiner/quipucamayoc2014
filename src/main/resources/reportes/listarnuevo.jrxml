@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listarnuevo" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" >
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="usuarias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("johndejo1766@hotmail.com")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sexo1ias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("M")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sexo2ias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("M")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dia1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("01")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("01")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("1900")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dia2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("31")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("12")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("2050")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dia3" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("01")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes3" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("03")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio3" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String ("2014")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dia4" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("31")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes4" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("12")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio4" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("2050")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipoias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estaias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="catias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("--")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="regias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="depias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pagias" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fregimen" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fcategoria" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ftipopago" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fdependencia" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="funmsm" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fedad" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fsexo" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select des_doc, num , cod_ser , ser_ape_pat , ser_ape_mat , ser_nom , trunc(months_between(sysdate, to_date(nac,'dd/mm/yyyy'))/12) , sexo , tipo_serv , estado , desc_categ ,desc_reg_pen , des_tip_pag_ser , des_dep_cesantes , INGRESO_UNMSM  from datapersuel.VW_INFO_SERV_ACT  where SEXO in ($P{sexo1ias},$P{sexo2ias})
+and nac between to_date($P{dia1}||'/'||$P{mes1}||'/'||$P{anio1},'dd/mm/yyyy') and to_date($P{dia2}||'/'||$P{mes2}||'/'||$P{anio2},'dd/mm/yyyy')
+and INGRESO_UNMSM between to_date($P{dia3}||'/'||$P{mes3}||'/'||$P{anio3},'dd/mm/yyyy') and to_date($P{dia4}||'/'||$P{mes4}||'/'||$P{anio4},'dd/mm/yyyy') and SER_TIP_ACT like '%'||$P{tipoias}||'%' and SER_EST_ACT like '%'||$P{estaias}||'%' and SER_RPE_ACT like '%'||$P{regias}||'%' and SER_TIP_PAG_ACT like '%'||$P{tipoias}||'%' and SER_CAT_ACT like '%'||$P{catias}||'%' and SER_COD_DEP_RAC like '%'||$P{depias}||'%'
+order by ser_ape_pat asc,ser_ape_mat asc]]>
+	</queryString>
+	<field name="DES_DOC" class="java.lang.String"/>
+	<field name="NUM" class="java.lang.String"/>
+	<field name="COD_SER" class="java.lang.String"/>
+	<field name="SER_APE_PAT" class="java.lang.String"/>
+	<field name="SER_APE_MAT" class="java.lang.String"/>
+	<field name="SER_NOM" class="java.lang.String"/>
+	<field name="TRUNC(MONTHS_BETWEEN(SYSDATE,TO_DATE(NAC,&apos;DD/MM/YYYY&apos;))/12)" class="java.math.BigDecimal"/>
+	<field name="SEXO" class="java.lang.String"/>
+	<field name="TIPO_SERV" class="java.lang.String"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<field name="DESC_CATEG" class="java.lang.String"/>
+	<field name="DESC_REG_PEN" class="java.lang.String"/>
+	<field name="DES_TIP_PAG_SER" class="java.lang.String"/>
+	<field name="DES_DEP_CESANTES" class="java.lang.String"/>
+	<field name="INGRESO_UNMSM" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="71" splitType="Stretch">
+
+			<staticText>
+				<reportElement  x="54" y="4" width="251" height="12"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="53" y="16" width="339" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE ADMINISTRACION DE RECURSOS HUMANOS - QUIPUCAMAYOC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="668" y="4" width="36" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="668" y="16" width="36" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="200" y="36" width="420" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTA DE SERVIDORES]]></text>
+			</staticText>
+			<textField>
+				<reportElement  x="704" y="16" width="84" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarias}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement  x="704" y="4" width="84" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement  style="Column header" x="0" y="0" width="41" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="41" y="0" width="50" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° de Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="91" y="0" width="52" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cod. Servidor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="143" y="0" width="125" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos y Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="268" y="0" width="35" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Edad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="303" y="0" width="36" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sexo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="339" y="0" width="79" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Serv.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="418" y="0" width="60" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="478" y="0" width="56" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="534" y="0" width="61" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reg. Pensionario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="595" y="0" width="53" height="28" forecolor="#000000"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="648" y="0" width="87" height="28" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  style="Column header" x="735" y="0" width="60" height="28" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingresó en UNMSM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement  style="Row" mode="Opaque" x="0" y="0" width="797" height="18"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="0" y="0" width="41" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DES_DOC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="41" y="0" width="50" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NUM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="91" y="0" width="52" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COD_SER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="143" y="0" width="125" height="18"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SER_APE_PAT}+" "+$F{SER_APE_MAT}+","+$F{SER_NOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="268" y="0" width="35" height="18">
+						<printWhenExpression><![CDATA[$P{fedad}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TRUNC(MONTHS_BETWEEN(SYSDATE,TO_DATE(NAC,'DD/MM/YYYY'))/12)}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="303" y="0" width="36" height="18">
+						<printWhenExpression><![CDATA[$P{fsexo}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SEXO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="339" y="0" width="79" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{TIPO_SERV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="418" y="0" width="60" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="478" y="0" width="56" height="18">
+						<printWhenExpression><![CDATA[$P{fcategoria}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DESC_CATEG}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="534" y="0" width="61" height="18">
+						<printWhenExpression><![CDATA[$P{fregimen}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DESC_REG_PEN}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="595" y="0" width="53" height="18">
+						<printWhenExpression><![CDATA[$P{ftipopago}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DES_TIP_PAG_SER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="648" y="0" width="87" height="18">
+						<printWhenExpression><![CDATA[$P{fdependencia}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DES_DEP_CESANTES}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement  style="Detail" positionType="Float" x="735" y="0" width="60" height="18">
+						<printWhenExpression><![CDATA[$P{funmsm}]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{INGRESO_UNMSM}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement  positionType="FixRelativeToBottom" x="0" y="3" width="790" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement  style="Column header" x="668" y="0" width="80" height="20" forecolor="#000000" backcolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement  style="Column header" x="748" y="0" width="40" height="20" forecolor="#000000" backcolor="#000000"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

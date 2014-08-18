@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cambiosInfoServidor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="anioIni" class="java.lang.Integer"/>
+	<parameter name="anioFin" class="java.lang.Integer"/>
+	<parameter name="mesIni" class="java.lang.Integer"/>
+	<parameter name="mesFin" class="java.lang.Integer"/>
+	<parameter name="tipito" class="java.lang.Integer"/>
+	<parameter name="estito" class="java.lang.Integer"/>
+	<parameter name="dni" class="java.lang.String"/>
+	<parameter name="ParEst" class="java.lang.Boolean"/>
+	<parameter name="ParCat" class="java.lang.Boolean"/>
+	<parameter name="ParDep" class="java.lang.Boolean"/>
+	<parameter name="ParRegPen" class="java.lang.Boolean"/>
+	<parameter name="ParEntAseg" class="java.lang.Boolean"/>
+	<queryString>
+		<![CDATA[select  substr(des_doc,1,3) as tipoDoc, ser_doc_id_act as numDoc, ser_cod as codSer, ser_ape_pat as pat, ser_ape_mat as mat, ser_nom as nomb,
+           pla_anu as anio, pla_mes as mes,cond_fecha as estPla, desc_categ as cat, des_dep_cesantes as dep,desc_reg_pen as reg,  des_ent_aseg as entAseg
+           from datapersuel.vw_cambios_info_y_cond_pla
+           where pla_anu between $P{anioIni} and $P{anioFin}  and 		pla_mes 	between  $P{mesIni} and  $P{mesFin}
+           and ser_tip_act = $P{tipito}
+           and SER_EST_ACT = $P{estito}
+           and SER_DOC_ID_ACT= $P{dni}
+           order by pla_anu asc, pla_mes asc]]>
+	</queryString>
+	<field name="TIPODOC" class="java.lang.String"/>
+	<field name="NUMDOC" class="java.lang.String"/>
+	<field name="CODSER" class="java.lang.String"/>
+	<field name="PAT" class="java.lang.String"/>
+	<field name="MAT" class="java.lang.String"/>
+	<field name="NOMB" class="java.lang.String"/>
+	<field name="ANIO" class="java.math.BigDecimal"/>
+	<field name="MES" class="java.math.BigDecimal"/>
+	<field name="ESTPLA" class="java.lang.String"/>
+	<field name="CAT" class="java.lang.String"/>
+	<field name="DEP" class="java.lang.String"/>
+	<field name="REG" class="java.lang.String"/>
+	<field name="ENTASEG" class="java.lang.String"/>
+	<group name="ANIO">
+		<groupExpression><![CDATA[$F{ANIO}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="10" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="101" splitType="Stretch">
+
+			<staticText>
+				<reportElement  x="60" y="0" width="221" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Universidad Nacional Mayor de San Marcos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="60" y="20" width="257" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sistema de Administración de RRHH - Quipucamayoc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="394" y="20" width="47" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="394" y="0" width="47" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement  x="455" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="455" y="20" width="100" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement  x="131" y="67" width="290" height="30"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Cambio de Informacion del Servidor]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement  x="41" y="0" width="46" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Num. Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="322" y="0" width="55" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="510" y="0" width="59" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Ent. Aseg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="131" y="0" width="124" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Apellidos y Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="255" y="0" width="36" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="469" y="0" width="41" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Reg. Pen. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="87" y="0" width="44" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="291" y="0" width="31" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="377" y="0" width="92" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Dependencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement  x="0" y="0" width="41" height="20"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Tip. Doc.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement  x="46" y="0" width="41" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUMDOC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="87" y="0" width="48" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODSER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="138" y="0" width="127" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PAT}+" "+$F{MAT}+", "+$F{NOMB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="255" y="0" width="43" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MES}+" / "+$F{ANIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="281" y="0" width="45" height="20">
+					<printWhenExpression><![CDATA[$P{ParEst}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ESTPLA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="377" y="0" width="88" height="20">
+					<printWhenExpression><![CDATA[$P{ParDep}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="469" y="0" width="49" height="20">
+					<printWhenExpression><![CDATA[$P{ParRegPen}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="514" y="0" width="55" height="20">
+					<printWhenExpression><![CDATA[$P{ParEntAseg}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ENTASEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="14" y="0" width="16" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TIPODOC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement  x="326" y="0" width="51" height="20">
+					<printWhenExpression><![CDATA[$P{ParCat}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CAT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement  x="510" y="0" width="36" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Página: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement  x="546" y="0" width="22" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="8" splitType="Stretch"/>
+	</summary>
+</jasperReport>
