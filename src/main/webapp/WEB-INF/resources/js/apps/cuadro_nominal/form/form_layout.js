@@ -113,6 +113,9 @@ define(['app',
                 encabezado:"Ninguno",
 
 
+                nombrePlaza:"Ninguno",
+
+
 
 
 
@@ -136,6 +139,9 @@ define(['app',
                     "modalSegundaAsignacionHtml": "#modalSegundaAsignacion"
 
 
+
+
+
                 },
 
 
@@ -156,8 +162,14 @@ define(['app',
 
                     "click .tree li": "clickUnidad",
 
+                    "click #botonEfecto":"mensajeDesaparece",
 
-                    "click #botonEfecto":"mensajeDesaparece"
+                    "click #tabla_plazas_next":"clickNumeroPagina",
+
+                    "click #handler-explode":"efectoExplode"
+
+
+                   // "dblclick #tabla_plazas > tbody > tr ": "clickRowTabla"
 
 
 
@@ -328,7 +340,9 @@ define(['app',
 
                                         $("#tabla_plazas").dataTable({
 
-                                            "aaSorting": [[ 1, "asc" ]]
+                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+
+                                            //**********AQUI
                                         });
 
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
@@ -346,6 +360,8 @@ define(['app',
 
 
 
+
+
                                     selfInterno.numPlazasServidorView.obtenerNumPlazasServidor(cod,$('#anio_plazas').val(),function () {
 
                                         console.log("El codigo del servidor es: "+cod);
@@ -357,17 +373,40 @@ define(['app',
                                             console.log("Numero de plazas: "+valor);
                                             console.log("Paso 3");
 
-                                            if(valor>1){
-                                                $("#el_div")[0].style.display='';
-                                                $("#el_div").delay(3000).fadeOut("slow");
+                                        if(valor>1){
+
+                                          //  $("#el_div")[0].style.display='';
+                                           // $("#el_div").delay(3000).fadeOut("slow");
 
 
-                                            }
 
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                            $( "#explodeConDoblePlaza" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                        }else{
+
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                        }
 
 
 
                                     });
+
+
+
 
 
 
@@ -388,6 +427,8 @@ define(['app',
                         }
                     }
                 },
+
+
 
 
 
@@ -429,13 +470,18 @@ define(['app',
 
                             self_s.fail(function () {
 
+
+                                var  selfInterno=self;
+
                                 self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
                                     if (self.plazasCAPView.collection.length != 0) {
                                         //$("#tabla_plazas").dataTable();
 
                                         $("#tabla_plazas").dataTable({
 
-                                            "aaSorting": [[ 1, "asc" ]]
+                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+                                             //************** AQUI
+
                                         });
 
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
@@ -447,6 +493,60 @@ define(['app',
                                     }
 
                                     $('#nom_encabezado_plazas').text(self.encabezado);
+
+
+
+
+
+
+                                    selfInterno.numPlazasServidorView.obtenerNumPlazasServidor(cod,$('#anio_plazas').val(),function () {
+
+                                        console.log("El codigo del servidor es: "+cod);
+
+                                        //console.log("Año:"+$('#anio_plazas').val());
+
+
+                                        var valor= selfInterno.numPlazasServidorView.collection.at(0).get("cod_plaza");
+                                        console.log("Numero de plazas: "+valor);
+                                        console.log("Paso 3");
+
+                                        if(valor>1){
+                                            //$("#el_div")[0].style.display='';
+                                           // $("#el_div").delay(3000).fadeOut("slow");
+
+
+
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                            $( "#explodeConDoblePlaza" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                        }else{
+
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(5000)
+                                                .hide( 500 );
+
+
+                                        }
+
+
+
+
+
+
+                                    });
+
+
+
+
 
                                 })
 
@@ -491,6 +591,19 @@ define(['app',
                     var clickedElement = $(ev.currentTarget);
                     this.codPlaza=clickedElement.attr('cod_plaza');
                     var  cod_est_plaza=clickedElement.attr('cod_est_plaza');
+                    var  nom_plaza=clickedElement.attr('nom_estruc');
+
+
+                //    var cod=clickedElement.children(':nth-child(1)').text();
+
+                    var nombreDeLaPlaza=clickedElement.parent().parent().children(':nth-child(3)').text();
+                    this.nombrePlaza=nombreDeLaPlaza;
+
+                    console.log("Valor buscado:"+this.nombrePlaza);
+
+
+
+
 
                     if(cod_est_plaza==3 || cod_est_plaza==5){
 
@@ -505,9 +618,16 @@ define(['app',
 
                                     //$("#table-servidores_asis").dataTable();
 
+                                    $('#nombrePlaza').val(self.nombrePlaza);
+
+
                                     $("#table-servidores_asis").dataTable({
 
                                         "aaSorting": [[ 1, "asc" ]]
+
+
+
+
                                     });
 
 
@@ -524,15 +644,26 @@ define(['app',
                             self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
                             $('#modalServidores').modal();
 
+
+                                   //********
+                            var  dato= this.modalidadAsignacionView.collection.at(0).get("descripcion");
+                            console.log("Valor de asignacion:"+dato);
+                             //**********
                         }else{
 
                             self.modalServidoresPorDependenciaView2.TodosServidoresPorDependencia(this.codDepServidores,function(){
+
+
+                                    $('#nombrePlaza').val(self.nombrePlaza);
 
                                     //$("#table-servidores_asis2").dataTable();
 
                                     $("#table-servidores_asis2").dataTable({
 
                                         "aaSorting": [[ 1, "asc" ]]
+
+
+
                                     });
 
                                     $('#table-servidores_asis2_wrapper').append("<div id='footer-table'></div>");
@@ -581,7 +712,11 @@ define(['app',
 
                     $('#usuarioCN2').val($('#email').text());
                     $('#anio2').val($('#anio_plazas').val());
-                   // $('#form_reporteCN2').show();
+
+
+
+                   var  dato= this.modalidadAsignacionView.collection.at(0).get("descripcion");
+                    console.log("Valor de asignacion:"+dato);
 
 
 
@@ -592,6 +727,7 @@ define(['app',
 
                     }
 
+                   // $('#form_reporteCN2').show();
 
 
                     this.añoPlazas=$('#anio_plazas').val();
@@ -735,13 +871,22 @@ define(['app',
 
                             $("#tabla_plazas").dataTable({
 
-                                "aaSorting": [[ 1, "asc" ]]
+                                "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+
+                                "paging": true,
+                                "pagingType": "full_numbers"
+
+
+                                 //*****    AQUI
+
+
                             });
 
 
                             $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                             $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                             $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                           // $('#tabla_plazas_paginate').html(" <ul class='pagination'> <li><a href='#'>&laquo;</a></li> <li><a href='#'>1</a></li>  <li><a href='#'>2</a></li> <li><a href='#'>3</a></li> <li><a href='#'>4</a></li> <li><a href='#'>5</a></li> <li><a href='#'>&raquo;</a></li> </ul>   ");
                             $('.dataTables_filter input').addClass('buscador');
                             $('.dataTables_filter input').attr('placeholder','Buscar..');
 
@@ -754,6 +899,17 @@ define(['app',
 
                     this.tablaPlazasHtml.show(this.plazasCAPView) ;
                     $("#tablaPlazas").show();
+
+
+
+
+
+                    console.log("Color de css");
+                    $("#nom_encabezado_plazas").css({
+                        "background-color": "#ff8800"
+
+                    });
+
 
                 },
 
@@ -794,7 +950,13 @@ define(['app',
 
                     $("#tablaPlazas").hide();
                     $('#form_reporteCN').hide();
+
                     $('#form_reporteCN2').hide();
+
+
+
+
+
 
                 },
 
@@ -835,7 +997,12 @@ define(['app',
 
                                     $("#tabla_plazas").dataTable({
 
-                                        "aaSorting": [[ 1, "asc" ]]
+                                        "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+
+                                          //*********  AQUI
+
+
+
                                     });
 
 
@@ -864,19 +1031,22 @@ define(['app',
                     console.log("Entro al arbol!!!");
 
                     if(this.elementoClickeado){
+
                         $(this.elementoClickeado).css({
                             "background": "",
                             "color": "",
                             "border": ""
                         });
-                    }
 
+                    }
 
                     var clickedElement=$(e.currentTarget);
                     var children = clickedElement.find('> ul > li');
                     if (children.is(":visible")) children.hide('fast');
                     else children.show('fast');
+
                     e.stopPropagation();
+
                     this.unidadClicked.unidadId=clickedElement.find('input:first').val();
                     this.unidadClicked.unidadDesc=clickedElement.find('a:first').html();
                     console.log(this.unidadClicked);
@@ -896,10 +1066,52 @@ define(['app',
                 $("#el_div")[0].style.display='';
                 $("#el_div").delay(3000).fadeOut("slow");
             }
+             ,
+
+
+
+                clickNumeroPagina : function(e){
+
+                    console.log("Entre al boton next");
+
+                    console.log("Entre al boton next:"+ $("#tabla_plazas_info").text());
+
+                }
+
+                /*
+
+                efectoExplode : function(){
+
+                    $( "#explode" ).show(500 )
+                        .delay(2000)
+                        .hide( 500 );
+
+                }
+
+
+                */
 
 
 
 
+
+
+
+            /*
+
+           clickRowTabla:function() {
+
+
+
+               var oID = $("tr").attr("id");
+
+               console.log("id de la fila:"+oID);
+
+           }
+
+
+
+            */
             });
         });
         return ErzaManager.CuadroNominalApp.Form.View;

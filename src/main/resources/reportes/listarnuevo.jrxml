@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listarnuevo" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" >
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listarnuevo" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" >
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -20,7 +20,7 @@
 		<defaultValueExpression><![CDATA[new String ("M")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="sexo2ias" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new String ("M")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new String ("F")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="dia1" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new String("01")]]></defaultValueExpression>
@@ -44,10 +44,10 @@
 		<defaultValueExpression><![CDATA[new String ("01")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="mes3" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new String ("03")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new String ("01")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="anio3" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new String ("2014")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new String ("1900")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="dia4" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new String("31")]]></defaultValueExpression>
@@ -77,10 +77,10 @@
 		<defaultValueExpression><![CDATA[new String("-")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fregimen" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fcategoria" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="ftipopago" class="java.lang.Boolean" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
@@ -95,17 +95,26 @@
 		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fsexo" class="java.lang.Boolean" isForPrompting="false">
-		<defaultValueExpression><![CDATA[new Boolean("false")]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[new Boolean("true")]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select des_doc, num , cod_ser , ser_ape_pat , ser_ape_mat , ser_nom , trunc(months_between(sysdate, to_date(nac,'dd/mm/yyyy'))/12) , sexo , tipo_serv , estado , desc_categ ,desc_reg_pen , des_tip_pag_ser , des_dep_cesantes , INGRESO_UNMSM  from datapersuel.VW_INFO_SERV_ACT  where SEXO in ($P{sexo1ias},$P{sexo2ias})
-and nac between to_date($P{dia1}||'/'||$P{mes1}||'/'||$P{anio1},'dd/mm/yyyy') and to_date($P{dia2}||'/'||$P{mes2}||'/'||$P{anio2},'dd/mm/yyyy')
-and INGRESO_UNMSM between to_date($P{dia3}||'/'||$P{mes3}||'/'||$P{anio3},'dd/mm/yyyy') and to_date($P{dia4}||'/'||$P{mes4}||'/'||$P{anio4},'dd/mm/yyyy') and SER_TIP_ACT like '%'||$P{tipoias}||'%' and SER_EST_ACT like '%'||$P{estaias}||'%' and SER_RPE_ACT like '%'||$P{regias}||'%' and SER_TIP_PAG_ACT like '%'||$P{tipoias}||'%' and SER_CAT_ACT like '%'||$P{catias}||'%' and SER_COD_DEP_RAC like '%'||$P{depias}||'%'
+		<![CDATA[select des_doc , num , cod_ant , ser_ape_pat, ser_ape_mat , ser_nom
+, trunc(months_between(sysdate, to_date(nac,'dd/mm/yyyy'))/12) ,
+sexo , tipo_serv , estado , desc_categ ,
+desc_reg_pen , des_tip_pag_ser , des_dep_cesantes , INGRESO_UNMSM
+from datapersuel.VW_INFO_SERV_ACT  where SEXO in ($P{sexo1ias},$P{sexo2ias})
+and nac between to_date($P{dia1}||'/'||$P{mes1}||'/'||$P{anio1},'dd/mm/yyyy') and
+to_date($P{dia2}||'/'||$P{mes2}||'/'||$P{anio2},'dd/mm/yyyy')
+and INGRESO_UNMSM between to_date($P{dia3}||'/'||$P{mes3}||'/'||$P{anio3},'dd/mm/yyyy')
+and to_date($P{dia4}||'/'||$P{mes4}||'/'||$P{anio4},'dd/mm/yyyy') and SER_TIP_ACT like '%'||$P{tipoias}||'%'
+and SER_EST_ACT like '%'||$P{estaias}||'%' and SER_RPE_ACT like '%'||$P{regias}||'%'
+and SER_TIP_PAG_ACT like '%'||$P{pagias}||'%' and SER_CAT_ACT like '%'||$P{catias}||'%'
+and SER_COD_DEP_RAC like '%'||$P{depias}||'%'
 order by ser_ape_pat asc,ser_ape_mat asc]]>
 	</queryString>
 	<field name="DES_DOC" class="java.lang.String"/>
 	<field name="NUM" class="java.lang.String"/>
-	<field name="COD_SER" class="java.lang.String"/>
+	<field name="COD_ANT" class="java.lang.String"/>
 	<field name="SER_APE_PAT" class="java.lang.String"/>
 	<field name="SER_APE_MAT" class="java.lang.String"/>
 	<field name="SER_NOM" class="java.lang.String"/>
@@ -118,6 +127,12 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 	<field name="DES_TIP_PAG_SER" class="java.lang.String"/>
 	<field name="DES_DEP_CESANTES" class="java.lang.String"/>
 	<field name="INGRESO_UNMSM" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{NUM}]]></variableExpression>
+	</variable>
+	<group name="usuario">
+		<groupExpression><![CDATA[$P{usuarias}]]></groupExpression>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -126,30 +141,29 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 	</title>
 	<pageHeader>
 		<band height="71" splitType="Stretch">
-
 			<staticText>
-				<reportElement  x="54" y="4" width="251" height="12"/>
+				<reportElement  x="6" y="4" width="251" height="12"/>
 				<textElement>
 					<font fontName="Arial"/>
 				</textElement>
 				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  x="53" y="16" width="339" height="12"/>
+				<reportElement  x="5" y="16" width="339" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<text><![CDATA[SISTEMA DE ADMINISTRACION DE RECURSOS HUMANOS - QUIPUCAMAYOC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  x="668" y="4" width="36" height="12"/>
+				<reportElement  x="652" y="4" width="36" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  x="668" y="16" width="36" height="12"/>
+				<reportElement  x="652" y="16" width="36" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
@@ -163,19 +177,31 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 				<text><![CDATA[LISTA DE SERVIDORES]]></text>
 			</staticText>
 			<textField>
-				<reportElement  x="704" y="16" width="84" height="12"/>
+				<reportElement  x="688" y="16" width="107" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuarias}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement  x="704" y="4" width="84" height="12"/>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement  x="688" y="4" width="107" height="12"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<textField evaluationTime="Report">
+				<reportElement  x="101" y="51" width="52" height="20" isPrintInFirstWholeBand="true"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement  x="5" y="51" width="96" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Total de Servidores:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -279,7 +305,7 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 				<text><![CDATA[Tipo de Serv.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement  style="Column header" x="418" y="0" width="60" height="28" forecolor="#000000"/>
+				<reportElement style="Column header" x="418" y="0" width="60" height="28" forecolor="#000000"/>
 				<box>
 					<pen lineWidth="1.25"/>
 					<topPen lineWidth="1.25"/>
@@ -363,7 +389,7 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<frame>
 				<reportElement  style="Row" mode="Opaque" x="0" y="0" width="797" height="18"/>
 				<textField isStretchWithOverflow="true">
@@ -385,7 +411,7 @@ order by ser_ape_pat asc,ser_ape_mat asc]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="7"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{COD_SER}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{COD_ANT}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement  style="Detail" positionType="Float" x="143" y="0" width="125" height="18"/>

@@ -140,6 +140,10 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 "click #navLegajos > li >a":"limpiar_navtab",
                 "click #modalBV":"bvmodal",
                 "click #legaj_fing_clos":"fun_close_fechIng",
+                "click #datEstudio":"showEstudio",
+                "click #hideEstudio":"hidePanelEstudio",
+                "click #showFam":"showFamiliar",
+                "click #hideFam":"hideFamiliar",
 
                 "click #table-carrera-laboral > tbody > tr":"selectCarreraLaboral"
             },
@@ -216,6 +220,8 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
             invokeModalServ: function(e){
                 $('#cancel_estudio').click();
                 $('#cancel_fam').click();
+                $("#form_insert").hide();
+
                 var self=this;
                 var clickedElement=$(e.currentTarget);
 
@@ -293,6 +299,27 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
                 $("#f_ingreso").val("");
             },
+            showFamiliar:function(){
+                $("#datos_familiares").fadeIn();
+                $("#hideFam").show();
+                $("#showFam").hide();
+            },
+            hideFamiliar:function(){
+                $("#datos_familiares").fadeOut();
+                $("#showFam").show();
+                $("#hideFam").hide();
+            },
+            showEstudio:function(){
+
+                $("#form_dat_estud").fadeIn();
+                $("#datEstudio").hide();
+                $("#hideEstudio").show();
+            },
+            hidePanelEstudio:function(){
+                $("#form_dat_estud").fadeOut();
+                $("#datEstudio").show();
+                $("#hideEstudio").hide();
+            },
             seleccionarResolucion: function(e){
 
                 var clickedElement=$(e.currentTarget);
@@ -345,8 +372,14 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 var nombre=clickedElement.children(':nth-child(1)').text();
                 var cod_ant=clickedElement.children(':nth-child(3)').text();
                 var estado=clickedElement.children(':nth-child(6)').text();
-
+                var tipo=clickedElement.children(':nth-child(4)').text();
+                var dependencia=clickedElement.children(':nth-child(5)').text();
                 var dni_emp=clickedElement.children(':nth-child(2)').text();
+
+                var categoria=clickedElement.attr('data');
+
+
+                $("#form_dat_estud").hide();
                 $("#sec_div").hide();
                 $("#tipo_lab").val("");
                 $("#periodo_lab").val("");
@@ -355,11 +388,17 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                 $("#text-cod").text(dni_emp);
                 $("#cod-ant").text(cod_ant);
                 $('#estado').text(estado);
+                $("#text-tipo").text(tipo);
+                $("#text-depen").text(dependencia);
+                $("#text-categ").text(categoria);
                 $("#block-descr").show();
                 $("#form_insert").show();
                 $('#form_save_rts').show();
                 $("#form_insert_ts").show();
                 $("#form_insert_rts").show();
+                $("#datEstudio").show();
+                $("#showFam").show();
+                $("#datos_familiares").hide();
 
               this.tableFamiliarView.fetchFamiliares(this.codigo,
                     function () {
@@ -419,7 +458,7 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
 
 
                 fetch_s.done(function(){
-                    $("#legaj_nom_ape_per").val(self.model.get("datoPersServidor").get("paterno")+" "+self.model.get("datoPersServidor").get("materno")+" "+self.model.get("datoPersServidor").get("nombre"));
+        // $("#legaj_nom_ape_per").val(self.model.get("datoPersServidor").get("paterno")+" "+self.model.get("datoPersServidor").get("materno")+" "+self.model.get("datoPersServidor").get("nombre"));
                     $("#dni_per").val(self.model.get("datoPersServidor").get("docTipDescri"));
                     $("#nro_dni_per").val(self.model.get("datoPersServidor").get("numDoc"));
                     $("#sex_per").val(self.model.get("datoPersServidor").get("sexDescrip"));
@@ -429,6 +468,12 @@ define(["app", "hbs!apps/legajos/form/templates/inicio_legajos","apps/legajos/fo
                     $("#depar_nac_per").val(self.model.get("datoPersServidor").get("deparDescri"));
                     $("#prov_nac_per").val(self.model.get("datoPersServidor").get("provinDescri"));
                     $("#dist_nac_per").val(self.model.get("datoPersServidor").get("distriDescri"));
+
+                    $("#pais_act").val(self.model.get('datoPersServidor').get('paisAct'));
+                    $("#depart_act").val(self.model.get('datoPersServidor').get('departAct'));
+                    $("#prov_act").val(self.model.get('datoPersServidor').get('provinAct'));
+                    $("#distr_act").val(self.model.get('datoPersServidor').get('distrAct'));
+
                     $("#domi_per").val(self.model.get("datoPersServidor").get("domicilio"));
                     $("#fono_per").val(self.model.get("datoPersServidor").get("telefono"));
                     $("#cel_per").val(self.model.get("datoPersServidor").get("celular"));

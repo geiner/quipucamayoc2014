@@ -10,14 +10,26 @@
 
         <div class="modal-body">
 
-
-
-
             <div class=" form-horizontal well-small" >
 
                             <div class="row form-group">
+                                 <div class="col-md-12">
+                                      <label class="col-md-5 control-label " style="margin-left: -25%;">Plaza</label>
+
+                                           <div class="col-md-10">
+                                               <input type="text" id="nombrePlaza"  class="form-control"  disabled>
+
+                                           </div>
+
+                                 </div>
+
+                            </div>
+
+
+
+                            <div class="row form-group">
                                 <div class="col-md-12">
-                                    <label class="col-md-4 control-label" for="fechaInicial">Fecha Inicial<span id="descr_obli" style="color:red;">*</span></label>
+                                    <label class="col-md-4 control-label" for="fechaInicial"   style="margin-left: -16%;"  >Fec.Inicial<span id="descr_obli" style="color:red;">*</span></label>
 
                                     <div class="col-md-7">
                                         <div class="input-group">
@@ -36,7 +48,7 @@
 
                             <div class="row form-group">
                                 <div class="col-md-12">
-                                    <label class="col-md-4 control-label" for="fechaFinal">Fecha Final</label>
+                                    <label class="col-md-4 control-label" for="fechaFinal"   style="margin-left: -16%;" >Fec.Final</label>
 
                                     <div class="col-md-7">
                                         <div class="input-group">
@@ -56,14 +68,15 @@
 
                             <div class="row form-group">
                                  <div class="col-md-12">
-                                       <label class="col-md-5 control-label " style="margin-left: -8%;">Modalidad<span id="descr_obli" style="color:red;">*</span></label>
+                                       <label class="col-md-5 control-label " style="margin-left: -25%;">Modalidad<span id="descr_obli" style="color:red;">*</span></label>
 
                                        <div class="col-md-7">
                                            <select id="modalidad" class="form-control">
                                                 <!--<option value="99">Seleccione una opción</option>-->
-                                                <option value="1">Concurso</option>
-                                                <option value="2">Designación</option>
-                                                <option value="3">Nombramiento</option>
+                                                 <option value="1">Concurso</option>
+                                                 <option value="2">Designación</option>
+                                                 <option value="3">Nombramiento</option>
+
                                            </select>
                                         </div>
 
@@ -74,7 +87,7 @@
 
                              <div class="row form-group">
                                   <div class="col-md-12">
-                                        <label class="col-md-5 control-label " style="margin-left: -8%;">Cargo<span id="descr_obli" style="color:red;">*</span></label>
+                                        <label class="col-md-5 control-label " style="margin-left: -25%;">Cargo<span id="descr_obli" style="color:red;">*</span></label>
 
                                             <div class="col-md-7">
                                                 <select id="ModOcupado" class="form-control">
@@ -176,5 +189,16 @@
         -webkit-border-radius: 15px;
         border-radius: 5px;
     }
-</style>
 
+     .divContenedor{
+            width:600px ;
+            position: absolute;
+            left: 50%;
+            margin-left: -300px;
+            top: 100px;
+            text-align: center;
+        }
+
+
+
+</style>

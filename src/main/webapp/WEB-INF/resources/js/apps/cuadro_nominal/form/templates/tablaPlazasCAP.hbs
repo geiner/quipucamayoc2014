@@ -6,8 +6,11 @@
             <thead class="header" style="color: #040404;background-color:#f5f5f5">
                    <tr>
                                        <th>Cod Plaza</th>
-                                       <th>Cargo</th>
+
                                        <th>Sub. Dependencia</th>
+
+                                        <th>Cargo</th>
+
                                        <th>Est. Plaza</th>
                                        <th>Cod Servidor</th>
                                        <th>DNI Servidor</th>
@@ -26,8 +29,10 @@
                                 <tr id="{{cod_dep}}" class="">
 
                                       <td>{{cod_plaza}}</td>
-                                      <td>{{nom_estruc}}</td>
+
                                       <td> {{subDep}}   </td>
+
+                                       <td>{{nom_estruc}}</td>
 
                                       <td>{{est_plaza}}</td>
 
@@ -41,14 +46,14 @@
                                       <td>{{fech_sal}} </td>
                                       <td> {{ser_mod}}</td>
                                       <td>
-                                         <button  id="botonCapturarDatosParaEliminarPlazaAsignada"    class="btn btn-danger btn-xs"  type="button"  codPlaza={{cod_plaza}}    cod_est_plaza={{cod_est_plaza}} >
+                                         <button  id="botonCapturarDatosParaEliminarPlazaAsignada"    class="btn btn-danger btn-xs"  type="button"  codPlaza={{cod_plaza}}    cod_est_plaza={{cod_est_plaza}}        >
                                               <span  class="glyphicon glyphicon-minus-sign"></span>
                                          </button>
 
                                       </td>
 
                                       <td>
-                                         <button id="botonBuscarServidores" class="btn btn-primary btn-xs" type="button"  cod_plaza={{cod_plaza}}      cod_est_plaza={{cod_est_plaza}}   >
+                                         <button id="botonBuscarServidores" class="btn btn-primary btn-xs" type="button"  cod_plaza={{cod_plaza}}      cod_est_plaza={{cod_est_plaza}}     nom_estruc={{nom_estruc}}   >
                                              <span class="glyphicon glyphicon-plus-sign"></span>
                                          </button>
                                       </td>

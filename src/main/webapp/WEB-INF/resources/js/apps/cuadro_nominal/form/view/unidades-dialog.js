@@ -63,11 +63,6 @@ define([ 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templates/unidad
 
                         },*/
 
-
-
-
-
-
            /*
 
             clickUnidad : function(e){

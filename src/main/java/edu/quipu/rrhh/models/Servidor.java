@@ -63,6 +63,43 @@ public class Servidor implements Serializable {
     private String provinDescri;
     private String distriDescri;
 
+    private String paisAct;
+    private String departAct;
+    private String provinAct;
+    private String distrAct;
+
+
+    public String getPaisAct() {
+        return paisAct;
+    }
+
+    public void setPaisAct(String paisAct) {
+        this.paisAct = paisAct;
+    }
+
+    public String getDepartAct() {
+        return departAct;
+    }
+
+    public void setDepartAct(String departAct) {
+        this.departAct = departAct;
+    }
+
+    public String getProvinAct() {
+        return provinAct;
+    }
+
+    public void setProvinAct(String provinAct) {
+        this.provinAct = provinAct;
+    }
+
+    public String getDistrAct() {
+        return distrAct;
+    }
+
+    public void setDistrAct(String distrAct) {
+        this.distrAct = distrAct;
+    }
 
     public String getNombreCompleto() {
         return nombreCompleto;

@@ -70,7 +70,8 @@ public interface LegajosMapper {
                     "  DES_TIP_SER            AS cargo, "+
                     "  des_dep_cesantes            AS cesantia, "+
                     "  desc_est            AS estado, "+
-                    "num_serest             as  estadoActual "+
+                    "  num_serest             as  estadoActual, "+
+                    "  desc_categ            AS  categoria "+
                     "FROM DATAPERSUEL.LISTA_SERVIDOR ORDER BY SER_APE_PAT")
     @Results(value = {
             @Result(javaType = Servidor.class),
@@ -84,7 +85,8 @@ public interface LegajosMapper {
             @Result(property = "tipoServicio", column = "cargo"),
             @Result(property = "cesantia", column = "cesantia"),
             @Result(property = "estado", column = "estado") ,
-            @Result(property = "estadoTrabaActual", column = "estadoActual")
+            @Result(property = "estadoTrabaActual", column = "estadoActual"),
+            @Result(property = "categoria", column = "categoria")
     })
     List<Servidor> buscarServidores();
 
@@ -435,31 +437,39 @@ public interface LegajosMapper {
     })
     List<LegajosCargaFamiliar> validarEditDocumento(@Param("numdoc") String numdoc,@Param("carfamsec") String carfamsec);
 
-    @Select(value = "select ser.ser_cod,ser.ser_ape_pat, ser.ser_ape_mat,ser.ser_nom, doc.des_doc_id, ser.SER_DOC_ID_ACT, (case when ser.ser_sexo='M' then 'MASCULINO' else 'FEMENINO' end) as ser_sexo, \n" +
-            "            ci.DESC_ESTCIV,TO_CHAR(ser.SER_FECH_NAC ,'DD/MM/YYYY') AS SER_FECH_NAC, pais.T_NACNOM as SER_UBI_PAIS_NAC,dep.T_UBI_DES as SER_UBI_DEPT_NAC,prov.T_UBI_DES as SER_UBI_PROV_NAC,distr.T_UBI_DES as SER_UBI_DIST_NAC,\n" +
-            "            ser.SER_DOM,ser.SER_TELEF, ser.SER_TELEF_CELL, ser.SER_MAIL \n" +
-            "            from DATAPERSUEL.servidor ser left join DATAPERSUEL.doc_identidad doc on ser.SER_TIP_DOC_ID_ACT=doc.cod_doc_id \n" +
-            "            left join DATAPERSUEL.estado_civil ci on ser.SER_ECV_ACT=ci.cod_estciv\n" +
-            "            left join TB_NACIONALIDAD pais on ser.SER_UBI_PAIS_NAC=pais.C_NACCOD\n" +
-            "            left join TB_UBIGEO dep on ser.SER_UBI_DEPT_NAC=dep.C_UBI_ID\n" +
-            "            left join TB_UBIGEO prov on ser.SER_UBI_PROV_NAC=prov.C_UBI_ID\n" +
-            "            left join TB_UBIGEO distr on ser.SER_UBI_DIST_NAC=distr.C_UBI_ID " +
-            "            where trim(ser_cod)=trim(#{codSerPer})")
+    @Select(value = "SELECT TO_CHAR(serv.SER_FECH_NAC ,'DD/MM/YYYY') AS SER_FECH_NAC, pais.T_NACNOM as SER_UBI_PAIS_NAC, \n" +
+            "                        dep.T_UBI_DES as SER_UBI_DEPT_NAC,prov.T_UBI_DES as SER_UBI_PROV_NAC,distr.T_UBI_DES as SER_UBI_DIST_NAC,\n" +
+            "                        doc.des_doc_id,serv.SER_DOC_ID_ACT,(case when serv.ser_sexo='M' then 'MASCULINO' else 'FEMENINO' end) as ser_sexo,\n" +
+            "                        ci.DESC_ESTCIV,nac.T_NACNOM as NAC_ACT,depa.T_UBI_DES AS DEPART_ACT,provin.T_UBI_DES AS PROV_ACT,\n" +
+            "                        distri.T_UBI_DES AS DISTR_ACT,serv.SER_DOM,serv.SER_TELEF,serv.SER_TELEF_CELL,serv.SER_MAIL\n" +
+            "                        \n" +
+            "                        from DATAPERSUEL.servidor serv\n" +
+            "                        left join TB_NACIONALIDAD pais on serv.SER_UBI_PAIS_NAC=pais.C_NACCOD\n" +
+            "                        left join TB_UBIGEO dep on serv.SER_UBI_DEPT_NAC=dep.C_UBI_ID\n" +
+            "                        left join TB_UBIGEO prov on serv.SER_UBI_PROV_NAC=prov.C_UBI_ID\n" +
+            "                        left join TB_UBIGEO distr on serv.SER_UBI_DIST_NAC=distr.C_UBI_ID \n" +
+            "                        left join DATAPERSUEL.doc_identidad doc on serv.SER_TIP_DOC_ID_ACT=doc.cod_doc_id \n" +
+            "                        left join DATAPERSUEL.estado_civil ci on serv.SER_ECV_ACT=ci.cod_estciv\n" +
+            "                        left join TB_NACIONALIDAD nac on serv.SER_UBI_PAIS_DOM=nac.C_NACCOD\n" +
+            "                        left join TB_UBIGEO depa on serv.SER_UBI_DEPT_DOM=depa.C_UBI_ID\n" +
+            "                        left join TB_UBIGEO provin on serv.SER_UBI_PROV_DOM=provin.C_UBI_ID\n" +
+            "                        left join TB_UBIGEO distri on serv.SER_UBI_DIST_DOM=distri.C_UBI_ID \n" +
+            "                        where trim(ser_cod)=trim(#{codSerPer})")
     @Results(value = {
             @Result(javaType = Servidor.class),
-            @Result(property = "codigo",column = "ser_cod"),
-            @Result(property = "paterno",column = "ser_ape_pat"),
-            @Result(property = "materno",column = "ser_ape_mat"),
-            @Result(property = "nombre",column = "ser_nom"),
-            @Result(property = "docTipDescri",column = "des_doc_id"),
-            @Result(property = "numDoc",column = "SER_DOC_ID_ACT"),
-            @Result(property = "sexDescrip",column = "ser_sexo"),
-            @Result(property = "estCivDescrip",column = "DESC_ESTCIV"),
             @Result(property = "nacimiento",column = "SER_FECH_NAC"),
             @Result(property = "paisDescri",column = "SER_UBI_PAIS_NAC"),
             @Result(property = "deparDescri",column = "SER_UBI_DEPT_NAC"),
             @Result(property = "provinDescri",column = "SER_UBI_PROV_NAC"),
             @Result(property = "distriDescri",column = "SER_UBI_DIST_NAC"),
+            @Result(property = "docTipDescri",column = "des_doc_id"),
+            @Result(property = "numDoc",column = "SER_DOC_ID_ACT"),
+            @Result(property = "sexDescrip",column = "ser_sexo"),
+            @Result(property = "estCivDescrip",column = "DESC_ESTCIV"),
+            @Result(property = "paisAct",column = "NAC_ACT"),
+            @Result(property = "departAct",column = "DEPART_ACT"),
+            @Result(property = "provinAct",column = "PROV_ACT"),
+            @Result(property = "distrAct",column = "DISTR_ACT"),
             @Result(property = "domicilio",column = "SER_DOM"),
             @Result(property = "telefono",column = "SER_TELEF"),
             @Result(property = "celular",column = "SER_TELEF_CELL"),

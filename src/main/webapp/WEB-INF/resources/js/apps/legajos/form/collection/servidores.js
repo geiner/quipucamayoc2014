@@ -6,7 +6,7 @@ define(['backbone', 'apps/legajos/form/model/servidor'], function (Backbone, Ser
         model: Servidor,
 
         setUrlTodosServi: function(){
-            console.log("seturl servidores todos")
+
             this.url= 'api/legajos/servidores';
         }
     });

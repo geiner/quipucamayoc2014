@@ -45,41 +45,46 @@
 		<defaultValueExpression ><![CDATA["Sistemas"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT    plaza.C_COD_PLAZA AS CODPLAZA,
+                      cargoC.T_CARCLA_NOM as NOMCLASIF,
                       cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,
+                      DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,  'JEFE DE PRÁCTICA',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR    ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, 
                       dependencia.UD_ID  AS DEPENDENCIACODD,
                       dependencia.UD_DSC  AS DEPENDENCIA,
                       plaza.N_EST_PLAZA AS IDESTPLAZA,
-                      estado.T_DES_ESTADO AS ESTPLAZA,
+                      estado.T_DES_ESTADO AS ESTPLAZA, 
                       servidor_pap.SER_COD_ANT AS CODANT,
                       nominal.SER_COD AS COD_SER,
                       nominal.NUM_SEREST AS NUMSEREST,
-                      servidor.SER_APE_PAT||' '||servidor.SER_APE_MAT||' '||servidor.SER_NOM AS NOMBRES,
-                     
+                      
+                      servidor.SER_APE_PAT||' '||servidor.SER_APE_MAT||' '||servidor.SER_NOM AS NOMBRES,                      
+
                       TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,
                       TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,
                       serModalidad.SER_MOD_DESC AS MODALIDAD  
-            
                       FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo
                       INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO
                       INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD
                       INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )
                       LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA
                       INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )
-                      INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)
+                      INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR
+                      INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF
+                          )
                       LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)
                       LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)
                       LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD
-          
-                      WHERE (   cargo.N_UD_ID  IN ( 
+                      WHERE (   cargo.N_UD_ID  IN (
                       SELECT  dependencia1.ud_id
                       FROM QPRODATAQUIPU.UNI_DEP dependencia1
                       WHERE (  
-                      SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep} ) ) ) 
-                      LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}  )  )  )   )  AND  plaza.N_ANIO LIKE  $P{anio}  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
-                      ORDER BY NOMESTRUC]]></queryString>
+                      SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}   ) ) ) 
+                      LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}   )  )  )   )  AND  plaza.N_ANIO LIKE   $P{anio}   AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
+                      ORDER BY DEPENDENCIA,CONCATENADO,CODPLAZA]]></queryString>
 
 	<field name="CODPLAZA" class="java.math.BigDecimal"/>
+	<field name="NOMCLASIF" class="java.lang.String"/>
 	<field name="NOMESTRUC" class="java.lang.String"/>
+	<field name="CONCATENADO" class="java.lang.String"/>
 	<field name="DEPENDENCIACODD" class="java.math.BigDecimal"/>
 	<field name="DEPENDENCIA" class="java.lang.String"/>
 	<field name="IDESTPLAZA" class="java.math.BigDecimal"/>
@@ -119,7 +124,7 @@
 						<subreportParameterExpression><![CDATA[$P{codDep}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}]]></subreportExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} ]]></subreportExpression>
 				</subreport>
 			</band>
 			</groupFooter>
@@ -172,7 +177,7 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="35"
+						x="189"
 						y="83"
 						width="135"
 						height="14"
@@ -250,7 +255,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="182"
+						x="42"
 						y="83"
 						width="139"
 						height="14"
@@ -429,11 +434,11 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="43"  isSplitAllowed="true" >
+			<band height="61"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(true)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="36"
+						x="190"
 						y="7"
 						width="133"
 						height="31"
@@ -442,7 +447,7 @@
 					<textElement>
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMESTRUC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CONCATENADO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -511,10 +516,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="182"
+						x="43"
 						y="7"
 						width="139"
-						height="30"
+						height="48"
 						key="textField-19"/>
 					<box></box>
 					<textElement>

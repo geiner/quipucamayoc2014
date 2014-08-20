@@ -144,6 +144,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     "change #chdep":"mostrardep",
                     "change #chfing":"mostrarfecing",
                     "click #list_serv_ias":"mostrartabla",//f
+                    "click #limpiar_ias":"limpiarias",
                     "click #desc_reporte_ias":"reporte_ias",
 
                     //parte Jean
@@ -496,6 +497,9 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     //limpiando lo de Jean
                     $('#tiposervidorpla').val("1");
                     $('#estadoservidorplani').val("99");
+                    $("#tipYestCCP").show();
+                    $("#ingres_ini_plani").val("");
+                    $("#ingres_fin_plani").val("");
                 },
 
                 limpiarCabeceraTabsFernando:function(){
@@ -531,6 +535,9 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     //limpiando lo de Jean
                     $('#tiposervidorpla').val("1");
                     $('#estadoservidorplani').val("99");
+                    $("#tipYestCCP").show();
+                    $("#ingres_ini_plani").val("");
+                    $("#ingres_fin_plani").val("");
                 },
 
                 limpiarFechaIni:function(){
@@ -1441,7 +1448,11 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                 },
                 //--------------------------------------------parte de Fernado --------------------------------------------------------------------
 
-                mostrartabla:function(){
+                mostrartabla:function(e){
+
+                    var clickedElement=$(e.currentTarget);
+
+                    clickedElement.button('loading');
                     var self=this;
                     var fec=$("#chedad:checked").val();
                     var se =$("#chsex:checked").val();
@@ -1554,7 +1565,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var IfinMes = $('#ingres_fin').val().substring(3, 5);
                             var IfinDia = $('#ingres_fin').val().substring(0, 2);
                             var IfinAno = $('#ingres_fin').val().substring(6, 10);
-                            //  alert(IiniMes);
+
                             if(IiniAno<IfinAno){
 
                                 b1=1;
@@ -1576,27 +1587,27 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                                 if(IfinDia==IiniDia){
                                                     b1=1;
                                                 }else{
-                                                    //   alert("ini mayor que fin")
+
                                                     $("#errorFechIng").show();
                                                 }
                                             }
                                         } else{
-                                            //    alert("inicio mayor que fin")
+
                                             $("#errorFechIng").show();
                                         }}
                                 }else{
-                                    //    alert("inicio es mayor")
+
                                     $("#errorFechIng").show();
                                 }
                             }
                         } else{
                             if($('#ingres_ini').val()!="" && $('#ingres_fin').val()==""){
-                                //   alert("debe ingresar la fecha  de fin");
+
                                 $("#errorFechIngIV").show();
 
                             } else{
                                 if ($('#ingres_ini').val()=="" && $('#ingres_fin').val()!=""){
-                                    //    alert("debe ingresar la fecha de inicio ");
+
                                     $("#errorFechIngFV").show();
                                 }} }
 
@@ -1625,10 +1636,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
 
-                    }else{
-
-
-                           }
+                    }
                     // self.tablainfoReg.show(self.InformacionServView);
 
                     ///fechas de nacimiento para mandar los parametros
@@ -1659,6 +1667,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         if(s=="T") {
                             var sex="M";
                             var sex1="F";
+
                         }else{
                             var sex=s;
                             var sex1=s;
@@ -1670,24 +1679,30 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 dia1=NiniDia1;
                                 mes1=NiniMes1;
                                 anio1=NiniAno1;
+
                             }
                             if(nf!=""){
                                 dia2=NfinDia1;
                                 mes2=NfinMes1;
                                 anio2=NfinAno1;
+
                             }
+
                         }
                         //tipo de servidor
                         if(t=="99"){
                             tip="-";
+
                         }else{
                             tip=t;
+
                         }
                         ///estado de servidor
                         if(e=="99"){
                             estados="-";
                         }else{
                             estados=e;
+
                         }
 
                         ///categoria
@@ -1709,6 +1724,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             dependen="-";
                         }else{
                             dependen=d;
+
                         }
 
                         //tipo de pago
@@ -1726,136 +1742,146 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 dia3=IiniDia1;
                                 mes3=IiniMes1;
                                 anio3=IiniAno1;
+
                             }
                             if(inf!=""){
                                 dia4=IfinDia1;
                                 mes4=IfinMes1;
                                 anio4=IfinAno1;
+
                             }
+
                         }
 
 
 
 
+
+
+
                         this.InformacionServView.getInformacionServ(sex,sex1,dia1,mes1,anio1,dia2,mes2,anio2,dia3,mes3,anio3,dia4,mes4,anio4,tip,estados,regimenpen,tipago,categ,dependen,function(){
+                            setTimeout(function () {
+                                clickedElement.button('reset');
+                                if(self.InformacionServView.collection.length!=0){
+                                    $('#tabla_ser_head > tr').append('<th id ="tdoc" style="text-align: center" >Tipo de Doc.</th>')
+                                    $('#tabla_ser_head > tr').append('<th id ="ndoc" style="text-align: center" >N°Doc. Identidad</th>')
+                                    $('#tabla_ser_head > tr').append('<th id ="cser" style="text-align: center" >Cod. Servidor</th>')
+                                    $('#tabla_ser_head > tr').append('<th id ="apn" style="text-align: center" >Apellidos y Nombres</th>')
+                                    $('#tabla_ser_head > tr').append('<th id="ttipos" style="text-align: center" >Tipo de Servidor</th>')
+                                    $('#tabla_ser_head > tr').append('<th id="testado" style="text-align: center" >Estado</th>')
 
-                            if(self.InformacionServView.collection.length!=0){
-
-                                $('#tabla_ser_head > tr').append('<th id ="tdoc" style="text-align: center" >Tipo de Doc.</th>')
-                                $('#tabla_ser_head > tr').append('<th id ="ndoc" style="text-align: center" >N°Doc. Identidad</th>')
-                                $('#tabla_ser_head > tr').append('<th id ="cser" style="text-align: center" >Cod. Servidor</th>')
-                                $('#tabla_ser_head > tr').append('<th id ="apn" style="text-align: center" >Apellidos y Nombres</th>')
-                                $('#tabla_ser_head > tr').append('<th id="ttipos" style="text-align: center" >Tipo de Servidor</th>')
-                                $('#tabla_ser_head > tr').append('<th id="testado" style="text-align: center" >Estado</th>')
-
-                                if(fec!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tedad" style="text-align: center" >Edad</th>')
-                                }
-
-                                if(se!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tsexo" style="text-align: center" >Sexo</th>')
-                                }
-
-                                //categoria
-                                if(ca!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tcategoria" style="text-align: center" >Categoria</th>')
-                                }
-
-                                //reg pensionario
-                                if(rp!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tregpen" style="text-align: center" >Régimen Pensionario</th>')
-                                }
-
-                                //tipo de pago
-                                if(tpa!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="ttipoo" style="text-align: center" >Tipo de Pago</th>')
-                                }
-
-                                //dep
-                                if(dep!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tdep" style="text-align: center" >Dependencia</th>')
-                                }
-
-                                if(fecin!=undefined){
-                                    $('#tabla_ser_head > tr').append('<th id="tfeching" style="text-align: center" >Fecha Ingreso</th>')
-                                }
-
-
-                                for(var i=0;i<self.InformacionServView.collection.length;i++){
-                                    $('#tabla_inform_ser_body').append('<tr colspan="6" id="'+i+ '"></tr>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("tip_doc") +'</td>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("nu_doc") +'</td>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("co_serv") +'</td>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ap_pat")+" " +self.InformacionServView.collection.at(i).get("ap_mat")+","+self.InformacionServView.collection.at(i).get("nom")+'</td>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ti_ser") +'</td>')
-                                    $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("estad") +'</td>')
-                                    //selecciono fecha de nacimiento
                                     if(fec!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("eda") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tedad" style="text-align: center" >Edad</th>')
                                     }
 
-                                    //selecciono sexo
                                     if(se!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("sex") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tsexo" style="text-align: center" >Sexo</th>')
                                     }
 
                                     //categoria
                                     if(ca!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("cate") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tcategoria" style="text-align: center" >Categoria</th>')
                                     }
 
                                     //reg pensionario
                                     if(rp!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("reg_pe") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tregpen" style="text-align: center" >Régimen Pensionario</th>')
                                     }
 
                                     //tipo de pago
                                     if(tpa!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ti_pag") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="ttipoo" style="text-align: center" >Tipo de Pago</th>')
                                     }
 
                                     //dep
                                     if(dep!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("dep_serv") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tdep" style="text-align: center" >Dependencia</th>')
                                     }
 
-                                    //fecha en unmsm
                                     if(fecin!=undefined){
-                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ingre_unmsm") +'</td>')
+                                        $('#tabla_ser_head > tr').append('<th id="tfeching" style="text-align: center" >Fecha Ingreso</th>')
                                     }
+
+
+                                    for(var i=0;i<self.InformacionServView.collection.length;i++){
+                                        $('#tabla_inform_ser_body').append('<tr colspan="6" id="'+i+ '"></tr>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("tip_doc") +'</td>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("nu_doc") +'</td>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("co_serv") +'</td>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ap_pat")+" " +self.InformacionServView.collection.at(i).get("ap_mat")+","+self.InformacionServView.collection.at(i).get("nom")+'</td>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ti_ser") +'</td>')
+                                        $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("estad") +'</td>')
+                                        //selecciono fecha de nacimiento
+                                        if(fec!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("eda") +'</td>')
+                                        }
+
+                                        //selecciono sexo
+                                        if(se!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("sex") +'</td>')
+                                        }
+
+                                        //categoria
+                                        if(ca!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("cate") +'</td>')
+                                        }
+
+                                        //reg pensionario
+                                        if(rp!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("reg_pe") +'</td>')
+                                        }
+
+                                        //tipo de pago
+                                        if(tpa!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ti_pag") +'</td>')
+                                        }
+
+                                        //dep
+                                        if(dep!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("dep_serv") +'</td>')
+                                        }
+
+                                        //fecha en unmsm
+                                        if(fecin!=undefined){
+                                            $('#'+i).append('<td >'+self.InformacionServView.collection.at(i).get("ingre_unmsm") +'</td>')
+                                        }
+                                    }
+
+
+                                    $("#tabla-informacion-serv").dataTable();
+                                    $('#tabla-informacion-serv_wrapper').append("<div id='footer-table'></div>");
+                                    $('#tabla-informacion-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                    $('#tabla-informacion-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                    $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
                                 }
 
 
-                                $("#tabla-informacion-serv").dataTable();
-                                $('#tabla-informacion-serv_wrapper').append("<div id='footer-table'></div>");
-                                $('#tabla-informacion-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#tabla-informacion-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                            },2000);
 
 
-                            }
+
+
                         })
                         this.tablainfoReg.show(this.InformacionServView);
+                        $("#tablainfoser").show();
 
 
 
-                        /*
-
-
-
-                         if(tpa!=undefined){
-
-                         }
-                         if(dep!=undefined){
-
-                         } */
 
                     }else{
                         $("#errorSel").show();
+
                     }
                 },
+                limpiarias:function(){
+                    $("#tablainfoser").hide();
+                    $(".iasc").prop('checked',false);
 
+                },
 
                 reporte_ias:function(){
                     $("#reporte_show_ias").show();
@@ -2593,7 +2619,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         var susp_ina=100;
                         var cese=100;
                         var fallecido=100;
-                        var funmsm=100;
+                        var funms=100;
                         var fplani=100;
                         var term_cont=100;
                         var ren=100;
@@ -2664,7 +2690,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                         var  valor1=activo;
                         var self=this;
-                        this.listarServCondPlaView.getListarUnActivoServCond(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                        this.listarServCondPlaView.getListarUnActivoServCond(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                             ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){
                                 if(self.listarServCondPlaView.collection.length!=0){
                                     $("#table-cond-pla").dataTable();
@@ -2709,7 +2735,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funmsm=100;
+                            var funms=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -2722,7 +2748,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var cadPen=100;
                             //  var sanc_disc=100;
                             var  valor1=activo;
-                            this.listarServCondPlaView.getListarServCond(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                            this.listarServCondPlaView.getListarServCond(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP, permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){
                                     if(self.listarServCondPlaView.collection.length!=0){
@@ -2775,7 +2801,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funmsm=$("#funmsm:checked").val();
+                    var funms=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -2833,14 +2859,14 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                         //   this.listarServCondPla2Reg.show(this.listarServCondPla2View);
                         if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                            && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                            && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                             && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                             && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
                             var sanc_disc=$("#sanc_disc").val();
                             var susp_ina=$("#susp_ina").val();
                             var cese=$("#cese").val();
                             var fallecido=$("#fall").val();
-                            var funmsm=$("#funmsm").val();
+                            var funms=$("#funms").val();
                             var fplani=$("#fplani").val();
                             var term_cont=$("#term_cont").val();
                             var ren=$("#ren").val();
@@ -2916,7 +2942,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
                             //esta es la tabla que tengo que cambiar y agregarle en la query la busqueda por dni
-                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP,anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP,
                                 function(){  //para la tabla de baja
                                     //  $("#condfech").removeAttr("hidden");
@@ -2954,7 +2980,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             if(susp_ina==undefined){ susp_ina=100;}
                             if(cese==undefined){cese=100;}
                             if(fallecido==undefined){fallecido=100;}
-                            if(funmsm==undefined){funmsm=100;}
+                            if(funms==undefined){funms=100;}
                             if(fplani==undefined){fplani=100;}
                             if(term_cont==undefined){term_cont=100;}
                             if(ren==undefined){ren=100;}
@@ -2994,7 +3020,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){  //para la tabla de baja
 
                                     if(self.listarServCondPla2View.collection.length!=0){
@@ -3084,14 +3110,14 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                         //   this.listarServCondPla2Reg.show(this.listarServCondPla2View);
                         if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                            && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                            && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                             && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                             && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
                             var sanc_disc=$("#sanc_disc").val();
                             var susp_ina=$("#susp_ina").val();
                             var cese=$("#cese").val();
                             var fallecido=$("#fall").val();
-                            var funmsm=$("#funmsm").val();
+                            var funms=$("#funms").val();
                             var fplani=$("#fplani").val();
                             var term_cont=$("#term_cont").val();
                             var ren=$("#ren").val();
@@ -3106,7 +3132,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP,permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP,
                                 function(){  //para la tabla de baja
@@ -3144,7 +3170,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             if(susp_ina==undefined){ susp_ina=100;}
                             if(cese==undefined){cese=100;}
                             if(fallecido==undefined){fallecido=100;}
-                            if(funmsm==undefined){funmsm=100;}
+                            if(funms==undefined){funms=100;}
                             if(fplani==undefined){fplani=100;}
                             if(term_cont==undefined){term_cont=100;}
                             if(ren==undefined){ren=100;}
@@ -3160,7 +3186,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
+                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP,permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc,anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){  //para la tabla de baja
                                     //  $("#condfech").removeAttr("hidden");
@@ -3262,7 +3288,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funmsm=$("#funmsm:checked").val();
+                    var funms=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -3315,7 +3341,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funmsm=100;
+                            var funms=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -3353,7 +3379,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             $("#susp_in_form").val(susp_ina);
                             $("#ces_form").val(cese);
                             $("#fallec_form").val(fallecido);
-                            $("#fun_form").val(funmsm);
+                            $("#fun_form").val(funms);
                             $("#fpla_form").val(fplani);
                             $("#term_con_form").val(term_cont);
                             $("#re_form").val(ren);
@@ -3383,7 +3409,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         if(tipCCP!="" || estCCP!="" || dniCCP!=""){   //quiere decir que selecciono un trabajador
 
                             if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                                && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                                && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                                 && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                                 && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
 
@@ -3391,7 +3417,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 var susp_ina=$("#susp_ina").val();
                                 var cese=$("#cese").val();
                                 var fallecido=$("#fall").val();
-                                var funmsm=$("#funmsm").val();
+                                var funms=$("#funms").val();
                                 var fplani=$("#fplani").val();
                                 var term_cont=$("#term_cont").val();
                                 var ren=$("#ren").val();
@@ -3429,7 +3455,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_in_form").val(susp_ina);
                                 $("#ces_form").val(cese);
                                 $("#fallec_form").val(fallecido);
-                                $("#fun_form").val(funmsm);
+                                $("#fun_form").val(funms);
                                 $("#fpla_form").val(fplani);
                                 $("#term_con_form").val(term_cont);
                                 $("#re_form").val(ren);
@@ -3463,7 +3489,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 if(susp_ina==undefined){ susp_ina=100;}
                                 if(cese==undefined){cese=100;}
                                 if(fallecido==undefined){fallecido=100;}
-                                if(funmsm==undefined){funmsm=100;}
+                                if(funms==undefined){funms=100;}
                                 if(fplani==undefined){fplani=100;}
                                 if(term_cont==undefined){term_cont=100;}
                                 if(ren==undefined){ren=100;}
@@ -3504,7 +3530,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_in_form").val(susp_ina);
                                 $("#ces_form").val(cese);
                                 $("#fallec_form").val(fallecido);
-                                $("#fun_form").val(funmsm);
+                                $("#fun_form").val(funms);
                                 $("#fpla_form").val(fplani);
                                 $("#term_con_form").val(term_cont);
                                 $("#re_form").val(ren);
@@ -3546,7 +3572,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funmsm=$("#funmsm:checked").val();
+                    var funms=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -3608,7 +3634,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funmsm=100;
+                            var funms=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -3655,7 +3681,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             $("#susp_ina_form").val(susp_ina);
                             $("#cese_form").val(cese);
                             $("#fallecido_form").val(fallecido);
-                            $("#funmsm_form").val(funmsm);
+                            $("#funmsm_form").val(funms);
                             $("#fplani_form").val(fplani);
                             $("#term_cont_form").val(term_cont);
                             $("#ren_form").val(ren);
@@ -3790,7 +3816,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             //aqui hay dos opciones 1) que seleccione todas las bajas 2)seleccione algunas bajas
                             if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                                && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                                && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                                 && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                                 && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
 
@@ -3798,7 +3824,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 var susp_ina=$("#susp_ina").val();
                                 var cese=$("#cese").val();
                                 var fallecido=$("#fall").val();
-                                var funmsm=$("#funmsm").val();
+                                var funms=$("#funms").val();
                                 var fplani=$("#fplani").val();
                                 var term_cont=$("#term_cont").val();
                                 var ren=$("#ren").val();
@@ -3845,7 +3871,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_ina_form").val(susp_ina);
                                 $("#cese_form").val(cese);
                                 $("#fallecido_form").val(fallecido);
-                                $("#funmsm_form").val(funmsm);
+                                $("#funmsm_form").val(funms);
                                 $("#fplani_form").val(fplani);
                                 $("#term_cont_form").val(term_cont);
                                 $("#ren_form").val(ren);
@@ -3885,7 +3911,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 if(susp_ina==undefined){ susp_ina=100;}
                                 if(cese==undefined){cese=100;}
                                 if(fallecido==undefined){fallecido=100;}
-                                if(funmsm==undefined){funmsm=100;}
+                                if(funms==undefined){funms=100;}
                                 if(fplani==undefined){fplani=100;}
                                 if(term_cont==undefined){term_cont=100;}
                                 if(ren==undefined){ren=100;}
@@ -3927,7 +3953,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_ina_form").val(susp_ina);
                                 $("#cese_form").val(cese);
                                 $("#fallecido_form").val(fallecido);
-                                $("#funmsm_form").val(funmsm);
+                                $("#funmsm_form").val(funms);
                                 $("#fplani_form").val(fplani);
                                 $("#term_cont_form").val(term_cont);
                                 $("#ren_form").val(ren);

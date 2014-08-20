@@ -256,4 +256,10 @@ public class ReportesController {
     }
 
 
+    //Mio no borrar por favor: Atte   Paul Yaringaño
+
+
+
+
+
 }

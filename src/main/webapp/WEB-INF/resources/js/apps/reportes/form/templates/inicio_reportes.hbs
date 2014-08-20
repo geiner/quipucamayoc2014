@@ -177,7 +177,7 @@
                            <input type="hidden" style="display: none" id="anioFinCCP_form" name="anioFinCCP" >
                            <input type="hidden" style="display: none" id="mesFinCCP_form" name="mesFinCCP" >
                            <!--  <textarea style="display: none" id="pks" name="codigos" values=""></textarea>-->
-                           <button id="descargar_serv_cond_pla" class="btn btn-warning">Descargar Reporte</button>
+                           <button id="descargar_serv_cond_pla" class="btn btn-warning"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
                            <!--  <a class="btn btn-primary pull-left" id="descargar_serv_cond_pla" data-target=".bs-example-modal-lg" style="margin-left: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</a>-->
                        </form>
                    </div>
@@ -211,7 +211,7 @@
                            <input type="hidden" style="display: none" id="meesFinCCP_form" name="mesFinCCP" >
                            <input type="hidden" style="display: none" id="dniCCP_form" name="dniCCP">
                            <!--  <textarea style="display: none" id="pks" name="codigos" values=""></textarea>-->
-                           <button id="descargar_un_serv_cond_pla" class="btn btn-warning" hidden="hidden">Descargar Reporte</button>
+                           <button id="descargar_un_serv_cond_pla" class="btn btn-warning" hidden="hidden"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
                            <!--  <a class="btn btn-primary pull-left" id="descargar_serv_cond_pla" data-target=".bs-example-modal-lg" style="margin-left: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</a>-->
                        </form>
                    </div>
@@ -379,7 +379,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline col-md-5">
-                               <input type="checkbox" id="chedad" value="0" >
+                               <input type="checkbox" id="chedad" class="iasc" value="0" >
                                Edad
                            </label>
                        </div>
@@ -423,13 +423,13 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chsex" value="1">
+                               <input type="checkbox" id="chsex" class="iasc" value="1">
                                Sexo
                            </label>
                        </div>
 
                        <div class="col-md-4" style="margin-left: 1.3%; width: 30.5%" >
-                           <select id="cboxsex" class="form-control" disabled="true">
+                           <select id="cboxsex" class="form-control"  disabled="true">
                                <option value="T">Todos</option>
                                <option value="M">Masculino</option>
                                <option value="F">Femenino</option>
@@ -441,7 +441,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chtipo" value="2">
+                               <input type="checkbox" id="chtipo" class="iasc" value="2">
                                Tipo de Servidor
                            </label>
                        </div>
@@ -453,7 +453,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chest" value="3">
+                               <input type="checkbox" id="chest" class="iasc" value="3">
                                Estado
                            </label>
                        </div>
@@ -466,7 +466,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chcat" value="4">
+                               <input type="checkbox" id="chcat" class="iasc" value="4">
                                Categoria
                            </label>
                        </div>
@@ -479,7 +479,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chreg" value="5">
+                               <input type="checkbox" id="chreg" class="iasc" value="5">
                                Régimen Pensionario
                            </label>
                        </div>
@@ -491,7 +491,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chtpago" value="6">
+                               <input type="checkbox" id="chtpago" class="iasc" value="6">
                                Tipo de Pago
                            </label>
                        </div>
@@ -503,7 +503,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chdep" value="7">
+                               <input type="checkbox" id="chdep" class="iasc" value="7">
                                Dependencia
                            </label>
                        </div>
@@ -515,7 +515,7 @@
                    <div class="row form-group">
                        <div class="col-md-2" style="margin-left:4%">
                            <label class="checkbox-inline" >
-                               <input type="checkbox" id="chfing" value="8">
+                               <input type="checkbox" id="chfing" class="iasc" value="8">
                                Fecha de Ingreso
                            </label>
                        </div>
@@ -561,6 +561,9 @@
                        <div class="input-group col-md-2 pull-left " style="margin-left:5%">
                            <a class="btn btn-primary pull-left" id="list_serv_ias" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar</a>
                        </div>
+                       <div class="input-group col-md-2 pull-right " style="margin-right:-5%">
+                           <a class="btn btn-primary pull-left" id="limpiar_ias" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-refresh"></span> Limpiar</a>
+                       </div>
 
                    </div>
 
@@ -596,7 +599,7 @@
                        <input type="hidden" style="display: none" id="fdependencia" name="fdependencia">
                        <input type="hidden" style="display: none" id="funmsm" name="funmsm">
                        <input type="hidden" style="display: none" id="usuarias" name="usuarias">
-                       <button class="btn btn-warning pull-right" id="desc_reporte_ias" data-target=".bs-example-modal-lg" style="margin-right: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+                       <button class="btn btn-primary pull-right" id="desc_reporte_ias" data-target=".bs-example-modal-lg" style="margin-right: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
 
                    </form>
                </div>

@@ -15,155 +15,205 @@
 
     <button id="search" class="btn btn-primary pull-right"  type="button"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</button>
 </ul>
+<br>
 <div class="tab-content">
-      <br>
-     <div class="row form-group" id="block-descr" style="display: none;">
-         <div class="col-md-2">
-             <strong style="font-size: 15px;">DNI:<strong id="text-cod" style="font-size: 15px;color: #00585f;"></strong></strong>
-         </div>
-        <div class="col-md-4">
-            <strong style="font-size: 15px;">Servidor:<strong id="desc-servidor" style="font-size: 15px; color: #00585f;"></strong></strong>
-        </div>
-         <div class="col-md-3">
-             <strong style="font-size: 15px;">Cod Antiguo:<strong id="cod-ant" style="font-size: 15px; color: #00585f;"></strong></strong>
 
-         </div>
-         <div class="col-md-3">
-             <strong style="font-size: 15px;">Estado:<strong id="estado" style="font-size: 15px; color: #00585f;"></strong></strong>
 
-         </div>
 
-         <br>
-     </div>
+         <fieldset style="border: 1px solid #e5e5e5;padding: 0px;margin-bottom: 20px;display: none;" id="block-descr">
+             <legend style="width: 20%;border-bottom: 0px;margin-left: 29px;font-size: 17px;font-weight:bold;">Información del trabajador</legend>
+             <div class="row form-group" style="margin-left: 2%;">
+             <div class="col-md-3">
+                 <strong style="font-size: 14px;">DNI: <strong id="text-cod" style="font-size: 14px;color: #00585f;"></strong></strong>
+             </div>
+             <div class="col-md-4">
+                 <strong style="font-size: 14px;">Servidor: <strong id="desc-servidor" style="font-size: 14px; color: #00585f;"></strong></strong>
+             </div>
+             <div class="col-md-2">
+                 <strong style="font-size: 14px;">Código: <strong id="cod-ant" style="font-size: 14px; color: #00585f;"></strong></strong>
+
+             </div>
+             <div class="col-md-2">
+                 <strong style="font-size: 14px;">Estado: <strong id="estado" style="font-size: 14px; color: #00585f;"></strong></strong>
+
+             </div>
+             </div>
+             <div class="row form-group" style="margin-left: 2%;">
+                 <div class="col-md-3">
+                     <strong style="font-size: 14px;">Tipo: <strong id="text-tipo" style="font-size: 14px;color: #00585f;"></strong></strong>
+                 </div>
+                 <div class="col-md-4">
+                     <strong style="font-size: 14px;">Categoria: <strong id="text-categ" style="font-size: 14px;color: #00585f;"></strong></strong>
+                 </div>
+                 <div class="col-md-4">
+                     <strong style="font-size: 14px;">Dependencia: <strong id="text-depen" style="font-size: 14px;color: #00585f;"></strong></strong>
+                 </div>
+             </div>
+         </fieldset>
+
+
+
+
+
       <div class="tab-pane active" id="lA">
           <label id="idPersonal" style="display: none;"></label>
           <form class="form-horizontal well" id="datos_personales" sav_legaj_lab="" onSubmit="return false">
-              <div class="row form-group">
-                  <div class="col-md-12" id="div_serv_est_pers">
-                      <label class="col-md-2 control-label" for="serv_ape_pat" style="margin-left: 3.5%;">Apellidos y Nombres </label>
+              <fieldset>
+                  <legend>Datos de nacimiento</legend>
+                  <div class="row form-group">
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" >Fecha </label>
 
-                      <div class="col-md-7">
-                          <input type="text" id="legaj_nom_ape_per" class="form-control" disabled>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="row form-group">
-                  <div class="col-md-6">
-                      <label class="col-md-5 control-label">Tipo de Documento de Identidad </label>
-                      <div class="col-md-7">
-                          <input type="text" id="dni_per" class="form-control" disabled>
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <label class="col-md-5 control-label">Nº de Documento</label>
-                      <div class="col-md-7">
-                          <input type="text" id="nro_dni_per" class="form-control" disabled>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="row form-group">
-                  <div class="col-md-6">
-                      <label class="col-md-5 control-label">Sexo </label>
-                      <div class="col-md-7">
-                          <input type="text" id="sex_per" class="form-control" disabled>
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <label class="col-md-5 control-label">Estado Civil</label>
-                      <div class="col-md-7">
-                          <input type="text" id="est_civ_per" class="form-control" disabled>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="row form-group">
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="legaj_naci_per">Fecha de Nacimiento</label>
-
-                      <div class="col-md-7">
+                          <div class="col-md-7">
 
                               <input  type="text" value="" class="form-control" id="legaj_naci_per" disabled>
 
                           </div>
 
-                   </div>
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="serv_ape_pat">País de Nacimiento</label>
+                      </div>
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="serv_ape_pat">País </label>
 
-                      <div class="col-md-7">
-                          <input type="text" id="pais_nac_per" class="form-control"  disabled>
+                          <div class="col-md-7">
+                              <input type="text" id="pais_nac_per" class="form-control"  disabled>
+                          </div>
                       </div>
                   </div>
-              </div>
+                  <div class="row form-group">
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="depar_nac_per">Departamento </label>
+                          <div class="col-md-7">
+                              <input type="text" id="depar_nac_per" class="form-control"  disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="prov_nac_per">Provincia </label>
 
-
-
-              <div class="row form-group">
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="depar_nac_per">Departamento de nacimiento</label>
-                      <div class="col-md-7">
-                          <input type="text" id="depar_nac_per" class="form-control"  disabled>
+                          <div class="col-md-7">
+                              <input type="text" id="prov_nac_per" class="form-control"  disabled>
+                          </div>
                       </div>
                   </div>
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="prov_nac_per">Provincia de nacimiento</label>
-
-                      <div class="col-md-7">
-                          <input type="text" id="prov_nac_per" class="form-control"  disabled>
+                  <div class="row form-group">
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="dist_nac_per">Distrito </label>
+                          <div class="col-md-7">
+                              <input type="text" id="dist_nac_per" class="form-control"  disabled>
+                          </div>
                       </div>
                   </div>
-              </div>
+              </fieldset>
+              <fieldset>
+                  <legend>Datos actuales</legend>
 
-              <div class="row form-group">
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="dist_nac_per">Distrito de nacimiento</label>
-                      <div class="col-md-7">
-                          <input type="text" id="dist_nac_per" class="form-control"  disabled>
+
+                  <div class="row form-group">
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Tipo de documento </label>
+                          <div class="col-md-7">
+                              <input type="text" id="dni_per" class="form-control" disabled>
+                          </div>
                       </div>
-                  </div>
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="domi_per">Domicilio</label>
-
-                      <div class="col-md-7">
-                          <input type="text" id="domi_per" class="form-control"  disabled>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="row form-group">
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="fono_per">Telefono</label>
-                      <div class="col-md-7">
-                          <input type="text" id="fono_per" class="form-control"  disabled>
-                      </div>
-                  </div>
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="cel_per">Celular</label>
-
-                      <div class="col-md-7">
-                          <input type="text" id="cel_per" class="form-control"  disabled>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="row form-group">
-                  <div class="col-md-6" id="div_serv_est_per">
-                      <label class="col-md-5 control-label" for="email_per">E-mail</label>
-                      <div class="col-md-7">
-                          <input type="text" id="email_per" class="form-control"  disabled>
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Nº de documento</label>
+                          <div class="col-md-7">
+                              <input type="text" id="nro_dni_per" class="form-control" disabled>
+                          </div>
                       </div>
                   </div>
 
-              </div>
+                  <div class="row form-group">
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Sexo </label>
+                          <div class="col-md-7">
+                              <input type="text" id="sex_per" class="form-control" disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Estado Civil</label>
+                          <div class="col-md-7">
+                              <input type="text" id="est_civ_per" class="form-control" disabled>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col-md-6">
+                           <label class="col-md-5 control-label">Pais</label>
+                          <div class="col-md-7">
+                              <input type="text" id="pais_act" class="form-control" disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Departamento</label>
+                          <div class="col-md-7">
+                              <input type="text" id="depart_act" class="form-control" disabled>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row form-group">
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Provincia</label>
+                          <div class="col-md-7">
+                              <input type="text" id="prov_act" class="form-control" disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <label class="col-md-5 control-label">Distrito</label>
+                          <div class="col-md-7">
+                              <input type="text" id="distr_act" class="form-control" disabled>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row form-group">
+
+                      <div class="col-md-12" id="div_serv_est_per">
+                          <label class="col-md-2 control-label" style="margin-left: 3.5%;">Domicilio</label>
+
+                          <div class="col-md-7">
+                              <input type="text" id="domi_per" class="form-control"  disabled>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="row form-group">
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="fono_per">Telefono</label>
+                          <div class="col-md-7">
+                              <input type="text" id="fono_per" class="form-control"  disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="cel_per">Celular</label>
+
+                          <div class="col-md-7">
+                              <input type="text" id="cel_per" class="form-control"  disabled>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="row form-group">
+                      <div class="col-md-6" id="div_serv_est_per">
+                          <label class="col-md-5 control-label" for="email_per">E-mail</label>
+                          <div class="col-md-7">
+                              <input type="text" id="email_per" class="form-control"  disabled>
+                          </div>
+                      </div>
+
+                  </div>
+              </fieldset>
+
 
           </form>
       </div>
        <div class="tab-pane" id="lB">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <button type="button" class="btn btn-success pull-right" id="datEstudio" style="display: none;"><span class="glyphicon glyphicon-plus"></span> Datos de estudio</button>
+            <button type="button" class="btn btn-warning pull-right" id="hideEstudio" style="display: none;"><span class="glyphicon glyphicon-minus"></span> Datos de estudio</button>
+        </div>
+    </div>
 
-
-    <form class="form-horizontal well" id="form_dat_estud" onsubmit="return false">
+    <form class="form-horizontal well" id="form_dat_estud" onsubmit="return false" style="margin-top: 1%;">
         <div class="row form-group">
             <div class="col-md-6" id="div_tip_estu">
 
@@ -335,7 +385,7 @@
         </div>
 
     </form>
-    <br>
+
     <form class="form-horizontal" id="form_tabla_serv">
         <div id="table-estudios">
 
@@ -344,8 +394,14 @@
     </div>
 
     <div class="tab-pane" id="lC">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+                <button type="button" class="btn btn-success pull-right" id="showFam" style="display: none;"><span class="glyphicon glyphicon-plus"></span> Datos familiares</button>
+                <button type="button" class="btn btn-warning pull-right" id="hideFam" style="display: none;"><span class="glyphicon glyphicon-minus"></span> Datos familiares</button>
+            </div>
+        </div>
        <label id="idfamiliar" style="display: none;"></label>
-        <form class="form-horizontal well" id="datos_familiares" sav_legaj_lab="" onSubmit="return false">
+        <form class="form-horizontal well" id="datos_familiares"  style="margin-top: 1%;" onSubmit="return false">
             <div class="row form-group">
                 <div class="col-md-12" id="div_serv_est">
                     <label class="col-md-2 control-label" for="serv_ape_pat" style="margin-left: 3.5%;">Nombre del Familiar <span style="color:red;">*</span></label>

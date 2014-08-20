@@ -5,23 +5,27 @@ define([ 'jquery', 'backbone', 'marionette','hbs!apps/cuadro_nominal/form/templa
             template: plazasCAPTemplate,
             collection: new Modalidades(),
 
+            mostrarModalidades: function(callback){
+                this.collection. setUrlTodasMod();
 
-
-
-            mostrarModalidades: function () {
-                // Initialize the collection
-
-                this.collection = new Modalidades();
-                // Render the view when the collection is retreived from the server
-               // this.listenTo(this.collection, 'sync', this.render);
+                //  this.collection2.setUrlTodasModalidades(); //****,   'apps/cuadro_nominal/form/collection/modalidadAsignacion'
 
                 this.collection.on("sync", this.render, this);
-
-                // Request unpaginated URL
-                this.collection.fetch({ data: { page: 'no'} });
-
+                this.collection.fetch().done(callback);
 
             }
+
+
+/*
+            mostrarModalidades: function () {
+
+               // this.collection.setUrlTodasModalidades();
+
+                this.collection = new Modalidades();
+                this.collection.on("sync", this.render, this);
+                this.collection.fetch({ data: { page: 'no'} });
+
+            }*/
 
 
 
