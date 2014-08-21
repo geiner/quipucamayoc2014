@@ -1943,7 +1943,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                 },
 
 
-                reporte_ias:function(f){
+                reporte_ias:function(){
                     $("#reporte_show_ias").show();
 
                     var self=this;
@@ -1999,9 +1999,9 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var catias="";
                     var pagias="";
                     var usuarias=$('#email').text();
-                    var clickedElement=$(f.currentTarget);
 
-                    clickedElement.button('loading');
+
+
 
 
 
@@ -2205,9 +2205,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
 
-                    setTimeout(function () {
-                        clickedElement.button('reset');
-                    },4000);
+
 
 
                 },

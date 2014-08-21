@@ -81,6 +81,26 @@ public class ServidorController {
     @ResponseBody
     public ServidorLaboral saveLaboral(@RequestBody ServidorLaboral servidorLaboral) {
         System.out.println("***********************DATOS*****************************************");
+        System.out.println("ser_cod:"+servidorLaboral.getCod());
+        System.out.println("ser_cod_ant:"+servidorLaboral.getCod_antiguo());
+        System.out.println("num_serest:"+servidorLaboral.getNum_ser_est());
+        System.out.println("ser_est_act:"+servidorLaboral.getEstLab());
+        System.out.println("ser_cat_act:"+servidorLaboral.getCat());
+        System.out.println("ser_tip_act:"+servidorLaboral.getTip());
+        System.out.println("ser_rpe_act:"+servidorLaboral.getRegPen());
+        System.out.println("ser_cta_ban_act:"+servidorLaboral.getCueBan());
+        System.out.println("ser_tip_pag_act:"+servidorLaboral.getTipPag());
+        System.out.println("ser_con_pla_act:"+servidorLaboral.getConPla());
+        System.out.println("ser_ent_aseg:"+servidorLaboral.getEntAse());
+        System.out.println("ser_tip_ser_gen:"+servidorLaboral.getTipGen());
+        System.out.println("ser_num_sis_pri_pen:"+servidorLaboral.getNumPen());
+        System.out.println("ser_est_afp:"+servidorLaboral.getEstAfp());
+        System.out.println("ser_fech_reg_lab:"+servidorLaboral.getRegLab());
+        System.out.println("SER_TIT_CTA_BAN:"+servidorLaboral.getTitcueBan());
+        System.out.println("SER_NUM_RUC:"+servidorLaboral.getRuc());
+        System.out.println("SER_COD_DEP_CES:"+servidorLaboral.getDependencia());
+        System.out.println("SER_COD_DEP_ACT:"+servidorLaboral.getDependencia());
+
         System.out.println(servidorLaboral.getCod()+"-"+servidorLaboral.getCat()+"-"+servidorLaboral.getTip()+"-"+servidorLaboral.getRegPen()+"-"+servidorLaboral.getCueBan()
                 +"-"+servidorLaboral.getTipPag()+"-"+servidorLaboral.getConPla()+"-"+servidorLaboral.getEntAse()+"-"+servidorLaboral.getTipGen()+"-"+servidorLaboral.getNumPen()
                 +"-"+servidorLaboral.getEstAfp()+"-"+servidorLaboral.getRegLab()+"-"+servidorLaboral.getInsregpen()+"-"+servidorLaboral.getSindic()+"-"+servidorLaboral.getTipocupuni());

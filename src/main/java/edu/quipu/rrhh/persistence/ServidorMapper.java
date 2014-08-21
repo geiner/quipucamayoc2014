@@ -173,8 +173,7 @@ public interface ServidorMapper {
             "    ser_num_sis_pri_pen, " +
             "    ser_est_afp, " +
             "    ser_fech_reg_lab, " +
-            "    SER_TIT_CTA_BAN ," +
-            "    SER_NUM_RUC ," +
+
             "    SER_COD_DEP_CES, " +
             "    SER_COD_DEP_ACT " +
             "  ) " +
@@ -195,9 +194,8 @@ public interface ServidorMapper {
             "    #{ser.numPen}, " +
             "    #{ser.estAfp}, " +
             "    #{ser.regLab}, " +
-            "    #{ser.titcueBan}, " +
-            "    #{ser.ruc}, " +
-            "    (SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})), " +
+
+            "    (SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY COD_DEP_ACT HAVING TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})) AND TRIM(COD_DEP_ACT)=TRIM(#{ser.dependencia})), " +
             "    #{ser.dependencia} " +
             "  )")
     void saveLaboral(@Param("ser") ServidorLaboral servidorLaboral);

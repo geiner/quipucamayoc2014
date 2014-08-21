@@ -6,7 +6,7 @@
 	<style name="Title" forecolor="#FFFFFF" fontSize="50" isBold="false" />
 	<style name="SubTitle" forecolor="#CCCCCC"  fontSize="18" isBold="false"/>
 	<style name="Column header" forecolor="#666666" fontSize="14" isBold="true"/>
-	<style name="Detail" mode="Transparent" fontName="Times New Roman" />
+	<style name="Detail" mode="Transparent"  />
 	<style name="Row" mode="Transparent"  >
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>

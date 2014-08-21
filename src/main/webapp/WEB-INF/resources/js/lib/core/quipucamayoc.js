@@ -20,7 +20,7 @@ $(function(){
         $('#inactividad').modal('hide');
      //  $(location).attr('href','http://quipucamayoc.unmsm.edu.pe/SisRRHH_prueba/');
 //        $(location).attr('href','http://quipucamayoc.unmsm.edu.pe/SisRRHH_erp/');
-    $(location).attr('href','http://localhost:9000/');
+          $(location).attr('href','http://localhost:9000/');
     });
     $("#inic").click(function(){
        $("#planilla").removeClass("active");

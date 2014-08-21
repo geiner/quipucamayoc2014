@@ -481,13 +481,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                 },
                 fun_camb_pais_resid: function () {
-                    if ($('#serv_act_pais').val() == "101") {
+                    if ($('#serv_act_pais').val() == "9011") {
                         $('#serv_act_dept').hide();
                         $('#serv_act_prov').hide();
                         $('#serv_act_distr').hide();
                     }
                     ;
-                    if ($('#serv_act_pais').val() == "100") {
+                    if ($('#serv_act_pais').val() == "9589") {
                         $('#serv_act_dept').show();
                     }
                     ;
@@ -647,7 +647,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         if ($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_nac').val()) & $('#autocom').val() != "") {
                             if ($('#autocom').val() == "PERÚ") {
                                 if ($('#nacdepartamento').val() != "99") {
-                                    if ($('#serv_act_pais').val() == "101" & $('#ser_act_domi').val() != "") {
+                                    if ($('#serv_act_pais').val() == "9011" & $('#ser_act_domi').val() != "") {
                                         if ($('#serv_car_fam').val() != "") {
                                             if ($('#serv_nac').val() != "" & self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
                                                 self.insertar_inf_per_servidor();
@@ -663,7 +663,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                             $('#advertencia').show();
                                         }
-                                    } else if ($('#serv_act_pais').val() == "100" && $('#ser_act_domi').val() != "" && $('#actdepartamento').val() != "99") {
+                                    } else if ($('#serv_act_pais').val() == "9589" && $('#ser_act_domi').val() != "" && $('#actdepartamento').val() != "99") {
                                         if ($('#serv_car_fam').val() != "") {
                                             if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
                                                 self.insertar_inf_per_servidor();
@@ -685,7 +685,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         $('#advertencia').html('<strong>Datos de la sección  Lugar de Residencia están mal ingresados</strong>')
                                         $('#advertencia').show();
                                     }
-                                    ;
+
 
                                 } else {
                                     $('#serv_save').hide();
@@ -695,7 +695,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 }
                             } else {
                                 if ($('#serv_espf_dom').val() != "") {
-                                    if ($('#serv_act_pais').val() == "101" && $('#ser_act_domi').val() != "") {
+                                    if ($('#serv_act_pais').val() == "9011" && $('#ser_act_domi').val() != "") {
                                         if ($('#serv_car_fam').val() != "") {
                                             if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
                                                 self.insertar_inf_per_servidor();
@@ -711,7 +711,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             $('#advertencia').html('<strong>Faltan llenar campos obligatorios en la sección Datos Actuales</strong>')
                                             $('#advertencia').show();
                                         }
-                                    } else if ($('#serv_act_pais').val() == "100" && $('#ser_act_domi').val() != "" && $('#serv_act_provincia').val() != "") {
+                                    } else if ($('#serv_act_pais').val() == "9589" && $('#ser_act_domi').val() != "" && $('#serv_act_provincia').val() != "") {
                                         if ($('#serv_car_fam').val() != "") {
                                             if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
                                                 self.insertar_inf_per_servidor();
@@ -990,6 +990,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }
                     console.log(self.num_ser_estado + " ---numserest")
 
+                    alert(codigo+" "+$("#serv_est").val()+" "+self.num_ser_estado+" "+$("#serv_gen").val()+" "+$("#serv_tip").val()+" "+ $("#serv_cat").val()+
+                    " "+$("#rpe").val()+" "+$("#ent_aseg").val()+" "+$("#est_afp").val()+" "+$("#num_sis_pri_pen").val()+" "+$("#tip_pag").val()+" "+$("#cta_ban").val()+
+                    " "+$("#serv_tit_ban").val()+" "+$("#cond_pla").val()+" "+$("#reg_lab").val()+" "+$("#reg_pen").val()+" "+$("#serv_tip_ocup").val()+" "+$("#serv_sind").val()+
+                    " "+$("#serv_ruc").val()+" "+$("#codigo_antiguo").val()+" "+self.unidadSelected.unidadId);
+
                     this.model.get("servidorlaboral").set({
                         "cod": codigo,
                         "estLab": $("#serv_est").val(),
@@ -1013,7 +1018,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         "cod_antiguo": $("#codigo_antiguo").val(),
                         "dependencia": self.unidadSelected.unidadId
                     });
-                    console.log($("#serv_ruc").val() + " akaaa");
+
                     if (self.guar_o_actu2 == 0) {
                         self.model.get("servidorlaboral").url = "rest/cas/serv/servidorlaboral";
 
@@ -1041,7 +1046,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
 
                         });
-                    } else {
+                    }
+                    else {
                         console.log("actualizar  ...................")
                         self.numregistros.fetchNumRegistros(codigo, self.num_ser_estado, function () {
                             var num1 = self.numregistros.collection.at(0).get('num1');
@@ -1212,7 +1218,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 $('#advertencia').show();
                             }
                         }
-                        ;
+
 
                         if ($("#rpe").val() == "4") {
                             if ($('#ent_aseg').val() != "999" & $('#est_afp').val() != "999" & $('#num_sis_pri_pen').val() != "") {
@@ -1468,7 +1474,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     if (this.tab == 1 & ($("#codigo").val().length > 7 || $("#codigo").val().length == 0)) {
                         this.fun_camb_tab_b();
                     }
-                    ;
+
                     if (this.tab == 1 && $("#codigo").val().length <= 8 && $("#codigo").val().length > 0) {
 
                         $("#block-descr_serv").hide();
@@ -1478,7 +1484,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         temp_help.show();
                         temp_help.text("No existe registro!");
                     }
-                    ;
+
                     if (this.tab == 0 && $("#codigo").val().length <= 8 && $("#codigo").val().length > 0) {
                         this.fun_search_servidor();
                     }
