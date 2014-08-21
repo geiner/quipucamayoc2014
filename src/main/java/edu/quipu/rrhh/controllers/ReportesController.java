@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.util.List;
 
 @Controller
@@ -26,38 +27,33 @@ public class ReportesController {
     //para el reporte de un solo servidor CIS - Carlos
     @RequestMapping(value = "/reporteServidor/cis/pdf",method = RequestMethod.POST)
     public void mostrarReporteServidor(HttpServletResponse response,String anioIni, String anioFin,  String mesIni, String mesFin,String tipito,String estito,String dni,
-                                       String ParEst, String ParCat,String ParDep,String ParRegPen,String ParEntAseg,String usuario) {
-        System.out.println("anioIni: "+ anioIni+"dni: "+dni);
+                                       String ParEst, String ParCat,String ParDep,String ParRegPen,String ParEntAseg,String usuario, ImageIcon logoSM) {
+        System.out.println("anioIni: "+ anioIni+"dni: "+dni+"logoSM: "+logoSM);
         System.out.println("entro y mando de controller");
 
         reportesService.cargarReporteServidor(response, Integer.parseInt(anioIni),Integer.parseInt(anioFin),Integer.parseInt(mesIni),Integer.parseInt(mesFin),Integer.parseInt(tipito), Integer.parseInt(estito),
-                dni,Boolean.parseBoolean(ParEst),Boolean.parseBoolean(ParCat),Boolean.parseBoolean(ParDep),Boolean.parseBoolean(ParRegPen),Boolean.parseBoolean(ParEntAseg),usuario );
+                dni,Boolean.parseBoolean(ParEst),Boolean.parseBoolean(ParCat),Boolean.parseBoolean(ParDep),Boolean.parseBoolean(ParRegPen),Boolean.parseBoolean(ParEntAseg),usuario, logoSM );
 
     }
 
 
     //para el reporte grupal   CIS - Carlos
     @RequestMapping(value = "/reporteGrupal/cis/pdf",method = RequestMethod.POST)
-    public void mostrarReporteGrupal(HttpServletResponse response,String anioIni, String anioFin,  String mesIni, String mesFin,String tipito,String e1,String e2,
-                                     String e3,String e4,String e5,String e6,String e7,String e8,String ParEst, String ParCat,String ParDep,String ParRegPen,String ParEntAseg,String usuario) {
-
+    public void mostrarReporteGrupal(HttpServletResponse response,String anioIni,   String mesIni, String tipito,String e1
+            ,String ParEst, String ParCat,String ParDep,String ParRegPen,String ParEntAseg,String usuario,ImageIcon logoSM) {
+        System.out.println("anioIni: "+ anioIni+"estado: "+e1+"logoSM: "+logoSM);
         System.out.println("entro y mando de controller");
-        reportesService.cargarReporteGrupal(response, Integer.parseInt(anioIni),Integer.parseInt(anioFin),Integer.parseInt(mesIni),Integer.parseInt(mesFin),Integer.parseInt(tipito), Integer.parseInt(e1),
-                Integer.parseInt(e2),Integer.parseInt(e3),Integer.parseInt(e4),Integer.parseInt(e5),Integer.parseInt(e6),Integer.parseInt(e7),Integer.parseInt(e8),
-                Boolean.parseBoolean(ParEst),Boolean.parseBoolean(ParCat),Boolean.parseBoolean(ParDep),Boolean.parseBoolean(ParRegPen),Boolean.parseBoolean(ParEntAseg),usuario );
+        reportesService.cargarReporteGrupal(response, Integer.parseInt(anioIni),Integer.parseInt(mesIni),Integer.parseInt(tipito), Integer.parseInt(e1),
+                Boolean.parseBoolean(ParEst),Boolean.parseBoolean(ParCat),Boolean.parseBoolean(ParDep),Boolean.parseBoolean(ParRegPen),Boolean.parseBoolean(ParEntAseg),usuario , logoSM );
 
     }
 
     //para la tabla Cambio en la Informacion del Servidor ----- Grupal
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value="/tablaCambioInfoServ/{anioIni}/{mesIni}/{anioFin}/{mesFin}/{tipo}/{e1}/{e2}/{e3}/{e4}/{e5}/{e6}/{e7}/{e8}")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value="/tablaCambioInfoServ/{anioIni}/{mesIni}/{tipo}/{e1}")
     @ResponseBody
-    public List<Reportes> tablaCambioInfoServ(@PathVariable(value="anioIni") Integer anioIni,@PathVariable(value="mesIni") Integer mesIni,@PathVariable(value="anioFin") Integer anioFin,
-                                              @PathVariable(value="mesFin") Integer mesFin,@PathVariable(value="tipo") Integer tipo,@PathVariable(value="e1") Integer e1,
-                                              @PathVariable(value="e2") Integer e2,@PathVariable(value="e3") Integer e3,@PathVariable(value="e4") Integer e4,
-                                              @PathVariable(value="e5") Integer e5,@PathVariable(value="e6") Integer e6,@PathVariable(value="e7") Integer e7,
-                                              @PathVariable(value="e8") Integer e8){
+    public List<Reportes> tablaCambioInfoServ(@PathVariable(value="anioIni") Integer anioIni,@PathVariable(value="mesIni") Integer mesIni,@PathVariable(value="tipo") Integer tipo,@PathVariable(value="e1") Integer e1){
         System.out.println("entro a tabla cambio de info Grupal= "+anioIni);
-        List<Reportes> tablaCambioInfoServ = reportesService.tablaCambioInfoServ(anioIni,mesIni,anioFin,mesFin,tipo,e1,e2,e3,e4,e5,e6,e7,e8);
+        List<Reportes> tablaCambioInfoServ = reportesService.tablaCambioInfoServ(anioIni,mesIni,tipo,e1);
         return tablaCambioInfoServ;
 
     }
@@ -73,6 +69,7 @@ public class ReportesController {
         return tablaCambioInfoDelServ;
 
     }
+
 
     //Para el combo tipo de pago
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/tiposervidor")

@@ -3,6 +3,9 @@
 
 
    <div id="errorFech" class="alert alert-warning" style="text-align: center; display:none;"><strong>Error... La Fecha Final es menor que la Fecha Inicial.</strong></div>
+   <div id="errorNoFech" class="alert alert-warning" style="text-align: center; display:none;"><strong>Error... Debe elegir una fecha.</strong></div>
+
+
    <div id="errorFechNac" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Incio Mayor que Fecha Fin</strong></div>
    <div id="errorFechNacIV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Inicio Vacio</strong></div>
    <div id="errorFechNacFV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Edad: Fecha Fin Vacio</strong></div>
@@ -11,7 +14,7 @@
    <div id="errorFechIngIV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Inicio Vacio</strong></div>
    <div id="errorFechIngFV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Fin Vacio</strong></div>
    <div id="errorSel" class="alert alert-warning" style="text-align: center; display:none;"><strong>No ha Seleccionado</strong></div>
-
+   <div id="nodata1" class="alert alert-warning" style="text-align: center; display:none;"><strong>No se encontró datos</strong></div>
 
 
 
@@ -231,116 +234,111 @@
                </div>
 
 
+
+               <!------------------------------------------------------------------- Parte Carlos---------------------------------------------->
+
                <div class="tab-pane " id="cis">
 
-                    <br>
-                    <form class="form-horizontal well" id="cambios_informacion" onsubmit="return">
-                        <div class="row form-group">
+                   <br>
+                   <form class="form-horizontal well" id="cambios_informacion" onsubmit="return">
+                       <div class="row form-group">
 
-                        </div>
+                       </div>
 
 
 
-                        <div class="row form-group">
-                            <div class="col-md-6">
-                                <div class="col-md-3">
-                                    <label>Fecha Inicio: </label>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="input-group" style=" width: 91%">
-                                        <input type="text" value="" id="ingres_ini_info" placeholder="Ejm. 11/05/2004" readonly=""
-                                               class="form-control">
+                       <div class="row form-group">
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>Fecha Inicio: </label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div class="input-group" style=" width: 91%">
+                                       <input type="text" value="" id="ingres_ini_info" placeholder="Ejm. 11/05/2004" readonly=""
+                                              class="form-control">
                                     <span class="input-group-btn">
                                      <button class="btn btn-default" type="button" id="ingres_ini_info_show"><span
                                              class=" glyphicon glyphicon-calendar"></span></button>
                                      <button class="btn btn-default" type="button" id="ingres_ini_info_clos"><span
                                              class=" glyphicon glyphicon-refresh"></span></button>
                                      </span>
-                                    </div>
+                                   </div>
 
-                                </div>
-                            </div>
+                               </div>
+                           </div>
 
-                            <div class="col-md-6">
-                                <div class="col-md-3">
-                                    <label>Fecha Fin: </label>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="input-group" style=" width: 91%">
-                                        <input type="text" value="" id="ingres_fin_info" placeholder="Ejm. 11/05/2004" readonly=""
-                                               class="form-control">
+                           <div class="col-md-6" id="div_fech_fin" style="display:none">
+                               <div class="col-md-3">
+                                   <label>Fecha Fin: </label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div class="input-group" style=" width: 91%">
+                                       <input type="text" value="" id="ingres_fin_info" placeholder="Ejm. 11/05/2004" readonly=""
+                                              class="form-control">
                                     <span class="input-group-btn">
                                      <button class="btn btn-default" type="button" id="ingres_fin_info_show"><span
                                              class=" glyphicon glyphicon-calendar"></span></button>
                                      <button class="btn btn-default" type="button" id="ingres_fin_info_clos"><span
                                              class=" glyphicon glyphicon-refresh"></span></button>
                                      </span>
-                                    </div>
+                                   </div>
 
-                                </div>
-                            </div>
+                               </div>
+                           </div>
 
-                        </div>
-                        <div class="row form-group" id="tipYest" style="display: true;">
+                       </div>
+                       <div class="row form-group" id="tipYest" style="display: true;">
 
-                            <div class="col-md-6">
-                                <div class="col-md-3">
-                                    <label>Tipo:
-                                        <span style="color:red;">*</span>
-                                    </label>
-                                </div>
-                                <div id="tiposerinfo" class="col-md-9" style="margin-left: -3%">
+                           <div class="col-md-6">
+                               <div class="col-md-3">
+                                   <label>Tipo:
+                                       <span style="color:red;">*</span>
+                                   </label>
+                               </div>
+                               <div id="tiposerinfo" class="col-md-9" style="margin-left: -3%">
 
-                                </div>
+                               </div>
 
-                            </div>
+                           </div>
 
-                            <div class="col-md-6">
-                                <div class="col-md-3" >
-                                    <label>Estado:
+                           <div class="col-md-6">
+                               <div class="col-md-3" >
+                                   <label>Estado:
 
-                                    </label>
-                                </div>
-                                <div id="estserinfo" class="col-md-9" style="margin-left: -3%">
+                                   </label>
+                               </div>
+                               <div id="estserinfo" class="col-md-9" style="margin-left: -3%">
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col-md-4" style="margin-left:1% ; margin-top:1%">
-                                <label>Cambios en la Información del Servidor :</label>
-                            </div>
-                            <div class="col-md-2" style="margin-left: -3%">
-                                <a class="btn btn-primary pull-left" id="btn_selec_cis" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Seleccionar</a>
-                            </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="row form-group">
+                           <div class="col-md-4" style="margin-left:1% ; margin-top:1%">
+                               <label>Cambios en la Información del Servidor :</label>
+                           </div>
+                           <div class="col-md-2" style="margin-left: -3%">
+                               <a class="btn btn-primary pull-left" id="btn_selec_cis" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Seleccionar</a>
+                           </div>
 
-                            <div class="col-md-2" >
-                                <a class="btn btn-primary pull-right" id="btn_limpiar_cis" style="margin-right: -222%;" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Limpiar</a>
-                            </div>
-                        </div>
-                        <br>
-                    </form>
+                           <div class="col-md-2" >
+                               <a class="btn btn-primary pull-right" id="btn_limpiar_cis" style="margin-right: -222%;" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Limpiar</a>
+                           </div>
+                       </div>
+                       <br>
+                   </form>
                    <div class="button-group  pull-right " id="reporte_grupal_show_cis" style="margin-right: 5%;">
                        <form action="api/reportes/reporteGrupal/cis/pdf"  method="POST" id="form_reporte_grupal_cis" style="">
                            <input type="hidden" style="display: none" id="anioIni" name="anioIni" >
-                           <input type="hidden" style="display: none" id="anioFin" name="anioFin" >
                            <input type="hidden" style="display: none" id="mesIni" name="mesIni" >
-                           <input type="hidden" style="display: none" id="mesFin" name="mesFin" >
                            <input type="hidden" style="display: none" id="tipo" name="tipito" >
                            <input type="hidden" style="display: none" id="e1" name="e1" >
-                           <input type="hidden" style="display: none" id="e2" name="e2" >
-                           <input type="hidden" style="display: none" id="e3" name="e3" >
-                           <input type="hidden" style="display: none" id="e4" name="e4" >
-                           <input type="hidden" style="display: none" id="e5" name="e5" >
-                           <input type="hidden" style="display: none" id="e6" name="e6" >
-                           <input type="hidden" style="display: none" id="e7" name="e7" >
-                           <input type="hidden" style="display: none" id="e8" name="e8" >
                            <input type="hidden" style="display: none" id="ParEst" name="ParEst" >
                            <input type="hidden" style="display: none" id="ParCat" name="ParCat" >
                            <input type="hidden" style="display: none" id="ParDep" name="ParDep" >
                            <input type="hidden" style="display: none" id="ParRegPen" name="ParRegPen" >
                            <input type="hidden" style="display: none" id="ParEntAseg" name="ParEntAseg" >
                            <input type="hidden" style="display: none" id="usuario" name="usuario" >
+                           <img type="hidden" style="display: none"  src="resources/img/logoSM.png" id="logoSM" name="logoSM">
                            <button class="btn btn-warning pull-right" id="btn_desc_cis" data-target=".bs-example-modal-lg" style="margin-right: -33%;"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
                        </form>
                    </div>
@@ -359,6 +357,7 @@
                            <input type="hidden" style="display: none" id="ParRegPen1" name="ParRegPen" >
                            <input type="hidden" style="display: none" id="ParEntAseg1" name="ParEntAseg" >
                            <input type="hidden" style="display: none" id="usuario1" name="usuario" >
+                           <img type="hidden" style="display: none"  src="resources/img/logoSM.png" id="logoSM" name="logoSM">
                            <button class="btn btn-warning pull-right" id="btn_desc_cis1" data-target=".bs-example-modal-lg"  style="margin-right: -28%;"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
                        </form>
                    </div>
@@ -366,12 +365,16 @@
                    <br>
                    <br>
                    <form class="form-horizontal well" id="listar_cis" onsubmit="return" hidden="">
+                       <div id="noData" class="alert alert-warning" style="text-align: center; display:none;"><strong>No hay datos que mostrar para este criterio de busqueda... Inténtelo nuevamente, gracias.</strong></div>
                        <div id="tabla_cis">
 
                        </div>
 
                    </form>
-                </div>
+               </div>
+
+
+
 
                <div class="tab-pane " id="ias">
                <br>

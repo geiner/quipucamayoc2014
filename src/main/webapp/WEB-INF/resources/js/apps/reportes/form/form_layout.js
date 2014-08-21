@@ -264,6 +264,9 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     this.estServ=est;
                     var dni=clickedElement.children(':nth-child(2)').text();
                     this.dni=dni;
+                    //alert("dni: "+this.dni);
+                    //alert("tipo del serv.: "+this.tipoServ);
+                    //alert("estado del serv.: "+this.estServ);
 
                     $("#dniServ").text(dni);
                     $('#nomServ').text(nombre);
@@ -280,15 +283,19 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#div_todos_trabajadores").hide(); //esconde el boton de descargar grupal
 
                     this.band1=true; //para no tomar en cuenta los combos de tipo y estado
+                    //alert("band1 es ahora: "+this.band1);
 
                     //ocultando el boton generar reporte grupal y mostrando boton generar reporte de un servidor
                     $("#reporte_grupal_show_cis").hide();
                     $("#reporte_servidor_show_cis").show();
-
+                    //mostrar fecha fin
+                    $('#div_fech_fin').show();
 
                 },
-
                 metodoBotonSeleccionar:function(e){
+                    //ocultar mensaje de no Data
+                    $('#noData').hide();
+                    //alert("band1 al entrar a seleccionar: "+this.band1);
                     $("#noTipoNiEstado").hide();
                     $("#noTipo").hide();
                     $("#noEstado").hide();
@@ -296,155 +303,110 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#noFechFin").hide();
                     $("#noFechIni").hide();
                     $("#noFechas").hide();
-                     //validando las fechas
-                    if($('#ingres_ini_info').val()!="" && $('#ingres_fin_info').val()!=""){
-                        var iniMes= $('#ingres_ini_info').val().substring(3,5) ;
-                        var iniDia = $('#ingres_ini_info').val().substring(0, 2);
-                        var iniAno = $('#ingres_ini_info').val().substring(6, 10);
-                        var finMes = $('#ingres_fin_info').val().substring(3, 5);
-                        var finDia = $('#ingres_fin_info').val().substring(0, 2);
-                        var finAno = $('#ingres_fin_info').val().substring(6, 10);
-                        if(iniAno<finAno){
+                    //validar si se trata de consulta para un servidor
+                    //validando fechas
+                    if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                        // alert("band1 es true")
 
-                            //Validando el tipo y estado del servidor
+                        if($('#ingres_ini_info').val()!="" && $('#ingres_fin_info').val()!=""){
+                            //alert("entro a fechas diferentes de null");
 
-                            if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                            var iniMes= $('#ingres_ini_info').val().substring(3,5) ;
+                            var iniDia = $('#ingres_ini_info').val().substring(0, 2);
+                            var iniAno = $('#ingres_ini_info').val().substring(6, 10);
+                            var finMes = $('#ingres_fin_info').val().substring(3, 5);
+                            var finDia = $('#ingres_fin_info').val().substring(0, 2);
+                            var finAno = $('#ingres_fin_info').val().substring(6, 10);
+                            // alert(iniMes);
+                            if(iniAno<finAno){
+                                // alert("fechas correctas");
+
                                 this.llamarModalSeleccionar(e);
-                            }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                tipoServ=$('#tiposervidorinfo').val();
-                                estServ=$('#estservidorinfo').val();
 
-                                this.llamarModalSeleccionar(e);
+                            } else{
+                                if(iniAno==finAno) {
+                                    if(finMes>iniMes){
+                                        // alert("año igual y mes del fin mayor...ok")
 
-                                    if( estServ==99){
+                                        //Validando el tipo y estado del servidor
 
-                                        $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-                                    }
+                                        this.llamarModalSeleccionar(e);
 
 
+                                    }else{
+                                        if(finMes==iniMes){
+                                            if(finDia>iniDia){
+                                                // alert("año igual, mes igual....y dia del fin mayor...ok")
+
+                                                this.llamarModalSeleccionar(e);
+
+                                            }else  {
+                                                if(finDia==iniDia){
+                                                    // alert("ini y fin son identicos....")
+                                                    this.llamarModalSeleccionar(e);
+                                                }else{
+                                                    //  alert("ini mayor que fin")
+                                                    $("#errorFech").show();
+                                                }
+                                            }
+                                        } else{
+                                            // alert("inicio mayor que fin")
+                                            $("#errorFech").show();
+                                        }
+                                    }}else{
+                                    //alert("inicio es mayor")
+                                    $("#errorFech").show();
+                                }
                             }
-                        } else{
-                        if(iniAno==finAno) {
-                           if(finMes>iniMes){
-
-                               //Validando el tipo y estado del servidor
-
-                               if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                                   this.llamarModalSeleccionar(e);
-                               }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                   tipoServ=$('#tiposervidorinfo').val();
-                                   estServ=$('#estservidorinfo').val();
-
-
-                                   this.llamarModalSeleccionar(e);
-                                       if( estServ==99){
-
-                                           $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-                                       }
-
-
-                               }
-
-                           }else{
-                            if(finMes==iniMes){
-                                   if(finDia>iniDia){
-
-                                       //Validando el tipo y estado del servidor
-
-                                       if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                                           this.llamarModalSeleccionar(e);
-                                       }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                           tipoServ=$('#tiposervidorinfo').val();
-                                           estServ=$('#estservidorinfo').val();
-
-
-                                           this.llamarModalSeleccionar(e);
-                                               if( estServ==99){
-
-                                                   $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-                                               }
-
-
-                                       }
-                                   }else  {
-                                   if(finDia==iniDia){
-                                       $("#errorFech").show();
-                                   }else{
-                                       $("#errorFech").show();
-                                   }
-                                    }
-                           } else{
-                                $("#errorFech").show();
-                            }
-                        }}else{
-                            $("#errorFech").show();
                         }
-                        }
-                    }
-                    if($('#ingres_ini_info').val()!="" && $('#ingres_fin_info').val()==""){
-                        if(this.band1==true){
-                            this.llamarModalSeleccionar(e);
-                            $("#noFechFin").show();
-                        }else{
-
-                        tipoServ=$('#tiposervidorinfo').val();
-                        estServ=$('#estservidorinfo').val();
+                        if($('#ingres_ini_info').val()!="" && $('#ingres_fin_info').val()==""){
+                            // alert("no ingreso la fecha  de fin");
 
                             this.llamarModalSeleccionar(e);
                             $("#noFechFin").show();
-                            if( estServ==99){
-
-                                $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-
-                            }
-
 
                         }
-
-                    }
-                    if ($('#ingres_ini_info').val()=="" && $('#ingres_fin_info').val()!=""){
-                        if(this.band1==true){
-                            this.llamarModalSeleccionar(e);
-                            $("#noFechIni").show();
-                        }else{
-                        tipoServ=$('#tiposervidorinfo').val();
-                        estServ=$('#estservidorinfo').val();
+                        if ($('#ingres_ini_info').val()=="" && $('#ingres_fin_info').val()!=""){
+                            //alert("no ingreso la fecha de inicio ");
 
                             this.llamarModalSeleccionar(e);
                             $("#noFechIni").show();
-                            if( estServ==99){
-
-                                $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-
-                            }
-
 
                         }
-                    }
-                    if ($('#ingres_ini_info').val()=="" && $('#ingres_fin_info').val()==""){
+                        if ($('#ingres_ini_info').val()=="" && $('#ingres_fin_info').val()==""){
+                            // alert("entro a fechas nulas");
+                            // alert("band1 entra en: "+this.band1);
 
 
-                        //Validando el tipo y estado del servidor
-
-                        if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
                             this.llamarModalSeleccionar(e);
                             $("#noFechas").show();
-                        }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+
+                        }
+                    }
+
+
+                    //validar si se trata de consulta por grupo
+                    //validando fechas
+                    if(this.band1!=true){
+
+                        if($('#ingres_ini_info').val()!=""){
+                            var iniMes= $('#ingres_ini_info').val().substring(3,5) ;
+                            var iniDia = $('#ingres_ini_info').val().substring(0, 2);
+                            var iniAnio = $('#ingres_ini_info').val().substring(6, 10);
+
+                            // alert("mes: "+iniMes);
+                            // alert ("año:"+ iniAnio);
+                            //se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
                             tipoServ=$('#tiposervidorinfo').val();
                             estServ=$('#estservidorinfo').val();
-
+                            //alert("tipo: "+tipoServ + "estado: "+estServ);
 
                             this.llamarModalSeleccionar(e);
-                            $("#noFechas").show();
-                                if(estServ==99){
-
-                                    $("#noEstado").show();       // no selecciono ningun estado...osea se tomaran todos los estados
-
-                                }
-
-
+                        }else{
+                            $('#errorNoFech').show();
                         }
                     }
+
 
                 },
 
@@ -455,12 +417,12 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     clickedElement.button('loading');
 
                     //setTimeout(function () {
-                        clickedElement.button('reset');
-                        self.seleccionReg.show(self.SeleccionView) ;
+                    clickedElement.button('reset');
+                    self.seleccionReg.show(self.SeleccionView) ;
 
-                        $("#seleccionModal").modal();
+                    $("#seleccionModal").modal();
 
-                   //},2000)
+                    //},2000)
                 },
 
                 limpiarCabeceraTabs:function(){
@@ -469,6 +431,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     $("#errorCamposOblig").hide();
                     $("#errorFech").hide();
+                    $('#errorNoFech').hide();
+
                     $("#datoServ").hide();
                     $("#errorFechNac").hide();
                     $("#errorFechIng").hide();
@@ -497,14 +461,18 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     //limpiando lo de Jean
                     $('#tiposervidorpla').val("1");
                     $('#estadoservidorplani').val("99");
-                    $("#tipYestCCP").show();
-                    $("#ingres_ini_plani").val("");
-                    $("#ingres_fin_plani").val("");
+
+                    //ocultar fecha fin
+                    $('#div_fech_fin').hide();
+                    //ocultar mensaje de no Data
+                    $('#noData').hide();
                 },
 
                 limpiarCabeceraTabsFernando:function(){
                     $("#errorCamposOblig").hide();
                     $("#errorFech").hide();
+                    $('#errorNoFech').hide();
+
                     $("#datoServ").hide();
                     $("#errorFechNac").hide();
                     $("#errorFechIng").hide();
@@ -535,9 +503,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     //limpiando lo de Jean
                     $('#tiposervidorpla').val("1");
                     $('#estadoservidorplani').val("99");
-                    $("#tipYestCCP").show();
-                    $("#ingres_ini_plani").val("");
-                    $("#ingres_fin_plani").val("");
+                    //ocultar fecha fin
+                    $('#div_fech_fin').hide();
+                    //ocultar mensaje de no Data
+                    $('#noData').hide();
                 },
 
                 limpiarFechaIni:function(){
@@ -560,8 +529,12 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $('.checkitos ').prop('checked',false);    //al seleccionar todos, se desselecciona los demas checkboxs
                 },
 
-                entroListar:function(){
+                entroListar:function(vv){
                     var self=this;
+                    var clickedElement=$(vv.currentTarget);
+                    clickedElement.button('loading');
+
+
                     //verificando fechas para enviar
                     if($('#ingres_ini_info').val()!="" )  {
                         this.anioIni=$('#ingres_ini_info').val().substring(6, 10);
@@ -580,38 +553,41 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
 
 
-                     var anioIni=this.anioIni;
-                     var anioFin=this.anioFin;
-                     var mesIni=this.mesIni;
-                     var mesFin=this.mesFin;
+                    //alert ("año inicial: " + this.anioIni + "mes inicial: "+this.mesIni)  ;
+                    //alert ("año final: " + this.anioFin + "mes final: "+this.mesFin)  ;
+                    var anioIni=this.anioIni;
+                    var anioFin=this.anioFin;
+                    var mesIni=this.mesIni;
+                    var mesFin=this.mesFin;
                     //verificando tipo y estado
                     if(this.band1==true){          //osea se trata de un solo servidor
                         ////tipo
                         var tipito;
                         if(this.tipoServ=="SIN TIPO"){
-                           tipito=0;
+                            tipito=0;
                         }
                         if(this.tipoServ=="DOCENTE"){
                             tipito=1;
                         }
                         if(this.tipoServ.indexOf("ADMINISTRATIVO")!=-1){
-                           tipito=2;
+                            tipito=2;
                         }
                         if(this.tipoServ=="DOCENTE DEL MAGISTERIO"){
-                           tipito=3;
+                            tipito=3;
                         }
                         if(this.tipoServ=="ADM. PROF. DE LA SALUD"){
-                           tipito=4;
+                            tipito=4;
                         }
                         if(this.tipoServ=="OBRERO"){
-                           tipito=5;
+                            tipito=5;
                         }
                         if(this.tipoServ=="DESIGNADO"){
-                           tipito=6;
+                            tipito=6;
                         }
                         if(this.tipoServ=="DESIGNADO DOC. DEL MAGISTERIO"){
-                           tipito=7;
+                            tipito=7;
                         }
+                        //alert("tipito: "+tipito);
 
 
                         ////estado
@@ -640,6 +616,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         if(this.estServ=="CAS"){
                             estito=7;
                         }
+                        //alert("estito: "+estito);
 
                         // para el reporte
                         this.tipito=tipito;
@@ -648,60 +625,45 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
                     }else{                       //osea se mostraran todos los servidores
-                    this.tipoServ=$('#tiposervidorinfo').val();
-                    var tipo=this.tipoServ;
-                    if(estServ==99){
-                        this.e1=0;
-                        this.e2=1;
-                        this.e3=2;
-                        this.e4=3;
-                        this.e5=4;
-                        this.e6=5;
-                        this.e7=6;
-                        this.e8=7;
-                    }else{
+                        this.tipoServ=$('#tiposervidorinfo').val();
+                        var tipo=this.tipoServ;
+
                         this.e1=$('#estservidorinfo').val();
-                        this.e2=$('#estservidorinfo').val();
-                        this.e3=$('#estservidorinfo').val();
-                        this.e4=$('#estservidorinfo').val();
-                        this.e5=$('#estservidorinfo').val();
-                        this.e6=$('#estservidorinfo').val();
-                        this.e7=$('#estservidorinfo').val();
-                        this.e8=$('#estservidorinfo').val();
+
+                        //alert("tipo:  "+this.tipoServ +" estado: "+this.e1+this.e2+this.e3);
+                        var e1= this.e1;
+
                     }
 
-                     var e1= this.e1;
-                     var e2= this.e2;
-                     var e3= this.e3;
-                     var e4= this.e4;
-                     var e5= this.e5;
-                     var e6= this.e6;
-                     var e7= this.e7;
-                     var e8= this.e8;
-                    }
-
-                  //verificar los checkbox clickeados
+                    //verificar los checkbox clickeados
                     var chtodos =$("#chtodos:checked").val();
                     var chestado =$("#chestado:checked").val();
                     //var chclase =$("#chclase:checked").val();
                     var chcateg =$("#chcateg:checked").val();
                     var chdep =$("#chdep:checked").val();
                     var chreg =$("#chreg:checked").val();
-                   // var chafp =$("#chafp:checked").val();
+                    // var chafp =$("#chafp:checked").val();
                     var chaseg =$("#chaseg:checked").val();
 
-                   //ver si se trata de un solo servidor para llamar a una query distinta
+                    //ver si se trata de un solo servidor para llamar a una query distinta
                     if(this.band1==true){   //un solo servidor
                         //dependiendo de los checkbox, se llamara a las tablas, ya que se ocultaran o no algunas columnas
 
                         if( chtodos==undefined && chestado==undefined  && chcateg==undefined &&
                             chdep==undefined && chreg==undefined  && chaseg==undefined){
+                            // alert("no se selecciono ningun checkbox...no debe salir nada");
                         }else{
 
                             if (chtodos!=undefined){
+                                // alert("se mostraran todas las columnas");    ///aqui colocar todas las columnas-------------------ojo------------------------------
 
+                                /*setTimeout(function() {
+                                 alert("activoo!!");
+                                 $('#preloader').hide();
 
+                                 }, 5000);*/
                                 this.tablaCambioInfoServView.fetchtablaCambiosInfoDelServ(anioIni,mesIni,anioFin,mesFin,this.dni,tipito,estito,function () {
+                                    //  alert("entro a la funcion tabla");
                                     if(self.tablaCambioInfoServView.collection.length!=0){
 
                                         $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
@@ -738,18 +700,28 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                         $('.dataTables_filter input').attr('placeholder', 'buscar..');
 
 
+                                    } else{
+                                        $('#noData').show();
                                     }
                                 });
                                 this.tablaInfocisReg.show(this.tablaCambioInfoServView);
                                 $("#listar_cis").removeAttr("hidden");
+
+                                setTimeout(function () {
+                                    clickedElement.button('reset');
+                                    $("#seleccionModal").modal("hide");
+                                },2000);
+
                             }
 
                             else{  //mostrando solo las columnas seleccionadas
 
                                 //levantando la tabla
+                                // alert("antes de levantar la tabla")  ;
 
 
                                 this.tablaCambioInfoServView.fetchtablaCambiosInfoDelServ(anioIni,mesIni,anioFin,mesFin,this.dni,tipito,estito,function () {
+                                    // alert("entro a la funcion tabla");
                                     if(self.tablaCambioInfoServView.collection.length!=0){
 
                                         $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
@@ -808,145 +780,176 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                         $('.dataTables_filter input').attr('placeholder', 'buscar..');
 
 
+                                    }else{
+                                        $('#noData').show();
                                     }
+
                                 });
                                 this.tablaInfocisReg.show(this.tablaCambioInfoServView);
                                 $("#listar_cis").removeAttr("hidden");
+
+                                setTimeout(function () {
+                                    clickedElement.button('reset');
+                                    $("#seleccionModal").modal("hide");
+                                },2000);
                             }
                         }
 
                     }else{          //todos
-                  //dependiendo de los checkbox, se llamara a las tablas, ya que se ocultaran o no algunas columnas
+                        //dependiendo de los checkbox, se llamara a las tablas, ya que se ocultaran o no algunas columnas
 
-                    if( chtodos==undefined && chestado==undefined  && chcateg==undefined &&
-                        chdep==undefined && chreg==undefined  && chaseg==undefined){
-                    }else{
+                        if( chtodos==undefined && chestado==undefined  && chcateg==undefined &&
+                            chdep==undefined && chreg==undefined  && chaseg==undefined){
+                            // alert("no se selecciono ningun checkbox...no debe salir nada");
+                        }else{
 
-                    if (chtodos!=undefined){
+                            if (chtodos!=undefined){
+                                // alert("se mostraran todas las columnas");    ///aqui colocar todas las columnas-------------------ojo------------------------------
 
-                        //var self=this;
-                        //this.tablaCambioInfoServReg.show(this.tablaCambioInfoServView);
-                        this.tablaCambioInfoServView.fetchtablaCambiosInfoServ(anioIni,mesIni,anioFin,mesFin,tipo,e1,e2,e3,e4,e5,e6,e7,e8,function () {
-                            if(self.tablaCambioInfoServView.collection.length!=0){
+                                //var self=this;
+                                //this.tablaCambioInfoServReg.show(this.tablaCambioInfoServView);
+                                this.tablaCambioInfoServView.fetchtablaCambiosInfoServ(anioIni,mesIni,tipo,e1,function () {
+                                    // alert("entro a la funcion tabla");
+                                    if(self.tablaCambioInfoServView.collection.length!=0){
 
-                                $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
-                                $('#tabla_head > tr').append('<th id="numDoc" style="text-align: center">Num. Doc.</th>')
-                                $('#tabla_head > tr').append('<th id="codServ" style="text-align: center">Cod. Serv.</th>')
-                                $('#tabla_head > tr').append('<th id="nomServ" style="text-align: center">Apellidos y Nombres</th>')
-                                $('#tabla_head > tr').append('<th id="fecha" style="text-align: center">Fecha</th>')
 
-                                $('#tabla_head > tr').append('<th id="estServ" style="text-align: center ">Estado</th>')
-                                $('#tabla_head > tr').append('<th id="catServ" style="text-align: center ">Categoria</th>')
-                                $('#tabla_head > tr').append('<th id="depServ" style="text-align: center ">Dependencia</th>')
-                                $('#tabla_head > tr').append('<th id="regPen" style="text-align: center ">Reg. Pen.</th>')
-                                $('#tabla_head > tr').append('<th id="entAseg" style="text-align: center ">Ent. Aseg.</th>')
 
-                                for(var i=0;i<self.tablaCambioInfoServView.collection.length;i++){
-                                    $('#tabla_serv_info_body').append('<tr colspan="8" id="'+i+ '"></tr>')
-                                    $('#'+i).append('<td style="width:50px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("tipoDoc") +'</td>')
-                                    $('#'+i).append('<td style="text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("numDoc") +'</td>')
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("codSer") +'</td>')
-                                    $('#'+i).append('<td style="width:222px; text-align: center"  >'+self.tablaCambioInfoServView.collection.at(i).get("apePat")+" "+self.tablaCambioInfoServView.collection.at(i).get("apeMat")+", "+self.tablaCambioInfoServView.collection.at(i).get("nombre") +'</td>')
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("mes")+" / "+self.tablaCambioInfoServView.collection.at(i).get("anio") +'</td>')
+                                        $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
+                                        $('#tabla_head > tr').append('<th id="numDoc" style="text-align: center">Num. Doc.</th>')
+                                        $('#tabla_head > tr').append('<th id="codServ" style="text-align: center">Cod. Serv.</th>')
+                                        $('#tabla_head > tr').append('<th id="nomServ" style="text-align: center">Apellidos y Nombres</th>')
+                                        $('#tabla_head > tr').append('<th id="fecha" style="text-align: center">Fecha</th>')
 
-                                    $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("condFech") +'</td>')
-                                    $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("cat") +'</td>')
-                                    $('#'+i).append('<td style="width:222px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("dep") +'</td>')
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("reg") +'</td>')
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("entAseg") +'</td>')
-                                }
-                                $("#table-cambio-info-serv").dataTable();
-                                $('#table-cambio-info-serv_wrapper').append("<div id='footer-table'></div>");
-                                $('#table-cambio-info-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                $('#table-cambio-info-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                        $('#tabla_head > tr').append('<th id="estServ" style="text-align: center ">Estado</th>')
+                                        $('#tabla_head > tr').append('<th id="catServ" style="text-align: center ">Categoria</th>')
+                                        $('#tabla_head > tr').append('<th id="depServ" style="text-align: center ">Dependencia</th>')
+                                        $('#tabla_head > tr').append('<th id="regPen" style="text-align: center ">Reg. Pen.</th>')
+                                        $('#tabla_head > tr').append('<th id="entAseg" style="text-align: center ">Ent. Aseg.</th>')
 
-                                $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                                        for(var i=0;i<self.tablaCambioInfoServView.collection.length;i++){
+                                            $('#tabla_serv_info_body').append('<tr colspan="8" id="'+i+ '"></tr>')
+                                            $('#'+i).append('<td style="width:50px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("tipoDoc") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("numDoc") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("codSer") +'</td>')
+                                            $('#'+i).append('<td style="width:222px; text-align: center"  >'+self.tablaCambioInfoServView.collection.at(i).get("apePat")+" "+self.tablaCambioInfoServView.collection.at(i).get("apeMat")+", "+self.tablaCambioInfoServView.collection.at(i).get("nombre") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("mes")+" / "+self.tablaCambioInfoServView.collection.at(i).get("anio") +'</td>')
 
+                                            $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("condFech") +'</td>')
+                                            $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("cat") +'</td>')
+                                            $('#'+i).append('<td style="width:222px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("dep") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("reg") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("entAseg") +'</td>')
+                                        }
+                                        $("#table-cambio-info-serv").dataTable();
+                                        $('#table-cambio-info-serv_wrapper').append("<div id='footer-table'></div>");
+                                        $('#table-cambio-info-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                        $('#table-cambio-info-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                        $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                    }else{
+                                        $('#noData').show();
+                                    }
+                                });
+                                this.tablaInfocisReg.show(this.tablaCambioInfoServView);
+                                $("#listar_cis").removeAttr("hidden");
+
+                                setTimeout(function () {
+                                    clickedElement.button('reset');
+                                    $("#seleccionModal").modal("hide");
+                                },8000);
 
                             }
-                        });
-                        this.tablaInfocisReg.show(this.tablaCambioInfoServView);
-                        $("#listar_cis").removeAttr("hidden");
-                    }
 
-                    else{  //mostrando solo las columnas seleccionadas
+                            else{  //mostrando solo las columnas seleccionadas
 
-                    //levantando la tabla
-                    var valor1=1;
-                    //var self=this;
-                    //this.tablaCambioInfoServReg.show(this.tablaCambioInfoServView);
-                    this.tablaCambioInfoServView.fetchtablaCambiosInfoServ(anioIni,mesIni,anioFin,mesFin,tipo,e1,e2,e3,e4,e5,e6,e7,e8,function () {
-                        if(self.tablaCambioInfoServView.collection.length!=0){
+                                //levantando la tabla
+                                // alert("antes de levantar la tabla")  ;
+                                var valor1=1;
+                                //var self=this;
+                                //this.tablaCambioInfoServReg.show(this.tablaCambioInfoServView);
+                                this.tablaCambioInfoServView.fetchtablaCambiosInfoServ(anioIni,mesIni,tipo,e1,function () {
+                                    // alert("entro a la funcion tabla");
+                                    if(self.tablaCambioInfoServView.collection.length!=0){
 
-                            $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
-                            $('#tabla_head > tr').append('<th id="numDoc" style="text-align: center">Num. Doc.</th>')
-                            $('#tabla_head > tr').append('<th id="codServ" style="text-align: center">Cod. Serv.</th>')
-                            $('#tabla_head > tr').append('<th id="nomServ" style="text-align: center">Apellidos y Nombres</th>')
-                            $('#tabla_head > tr').append('<th id="fecha" style="text-align: center">Fecha</th>')
+                                        $('#tabla_head > tr').append('<th id="tipDoc" style=" text-align: center">Tip. Doc.</th>')
+                                        $('#tabla_head > tr').append('<th id="numDoc" style="text-align: center">Num. Doc.</th>')
+                                        $('#tabla_head > tr').append('<th id="codServ" style="text-align: center">Cod. Serv.</th>')
+                                        $('#tabla_head > tr').append('<th id="nomServ" style="text-align: center">Apellidos y Nombres</th>')
+                                        $('#tabla_head > tr').append('<th id="fecha" style="text-align: center">Fecha</th>')
 
-                            if(chestado!=undefined){
-                                $('#tabla_head > tr').append('<th id="estServ" style="text-align: center ">Estado</th>')
+                                        if(chestado!=undefined){
+                                            $('#tabla_head > tr').append('<th id="estServ" style="text-align: center ">Estado</th>')
+                                        }
+                                        if(chcateg!=undefined){
+                                            $('#tabla_head > tr').append('<th id="catServ" style="text-align: center ">Categoria</th>')
+                                        }
+                                        if(chdep!=undefined){
+                                            $('#tabla_head > tr').append('<th id="depServ" style="text-align: center ">Dependencia</th>')
+                                        }
+                                        if(chreg!=undefined){
+                                            $('#tabla_head > tr').append('<th id="regPen" style="text-align: center ">Reg. Pen.</th>')
+                                        }
+                                        if(chaseg!=undefined){
+                                            $('#tabla_head > tr').append('<th id="entAseg" style="text-align: center ">Ent. Aseg.</th>')
+                                        }
+
+                                        for(var i=0;i<self.tablaCambioInfoServView.collection.length;i++){
+                                            $('#tabla_serv_info_body').append('<tr colspan="8" id="'+i+ '"></tr>')
+                                            $('#'+i).append('<td style="width:50px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("tipoDoc") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("numDoc") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("codSer") +'</td>')
+                                            $('#'+i).append('<td style="width:222px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("apePat")+" "+self.tablaCambioInfoServView.collection.at(i).get("apeMat")+", "+self.tablaCambioInfoServView.collection.at(i).get("nombre") +'</td>')
+                                            $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("mes")+" / "+self.tablaCambioInfoServView.collection.at(i).get("anio") +'</td>')
+                                            if(chestado!=undefined){
+                                                $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("condFech") +'</td>')
+                                            }
+                                            if(chcateg!=undefined) {
+                                                $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("cat") +'</td>')
+                                            }
+                                            if(chdep!=undefined) {
+                                                $('#'+i).append('<td style="width:222px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("dep") +'</td>')
+                                            }
+                                            if(chreg!=undefined) {
+                                                $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("reg") +'</td>')
+                                            }
+                                            if(chaseg!=undefined) {
+                                                $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("entAseg") +'</td>')
+                                            }
+                                        }
+
+
+                                        $("#table-cambio-info-serv").dataTable();
+                                        $('#table-cambio-info-serv_wrapper').append("<div id='footer-table'></div>");
+                                        $('#table-cambio-info-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                        $('#table-cambio-info-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                        $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+                                    } else{
+                                        $('#noData').show();
+                                    }
+                                });
+                                this.tablaInfocisReg.show(this.tablaCambioInfoServView);
+                                $("#listar_cis").removeAttr("hidden");
+
+                                setTimeout(function () {
+                                    clickedElement.button('reset');
+                                    $("#seleccionModal").modal("hide");
+                                },8000);
+
                             }
-                            if(chcateg!=undefined){
-                                $('#tabla_head > tr').append('<th id="catServ" style="text-align: center ">Categoria</th>')
-                            }
-                            if(chdep!=undefined){
-                                $('#tabla_head > tr').append('<th id="depServ" style="text-align: center ">Dependencia</th>')
-                            }
-                            if(chreg!=undefined){
-                                $('#tabla_head > tr').append('<th id="regPen" style="text-align: center ">Reg. Pen.</th>')
-                            }
-                            if(chaseg!=undefined){
-                                $('#tabla_head > tr').append('<th id="entAseg" style="text-align: center ">Ent. Aseg.</th>')
-                            }
-
-                            //  $('#tabla_serv_info_body > tr').append('<td colspan="8">555</td>')
-                            for(var i=0;i<self.tablaCambioInfoServView.collection.length;i++){
-                                $('#tabla_serv_info_body').append('<tr colspan="8" id="'+i+ '"></tr>')
-                                $('#'+i).append('<td style="width:50px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("tipoDoc") +'</td>')
-                                $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("numDoc") +'</td>')
-                                $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("codSer") +'</td>')
-                                $('#'+i).append('<td style="width:222px; text-align: center" >'+self.tablaCambioInfoServView.collection.at(i).get("apePat")+" "+self.tablaCambioInfoServView.collection.at(i).get("apeMat")+", "+self.tablaCambioInfoServView.collection.at(i).get("nombre") +'</td>')
-                                $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("mes")+" / "+self.tablaCambioInfoServView.collection.at(i).get("anio") +'</td>')
-                                if(chestado!=undefined){
-                                    $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("condFech") +'</td>')
-                                }
-                                if(chcateg!=undefined) {
-                                    $('#'+i).append('<td style="width:75px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("cat") +'</td>')
-                                }
-                                if(chdep!=undefined) {
-                                    $('#'+i).append('<td style="width:222px; text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("dep") +'</td>')
-                                }
-                                if(chreg!=undefined) {
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("reg") +'</td>')
-                                }
-                                if(chaseg!=undefined) {
-                                    $('#'+i).append('<td style="text-align: center">'+self.tablaCambioInfoServView.collection.at(i).get("entAseg") +'</td>')
-                                }
-                            }
-
-
-                            $("#table-cambio-info-serv").dataTable();
-                            $('#table-cambio-info-serv_wrapper').append("<div id='footer-table'></div>");
-                            $('#table-cambio-info-serv_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                            $('#table-cambio-info-serv_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
-
-
                         }
-                    });
-                    this.tablaInfocisReg.show(this.tablaCambioInfoServView);
-                    $("#listar_cis").removeAttr("hidden");
                     }
-                    }
-                    }
-                    $("#seleccionModal").modal("hide");
+
+
 
                 },
-
                 reporte_info_servidor:function(){           //osea reporte de un solo servidor
                     $("#reporte_servidor_show_cis").show();
+                    //alert("entro a reporte");
                     var usuario=$('#email').text();
 
 
@@ -968,6 +971,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
 
 
+                    // alert ("año inicial: " + this.anioIni + "mes inicial: "+this.mesIni)  ;
+                    // alert ("año final: " + this.anioFin + "mes final: "+this.mesFin)  ;
 
                     var anioIni=this.anioIni;
                     var anioFin=this.anioFin;
@@ -975,6 +980,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var mesFin=this.mesFin;
 
 
+                    //  alert("tipito: "+this.tipito)
+                    // alert("estito: "+this.estito);
 
 
                     //verificar los checkbox clickeados
@@ -993,6 +1000,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     this.ParEntAseg=true;
 
                     if (chtodos!=undefined){
+                        // alert("se mostraran todas las columnas");    ///aqui colocar todas las columnas-------------------ojo------------------------------
                         //activar todas las columnas en el reporte
                         this.ParEst=true;
                         this.ParCat=true;
@@ -1017,6 +1025,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         }
                     }
 
+                    //  alert("Parest: " + this.ParEst+"ParCat: "+this.ParCat)  ;
 
                     $("#anioIni1").val(anioIni);
                     $("#anioFin1").val(anioFin);
@@ -1032,11 +1041,13 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#ParEntAseg1").val(this.ParEntAseg);
                     $("#usuario1").val(usuario);
 
+                    //  alert("tipito: "+this.tipito+"estito: " + this.estito+"dni: "+this.dni+"usuario: "+usuario)
                 },
 
                 reporte_info_grupal:function(){      //osea reporte grupal
 
                     $("#reporte_grupal_show_cis").show();
+                    //  alert("entro a reporte");
                     var usuario=$('#email').text();
 
                     //verificando fechas para enviar
@@ -1048,42 +1059,21 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         this.mesIni=01;
                     }
 
-                    if($('#ingres_fin_info').val()!="" )  {
-                        this.anioFin=$('#ingres_fin_info').val().substring(6, 10);
-                        this.mesFin= $('#ingres_fin_info').val().substring(3,5) ;
-                    }else{
-                        this.anioFin=2050;
-                        this.mesFin=12;
-                    }
+
+                    //  alert ("año inicial: " + this.anioIni + "mes inicial: "+this.mesIni)  ;
 
 
                     var anioIni=this.anioIni;
-                    var anioFin=this.anioFin;
                     var mesIni=this.mesIni;
-                    var mesFin=this.mesFin;
 
-                        this.tipoServ=$('#tiposervidorinfo').val();
-                        var tipo=this.tipoServ;
-                        if(estServ==99){
-                            this.e1=0;
-                            this.e2=1;
-                            this.e3=2;
-                            this.e4=3;
-                            this.e5=4;
-                            this.e6=5;
-                            this.e7=6;
-                            this.e8=7;
-                        }else{
-                            this.e1=$('#estservidorinfo').val();
-                            this.e2=$('#estservidorinfo').val();
-                            this.e3=$('#estservidorinfo').val();
-                            this.e4=$('#estservidorinfo').val();
-                            this.e5=$('#estservidorinfo').val();
-                            this.e6=$('#estservidorinfo').val();
-                            this.e7=$('#estservidorinfo').val();
-                            this.e8=$('#estservidorinfo').val();
 
-                        }
+                    this.tipoServ=$('#tiposervidorinfo').val();
+                    var tipo=this.tipoServ;
+
+                    this.e1=$('#estservidorinfo').val();
+
+                    //  alert("e1 = "+this.e1) ;
+
 
 
                     //verificar los checkbox clickeados
@@ -1101,56 +1091,47 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     this.ParRegPen=true;
                     this.ParEntAseg=true;
 
-                           if (chtodos!=undefined){
-                                //activar todas las columnas en el reporte
-                                    this.ParEst=true;
-                                    this.ParCat=true;
-                                    this.ParDep=true;
-                                    this.ParRegPen=true;
-                                    this.ParEntAseg=true;
-                           }else{
-                                 if(chestado==undefined){
-                                     this.ParEst=false;
-                                 }
-                                 if(chcateg==undefined){
-                                     this.ParCat=false;
-                                 }
-                                 if(chdep==undefined){
-                                   this.ParDep=false;
-                                 }
-                                 if(chreg==undefined){
-                                   this.ParRegPen=false;
-                                 }
-                                 if(chaseg==undefined){
-                                   this.ParEntAseg=false;
-                                 }
-                           }
+                    if (chtodos!=undefined){
+                        //  alert("se mostraran todas las columnas");    ///aqui colocar todas las columnas-------------------ojo------------------------------
+                        //activar todas las columnas en el reporte
+                        this.ParEst=true;
+                        this.ParCat=true;
+                        this.ParDep=true;
+                        this.ParRegPen=true;
+                        this.ParEntAseg=true;
+                    }else{
+                        if(chestado==undefined){
+                            this.ParEst=false;
+                        }
+                        if(chcateg==undefined){
+                            this.ParCat=false;
+                        }
+                        if(chdep==undefined){
+                            this.ParDep=false;
+                        }
+                        if(chreg==undefined){
+                            this.ParRegPen=false;
+                        }
+                        if(chaseg==undefined){
+                            this.ParEntAseg=false;
+                        }
+                    }
 
+                    // alert("Parest: " + this.ParEst+"ParCat: "+this.ParCat)  ;
 
-                                $("#anioIni").val(anioIni);
-                                $("#anioFin").val(anioFin);
-                                $("#mesIni").val(mesIni);
-                                $("#mesFin").val(mesFin);
-                                $("#tipo").val(tipo);
-                                $("#e1").val(this.e1);
-                                $("#e2").val(this.e2);
-                                $("#e3").val(this.e3);
-                                $("#e4").val(this.e4);
-                                $("#e5").val(this.e5);
-                                $("#e6").val(this.e6);
-                                $("#e7").val(this.e7);
-                                $("#e8").val(this.e8);
-                                $("#ParEst").val(this.ParEst);
-                                $("#ParCat").val(this.ParCat);
-                                $("#ParDep").val(this.ParDep);
-                                $("#ParRegPen").val(this.ParRegPen);
-                                $("#ParEntAseg").val(this.ParEntAseg);
-                                $("#usuario").val(usuario);
+                    $("#anioIni").val(anioIni);
+                    $("#mesIni").val(mesIni);
+                    $("#tipo").val(tipo);
+                    $("#e1").val(this.e1);
+                    $("#ParEst").val(this.ParEst);
+                    $("#ParCat").val(this.ParCat);
+                    $("#ParDep").val(this.ParDep);
+                    $("#ParRegPen").val(this.ParRegPen);
+                    $("#ParEntAseg").val(this.ParEntAseg);
+                    $("#usuario").val(usuario);
 
 
                 },
-
-
 
 
 
@@ -1249,7 +1230,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     ingres_fin_plani.datepicker('show');
 
                 },
-                // fechas de Carlos....cambios de informacion
+
+
+
+                ///////////////////////////////////////////////////////// fechas de Carlos....cambios de informacion ///////////////////////////////////////////////////
                 show_ingres_ini_info: function () {
 
 
@@ -1262,6 +1246,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     ingres_ini_info.datepicker('show');
                     $("#errorFech").hide();
+                    $('#errorNoFech').hide();
+
                 },
 
                 show_ingres_fin_info: function () {
@@ -1276,7 +1262,14 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     ingres_fin_info.datepicker('show');
                     $("#errorFech").hide();
+                    $('#errorNoFech').hide();
+
                 },
+                ////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
                 clos_nac_ini: function(e){
                     $("#nac_ini").val("") ;
                     $("#errorFechNac").hide();
@@ -1565,7 +1558,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var IfinMes = $('#ingres_fin').val().substring(3, 5);
                             var IfinDia = $('#ingres_fin').val().substring(0, 2);
                             var IfinAno = $('#ingres_fin').val().substring(6, 10);
-
+                            //  alert(IiniMes);
                             if(IiniAno<IfinAno){
 
                                 b1=1;
@@ -1587,27 +1580,27 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                                 if(IfinDia==IiniDia){
                                                     b1=1;
                                                 }else{
-
+                                                    //   alert("ini mayor que fin")
                                                     $("#errorFechIng").show();
                                                 }
                                             }
                                         } else{
-
+                                            //    alert("inicio mayor que fin")
                                             $("#errorFechIng").show();
                                         }}
                                 }else{
-
+                                    //    alert("inicio es mayor")
                                     $("#errorFechIng").show();
                                 }
                             }
                         } else{
                             if($('#ingres_ini').val()!="" && $('#ingres_fin').val()==""){
-
+                                //   alert("debe ingresar la fecha  de fin");
                                 $("#errorFechIngIV").show();
 
                             } else{
                                 if ($('#ingres_ini').val()=="" && $('#ingres_fin').val()!=""){
-
+                                    //    alert("debe ingresar la fecha de inicio ");
                                     $("#errorFechIngFV").show();
                                 }} }
 
@@ -1856,6 +1849,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                     $('.dataTables_filter input').attr('placeholder', 'buscar..');
 
 
+                                }else{
+                                    $("#nodata").show();
                                 }
 
 
@@ -1870,6 +1865,16 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         $("#tablainfoser").show();
 
 
+                        /*
+
+
+
+                         if(tpa!=undefined){
+
+                         }
+                         if(dep!=undefined){
+
+                         } */
 
 
                     }else{
@@ -1877,14 +1882,70 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     }
                 },
+
                 limpiarias:function(){
                     $("#tablainfoser").hide();
-                    $(".iasc").prop('checked',false);
+                    $(".iasc").prop('checked',false);      ///desactiva
+
+                    //limpiar fechas de nacimiento
+                    $("#nac_ini_show").attr("disabled","true");
+                    $("#nac_ini_clos").attr("disabled","true");
+                    $("#nac_fin_show").attr("disabled","true");
+                    $("#nac_fin_clos").attr("disabled","true");
+                    $("#nac_ini").val("");
+                    $("#nac_fin").val("");
+                    $("#errorFechNacIV").hide();
+                    $("#errorFechNacFV").hide();
+                    $("#errorFechNac").hide();
+
+                    //limpiar combo sexo
+                    $("#cboxsex").attr("disabled","true");
+                    $("#cboxsex").val("0");
+
+                    //limpiar combo tipo de servidor
+                    $("#tiposervidor").attr("disabled","true");
+                    $("#tiposervidor").val("99")
+
+                    //limpiar combo estado
+                    $("#estservidor").attr("disabled","true");
+                    $("#estservidor").val("99")
+
+                    //limpiar combo categoria
+                    $("#catservidor").val("99");
+                    $("#catservidor").attr("disabled","true");
+
+                    //limpiar combo regimen
+                    $("#regpenservidor").attr("disabled","true");
+                    $("#regpenservidor").val("99")
+
+                    //limpiar combo tipo pago
+                    $("#tipagoservidor").attr("disabled","true");
+                    $("#tipagoservidor").val("99")
+
+                    //limpiar combo dependencia
+                    $("#depservidor").attr("disabled","true");
+                    $("#depservidor").val("99")
+
+                    //limpiar fechas de ingreso
+                    $("#ingres_ini_show").attr("disabled","true");
+                    $("#ingres_ini_clos").attr("disabled","true");
+                    $("#ingres_fin_show").attr("disabled","true");
+                    $("#ingres_fin_clos").attr("disabled","true");
+                    $("#ingres_ini").val("");
+                    $("#ingres_fin").val("");
+                    $("#errorFechIngIV").hide();
+                    $("#errorFechIngFV").hide();
+                    $("#errorFechIng").hide();
+
+                    //limpiar el mensaje de no data
+                    $("#nodata1").hide();
 
                 },
 
-                reporte_ias:function(){
+
+                reporte_ias:function(f){
                     $("#reporte_show_ias").show();
+
                     var self=this;
                     var fec=$("#chedad:checked").val();
                     var se =$("#chsex:checked").val();
@@ -1938,6 +1999,11 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var catias="";
                     var pagias="";
                     var usuarias=$('#email').text();
+                    var clickedElement=$(f.currentTarget);
+
+                    clickedElement.button('loading');
+
+
 
                     ///fechas de nacimiento para mandar los parametros
                     if($('#nac_ini').val()!=""){
@@ -2023,6 +2089,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             dia1=NiniDia1;
                             mes1=NiniMes1;
                             anio1=NiniAno1;
+
                         }
                         if(nf!=""){
                             dia2=NfinDia1;
@@ -2046,8 +2113,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     //tipo de servidor
                     if(t=="99"){
                         tipoias="-";
+
                     }else{
                         tipoias=t;
+
                     }
                     ///estado de servidor
                     if(e=="99"){
@@ -2133,6 +2202,12 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#ftipopago").val(ftipopago);
                     $("#fdependencia").val(fdependencia);
                     $("#funmsm").val(funmsm);
+
+
+
+                    setTimeout(function () {
+                        clickedElement.button('reset');
+                    },4000);
 
 
                 },

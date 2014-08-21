@@ -3,17 +3,18 @@ package edu.quipu.rrhh.services;
 import edu.quipu.rrhh.models.Reportes;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.util.List;
 
 public interface ReportesService {
 
-    void cargarReporteServidor(HttpServletResponse response, Integer anioIni, Integer anioFin, Integer mesIni, Integer mesFin, Integer tipito, Integer estito,
-                               String dni, boolean ParEst, boolean ParCat, boolean ParDep, boolean ParRegPen, boolean ParEntAseg, String usuario) ;
-    void cargarReporteGrupal(HttpServletResponse response, Integer anioIni, Integer anioFin, Integer mesIni, Integer mesFin, Integer tipito, Integer e1, Integer e2
-            , Integer e3, Integer e4, Integer e5, Integer e6, Integer e7, Integer e8, boolean ParEst, boolean ParCat, boolean ParDep, boolean ParRegPen, boolean ParEntAseg, String usuario);
+    void cargarReporteServidor(HttpServletResponse response,Integer anioIni, Integer anioFin,  Integer mesIni, Integer mesFin,Integer tipito,Integer estito,
+                               String dni,boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario,ImageIcon logoSM) ;
+    void cargarReporteGrupal(HttpServletResponse response,Integer anioIni,  Integer mesIni, Integer tipito,Integer e1,
+                             boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario,ImageIcon logoSM);
 
-    List<Reportes> tablaCambioInfoServ(Integer anioIni, Integer mesIni, Integer anioFin, Integer mesFin, Integer tipo, Integer e1, Integer e2, Integer e3, Integer e4, Integer e5, Integer e6, Integer e7, Integer e8);
-    List<Reportes> tablaCambioInfoDelServ(Integer anioIni, Integer mesIni, Integer anioFin, Integer mesFin, String dni, Integer tipito, Integer estito);
+    List<Reportes> tablaCambioInfoServ(Integer anioIni,Integer mesIni,Integer tipo,Integer e1);
+    List<Reportes> tablaCambioInfoDelServ(Integer anioIni,Integer mesIni,Integer anioFin,Integer mesFin,String dni,Integer tipito,Integer estito);
 
     List<Reportes> tiposervidor();
     List<Reportes> estservidor();

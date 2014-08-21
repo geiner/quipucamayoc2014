@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ReportesServiceImpl implements ReportesService{
     //reporte de un solo Servidor   CIS - Carlos
 
     public void cargarReporteServidor(HttpServletResponse response,Integer anioIni, Integer anioFin,  Integer mesIni, Integer mesFin,Integer tipito,Integer estito,String dni
-            ,boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario){
+            ,boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario, ImageIcon logoSM){
         String rutaReporte="/reportes/cambiosInfoServidor.jrxml";
         System.out.println("ENTRO A SERVICE IMPLEMENT DEL REPORTE");
         HashMap params = new HashMap();
@@ -50,6 +51,7 @@ public class ReportesServiceImpl implements ReportesService{
         params.put("ParRegPen", ParRegPen);
         params.put("ParEntAseg", ParEntAseg);
         params.put("usuario", usuario);
+        params.put("logoSM", logoSM);
         System.out.println(params);
         try {
             System.out.println("download");
@@ -63,31 +65,22 @@ public class ReportesServiceImpl implements ReportesService{
 
     //reporte grupal   CIS - Carlos
 
-    public void cargarReporteGrupal(HttpServletResponse response,Integer anioIni, Integer anioFin,  Integer mesIni, Integer mesFin,Integer tipito,Integer e1,Integer e2
-                                    ,Integer e3,Integer e4,Integer e5,Integer e6,Integer e7,Integer e8,boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario){
+    public void cargarReporteGrupal(HttpServletResponse response,Integer anioIni,   Integer mesIni, Integer tipito,Integer e1
+            ,boolean ParEst, boolean ParCat,boolean ParDep,boolean ParRegPen,boolean ParEntAseg,String usuario,ImageIcon logoSM){
         String rutaReporte="/reportes/cambiosInfoGrupal.jrxml";
         System.out.println("ENTRO A SERVICE iMPLEMENT DEL REPORTE");
         HashMap params = new HashMap();
         params.put("anioIni", anioIni);
-        params.put("anioFin", anioFin);
         params.put("mesIni", mesIni);
-        params.put("mesFin", mesFin);
         params.put("tipito", tipito);
         params.put("e1", e1);
-        params.put("e2", e2);
-        params.put("e3", e3);
-        params.put("e4", e4);
-        params.put("e5", e5);
-        params.put("e6", e6);
-        params.put("e7", e7);
-        params.put("e8", e8);
-
         params.put("ParEst", ParEst);
         params.put("ParCat", ParCat);
         params.put("ParDep", ParDep);
         params.put("ParRegPen", ParRegPen);
         params.put("ParEntAseg", ParEntAseg);
         params.put("usuario", usuario);
+        params.put("logoSM", logoSM);
         System.out.println(params);
         try {
             System.out.println("download");
@@ -100,8 +93,8 @@ public class ReportesServiceImpl implements ReportesService{
 
     //tabla cambio info serv   Grupal
     @Override
-    public List<Reportes> tablaCambioInfoServ(Integer anioIni,Integer mesIni,Integer anioFin,Integer mesFin,Integer tipo,Integer e1,Integer e2,Integer e3,Integer e4,Integer e5,Integer e6,Integer e7,Integer e8){
-        List<Reportes> tablaCambioInfoServ=reportesMapper.tablaCambioInfoServ(anioIni,mesIni,anioFin,mesFin,tipo,e1,e2,e3,e4,e5,e6,e7,e8);
+    public List<Reportes> tablaCambioInfoServ(Integer anioIni,Integer mesIni,Integer tipo,Integer e1){
+        List<Reportes> tablaCambioInfoServ=reportesMapper.tablaCambioInfoServ(anioIni,mesIni,tipo,e1);
         return tablaCambioInfoServ;
     }
 
@@ -111,6 +104,7 @@ public class ReportesServiceImpl implements ReportesService{
         List<Reportes> tablaCambioInfoDelServ=reportesMapper.tablaCambioInfoDelServ(anioIni,mesIni,anioFin,mesFin,dni,tipito,estito);
         return tablaCambioInfoDelServ;
     }
+
 
     @Override
     public List<Reportes> tiposervidor(){

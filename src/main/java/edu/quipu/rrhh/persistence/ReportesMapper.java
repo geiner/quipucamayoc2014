@@ -13,10 +13,13 @@ import java.util.List;
 public interface ReportesMapper {
 
     //traemos datos para la tabla cambios info serv ----Grupal
-    @Select(value = "select  substr(des_doc,1,3) as tipoDoc, ser_doc_id_act as numDoc, ser_cod as codSer, ser_ape_pat as pat, ser_ape_mat as mat, ser_nom as nomb, pla_anu as anio, pla_mes as mes,cond_fecha as estPla, desc_categ as cat, des_dep_cesantes as dep, " +
-            " desc_reg_pen as reg,  des_ent_aseg as entAseg " +
-            " from datapersuel.vw_cambios_info_y_cond_pla where pla_anu between #{anioIni} and #{anioFin} and pla_mes between  #{mesIni} and  #{mesFin}  and ser_tip_act = #{tipo} and SER_EST_ACT in ( #{e1}, #{e2},#{e3},#{e4},#{e5},#{e6},#{e7},#{e8})" +
-            " order by pla_anu asc, pla_mes asc ")
+
+
+    @Select(value = " select  substr(des_doc,1,3) as tipoDoc, ser_doc_id_act as numDoc, ser_cod as codSer, ser_ape_pat as pat, ser_ape_mat as mat, ser_nom as nomb, pla_anu as anio, pla_mes as mes,cond_fecha as estPla, desc_categ as cat, des_dep_cesantes as dep, " +
+            "    desc_reg_pen as reg,  des_ent_aseg as entAseg " +
+            "    from datapersuel.vw_cambios_info_y_cond_pla where pla_anu = #{anioIni}  and pla_mes =  #{mesIni}   and ser_tip_act = #{tipo} and SER_EST_ACT = #{e1} " +
+            "    order by pat asc, mat asc ,nomb asc ")
+
     @Results(value = { @Result(javaType = Reportes.class),
             @Result(property = "tipoDoc", column = "tipoDoc"),
             @Result(property = "numDoc", column = "numDoc"),
@@ -32,15 +35,13 @@ public interface ReportesMapper {
             @Result(property = "reg", column = "reg"),
             @Result(property = "entAseg", column = "entAseg")
     })
-    List<Reportes>tablaCambioInfoServ(@Param("anioIni") Integer anioIni, @Param("mesIni") Integer mesIni, @Param("anioFin") Integer anioFin, @Param("mesFin") Integer mesFin,
-                                      @Param("tipo") Integer tipo, @Param("e1") Integer e1, @Param("e2") Integer e2, @Param("e3") Integer e3, @Param("e4") Integer e4,
-                                      @Param("e5") Integer e5, @Param("e6") Integer e6, @Param("e7") Integer e7, @Param("e8") Integer e8) throws  DataAccessException;
+    List<Reportes>tablaCambioInfoServ(@Param("anioIni") Integer anioIni,@Param("mesIni") Integer mesIni,@Param("tipo") Integer tipo,@Param("e1") Integer e1) throws  DataAccessException;
 
     //traemos datos para la tabla cambios info serv ------  De un solo servidor
     @Select(value = "select  substr(des_doc,1,3) as tipoDoc, ser_doc_id_act as numDoc, ser_cod as codSer, ser_ape_pat as pat, ser_ape_mat as mat, ser_nom as nomb, " +
             "pla_anu as anio, pla_mes as mes,cond_fecha as estPla, desc_categ as cat, des_dep_cesantes as dep,desc_reg_pen as reg,  des_ent_aseg as entAseg  " +
             "from datapersuel.vw_cambios_info_y_cond_pla  " +
-            "where pla_anu between #{anioIni} and #{anioFin} and pla_mes between  #{mesIni} and  #{mesFin}  " +
+            "where fech between to_date('01'||'/'||#{mesIni}||'/'||#{anioIni},'dd/mm/yyyy') and to_date('31'||'/'||#{mesFin}||'/'||#{anioFin},'dd/mm/yyyy') "+
             "and ser_tip_act = #{tipito}  " +
             "and SER_EST_ACT = #{estito} " +
             "and SER_DOC_ID_ACT= #{dni} " +
@@ -60,8 +61,8 @@ public interface ReportesMapper {
             @Result(property = "reg", column = "reg"),
             @Result(property = "entAseg", column = "entAseg")
     })
-    List<Reportes>tablaCambioInfoDelServ(@Param("anioIni") Integer anioIni, @Param("mesIni") Integer mesIni, @Param("anioFin") Integer anioFin, @Param("mesFin") Integer mesFin,
-                                         @Param("dni") String dni, @Param("tipito") Integer tipito, @Param("estito") Integer estito) throws  DataAccessException;
+    List<Reportes>tablaCambioInfoDelServ(@Param("anioIni") Integer anioIni,@Param("mesIni") Integer mesIni,@Param("anioFin") Integer anioFin,@Param("mesFin") Integer mesFin,
+                                         @Param("dni") String dni,@Param("tipito") Integer tipito,@Param("estito") Integer estito) throws  DataAccessException;
 
 
 
