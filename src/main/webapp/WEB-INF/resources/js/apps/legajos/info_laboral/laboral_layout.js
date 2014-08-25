@@ -79,6 +79,7 @@ define(['app', 'hbs!apps/legajos/info_laboral/templates/infoLaboral_layout',"app
 
                     var self=this;
 
+
                     var clickedElement=$(e.currentTarget);
                     this.codigo=clickedElement.attr("id");
 

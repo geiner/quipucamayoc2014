@@ -167,12 +167,59 @@ define(['app', 'hbs!apps/servidores/numserest/templates/numserestLayout','apps/r
 
                 },
                 hide_lista_serv:function(e){
-                    var self = this;
+
+
+                    var self=this;
                     var clickedElement = $(e.currentTarget);
                     var cod_serv = clickedElement.children(':nth-child(8)').text();
                     var dni_serv = clickedElement.children(':nth-child(2)').text();
                     var nom_serv = clickedElement.children(':nth-child(1)').text();
                     this.num_ser_estado=clickedElement.children(':nth-child(7)').text();
+
+
+
+                    this.model.get("servidorlaboral").url ="rest/cas/serv/getNumserest/"+ cod_serv+"/"+this.num_ser_estado;
+
+                    var fetch_s = this.model.get("servidorlaboral").fetch({ data: $.param({"cod": cod_serv},{"num_ser_est": this.num_ser_estado}) });
+
+                    fetch_s.done(function(){
+
+                        $("#rpe").val(self.model.get("servidorlaboral").get("regPen")).trigger('change');
+
+                        $("#rpe").attr("disabled","disabled");
+                        $("#reg_pen").val(self.model.get("servidorlaboral").get("fechPen"));
+                        $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag")).trigger('change');
+
+                        $("#tip_pag").attr("disabled","disabled");
+                            setTimeout(function () {
+                                $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
+                                $("#rucLab").val(self.model.get("servidorlaboral").get("ruc"));
+                                $("#ent_aseg").attr("disabled","disabled");
+                                $("#cta_ban").val(self.model.get("servidorlaboral").get("cueBan"));
+                                $("#cta_ban").attr("disabled","disabled");
+                                $("#serv_tit_ban").val(self.model.get("servidorlaboral").get("titcueBan"));
+                                $("#serv_tit_ban").attr("disabled","disabled");
+                                setTimeout(function(){
+                                    $("#est_afp").val(self.model.get("servidorlaboral").get("estAfp"));
+                                    $("#est_afp").attr("disabled","disabled");
+                                    $("#num_sis_pri_pen").val(self.model.get("servidorlaboral").get("numPen"));
+                                    $("#num_sis_pri_pen").attr("disabled","disabled");
+                                },1000)
+                            },1000)
+
+
+                       // $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
+                       /* $("#est_afp").val(self.model.get("servidorlaboral").get("estAfp"));
+                        $("#num_sis_pri_pen").val(self.model.get("servidorlaboral").get("numPen"));
+                        $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag"));
+                        $("#cta_ban").val(self.model.get("servidorlaboral").get("cueBan"));
+                        $("#serv_tit_ban").val(self.model.get("servidorlaboral").get("titcueBan"));*/
+
+
+
+
+
+                    });
                     $("#block-descr_serv").show();
                     $('#cod_serv_lab').text(cod_serv);
                     $('#dni_serv_lab').text(dni_serv);

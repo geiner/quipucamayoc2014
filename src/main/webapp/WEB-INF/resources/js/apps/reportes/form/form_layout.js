@@ -252,7 +252,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                 },
 
                 seleccionarServidor:function(e){
-                    var self=this;
+
                     $("#datoServ").show();
                     var clickedElement=$(e.currentTarget);
 
@@ -264,9 +264,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     this.estServ=est;
                     var dni=clickedElement.children(':nth-child(2)').text();
                     this.dni=dni;
-                    //alert("dni: "+this.dni);
-                    //alert("tipo del serv.: "+this.tipoServ);
-                    //alert("estado del serv.: "+this.estServ);
+
 
                     $("#dniServ").text(dni);
                     $('#nomServ').text(nombre);
@@ -290,6 +288,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#reporte_servidor_show_cis").show();
                     //mostrar fecha fin
                     $('#div_fech_fin').show();
+                    $('#fechaFinCCP').show();
 
                 },
                 metodoBotonSeleccionar:function(e){
@@ -1445,7 +1444,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     var clickedElement=$(e.currentTarget);
 
-                    clickedElement.button('loading');
+
                     var self=this;
                     var fec=$("#chedad:checked").val();
                     var se =$("#chsex:checked").val();
@@ -1657,6 +1656,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         var IfinAno1 = $('#ingres_fin').val().substring(6, 10);
                     }
                     if(fec!=undefined || se!=undefined || ts!=undefined || est!=undefined || ca!=undefined || rp!=undefined || tpa!=undefined || dep!=undefined || fecin!=undefined){
+                        clickedElement.button('loading');
+
                         if(s=="T") {
                             var sex="M";
                             var sex1="F";
@@ -2217,377 +2218,441 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     if ($("input[name='myradio']:checked").val() == "1") {
 
-                       // alert("selecciono alta: el id es"+$("#cond_pla_alta").val())
+                        // alert("selecciono alta: el id es"+$("#cond_pla_alta").val())
                         //$("#altaCondPla").show();
-                       // var valor1= 1;
+                        // var valor1= 1;
 
                         //this.altaCondPlaView.getAltaCondPla(valor1, function(){
-                           // $("#altaCondPla").show();
-                       // });
+                        // $("#altaCondPla").show();
+                        // });
                         //this.altaCondPlaReg.show(this.altaCondPlaView);
 
 
                     }
                     if($("input[name='myradio']:checked").val() == "2"){
                         //alert("selecciono baja "+$("#cond_pla_baja").val())
-                       // $("#altaCondPla").show();
+                        // $("#altaCondPla").show();
                         //var valor1=2;
 
-                       // this.altaCondPlaView.getAltaCondPla(valor1, function(){
-                          //  $("#altaCondPla").show();
-                            //this.altaCondPlaReg.show(this.altaCondPlaView);
-                      //  });
+                        // this.altaCondPlaView.getAltaCondPla(valor1, function(){
+                        //  $("#altaCondPla").show();
+                        //this.altaCondPlaReg.show(this.altaCondPlaView);
+                        //  });
                     }
                 }   ,
 
 
                 modal_altabaja1 : function(){
 
-                    if($('#ingres_ini_plani').val()!="" && $('#ingres_fin_plani').val()!=""){
-                        var iniMes= $('#ingres_ini_plani').val().substring(3,5) ;
-                        var iniDia = $('#ingres_ini_plani').val().substring(0, 2);
-                        var iniAno = $('#ingres_ini_plani').val().substring(6, 10);
-                        var finMes = $('#ingres_fin_plani').val().substring(3, 5);
-                        var finDia = $('#ingres_fin_plani').val().substring(0, 2);
-                        var finAno = $('#ingres_fin_plani').val().substring(6, 10);
-                        if(iniAno<finAno){
+                    var estCCP= $("#estServ").text();
+                    var tipCCP= $("#tipTrabCCP").text();
+                    var dniCCP=$("#dniServ").text();
 
-                            //Validando el tipo y estado del servidor
+                    if($('#ingres_ini_plani').val()=="" && estCCP=="" && tipCCP=="" && dniCCP==""){
+                        $("#faltaFechaIni").show();
+                    }
+                    else {
 
-                            if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                                this.altabajaReg.show(this.altabajaView);
-                                $('#modal-altabaja').modal("show");
-                            }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                tipoServ=$('#tiposervidorpla').val();
-                                estServ=$('#estadoservidorplani').val();
-                                if(tipoServ==99 && estServ==99){
-                                    $('#modal-altabaja').modal("show");
-                                    $("#tipoServidor_ccp_vacio").hide();
-                                    $("#tipoEstado_ccp_vacio").hide();
-                                    $("#tipoSer_Est_cpp_vacios").show();
-                                } else
-                                if(tipoServ==99 ){
-                                    $('#modal-altabaja').modal("show");
-                                    $("#tipoServidor_ccp_vacio").show();
-                                    $("#tipoEstado_ccp_vacio").hide();
-                                    $("#tipoSer_Est_cpp_vacios").hide();
-                                }else if(estServ==99){
-                                    $('#modal-altabaja').modal("show");
-                                    $("#tipoServidor_ccp_vacio").hide();
-                                    $("#tipoEstado_ccp_vacio").show();
-                                    $("#tipoSer_Est_cpp_vacios").hide();
-                                }else{
+                        $("#faltaFechaIni").hide();
+
+
+                        if ($('#ingres_ini_plani').val() != "" && $('#ingres_fin_plani').val() != "") {
+                            //   alert("entro a fechas diferentes de null");
+                            var iniMes = $('#ingres_ini_plani').val().substring(3, 5);
+                            var iniDia = $('#ingres_ini_plani').val().substring(0, 2);
+                            var iniAno = $('#ingres_ini_plani').val().substring(6, 10);
+                            var finMes = $('#ingres_fin_plani').val().substring(3, 5);
+                            var finDia = $('#ingres_fin_plani').val().substring(0, 2);
+                            var finAno = $('#ingres_fin_plani').val().substring(6, 10);
+                            //  alert(iniMes);
+                            if (iniAno < finAno) {
+                                //     alert("fechas correctas");
+
+                                //Validando el tipo y estado del servidor
+
+                                if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                    //   alert("band1 es true")
                                     this.altabajaReg.show(this.altabajaView);
                                     $('#modal-altabaja').modal("show");
-                                }
-                            }
-                        } else{
-                            if(iniAno==finAno) {
-                                if(finMes>iniMes){
-
-                                    //Validando el tipo y estado del servidor
-
-                                    if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                    tipoServ = $('#tiposervidorpla').val();
+                                    estServ = $('#estadoservidorplani').val();
+                                    if (tipoServ == 99 && estServ == 99) {
+                                        $('#modal-altabaja').modal("show");
+                                        $("#tipoServidor_ccp_vacio").hide();
+                                        $("#tipoEstado_ccp_vacio").hide();
+                                        $("#tipoSer_Est_cpp_vacios").show();
+                                    } else if (tipoServ == 99) {
+                                        //   alert("tipo: "+tipoServ + "estado: "+estServ);
+                                        $('#modal-altabaja').modal("show");
+                                        $("#tipoServidor_ccp_vacio").show();
+                                        $("#tipoEstado_ccp_vacio").hide();
+                                        $("#tipoSer_Est_cpp_vacios").hide();
+                                    } else if (estServ == 99) {
+                                        $('#modal-altabaja').modal("show");
+                                        $("#tipoServidor_ccp_vacio").hide();
+                                        $("#tipoEstado_ccp_vacio").show();
+                                        $("#tipoSer_Est_cpp_vacios").hide();
+                                    } else {
                                         this.altabajaReg.show(this.altabajaView);
                                         $('#modal-altabaja').modal("show");
-                                    }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-
-                                        tipoServ=$('#tiposervidorpla').val();
-                                        estServ=$('#estadoservidorplani').val();
-                                        if(tipoServ==99 && estServ==99){
-                                            $('#modal-altabaja').modal("show");
-                                            $("#tipoServidor_ccp_vacio").hide();
-                                            $("#tipoEstado_ccp_vacio").hide();
-                                            $("#tipoSer_Est_cpp_vacios").show();
-                                        } else
-                                        if(tipoServ==99 ){
-                                            $('#modal-altabaja').modal("show");
-                                            $("#tipoServidor_ccp_vacio").show();
-                                            $("#tipoEstado_ccp_vacio").hide();
-                                            $("#tipoSer_Est_cpp_vacios").hide();
-                                        }else if(estServ==99){
-                                            $('#modal-altabaja').modal("show");
-                                            $("#tipoServidor_ccp_vacio").hide();
-                                            $("#tipoEstado_ccp_vacio").show();
-                                            $("#tipoSer_Est_cpp_vacios").hide();
-                                        }else{
-                                            this.altabajaReg.show(this.altabajaView);
-                                            $('#modal-altabaja').modal("show");
-                                        }
                                     }
-
                                 }
-                                if(finMes==iniMes){
-                                    if(finDia>iniDia){
+                            } else {
+                                if (iniAno == finAno) {
+                                    if (finMes > iniMes) {
+                                        //    alert("año igual y mes del fin mayor...ok")
 
                                         //Validando el tipo y estado del servidor
 
-                                        if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                        if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                            //    alert("band1 es true")
                                             this.altabajaReg.show(this.altabajaView);
                                             $('#modal-altabaja').modal("show");
-                                        }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                            tipoServ=$('#tiposervidorpla').val();
-                                            estServ=$('#estadoservidorplani').val();
-                                            if(tipoServ==99 && estServ==99){
+                                        } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+
+                                            tipoServ = $('#tiposervidorpla').val();
+                                            estServ = $('#estadoservidorplani').val();
+                                            if (tipoServ == 99 && estServ == 99) {
                                                 $('#modal-altabaja').modal("show");
                                                 $("#tipoServidor_ccp_vacio").hide();
                                                 $("#tipoEstado_ccp_vacio").hide();
                                                 $("#tipoSer_Est_cpp_vacios").show();
-                                            } else
-                                            if(tipoServ==99 ){
+                                            } else if (tipoServ == 99) {
+                                                //   alert("tipo: "+tipoServ + "estado: "+estServ);
                                                 $('#modal-altabaja').modal("show");
                                                 $("#tipoServidor_ccp_vacio").show();
                                                 $("#tipoEstado_ccp_vacio").hide();
                                                 $("#tipoSer_Est_cpp_vacios").hide();
-                                            }else if(estServ==99){
+                                            } else if (estServ == 99) {
                                                 $('#modal-altabaja').modal("show");
                                                 $("#tipoServidor_ccp_vacio").hide();
                                                 $("#tipoEstado_ccp_vacio").show();
                                                 $("#tipoSer_Est_cpp_vacios").hide();
-                                            }else{
+                                            } else {
                                                 this.altabajaReg.show(this.altabajaView);
                                                 $('#modal-altabaja').modal("show");
                                             }
                                         }
-                                    }else  {
-                                        if(finDia==iniDia){
-                                            $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
-                                        }else{
-                                            $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
-                                        }
+
                                     }
-                                } else{
+                                    if (finMes == iniMes) {
+                                        if (finDia > iniDia) {
+                                            //  alert("año igual, mes igual....y dia del fin mayor...ok")
+
+                                            //Validando el tipo y estado del servidor
+
+                                            if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                                //    alert("band1 es true")
+                                                this.altabajaReg.show(this.altabajaView);
+                                                $('#modal-altabaja').modal("show");
+                                            } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                                tipoServ = $('#tiposervidorpla').val();
+                                                estServ = $('#estadoservidorplani').val();
+                                                if (tipoServ == 99 && estServ == 99) {
+                                                    $('#modal-altabaja').modal("show");
+                                                    $("#tipoServidor_ccp_vacio").hide();
+                                                    $("#tipoEstado_ccp_vacio").hide();
+                                                    $("#tipoSer_Est_cpp_vacios").show();
+                                                } else if (tipoServ == 99) {
+                                                    //   alert("tipo: "+tipoServ + "estado: "+estServ);
+                                                    $('#modal-altabaja').modal("show");
+                                                    $("#tipoServidor_ccp_vacio").show();
+                                                    $("#tipoEstado_ccp_vacio").hide();
+                                                    $("#tipoSer_Est_cpp_vacios").hide();
+                                                } else if (estServ == 99) {
+                                                    $('#modal-altabaja').modal("show");
+                                                    $("#tipoServidor_ccp_vacio").hide();
+                                                    $("#tipoEstado_ccp_vacio").show();
+                                                    $("#tipoSer_Est_cpp_vacios").hide();
+                                                } else {
+                                                    this.altabajaReg.show(this.altabajaView);
+                                                    $('#modal-altabaja').modal("show");
+                                                }
+                                            }
+                                        } else {
+                                            if (finDia == iniDia) {
+                                                //  alert("ini y fin son identicos....no seguir")
+                                                $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
+                                            } else {
+                                                //   alert("ini mayor que fin") //el dia de inicio es mayor que el fin
+                                                $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
+                                            }
+                                        }
+                                    } else {
+                                        //  alert("inicio mayor que fin")//el mes de inicio es mayor que el fin
+                                        $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
+                                    }
+                                } else {
+                                    //  alert("inicio es mayor")  //el año de inicio es mayor
                                     $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
                                 }
-                            }else{
-                                $("#errorFech").show();   //poner el mensaje en el modal de alta y baja
                             }
                         }
-                    }
-                    if($('#ingres_ini_plani').val()!="" && $('#ingres_fin_plani').val()==""){
+                        if ($('#ingres_ini_plani').val() != "" && $('#ingres_fin_plani').val() == "") {
 
-                        $('#modal-altabaja').modal("show");
-                        $("#fecha_fin_cpp_vacio").show();
-
-                    }
-                    if ($('#ingres_ini_plani').val()=="" && $('#ingres_fin_plani').val()!=""){
-                        $('#modal-altabaja').modal("show");
-                        $("#fecha_inicio_cpp_vacio").show();
-                    }
-                    if ($('#ingres_ini_plani').val()=="" && $('#ingres_fin_plani').val()==""){
-                        $('#modal-altabaja').modal("show");
-                        $("#fecha_ini_fin_cpp_vacios").show();
-
-
-                        //Validando el tipo y estado del servidor
-
-                        if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                            this.altabajaReg.show(this.altabajaView);
+                            //  alert("No selecciono fecha de fin, se tomara hasta la fecha actual");//poner el mensaje en el modal alta y baja
                             $('#modal-altabaja').modal("show");
-                        }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                            tipoServ=$('#tiposervidorpla').val();
-                            estServ=$('#estadoservidorplani').val();
-                            if(tipoServ==99 && estServ==99){
-                                $('#modal-altabaja').modal("show");
-                                $("#tipoServidor_ccp_vacio").hide();
-                                $("#tipoEstado_ccp_vacio").hide();
-                                $("#tipoSer_Est_cpp_vacios").show();
-                            } else
-                            if(tipoServ==99 ){
-                                $('#modal-altabaja').modal("show");
-                                $("#tipoServidor_ccp_vacio").show();
-                                $("#tipoEstado_ccp_vacio").hide();
-                                $("#tipoSer_Est_cpp_vacios").hide();
-                            }else if(estServ==99){
-                                $('#modal-altabaja').modal("show");
-                                $("#tipoServidor_ccp_vacio").hide();
-                                $("#tipoEstado_ccp_vacio").show();
-                                $("#tipoSer_Est_cpp_vacios").hide();
-                            }else{
+                            if(tipCCP!="" && estCCP!="" && dniCCP!=""){
+                                $("#fecha_fin_cpp_vacio").show();
+                            }
+
+
+                        }
+                        if ($('#ingres_ini_plani').val() == "" && $('#ingres_fin_plani').val() != "") {
+                            //   alert("No selecciono fecha de inicio, se tomara desde la fecha inicial ");  //poner el mensaje en el modal alta y baja
+                            $('#modal-altabaja').modal("show");
+                            $("#fecha_inicio_cpp_vacio").show();
+                        }
+                        if ($('#ingres_ini_plani').val() == "" && $('#ingres_fin_plani').val() == "") {
+                            // alert("entro a fechas nulas, se tomaran todas las fechas");  //poner el mensaje en el modal alta y baja
+                            //  alert("band1 entra en: "+this.band1);
+                            $('#modal-altabaja').modal("show");
+                            $("#fecha_ini_fin_cpp_vacios").show();
+                            //   alert("despues del mensaje");
+
+
+                            //Validando el tipo y estado del servidor
+
+                            if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                //   alert("band1 es true")
                                 this.altabajaReg.show(this.altabajaView);
                                 $('#modal-altabaja').modal("show");
+                            } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                tipoServ = $('#tiposervidorpla').val();
+                                estServ = $('#estadoservidorplani').val();
+                                if (tipoServ == 99 && estServ == 99) {
+                                    $('#modal-altabaja').modal("show");
+                                    $("#tipoServidor_ccp_vacio").hide();
+                                    $("#tipoEstado_ccp_vacio").hide();
+                                    $("#tipoSer_Est_cpp_vacios").show();
+                                } else if (tipoServ == 99) {
+                                    //   alert("tipo: "+tipoServ + "estado: "+estServ);
+                                    $('#modal-altabaja').modal("show");
+                                    $("#tipoServidor_ccp_vacio").show();
+                                    $("#tipoEstado_ccp_vacio").hide();
+                                    $("#tipoSer_Est_cpp_vacios").hide();
+                                } else if (estServ == 99) {
+                                    $('#modal-altabaja').modal("show");
+                                    $("#tipoServidor_ccp_vacio").hide();
+                                    $("#tipoEstado_ccp_vacio").show();
+                                    $("#tipoSer_Est_cpp_vacios").hide();
+                                } else {
+                                    this.altabajaReg.show(this.altabajaView);
+                                    $('#modal-altabaja').modal("show");
+                                }
                             }
                         }
+
                     }
-
-
                 },
 
 
                 modal_altabaja2:function(){
-                    if($('#ingres_ini_plani').val()!="" && $('#ingres_fin_plani').val()!=""){
-                        var iniMes= $('#ingres_ini_plani').val().substring(3,5) ;
-                        var iniDia = $('#ingres_ini_plani').val().substring(0, 2);
-                        var iniAno = $('#ingres_ini_plani').val().substring(6, 10);
-                        var finMes = $('#ingres_fin_plani').val().substring(3, 5);
-                        var finDia = $('#ingres_fin_plani').val().substring(0, 2);
-                        var finAno = $('#ingres_fin_plani').val().substring(6, 10);
-                        if(iniAno<finAno){
 
-                            //Validando el tipo y estado del servidor
+                    var estCCP= $("#estServ").text();
+                    var tipCCP= $("#tipTrabCCP").text();
+                    var dniCCP=$("#dniServ").text();
 
-                            if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                                this.altabajaReg.show(this.altabajaView);
-                                $('#modal-altabaja2').modal("show");
-                            }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                tipoServ=$('#tiposervidorpla').val();
-                                estServ=$('#estadoservidorplani').val();
-                                if(tipoServ==99 && estServ==99){
-                                    $('#modal-altabaja2').modal("show");
-                                    $("#tipoServidor_ccp_vacio2").hide();
-                                    $("#tipoEstado_ccp_vacio2").hide();
-                                    $("#tipoSer_Est_cpp_vacios2").show();
-                                } else
-                                if(tipoServ==99 ){
-                                    $('#modal-altabaja2').modal("show");
-                                    $("#tipoServidor_ccp_vacio2").show();
-                                    $("#tipoEstado_ccp_vacio2").hide();
-                                    $("#tipoSer_Est_cpp_vacios2").hide();
-                                }else if(estServ==99){
-                                    $('#modal-altabaja2').modal("show");
-                                    $("#tipoServidor_ccp_vacio2").hide();
-                                    $("#tipoEstado_ccp_vacio2").show();
-                                    $("#tipoSer_Est_cpp_vacios2").hide();
-                                }else{
+                    if($('#ingres_ini_plani').val()=="" && estCCP=="" && tipCCP=="" && dniCCP==""){
+                        $("#faltaFechaIni").show();
+                    }
+                    else {
+
+                        $("#faltaFechaIni").hide();
+
+
+                        if ($('#ingres_ini_plani').val() != "" && $('#ingres_fin_plani').val() != "") {
+                            //  alert("entro a fechas diferentes de null");
+                            var iniMes = $('#ingres_ini_plani').val().substring(3, 5);
+                            var iniDia = $('#ingres_ini_plani').val().substring(0, 2);
+                            var iniAno = $('#ingres_ini_plani').val().substring(6, 10);
+                            var finMes = $('#ingres_fin_plani').val().substring(3, 5);
+                            var finDia = $('#ingres_fin_plani').val().substring(0, 2);
+                            var finAno = $('#ingres_fin_plani').val().substring(6, 10);
+                            // alert(iniMes);
+                            if (iniAno < finAno) {
+                                //   alert("fechas correctas");
+
+                                //Validando el tipo y estado del servidor
+
+                                if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                    //   alert("band1 es true")
                                     this.altabajaReg.show(this.altabajaView);
                                     $('#modal-altabaja2').modal("show");
-                                }
-                            }
-                        } else{
-                            if(iniAno==finAno) {
-                                if(finMes>iniMes){
-
-                                    //Validando el tipo y estado del servidor
-
-                                    if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                    tipoServ = $('#tiposervidorpla').val();
+                                    estServ = $('#estadoservidorplani').val();
+                                    if (tipoServ == 99 && estServ == 99) {
+                                        $('#modal-altabaja2').modal("show");
+                                        $("#tipoServidor_ccp_vacio2").hide();
+                                        $("#tipoEstado_ccp_vacio2").hide();
+                                        $("#tipoSer_Est_cpp_vacios2").show();
+                                    } else if (tipoServ == 99) {
+                                        //   alert("tipo: "+tipoServ + "estado: "+estServ);
+                                        $('#modal-altabaja2').modal("show");
+                                        $("#tipoServidor_ccp_vacio2").show();
+                                        $("#tipoEstado_ccp_vacio2").hide();
+                                        $("#tipoSer_Est_cpp_vacios2").hide();
+                                    } else if (estServ == 99) {
+                                        $('#modal-altabaja2').modal("show");
+                                        $("#tipoServidor_ccp_vacio2").hide();
+                                        $("#tipoEstado_ccp_vacio2").show();
+                                        $("#tipoSer_Est_cpp_vacios2").hide();
+                                    } else {
                                         this.altabajaReg.show(this.altabajaView);
                                         $('#modal-altabaja2').modal("show");
-                                    }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-
-                                        tipoServ=$('#tiposervidorpla').val();
-                                        estServ=$('#estadoservidorplani').val();
-                                        if(tipoServ==99 && estServ==99){
-                                            $('#modal-altabaja2').modal("show");
-                                            $("#tipoServidor_ccp_vacio2").hide();
-                                            $("#tipoEstado_ccp_vacio2").hide();
-                                            $("#tipoSer_Est_cpp_vacios2").show();
-                                        } else
-                                        if(tipoServ==99 ){
-                                            $('#modal-altabaja2').modal("show");
-                                            $("#tipoServidor_ccp_vacio2").show();
-                                            $("#tipoEstado_ccp_vacio2").hide();
-                                            $("#tipoSer_Est_cpp_vacios2").hide();
-                                        }else if(estServ==99){
-                                            $('#modal-altabaja2').modal("show");
-                                            $("#tipoServidor_ccp_vacio2").hide();
-                                            $("#tipoEstado_ccp_vacio2").show();
-                                            $("#tipoSer_Est_cpp_vacios2").hide();
-                                        }else{
-                                            this.altabajaReg.show(this.altabajaView);
-                                            $('#modal-altabaja2').modal("show");
-                                        }
                                     }
-
                                 }
-                                if(finMes==iniMes){
-                                    if(finDia>iniDia){
+                            } else {
+                                if (iniAno == finAno) {
+                                    if (finMes > iniMes) {
+                                        //   alert("año igual y mes del fin mayor...ok")
 
                                         //Validando el tipo y estado del servidor
 
-                                        if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                        if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                            //   alert("band1 es true")
                                             this.altabajaReg.show(this.altabajaView);
                                             $('#modal-altabaja2').modal("show");
-                                        }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                                            tipoServ=$('#tiposervidorpla').val();
-                                            estServ=$('#estadoservidorplani').val();
-                                            if(tipoServ==99 && estServ==99){
+                                        } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+
+                                            tipoServ = $('#tiposervidorpla').val();
+                                            estServ = $('#estadoservidorplani').val();
+                                            if (tipoServ == 99 && estServ == 99) {
                                                 $('#modal-altabaja2').modal("show");
                                                 $("#tipoServidor_ccp_vacio2").hide();
                                                 $("#tipoEstado_ccp_vacio2").hide();
                                                 $("#tipoSer_Est_cpp_vacios2").show();
-                                            } else
-                                            if(tipoServ==99 ){
+                                            } else if (tipoServ == 99) {
+                                                //    alert("tipo: "+tipoServ + "estado: "+estServ);
                                                 $('#modal-altabaja2').modal("show");
                                                 $("#tipoServidor_ccp_vacio2").show();
                                                 $("#tipoEstado_ccp_vacio2").hide();
                                                 $("#tipoSer_Est_cpp_vacios2").hide();
-                                            }else if(estServ==99){
+                                            } else if (estServ == 99) {
                                                 $('#modal-altabaja2').modal("show");
                                                 $("#tipoServidor_ccp_vacio2").hide();
                                                 $("#tipoEstado_ccp_vacio2").show();
                                                 $("#tipoSer_Est_cpp_vacios2").hide();
-                                            }else{
+                                            } else {
                                                 this.altabajaReg.show(this.altabajaView);
                                                 $('#modal-altabaja2').modal("show");
                                             }
                                         }
-                                    }else  {
-                                        if(finDia==iniDia){
-                                            $("#errorFech").show();
-                                        }else{
-                                            $("#errorFech").show();
-                                        }
+
                                     }
-                                } else{
+                                    if (finMes == iniMes) {
+                                        if (finDia > iniDia) {
+                                            //   alert("año igual, mes igual....y dia del fin mayor...ok")
+
+                                            //Validando el tipo y estado del servidor
+
+                                            if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                                //   alert("band1 es true")
+                                                this.altabajaReg.show(this.altabajaView);
+                                                $('#modal-altabaja2').modal("show");
+                                            } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                                tipoServ = $('#tiposervidorpla').val();
+                                                estServ = $('#estadoservidorplani').val();
+                                                if (tipoServ == 99 && estServ == 99) {
+                                                    $('#modal-altabaja2').modal("show");
+                                                    $("#tipoServidor_ccp_vacio2").hide();
+                                                    $("#tipoEstado_ccp_vacio2").hide();
+                                                    $("#tipoSer_Est_cpp_vacios2").show();
+                                                } else if (tipoServ == 99) {
+                                                    //  alert("tipo: "+tipoServ + "estado: "+estServ);
+                                                    $('#modal-altabaja2').modal("show");
+                                                    $("#tipoServidor_ccp_vacio2").show();
+                                                    $("#tipoEstado_ccp_vacio2").hide();
+                                                    $("#tipoSer_Est_cpp_vacios2").hide();
+                                                } else if (estServ == 99) {
+                                                    $('#modal-altabaja2').modal("show");
+                                                    $("#tipoServidor_ccp_vacio2").hide();
+                                                    $("#tipoEstado_ccp_vacio2").show();
+                                                    $("#tipoSer_Est_cpp_vacios2").hide();
+                                                } else {
+                                                    this.altabajaReg.show(this.altabajaView);
+                                                    $('#modal-altabaja2').modal("show");
+                                                }
+                                            }
+                                        } else {
+                                            if (finDia == iniDia) {
+                                                //  alert("ini y fin son identicos....no seguir")
+                                                $("#errorFech").show();
+                                            } else {
+                                                //  alert("ini mayor que fin")
+                                                $("#errorFech").show();
+                                            }
+                                        }
+                                    } else {
+                                        //   alert("inicio mayor que fin")
+                                        $("#errorFech").show();
+                                    }
+                                } else {
+                                    //  alert("inicio es mayor")
                                     $("#errorFech").show();
                                 }
-                            }else{
-                                $("#errorFech").show();
                             }
                         }
-                    }
-                    if($('#ingres_ini_plani').val()!="" && $('#ingres_fin_plani').val()==""){
+                        if ($('#ingres_ini_plani').val() != "" && $('#ingres_fin_plani').val() == "") {
 
-                        $('#modal-altabaja2').modal("show");
-
-                        $("#fecha_inicio_cpp_vacio2").hide();
-                        $("#fecha_ini_fin_cpp_vacios2").hide();
-                        $("#fecha_fin_cpp_vacio2").show();
-
-
-                    }
-                    if ($('#ingres_ini_plani').val()=="" && $('#ingres_fin_plani').val()!=""){
-                        $('#modal-altabaja2').modal("show");
-                        $("#fecha_fin_cpp_vacio2").hide();
-                        $("#fecha_ini_fin_cpp_vacios2").hide();
-                        $("#fecha_inicio_cpp_vacio2").show();
-                    }
-                    if ($('#ingres_ini_plani').val()=="" && $('#ingres_fin_plani').val()==""){
-                        $('#modal-altabaja2').modal("show");
-                        $("#fecha_fin_cpp_vacio2").hide();
-                        $("#fecha_inicio_cpp_vacio2").hide();
-                        $("#fecha_ini_fin_cpp_vacios2").show();
-
-                        //Validando el tipo y estado del servidor
-
-                        if(this.band1==true){//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
-                            this.altabajaReg.show(this.altabajaView);
+                            //   alert("debe ingresar la fecha  de fin");
                             $('#modal-altabaja2').modal("show");
-                        }else{//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
-                            tipoServ=$('#tiposervidorpla').val();
-                            estServ=$('#estadoservidorplani').val();
-                            if(tipoServ==99 && estServ==99){
-                                $('#modal-altabaja2').modal("show");
-                                $("#tipoServidor_ccp_vacio2").hide();
-                                $("#tipoEstado_ccp_vacio2").hide();
-                                $("#tipoSer_Est_cpp_vacios2").show();
-                            } else if(tipoServ==99 ){
-                                $('#modal-altabaja2').modal("show");
-                                $("#tipoServidor_ccp_vacio2").show();
-                                $("#tipoEstado_ccp_vacio2").hide();
-                                $("#tipoSer_Est_cpp_vacios2").hide();
-                            }else if(estServ==99){
-                                $('#modal-altabaja2').modal("show");
-                                $("#tipoServidor_ccp_vacio2").hide();
-                                $("#tipoEstado_ccp_vacio2").show();
-                                $("#tipoSer_Est_cpp_vacios2").hide();
-                            }else{
+
+                            $("#fecha_inicio_cpp_vacio2").hide();
+                            $("#fecha_ini_fin_cpp_vacios2").hide();
+                            $("#fecha_fin_cpp_vacio2").show();
+
+
+                        }
+                        if ($('#ingres_ini_plani').val() == "" && $('#ingres_fin_plani').val() != "") {
+                            //   alert("debe ingresar la fecha de inicio ");
+                            $('#modal-altabaja2').modal("show");
+                            $("#fecha_fin_cpp_vacio2").hide();
+                            $("#fecha_ini_fin_cpp_vacios2").hide();
+                            $("#fecha_inicio_cpp_vacio2").show();
+                        }
+                        if ($('#ingres_ini_plani').val() == "" && $('#ingres_fin_plani').val() == "") {
+                            //  alert("entro a fechas nulas");
+                            //  alert("band1 entra en: "+this.band1);
+                            $('#modal-altabaja2').modal("show");
+                            $("#fecha_fin_cpp_vacio2").hide();
+                            $("#fecha_inicio_cpp_vacio2").hide();
+                            $("#fecha_ini_fin_cpp_vacios2").show();
+
+                            //Validando el tipo y estado del servidor
+
+                            if (this.band1 == true) {//es decir se selecciono a un servidor en especial...solo hace falta el codigo del servidor para el filtrado
+                                //   alert("band1 es true")
                                 this.altabajaReg.show(this.altabajaView);
                                 $('#modal-altabaja2').modal("show");
+                            } else {//se listaran a todos los servidores y se debe tomar el tipo y el estado de los combos para el filtrado
+                                tipoServ = $('#tiposervidorpla').val();
+                                estServ = $('#estadoservidorplani').val();
+                                if (tipoServ == 99 && estServ == 99) {
+                                    $('#modal-altabaja2').modal("show");
+                                    $("#tipoServidor_ccp_vacio2").hide();
+                                    $("#tipoEstado_ccp_vacio2").hide();
+                                    $("#tipoSer_Est_cpp_vacios2").show();
+                                } else if (tipoServ == 99) {
+                                    //   alert("tipo: "+tipoServ + "estado: "+estServ);
+                                    $('#modal-altabaja2').modal("show");
+                                    $("#tipoServidor_ccp_vacio2").show();
+                                    $("#tipoEstado_ccp_vacio2").hide();
+                                    $("#tipoSer_Est_cpp_vacios2").hide();
+                                } else if (estServ == 99) {
+                                    $('#modal-altabaja2').modal("show");
+                                    $("#tipoServidor_ccp_vacio2").hide();
+                                    $("#tipoEstado_ccp_vacio2").show();
+                                    $("#tipoSer_Est_cpp_vacios2").hide();
+                                } else {
+                                    this.altabajaReg.show(this.altabajaView);
+                                    $('#modal-altabaja2').modal("show");
+                                }
                             }
                         }
                     }
-
                 },
 
 
@@ -2655,13 +2720,18 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var estCCP= $("#estServ").text();
                     var tipCCP= $("#tipTrabCCP").text();
                     var dniCCP=$("#dniServ").text();
+                    //  alert("estado trabajador:"+estCCP);
+                    //  alert("tipo de trabajador:"+tipCCP);
+                    //  alert("dni:"+dniCCP);
 
                     if($("#estServ").text()=="" && $("#tipTrabCCP").text()=="" && $("#dniServ").text()==""){
+                        //  alert("entro a limpiar las variables");
                         var   estCCP="";
                         var  tipCCP="";
                         var  dniCCP="";
                     }
 
+                    //   alert("despues del if de limpiar "+estCCP+" "+tipCCP+" "+dniCCP)
                     var fInicioCCP=$("#ingres_ini_plani").val();
                     var fFinCCP=$("#ingres_fin_plani").val();
 
@@ -2673,7 +2743,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
                     //si la fecha de inicio es vacia se pone una fecha por defecto
                     if(fInicioCCP==""){
-                        var anioIniCCP=2000;
+                        var anioIniCCP=2014;
                         var mesIniCCP=01;
                     }
                     //lo mismo para la fecha fin
@@ -2681,18 +2751,23 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         var anioFinCCP=fFinCCP.substring(6)
                         var mesFinCCP=fFinCCP.substring(3,5)
                     }
-                    if(fFinCCP==""){
+                    if(fFinCCP==""){             //como siempre sera vacio entrara aca -> asignarle el valor de anio de inicio
                         var anioFinCCP=2050;
                         var mesFinCCP=12;
                     }
 
 
+
+                    //  alert("fecha inicio: "+fInicioCCP+" fecha fin: "+fFinCCP+" anioIni: "+anioIniCCP+" anioFin: "+anioFinCCP+
+                    //     " mesIni: "+mesIniCCP+" mesFin: "+mesFinCCP);
+
                     if(estCCP!="" || tipCCP!="" || dniCCP!=""){
+                        //   alert("entro al if de alta se buscara por un trabajador en especifico")
                         //ponemos en 100 todas las bajas, ya que estamos en altas(activo)
                         var susp_ina=100;
                         var cese=100;
                         var fallecido=100;
-                        var funms=100;
+                        var funmsm=100;
                         var fplani=100;
                         var term_cont=100;
                         var ren=100;
@@ -2760,12 +2835,15 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         }
 
 
+                        //   alert("el tipo es: "+codTipCCP+" el estado es: "+codEstCCP)
+
 
                         var  valor1=activo;
                         var self=this;
-                        this.listarServCondPlaView.getListarUnActivoServCond(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                        this.listarServCondPlaView.getListarUnActivoServCond(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                             ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){
                                 if(self.listarServCondPlaView.collection.length!=0){
+                                    //   alert("entro al if");
                                     $("#table-cond-pla").dataTable();
 
 
@@ -2777,38 +2855,89 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 }
 
 
+                                clickedElement.button('loading');
+                                setTimeout(function () {
+                                    clickedElement.button('reset');
+                                    self.ListarReg.show(self.ListarServidorView) ;
+                                    if(self.ListarServidorView.collection.length!=0){
+                                        $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                        $("#table-cond-pla2").hide();
+                                    }
+
+                                    //    $("#servidoresModal").modal();
+
+                                },5000);
+
                                 //    $("#altaCondPla").show();
-                                $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                //descomentar lo de abajo si es que falla el temporizador
+                                /* $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                 $("#table-cond-pla2").hide();  */
                                 //  $("#condFechCCP").removeAttr("hidden");
                                 // $("#fechCambCCP").removeAttr("hidden");
-                                $("#table-cond-pla2").hide();
+
                             });
 
-                        $('#listar_servidores_cond_planilla').show();
-                        this.listarServCondPlaReg.show(this.listarServCondPlaView);
+
+                        clickedElement.button('loading');
+                        setTimeout(function () {
+                            clickedElement.button('reset');
+                            self.ListarReg.show(self.ListarServidorView) ;
+                            if(self.ListarServidorView.collection.length!=0){
+                                $('#listar_servidores_cond_planilla').show();
+                                //probando si aqui va
+                                this.listarServCondPla2Reg.reset(this.listarServCondPla2View)
+
+                                this.listarServCondPlaReg.show(this.listarServCondPlaView);
+                            }
+
+                            //    $("#servidoresModal").modal();
+
+                        },5000);
+                        //descomentar lo de abajo si es que el temporizador no funciona
+                        /*  $('#listar_servidores_cond_planilla').show();
+                         //probando si aqui va
+                         this.listarServCondPla2Reg.reset(this.listarServCondPla2View)
+
+                         this.listarServCondPlaReg.show(this.listarServCondPlaView);*/
 
 
                     }
                     else {
-                        $('#listar_servidores_cond_planilla').show();
+
+                        if(fFinCCP==""){             //como siempre sera vacio entrara aca -> asignarle el valor de anio de inicio
+                            var anioFinCCP=anioIniCCP;
+                            var mesFinCCP=mesIniCCP;}
+                        //   alert("entro al else se buscara por todos los trabajadores");
+                        //   alert("el tipo seleccionado es: "+tipoTrabCond+" estado es: "+estadoTrabCond+" pen_susp "+pen_susp+
+                        //      "activo"+activo+" lsgh:"+lsgh+" no ratific:"+noRat+" destacado:"+destac+" lcgh:"+lcgh+" excluido:"+exclu+" cadPen:"+cadPen);
+                        //  alert("anio fin: "+anioFinCCP+" mes fin: "+mesFinCCP);
+
+                        //22-08-2014 comentado la linea de abajo
+                        //    $('#listar_servidores_cond_planilla').show();
+                        //probando si aqui va
+                        this.listarServCondPla2Reg.reset(this.listarServCondPla2View)
                         this.listarServCondPlaReg.show(this.listarServCondPlaView);
                         if(pen_susp==undefined && activo==undefined && lsgh==undefined && noRat==undefined
                             && destac==undefined && lcgh==undefined && exclu==undefined && cadPen==undefined){
-                            $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                            //22-08-2014 comentado la linea de abajo
+                            //   $("#listar_servidores_cond_planilla").removeAttr("hidden")
+
                             // $("#condFechCCP").attr("hidden","hidden");
                             // $("#fechCambCCP").attr("hidden","hidden");
                             // $("#condicion").attr("hidden","hidden");
                             //$("#fechaCambio").attr("hidden","hidden");
+                            //    alert("no se selecciono una alta no mostrar campo")
                         }    else{
                             //$("#condFechCCP").removeAttr("hidden");
                             //$("#fechCambCCP").removeAttr("hidden");
+                            //    alert("se selecciono una alta mostrar campo")
                             var self=this;
 
                             //ponemos en 100 todas las bajas, ya que estamos en altas(activo)
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funms=100;
+                            var funmsm=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -2821,10 +2950,11 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var cadPen=100;
                             //  var sanc_disc=100;
                             var  valor1=activo;
-                            this.listarServCondPlaView.getListarServCond(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                            this.listarServCondPlaView.getListarServCond(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP, permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){
                                     if(self.listarServCondPlaView.collection.length!=0){
+                                        //  alert("entro al if");
                                         $("#table-cond-pla").dataTable();
 
 
@@ -2835,29 +2965,89 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                                     }
 
+                                    clickedElement.button('loading');
+                                    setTimeout(function () {
+                                        clickedElement.button('reset');
+                                        self.ListarReg.show(self.ListarServidorView) ;
+                                        if(self.ListarServidorView.collection.length!=0){
+                                            $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                            $("#table-cond-pla2").hide();
+                                        }
+
+                                        //    $("#servidoresModal").modal();
+
+                                    },12000);
+
 
                                     //    $("#altaCondPla").show();
-                                    $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                    //descomentar si es que el temporizador falla
+                                    /*     $("#listar_servidores_cond_planilla").removeAttr("hidden")
+                                     $("#table-cond-pla2").hide();     */
                                     //  $("#condFechCCP").removeAttr("hidden");
                                     // $("#fechCambCCP").removeAttr("hidden");
-                                    $("#table-cond-pla2").hide();
+
                                 });
 
-                            $('#listar_servidores_cond_planilla').show();
-                            this.listarServCondPla2Reg.reset(this.listarServCondPla2View);
-                            this.listarServCondPlaReg.show(this.listarServCondPlaView);
+                            clickedElement.button('loading');
+                            setTimeout(function () {
+                                clickedElement.button('reset');
+                                self.ListarReg.show(self.ListarServidorView) ;
+                                if(self.ListarServidorView.collection.length!=0){
+                                    $('#listar_servidores_cond_planilla').show();
+                                    this.listarServCondPla2Reg.reset(this.listarServCondPla2View);
+                                    this.listarServCondPlaReg.show(this.listarServCondPlaView);
+                                }
+
+                                //    $("#servidoresModal").modal();
+
+                            },12000);
+
+
+                            //descomentar si el temporizador no funciona
+                            /*    $('#listar_servidores_cond_planilla').show();
+                             this.listarServCondPla2Reg.reset(this.listarServCondPla2View);
+                             this.listarServCondPlaReg.show(this.listarServCondPlaView); */
 
                             // this.listarServCondPlaReg.show(this.listarServCondPlaView)
                         }
                         //  $("#listar_servidores_cond_planilla").removeAttr("hidden")
 
-                        $('#modal-altabaja').modal("hide");
-                        $('#modal-altabaja2').modal("hide");
+                        clickedElement.button('loading');
+                        setTimeout(function () {
+                            clickedElement.button('reset');
+                            self.ListarReg.show(self.ListarServidorView) ;
+                            if(self.ListarServidorView.collection.length!=0){
+                                $('#modal-altabaja').modal("hide");
+                                $('#modal-altabaja2').modal("hide");
+                            }
+
+                            //    $("#servidoresModal").modal();
+
+                        },12000);
+
+                        //descomentar lo de abajo si es que no funciona el temporizador
+                        /* $('#modal-altabaja').modal("hide");
+                         $('#modal-altabaja2').modal("hide"); */
 
                     }
 
-                    $('#modal-altabaja').modal("hide");
-                    $('#modal-altabaja2').modal("hide");
+
+                    clickedElement.button('loading');
+                    setTimeout(function () {
+                        clickedElement.button('reset');
+                        self.ListarReg.show(self.ListarServidorView) ;
+                        if(self.ListarServidorView.collection.length!=0){
+                            $('#modal-altabaja').modal("hide");
+                            $('#modal-altabaja2').modal("hide");
+                        }
+
+                        //    $("#servidoresModal").modal();
+
+                    },5000);
+
+                    //descomentar lo de abajo si es que no funciona el temporizador
+                    /*   $('#modal-altabaja').modal("hide");
+                     $('#modal-altabaja2').modal("hide"); */
 
 
 
@@ -2867,6 +3057,9 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                 //cuando selecciona baja
                 listar_serv_cond_pla2:function(e){
                     var clickedElement=$(e.currentTarget)
+
+
+
                     var tipoTrabCond = $("#tiposervidorpla").val();
                     var estadoTrabCond = $("#estadoservidorplani").val();
 
@@ -2874,7 +3067,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funms=$("#funms:checked").val();
+                    var funmsm=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -2898,6 +3091,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
 
 
+
                     var fInicioCCP=$("#ingres_ini_plani").val();
                     var fFinCCP=$("#ingres_fin_plani").val();
                     //     var anioIniCCP= fInicioCCP.substring(6)
@@ -2909,7 +3103,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     //si la fecha de inico no esta vacio -> tomamos el año y el mes por separado
                     if(fInicioCCP!=""){
-                        var anioIniCCP= fInicioCCP.substring(6)
+                        var anioIniCCP= fInicioCCP.substring(6,10)
                         var mesIniCCP=fInicioCCP.substring(3,5)
                     }
                     //si la fecha de inicio es vacia se pone una fecha por defecto
@@ -2919,7 +3113,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
                     //lo mismo para la fecha fin
                     if(fFinCCP!=""){
-                        var anioFinCCP=fFinCCP.substring(6)
+                        var anioFinCCP=fFinCCP.substring(6,10)
                         var mesFinCCP=fFinCCP.substring(3,5)
                     }
                     if(fFinCCP==""){
@@ -2928,18 +3122,26 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     }
 
 
-                    if(estCCP!="" || tipCCP!="" || dniCCP!=""){ // si esta lleno el tipo y estado de un trabajador
+                    //  alert("fecha inicio: "+fInicioCCP+" fecha fin: "+fFinCCP+" anioIni: "+anioIniCCP+" anioFin: "+anioFinCCP+
+                    //      " mesIni: "+mesIniCCP+" mesFin: "+mesFinCCP);
 
+                    if(estCCP!="" || tipCCP!="" || dniCCP!=""){ // si esta lleno el tipo y estado de un trabajador
+                        //    alert("entro al if");
+                        //   alert("fecha inicio: "+fInicioCCP+" fecha fin: "+fFinCCP+" anioIni: "+anioIniCCP+" anioFin: "+anioFinCCP+
+                        //       " mesIni: "+mesIniCCP+" mesFin: "+mesFinCCP);
+                        //   alert("funmsm: "+funmsm);
                         //   this.listarServCondPla2Reg.show(this.listarServCondPla2View);
                         if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                            && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                            && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                             && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                             && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
                             var sanc_disc=$("#sanc_disc").val();
                             var susp_ina=$("#susp_ina").val();
                             var cese=$("#cese").val();
                             var fallecido=$("#fall").val();
-                            var funms=$("#funms").val();
+                            var funmsm=$("#funms").val();
+                            //     alert("funmsm directo: "+$("#funms").val());
+                            // var  funmsm="7";
                             var fplani=$("#fplani").val();
                             var term_cont=$("#term_cont").val();
                             var ren=$("#ren").val();
@@ -2952,7 +3154,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var exclu=$("#exclu").val();
                             var cadPen=$("#cadPen").val();
 
-                            var  valor1=sanc_disc;
+                            var valor1=sanc_disc;
                             var self=this;
 
                             //CAMBIAR LA DESCRIPCION DEL TIPO DE TRABAJADOR POR EL CODIGO DEL TRABAJADOR
@@ -3011,11 +3213,13 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             }
 
 
+                            //    alert("el tipo es: "+codTipCCP+" el estado es: "+codEstCCP)
 
-
+                            //   alert("antes de listar el funmsm es: "+funmsm+" y fallecido es: "+fallecido);
+                            //    alert("buscara por un trabajador: anio fin: "+anioFinCCP+" mes fin: "+mesFinCCP);
 
                             //esta es la tabla que tengo que cambiar y agregarle en la query la busqueda por dni
-                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP,anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP,
                                 function(){  //para la tabla de baja
                                     //  $("#condfech").removeAttr("hidden");
@@ -3023,6 +3227,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                     //$("#cond").removeAttr("hidden");
                                     // $("#fechacambio").removeAttr("hidden");
                                     if(self.listarServCondPla2View.collection.length!=0){
+                                        //              alert("entro al if");
 
                                         $("#table-cond-pla2").dataTable();
                                         $('#table-cond-pla2_wrapper').append("<div id='footer-table'></div>");
@@ -3045,15 +3250,18 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
 
+                            //  alert("no se selecciono una alta no mostrar campo")
                         }
                         else{ //  si selecciona una baja buscara solo por ese y a los demas les pondra 100
 
+                            //  alert("entro al else snp"+snp)
+                            //  alert("se selecciono una baja mostrar campo")
 
                             //comprueva si es o no indefinido para asignarle un valor grande y que no afecte en el IN()
                             if(susp_ina==undefined){ susp_ina=100;}
                             if(cese==undefined){cese=100;}
                             if(fallecido==undefined){fallecido=100;}
-                            if(funms==undefined){funms=100;}
+                            if(funmsm==undefined){funmsm=100;}
                             if(fplani==undefined){fplani=100;}
                             if(term_cont==undefined){term_cont=100;}
                             if(ren==undefined){ren=100;}
@@ -3090,13 +3298,15 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             if(estCCP=="AMC"){var codEstCCP=7;}
 
 
+                            //  alert("el tipo es: "+codTipCCP+" el estado es: "+codEstCCP)
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                            this.listarServCondPla2View.getLisarUnServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, codTipCCP, codEstCCP, dniCCP, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){  //para la tabla de baja
 
                                     if(self.listarServCondPla2View.collection.length!=0){
+                                        //   alert("entro al if");
 
                                         $("#table-cond-pla2").dataTable();
                                         $('#table-cond-pla2_wrapper').append("<div id='footer-table'></div>");
@@ -3122,15 +3332,36 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                         }
 
-                        $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
-                        $('#modal-altabaja').modal("hide");
-                        $('#modal-altabaja2').modal("hide");
+                        clickedElement.button('loading');
+                        setTimeout(function () {
+                            clickedElement.button('reset');
+                            self.ListarReg.show(self.ListarServidorView) ;
+                            if(self.ListarServidorView.collection.length!=0){
+                                $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
+                                $('#modal-altabaja').modal("hide");
+                                $('#modal-altabaja2').modal("hide");
+                            }
+
+                            //    $("#servidoresModal").modal();
+
+                        },2000);
+
+                        //descomentar lo de abajo si es que el temporizador no funciona
+                        /*   $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
+                         $('#modal-altabaja').modal("hide");
+                         $('#modal-altabaja2').modal("hide");   */
 
 
 
 
                     }
                     else{
+
+                        if(fFinCCP==""){             //como siempre sera vacio entrara aca -> asignarle el valor de anio de inicio
+                            var anioFinCCP=anioIniCCP;
+                            var mesFinCCP=mesIniCCP;}
+                        //  alert("entro al else, buscara de todos los trabajadores")
+                        //  alert("anio fin: "+anioFinCCP+" mes fin: "+mesFinCCP);
                         // le asigna un valor a cada item del combo cuando selecciona todos
                         if(tipoTrabCond==99){
                             var docCCP=1;
@@ -3180,17 +3411,20 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             var cas=$("#estadoservidorplani").val();
                             var amc=$("#estadoservidorplani").val();
                         }
+                        // alert("snp"+snp)
+                        // alert("el tipo seleccionado es: "+tipoTrabCond+" estado es: "+estadoTrabCond+" san_disc: "+sanc_disc+" susp_ina:"+susp_ina+
+                        //   "cese: "+cese+" fallecido: "+fallecido+" funmsm: "+funmsm+" fplani: "+fplani+" term_cont: "+term_cont+" ren: "+ren);
 
                         //   this.listarServCondPla2Reg.show(this.listarServCondPla2View);
                         if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                            && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                            && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                             && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                             && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
                             var sanc_disc=$("#sanc_disc").val();
                             var susp_ina=$("#susp_ina").val();
                             var cese=$("#cese").val();
                             var fallecido=$("#fall").val();
-                            var funms=$("#funms").val();
+                            var funmsm=$("#funms").val();
                             var fplani=$("#fplani").val();
                             var term_cont=$("#term_cont").val();
                             var ren=$("#ren").val();
@@ -3205,7 +3439,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP,permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc, anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP,
                                 function(){  //para la tabla de baja
@@ -3214,6 +3448,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                     //$("#cond").removeAttr("hidden");
                                     // $("#fechacambio").removeAttr("hidden");
                                     if(self.listarServCondPla2View.collection.length!=0){
+                                        //   alert("entro al if");
 
                                         $("#table-cond-pla2").dataTable();
                                         $('#table-cond-pla2_wrapper').append("<div id='footer-table'></div>");
@@ -3229,21 +3464,38 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                                 });
 
-                            $("#table-cond-pla").hide();
-                            $('#listar_servidores_cond_planilla').show();
+                            clickedElement.button('loading');
+                            setTimeout(function () {
+                                clickedElement.button('reset');
+                                self.ListarReg.show(self.ListarServidorView) ;
+                                if(self.ListarServidorView.collection.length!=0){
+                                    $("#table-cond-pla").hide();
+                                    $('#listar_servidores_cond_planilla').show();
+                                }
+
+                                //    $("#servidoresModal").modal();
+
+                            },2000);
+
+
+                            /*  $("#table-cond-pla").hide();
+                             $('#listar_servidores_cond_planilla').show(); */
                             this.listarServCondPlaReg.reset(this.listarServCondPlaView);
                             this.listarServCondPla2Reg.show(this.listarServCondPla2View);
 
 
 
+                            //  alert("no se selecciono una baja no mostrar campo")
                         }    else{ //
 
+                            // alert("entro al else snp"+snp)
+                            // alert("se selecciono una baja mostrar campo")
 
                             //comprueva si es o no indefinido para asignarle un valor grande y que no afecte en el IN()
                             if(susp_ina==undefined){ susp_ina=100;}
                             if(cese==undefined){cese=100;}
                             if(fallecido==undefined){fallecido=100;}
-                            if(funms==undefined){funms=100;}
+                            if(funmsm==undefined){funmsm=100;}
                             if(fplani==undefined){fplani=100;}
                             if(term_cont==undefined){term_cont=100;}
                             if(ren==undefined){ren=100;}
@@ -3259,7 +3511,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                             var  valor1=sanc_disc;
                             var self=this;
-                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funms,  fplani,  term_cont,
+                            this.listarServCondPla2View.getListarServCond2(valor1, susp_ina, cese,  fallecido,  funmsm,  fplani,  term_cont,
                                 ren,  pen_susp, lsgh,  noRat,  destac,  lcgh, exclu, cadPen, docCCP, admCCP, docMagCCP, admProfSaludCCP, obreroCCP, sinTipoCCP,
                                 desigCCP, desigSaludCCP,permCCP, contrat,cesa, snp, sinEst,contrPers,cas, amc,anioIniCCP, mesIniCCP, anioFinCCP, mesFinCCP, function(){  //para la tabla de baja
                                     //  $("#condfech").removeAttr("hidden");
@@ -3267,6 +3519,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                     //$("#cond").removeAttr("hidden");
                                     // $("#fechacambio").removeAttr("hidden");
                                     if(self.listarServCondPla2View.collection.length!=0){
+                                        //   alert("entro al if");
 
                                         $("#table-cond-pla2").dataTable();
                                         $('#table-cond-pla2_wrapper').append("<div id='footer-table'></div>");
@@ -3285,8 +3538,22 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             // $("#fechcamb").removeAttr("hidden");
                             //$("#cond").removeAttr("hidden");
                             //$("#fechacambio").removeAttr("hidden");
-                            $("#table-cond-pla").hide();
-                            $('#listar_servidores_cond_planilla').show();
+
+                            clickedElement.button('loading');
+                            setTimeout(function () {
+                                clickedElement.button('reset');
+                                self.ListarReg.show(self.ListarServidorView) ;
+                                if(self.ListarServidorView.collection.length!=0){
+                                    $("#table-cond-pla").hide();
+                                    $('#listar_servidores_cond_planilla').show();
+                                }
+
+                                //    $("#servidoresModal").modal();
+
+                            },2000);
+                            //descomentar lo de abajo si es que no funciona
+                            /*      $("#table-cond-pla").hide();
+                             $('#listar_servidores_cond_planilla').show();  */
                             this.listarServCondPlaReg.reset(this.listarServCondPlaView);
                             // $("#condFechCCP2").removeAttr("hidden","hidden");
                             // $("#fechCambCCP2").removeAttr("hidden","hidden");
@@ -3298,9 +3565,25 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                         }
 
-                        $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
-                        $('#modal-altabaja').modal("hide");
-                        $('#modal-altabaja2').modal("hide");
+                        clickedElement.button('loading');
+                        setTimeout(function () {
+                            clickedElement.button('reset');
+                            self.ListarReg.show(self.ListarServidorView) ;
+                            if(self.ListarServidorView.collection.length!=0){
+                                $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
+                                $('#modal-altabaja').modal("hide");
+                                $('#modal-altabaja2').modal("hide");
+                            }
+
+                            //    $("#servidoresModal").modal();
+
+                        },2000);
+
+
+                        //descomentar si es que lo no funciona el temporizador
+                        /*    $("#listar_servidores_cond_planilla").removeAttr("hidden","hidden")
+                         $('#modal-altabaja').modal("hide");
+                         $('#modal-altabaja2').modal("hide");  */
                     }
                 },
 
@@ -3348,6 +3631,11 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $("#div_todos_trabajadores").show(); //esconde el boton de descargar grupal
 
 
+
+                    //segunda parte de jean 19-08-2014
+                    $('#fechaFinCCP').hide();
+
+
                 },
 
                 descargarReportServUnCondPla:function(){
@@ -3361,7 +3649,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funms=$("#funms:checked").val();
+                    var funmsm=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -3384,6 +3672,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         dniCCP="";
                     }
 
+                    //  alert("estado trabajador:"+estCCP);
+                    //  alert("tipo de trabajador:"+tipCCP);
 
                     var fInicioCCP=$("#ingres_ini_plani").val();
                     var fFinCCP=$("#ingres_fin_plani").val();
@@ -3409,12 +3699,13 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
                     if($('input:radio[name=myradio]:checked').val()==1){
+                        //  alert("usted selecciono un alta para un trabajador");
                         if(tipCCP!="" || estCCP!="" || dniCCP!=""){
                             var sanc_disc=$("#activo:checked").val();
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funms=100;
+                            var funmsm=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -3452,7 +3743,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             $("#susp_in_form").val(susp_ina);
                             $("#ces_form").val(cese);
                             $("#fallec_form").val(fallecido);
-                            $("#fun_form").val(funms);
+                            $("#fun_form").val(funmsm);
                             $("#fpla_form").val(fplani);
                             $("#term_con_form").val(term_cont);
                             $("#re_form").val(ren);
@@ -3479,10 +3770,11 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     else if($('input:radio[name=myradio]:checked').val()==2){
 
+                        //  alert("usted selecciono una baja para un trabajador");
                         if(tipCCP!="" || estCCP!="" || dniCCP!=""){   //quiere decir que selecciono un trabajador
 
                             if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                                && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                                && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                                 && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                                 && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
 
@@ -3490,7 +3782,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 var susp_ina=$("#susp_ina").val();
                                 var cese=$("#cese").val();
                                 var fallecido=$("#fall").val();
-                                var funms=$("#funms").val();
+                                var funmsm=$("#funms").val();
                                 var fplani=$("#fplani").val();
                                 var term_cont=$("#term_cont").val();
                                 var ren=$("#ren").val();
@@ -3528,7 +3820,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_in_form").val(susp_ina);
                                 $("#ces_form").val(cese);
                                 $("#fallec_form").val(fallecido);
-                                $("#fun_form").val(funms);
+                                $("#fun_form").val(funmsm);
                                 $("#fpla_form").val(fplani);
                                 $("#term_con_form").val(term_cont);
                                 $("#re_form").val(ren);
@@ -3551,18 +3843,20 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                                 $("#dniCCP_form").val(dniCCP);
 
+                                //   alert("datos: "+codTipCCP+" "+codEstCCP+" "+anioIniCCP+" "+anioFinCCP+" "+mesIniCCP+" "+mesFinCCP+" "+dniCCP);
 
 
                             }
                             else{ //  si selecciona una baja buscara solo por ese y a los demas les pondra 100
 
                                 //    alert("entro al else snp"+snp)
+                                //  alert("se selecciono una baja mostrar campo")
 
                                 //comprueva si es o no indefinido para asignarle un valor grande y que no afecte en el IN()
                                 if(susp_ina==undefined){ susp_ina=100;}
                                 if(cese==undefined){cese=100;}
                                 if(fallecido==undefined){fallecido=100;}
-                                if(funms==undefined){funms=100;}
+                                if(funmsm==undefined){funmsm=100;}
                                 if(fplani==undefined){fplani=100;}
                                 if(term_cont==undefined){term_cont=100;}
                                 if(ren==undefined){ren=100;}
@@ -3603,7 +3897,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_in_form").val(susp_ina);
                                 $("#ces_form").val(cese);
                                 $("#fallec_form").val(fallecido);
-                                $("#fun_form").val(funms);
+                                $("#fun_form").val(funmsm);
                                 $("#fpla_form").val(fplani);
                                 $("#term_con_form").val(term_cont);
                                 $("#re_form").val(ren);
@@ -3625,6 +3919,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#meesFinCCP_form").val(mesFinCCP);
 
                                 $("#dniCCP_form").val(dniCCP);
+                                //  alert("datos: entro al else"+codTipCCP+" "+codEstCCP+" "+anioIniCCP+" "+anioFinCCP+" "+mesIniCCP+" "+mesFinCCP+" "+dniCCP);
 
 
                             }
@@ -3645,7 +3940,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     var susp_ina=$("#susp_ina:checked").val();
                     var cese=$("#cese:checked").val();
                     var fallecido=$("#fall:checked").val();
-                    var funms=$("#funms:checked").val();
+                    var funmsm=$("#funms:checked").val();
                     var fplani=$("#fplani:checked").val();
                     var term_cont=$("#term_cont:checked").val();
                     var ren=$("#ren:checked").val();
@@ -3668,6 +3963,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                         dniCCP="";
                     }
 
+                    // alert("estado trabajador:"+estCCP);
+                    // alert("tipo de trabajador:"+tipCCP);
 
                     var fInicioCCP=$("#ingres_ini_plani").val();
                     var fFinCCP=$("#ingres_fin_plani").val();
@@ -3694,20 +3991,18 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
                     if($('input:radio[name=myradio]:checked').val()==1){  //quiere decir que selecciono alta
-
-                        if(tipCCP=="" || estCCP=="" || dniCCP==""){  //quiere decir que buscara por todos los trabajadores
-
-                            //aqui hay dos opciones 1) que seleccione todas las altas 2)seleccione algunas altas
-                            //          if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                            //             && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
-                            //             && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
-                            //              && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
+                        //  alert("usted selecciono alta");
+                        if(fFinCCP==""){             //como siempre sera vacio entrara aca -> asignarle el valor de anio de inicio
+                            var anioFinCCP=anioIniCCP;
+                            var mesFinCCP=mesIniCCP;}
+                        // alert("descargara por todos los trabajadores anio fin: "+anioFinCCP+" mes fin: "+mesFinCCP);
+                        if(tipCCP=="" || estCCP=="" || dniCCP==""){
 
                             var sanc_disc=$("#activo:checked").val();
                             var susp_ina=100;
                             var cese=100;
                             var fallecido=100;
-                            var funms=100;
+                            var funmsm=100;
                             var fplani=100;
                             var term_cont=100;
                             var ren=100;
@@ -3754,7 +4049,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             $("#susp_ina_form").val(susp_ina);
                             $("#cese_form").val(cese);
                             $("#fallecido_form").val(fallecido);
-                            $("#funmsm_form").val(funms);
+                            $("#funmsm_form").val(funmsm);
                             $("#fplani_form").val(fplani);
                             $("#term_cont_form").val(term_cont);
                             $("#ren_form").val(ren);
@@ -3885,11 +4180,16 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
                     else if($('input:radio[name=myradio]:checked').val()==2)  {
 
+                        // alert("usted selecciono baja");
+                        if(fFinCCP==""){             //como siempre sera vacio entrara aca -> asignarle el valor de anio de inicio
+                            var anioFinCCP=anioIniCCP;
+                            var mesFinCCP=mesIniCCP;}
+                        // alert("descargara por todos los trabajadores anio fin: "+anioFinCCP+" mes fin: "+mesFinCCP);
                         if(tipCCP=="" || estCCP=="" || dniCCP==""){  //quiere decir que buscara por todos los trabajadores
 
                             //aqui hay dos opciones 1) que seleccione todas las bajas 2)seleccione algunas bajas
                             if(sanc_disc==undefined && susp_ina==undefined && cese==undefined && fallecido==undefined
-                                && funms==undefined && fplani==undefined && term_cont==undefined && ren==undefined
+                                && funmsm==undefined && fplani==undefined && term_cont==undefined && ren==undefined
                                 && pen_susp==undefined && lsgh==undefined && noRat==undefined && destac==undefined && lcgh==undefined
                                 && exclu==undefined && cadPen==undefined){  // quiere decir que esta seleccionado todos.
 
@@ -3897,7 +4197,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 var susp_ina=$("#susp_ina").val();
                                 var cese=$("#cese").val();
                                 var fallecido=$("#fall").val();
-                                var funms=$("#funms").val();
+                                var funmsm=$("#funms").val();
                                 var fplani=$("#fplani").val();
                                 var term_cont=$("#term_cont").val();
                                 var ren=$("#ren").val();
@@ -3944,7 +4244,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_ina_form").val(susp_ina);
                                 $("#cese_form").val(cese);
                                 $("#fallecido_form").val(fallecido);
-                                $("#funmsm_form").val(funms);
+                                $("#funmsm_form").val(funmsm);
                                 $("#fplani_form").val(fplani);
                                 $("#term_cont_form").val(term_cont);
                                 $("#ren_form").val(ren);
@@ -3973,18 +4273,20 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#anioFinCCP_form").val(anioFinCCP);
                                 $("#mesFinCCP_form").val(mesFinCCP);
 
+                                //  alert("el tipo es: "+codTipCCP+" el estado es: "+codEstCCP)
 
 
                             }
                             else{ //  si selecciona una baja buscara solo por ese y a los demas les pondra 100
 
                                 //  alert("entro al else snp"+snp)
+                                //  alert("se selecciono una baja mostrar campo")
 
                                 //comprueba si es o no indefinido para asignarle un valor grande y que no afecte en el IN()
                                 if(susp_ina==undefined){ susp_ina=100;}
                                 if(cese==undefined){cese=100;}
                                 if(fallecido==undefined){fallecido=100;}
-                                if(funms==undefined){funms=100;}
+                                if(funmsm==undefined){funmsm=100;}
                                 if(fplani==undefined){fplani=100;}
                                 if(term_cont==undefined){term_cont=100;}
                                 if(ren==undefined){ren=100;}
@@ -4026,7 +4328,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#susp_ina_form").val(susp_ina);
                                 $("#cese_form").val(cese);
                                 $("#fallecido_form").val(fallecido);
-                                $("#funmsm_form").val(funms);
+                                $("#funmsm_form").val(funmsm);
                                 $("#fplani_form").val(fplani);
                                 $("#term_cont_form").val(term_cont);
                                 $("#ren_form").val(ren);
@@ -4056,6 +4358,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                                 $("#mesFinCCP_form").val(mesFinCCP);
 
 
+                                //  alert("estado descripcip: "+estCCP+" codigo estado: "+codEstCCP+" tipo descripcion: "+tipCCP+" codigo tipo: "+codTipCCP);
                             }
 
 
@@ -4067,7 +4370,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                             // var fetch_s = this.model.get("reporteResolAsoc").fetch({ data: $.param({"codigo": this.rep_cod_serv,"numserest":this.rep_numserest_serv,"nom_serv":this.rep_nomb_serv,"cod_serv":this.rep_cod_serv,"usuario":usuario}) });
                         }
                     }
-                }
+                }   //ACA TERMINA
+
+
+
 
 
 

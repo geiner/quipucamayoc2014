@@ -105,6 +105,13 @@ public class ServidorServiceImpl implements ServidorService {
     }
 
     @Override
+    public List<ServidorLaboral> getNumserestServidor(String codSerPer,Integer numserest) {
+
+        System.out.println("Hasta aqui:"+codSerPer+" - "+numserest);
+        return servidorMapper.getNumserestServidor(codSerPer,numserest);
+    }
+
+    @Override
     public List<Servidor> findByCod(Servidor servidor) {
         return servidorMapper.findByCod(servidor);  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -141,6 +148,12 @@ public class ServidorServiceImpl implements ServidorService {
     public void saveLaboral2(ServidorLaboral servidorLaboral) {
         servidorMapper.saveLaboral2(servidorLaboral);
     }
+
+    @Override
+    public void updateServ(ServidorLaboral servidorLaboral) {
+        servidorMapper.updateServ(servidorLaboral);
+    }
+
     @Override
     public List<ServidorTipo> findByTipGen(@Param("tipGen") ServidorGenerico tipGen) {
         return servidorMapper.findByTipGen(tipGen);

@@ -25,6 +25,7 @@ public class ServidorLaboral {
     String insregpen;
     Integer tipocupuni;
     Integer sindic;
+
     private String ruc;
     private String dependencia;
     private String des_depend;
@@ -34,6 +35,16 @@ public class ServidorLaboral {
     private int num3;
     private int num4;
     private int num5;
+
+    private String fechPen;
+
+    public String getFechPen() {
+        return fechPen;
+    }
+
+    public void setFechPen(String fechPen) {
+        this.fechPen = fechPen;
+    }
 
     public String getCod_antiguo() {
         return cod_antiguo;

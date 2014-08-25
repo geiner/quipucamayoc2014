@@ -15,7 +15,7 @@
    <div id="errorFechIngFV" class="alert alert-warning" style="text-align: center; display:none;"><strong>Fechas de Ingreso: Fin Vacio</strong></div>
    <div id="errorSel" class="alert alert-warning" style="text-align: center; display:none;"><strong>No ha Seleccionado</strong></div>
    <div id="nodata1" class="alert alert-warning" style="text-align: center; display:none;"><strong>No se encontró datos</strong></div>
-
+   <div id="faltaFechaIni" class="alert alert-warning" style="text-align: center; display:none;"><strong>Debe ingresar una fecha de inicio</strong></div>
 
 
 
@@ -77,7 +77,7 @@
                                </div>
                            </div>
 
-                           <div class="col-md-6">
+                           <div class="col-md-6" id="fechaFinCCP" hidden="hidden">
                                <div class="col-md-3">
                                    <label>F. Fin: </label>
                                </div>
@@ -87,7 +87,7 @@
                                               class="form-control">
                                     <span class="input-group-btn">
                                      <button class="btn btn-default" type="button" id="ingres_fin_plani_show"><span
-                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                             class=" glyphicon glyphicon-calendar"  ></span></button>
                                      <button class="btn btn-default" type="button" id="ingres_fin_plani_refresh"><span
                                              class=" glyphicon glyphicon-refresh"></span></button>
                                      </span>
@@ -232,6 +232,7 @@
                    </form>
 
                </div>
+
 
 
 
@@ -602,7 +603,7 @@
                        <input type="hidden" style="display: none" id="fdependencia" name="fdependencia">
                        <input type="hidden" style="display: none" id="funmsm" name="funmsm">
                        <input type="hidden" style="display: none" id="usuarias" name="usuarias">
-                       <button class="btn btn-primary pull-right" id="desc_reporte_ias" data-target=".bs-example-modal-lg" style="margin-right: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+                       <button class="btn btn-warning pull-right" id="desc_reporte_ias" data-target=".bs-example-modal-lg" style="margin-right: -33%"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
 
                    </form>
                </div>

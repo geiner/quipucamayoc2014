@@ -30,6 +30,7 @@ public interface ServidorService {
     public List<Domicilio> findAllDistricts(Integer idDep, Integer idProv);
     public List<Servidor> todosServidores();
     void saveLaboral2(ServidorLaboral servidorLaboral);
+    void updateServ(ServidorLaboral servidorLaboral);
     public List<Pais> nacimientoPaises();
 
     void updateServidor(Servidor servidor);
@@ -59,4 +60,6 @@ public interface ServidorService {
     void updateHistCondPlani(ServidorLaboral servidorLaboral);
 
     List<ServidorLaboral> selectnumeroRegistros(String codigo,int num_ser_est);
+
+    public List<ServidorLaboral> getNumserestServidor(String codSerPer,Integer numserest);
 }

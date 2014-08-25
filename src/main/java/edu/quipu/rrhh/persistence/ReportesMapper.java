@@ -41,7 +41,7 @@ public interface ReportesMapper {
     @Select(value = "select  substr(des_doc,1,3) as tipoDoc, ser_doc_id_act as numDoc, ser_cod as codSer, ser_ape_pat as pat, ser_ape_mat as mat, ser_nom as nomb, " +
             "pla_anu as anio, pla_mes as mes,cond_fecha as estPla, desc_categ as cat, des_dep_cesantes as dep,desc_reg_pen as reg,  des_ent_aseg as entAseg  " +
             "from datapersuel.vw_cambios_info_y_cond_pla  " +
-            "where fech between to_date('01'||'/'||#{mesIni}||'/'||#{anioIni},'dd/mm/yyyy') and to_date('31'||'/'||#{mesFin}||'/'||#{anioFin},'dd/mm/yyyy') "+
+            "where fech between to_date('01'||'/'||#{mesIni}||'/'||#{anioIni},'dd/mm/yyyy') and to_date('20'||'/'||#{mesFin}||'/'||#{anioFin},'dd/mm/yyyy') "+
             "and ser_tip_act = #{tipito}  " +
             "and SER_EST_ACT = #{estito} " +
             "and SER_DOC_ID_ACT= #{dni} " +
@@ -113,7 +113,7 @@ public interface ReportesMapper {
     List<Reportes> tipagoservidor();
 
     /////traemos datos para el combo box de Dependencia
-    @Select(value = "select cod_dep_cesantes as codces, des_dep_cesantes as descces from datapersuel.DEPENDENCIA_CESANTES where des_dep_cesantes is not null")
+    @Select(value = "select cod_dep_cesantes as codces, des_dep_cesantes as descces from datapersuel.DEPENDENCIA_CESANTES where des_dep_cesantes is not null order by cod_dep_cesantes")
     @Results(value = {
             @Result(javaType = Reportes.class),
             @Result(property = "codces", column = "codces"),
@@ -133,14 +133,14 @@ public interface ReportesMapper {
     ////////////////////////////////////////parte de Jean//////////////////////////////////////
 
     ///////traemos los datos para la tabla
-    @Select(value = "select DES_DOC as tipoDoc,SER_DOC_ID_ACT as numDoc, SER_COD as codSer, SER_APE_PAT as apePat, SER_APE_MAT as apeMat," +
-            "            SER_NOM as nombre, COND_FECHA as condFech, pla_mes as mes, pla_anu as anio,  ESTADO_ACT as est, TIPO_SERV_ACT as tipSer" +
-            "            from datapersuel.vw_cambios_info_y_cond_pla where SER_CON_PLA  in(#{valor1}, #{susp_ina}, #{cese},  #{fallecido},  #{funmsm},  #{fplani},  #{term_cont}, " +
-            "            #{ren},  #{pen_susp}, #{lsgh},  #{noRat},  #{destac},  #{lcgh}, #{exclu}, #{cadPen})" +
-            "            and ser_tip_act in(#{docCCP},#{admCCP},#{docMagCCP},#{admProfSaludCCP},#{obreroCCP},#{sinTipoCCP},#{desigCCP},#{desigSaludCCP})" +
-            "            and ser_est_act in(#{permCCP}, #{contrat},#{cesa}, #{snp}, #{sinEst},#{contrPers},#{cas}, #{amc})" +
-            "            and PLA_ANU  between #{anioIniCCP} and #{anioFinCCP} " +
-            "            and PLA_MES between #{mesIniCCP} and #{mesFinCCP}")
+    @Select(value = "select DES_DOC as tipoDoc,SER_DOC_ID_ACT as numDoc, SER_COD as codSer, SER_APE_PAT as apePat, SER_APE_MAT as apeMat,\n" +
+            "  SER_NOM as nombre, COND_FECHA as condFech, pla_mes as mes, pla_anu as anio,  ESTADO_ACT as est, TIPO_SERV_ACT as tipSer\n" +
+            "                      from datapersuel.vw_cambios_info_y_cond_pla where SER_CON_PLA  in(#{valor1}, #{susp_ina}, #{cese},  #{fallecido},  #{funmsm},  #{fplani},  #{term_cont}, \n" +
+            "                        #{ren},  #{pen_susp}, #{lsgh},  #{noRat},  #{destac},  #{lcgh}, #{exclu}, #{cadPen})\n" +
+            "                     and ser_tip_act in(#{docCCP},#{admCCP},#{docMagCCP},#{admProfSaludCCP},#{obreroCCP},#{sinTipoCCP},#{desigCCP},#{desigSaludCCP})\n" +
+            "                       and ser_est_act in(#{permCCP}, #{contrat},#{cesa}, #{snp}, #{sinEst},#{contrPers},#{cas}, #{amc})\n" +
+            "                       and fech between to_date('01'||'/'||#{mesIniCCP}||'/'||#{anioIniCCP},'dd/mm/yyyy') and to_date('20'||'/'||#{mesFinCCP}||'/'||#{anioFinCCP},'dd/mm/yyyy')\n" +
+            "                     order by pla_anu desc, pla_mes desc, SER_APE_PAT ASC, SER_APE_MAT ASC, SER_NOM ASC ")
     @Results( value = {
             @Result(javaType = Reportes.class),
             @Result(property = "tipoDoc", column = "tipoDoc"),
@@ -165,15 +165,15 @@ public interface ReportesMapper {
 
 
 
-    @Select(value = "select DES_DOC as tipoDoc,SER_DOC_ID_ACT as numDoc, SER_COD as codSer, SER_APE_PAT as apePat, SER_APE_MAT as apeMat," +
-            "            SER_NOM as nombre, COND_FECHA as condFech, pla_mes as mes, pla_anu as anio,  ESTADO_ACT as est, TIPO_SERV_ACT as tipSer" +
-            "            from datapersuel.vw_cambios_info_y_cond_pla where SER_CON_PLA  in(#{valor1}, #{susp_ina}, #{cese},  #{fallecido},  #{funmsm},  #{fplani},  #{term_cont}, " +
-            "            #{ren},  #{pen_susp}, #{lsgh},  #{noRat},  #{destac},  #{lcgh}, #{exclu}, #{cadPen})" +
-            "           and SER_TIP_ACT = #{codTipCCP}" +
-            "           and SER_EST_ACT = #{codEstCCP}" +
-            "           and SER_DOC_ID_ACT = #{dniCCP}" +
-            "           and PLA_ANU  between #{anioIniCCP} and #{anioFinCCP}" +
-            "           and PLA_MES between #{mesIniCCP} and #{mesFinCCP}")
+    @Select(value = "select DES_DOC as tipoDoc,SER_DOC_ID_ACT as numDoc, SER_COD as codSer, SER_APE_PAT as apePat, SER_APE_MAT as apeMat, " +
+            "                    SER_NOM as nombre, COND_FECHA as condFech, pla_mes as mes, pla_anu as anio,  ESTADO_ACT as est, TIPO_SERV_ACT as tipSer\n" +
+            "                   from datapersuel.vw_cambios_info_y_cond_pla where SER_CON_PLA  in(#{valor1}, #{susp_ina}, #{cese},  #{fallecido},  #{funmsm},  #{fplani},  #{term_cont}, \n" +
+            "                        #{ren},  #{pen_susp}, #{lsgh},  #{noRat},  #{destac},  #{lcgh}, #{exclu}, #{cadPen})\n" +
+            "                       and SER_TIP_ACT = #{codTipCCP}\n" +
+            "                       and SER_EST_ACT = #{codEstCCP}\n" +
+            "                       and SER_DOC_ID_ACT = #{dniCCP}\n" +
+            "                     and fech between to_date('01'||'/'||#{mesIniCCP}||'/'||#{anioIniCCP},'dd/mm/yyyy') and to_date('20'||'/'||#{mesFinCCP}||'/'||#{anioFinCCP},'dd/mm/yyyy')\n" +
+            "                      order by pla_anu desc, pla_mes desc, SER_APE_PAT ASC, SER_APE_MAT ASC, SER_NOM ASC ")
     @Results( value = {
             @Result(javaType = Reportes.class),
             @Result(property = "tipoDoc", column = "tipoDoc"),

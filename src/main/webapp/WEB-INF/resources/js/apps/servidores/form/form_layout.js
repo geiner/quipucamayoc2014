@@ -581,13 +581,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         self_s.done(function () {
                             $('#serv_save').html('<strong>Error en el registro</strong>')
                             $('#serv_save').show();
-                            /*$('#cancel_servidor').click();
-                             $("#codigo").val(cod)
-                             console.log(cod+"dgfsfgdhfdshehgt");
-                             console.log("funciona");
-                             setTimeout(function (e) {
-                             $('.tab_b').click();
-                             },2000);*/
+
                         });
                         self_s.fail(function () {
                             console.log("no funciona");

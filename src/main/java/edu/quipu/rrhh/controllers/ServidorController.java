@@ -100,12 +100,19 @@ public class ServidorController {
         System.out.println("SER_NUM_RUC:"+servidorLaboral.getRuc());
         System.out.println("SER_COD_DEP_CES:"+servidorLaboral.getDependencia());
         System.out.println("SER_COD_DEP_ACT:"+servidorLaboral.getDependencia());
+        System.out.println("TIPO DE OCUPACION:"+servidorLaboral.getTipocupuni());
+        System.out.println("FECHA DE INC PENSIONARIO:"+servidorLaboral.getInsregpen());
+        System.out.println("FECHA DE INC PENSIONARIO:"+servidorLaboral.getInsregpen());
+        System.out.println("SINDICALIZADO:"+servidorLaboral.getSindic());
+
 
         System.out.println(servidorLaboral.getCod()+"-"+servidorLaboral.getCat()+"-"+servidorLaboral.getTip()+"-"+servidorLaboral.getRegPen()+"-"+servidorLaboral.getCueBan()
                 +"-"+servidorLaboral.getTipPag()+"-"+servidorLaboral.getConPla()+"-"+servidorLaboral.getEntAse()+"-"+servidorLaboral.getTipGen()+"-"+servidorLaboral.getNumPen()
                 +"-"+servidorLaboral.getEstAfp()+"-"+servidorLaboral.getRegLab()+"-"+servidorLaboral.getInsregpen()+"-"+servidorLaboral.getSindic()+"-"+servidorLaboral.getTipocupuni());
         System.out.println("primero");
         servidorService.saveLaboral(servidorLaboral);
+        System.out.println("actualizado");
+        servidorService.updateServ(servidorLaboral);
         System.out.println("segundo");
         servidorService.saveLaboral2(servidorLaboral);
         System.out.println("tercero");
@@ -129,6 +136,9 @@ public class ServidorController {
         System.out.println(servidorLaboral.getNum_ser_est()+"!!!!!!!!!!!!!!!!!!!");
         System.out.println("primero");
         servidorService.updateServidorLaboral(servidorLaboral);
+        System.out.println("actualizando");
+        servidorService.updateServ(servidorLaboral);
+
         System.out.println("segundo");
         servidorService.updateServidorLaboral2(servidorLaboral);
         System.out.println("tercero");
@@ -355,6 +365,14 @@ public class ServidorController {
         System.out.println("TODOS LOS SERVIDORES!!!");
         return servidorService.todosServidores();
     }
+
+    @RequestMapping(method = RequestMethod.GET,produces ="application/json",value = "/getNumserest/{codSerPer}/{numserest}")
+    @ResponseBody
+    public ServidorLaboral getNumserestServidor(@PathVariable(value = "codSerPer") String codSerPer,@PathVariable(value = "numserest") Integer numserest){
+         System.out.println("ACA VA LO ULTIMO!!!!!!!!!!!!"+codSerPer+" - "+numserest);
+        return servidorService.getNumserestServidor(codSerPer,numserest).get(0);
+    }
+
 //
 
 }
