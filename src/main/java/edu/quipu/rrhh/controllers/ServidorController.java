@@ -114,6 +114,10 @@ public class ServidorController {
         System.out.println("actualizado");
         servidorService.updateServ(servidorLaboral);
         System.out.println("segundo");
+        System.out.println("ser_cod:"+servidorLaboral.getCod());
+        System.out.println("Ser_Ori_Tip_Ocupuniv:"+servidorLaboral.getTipocupuni());
+        System.out.println("fecha_inscripcion:"+servidorLaboral.getInsregpen());
+        System.out.println("ser_ori_sindicato:"+servidorLaboral.getSindic());
         servidorService.saveLaboral2(servidorLaboral);
         System.out.println("tercero");
         servidorService.saveHistBanco(servidorLaboral);

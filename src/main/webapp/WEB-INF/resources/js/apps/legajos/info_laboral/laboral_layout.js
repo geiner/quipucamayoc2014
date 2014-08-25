@@ -89,6 +89,9 @@ define(['app', 'hbs!apps/legajos/info_laboral/templates/infoLaboral_layout',"app
                     var estado=clickedElement.children(':nth-child(6)').text();
 
                     var dni_emp=clickedElement.children(':nth-child(2)').text();
+                    var tipo=clickedElement.children(':nth-child(4)').text();
+                    var dependencia=clickedElement.children(':nth-child(5)').text();
+                    var categoria=clickedElement.attr('data');
 
                     this.num_ser_est= clickedElement.children(':nth-child(7)').text();
 
@@ -114,6 +117,9 @@ define(['app', 'hbs!apps/legajos/info_laboral/templates/infoLaboral_layout',"app
                     $("#text-cod").text(dni_emp);
                     $("#cod-ant").text(cod_ant);
                     $('#estado').text(estado);
+                    $("#text-tipo").text(tipo);
+                    $("#text-depen").text(dependencia);
+                    $("#text-categ").text(categoria);
                     $("#block-descr").show();
 
                    //APARECEN BENEFICIOS

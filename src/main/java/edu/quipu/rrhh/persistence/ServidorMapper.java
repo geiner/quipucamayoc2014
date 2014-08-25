@@ -143,8 +143,8 @@ public interface ServidorMapper {
             "  ( " +
             "    #{ser.cod}, " +
             "    #{ser.tipocupuni}, " +
-            "    #{ser.insregpen}, " +
-            "    (SELECT MAX(num_serest) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod}), " +
+            "   TO_DATE(#{ser.insregpen},'DD/MM/YY'), " +
+            "    (SELECT MAX(num_serest) FROM Datapersuel.SERVIDOR_ESTADO  WHERE TRIM(ser_cod)=TRIM(#{ser.cod})), " +
             "    #{ser.sindic} " +
             "  )")
     void saveLaboral2(@Param("ser") ServidorLaboral servidorLaboral);

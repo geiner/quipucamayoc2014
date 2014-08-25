@@ -41,9 +41,8 @@
        and ser_tip_act in($P{tipCCP})
        and ser_est_act in($P{estCCP})
        and SER_DOC_ID_ACT = $P{dniCCP}
-       and PLA_ANU  between $P{anioIniCCP} and $P{anioFinCCP}
-       and PLA_MES between $P{mesIniCCP} and $P{mesFinCCP}
-	order by SER_DOC_ID_ACT ]]>
+       and fech between to_date('01'||'/'||$P{mesIniCCP}||'/'||$P{anioIniCCP},'dd/mm/yyyy') and to_date('20'||'/'||$P{mesFinCCP}||'/'||$P{anioFinCCP},'dd/mm/yyyy')
+	  order by SER_DOC_ID_ACT ]]>
 	</queryString>
 	<field name="TIPODOC" class="java.lang.String"/>
 	<field name="NUMDOC" class="java.lang.String"/>

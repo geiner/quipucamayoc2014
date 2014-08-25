@@ -465,6 +465,8 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $('#div_fech_fin').hide();
                     //ocultar mensaje de no Data
                     $('#noData').hide();
+                    $('#faltaFechaIni').hide();
+                    $("#nodata1").hide();
                 },
 
                 limpiarCabeceraTabsFernando:function(){
@@ -506,6 +508,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     $('#div_fech_fin').hide();
                     //ocultar mensaje de no Data
                     $('#noData').hide();
+
+                    $('#faltaFechaIni').hide();
+                    $("#nodata1").hide();
+
                 },
 
                 limpiarFechaIni:function(){
@@ -1851,7 +1857,7 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
 
 
                                 }else{
-                                    $("#nodata").show();
+                                    $("#nodata1").show();
                                 }
 
 
@@ -2764,6 +2770,10 @@ define(["app", "hbs!apps/reportes/form/templates/inicio_reportes","apps/reportes
                     if(estCCP!="" || tipCCP!="" || dniCCP!=""){
                         //   alert("entro al if de alta se buscara por un trabajador en especifico")
                         //ponemos en 100 todas las bajas, ya que estamos en altas(activo)
+                        if(fInicioCCP==""){
+                            var anioIniCCP=2000;
+                            var mesIniCCP=01;
+                        }
                         var susp_ina=100;
                         var cese=100;
                         var fallecido=100;
