@@ -1579,9 +1579,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var clickedElement = $(e.currentTarget);
                     var dni_serv = clickedElement.children(':nth-child(8)').text();
                     this.num_ser_estado = clickedElement.children(':nth-child(7)').text();
-                    $("#codigo").val(dni_serv);
-                    $('#codigo').attr('disabled', 'disabled');
-                    $('#num_document').removeAttr('disabled');
+                   $("#num_document").val(dni_serv);
+                    $('#num_document').attr('disabled', 'disabled');
+                   // $('#num_document').removeAttr('disabled');
                     setTimeout(function () {
                         self.fun_search_servidor();
                     }, 1000);
