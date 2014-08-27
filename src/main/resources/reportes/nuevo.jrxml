@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nuevo" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dnimayor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["06266312"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numserest" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="usuarioies" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["johndejo1766@hotmail.com"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select ls.SER_APE_PAT,ls.SER_APE_MAT,ls.SER_NOM,nvl(ls.SER_DOM,' ')SER_DOM,doc.DES_DOC_ID ,ls.SER_DOC_ID_ACT,ls.SER_CON_PLA_ACT,conser.DES_CON_PLA ,nvl(ls.SER_COD_ANT,' ') COD_ANT, 
+ls.SER_COD_DEP_CES,ls.DES_DEP_CESANTES,to_char(ls.SER_FECH_IN_UNMSM,'dd/mm/yyyy') SER_FECH_IN_UNMSM,rpen.DESC_REG_PEN,ent.DES_ENT_ASEG,decode(ent.DES_ENT_ASEG,'Estado',' ',' - '||estafp.DES_EST_AFP) DES_EST_AFP
+from datapersuel.LISTA_SERVIDOR ls left join datapersuel.ENTIDAD_ASEGURADORA ent on ls.SER_ENT_ASEG=ent.ENT_ASEG_COD left join datapersuel.ESTADOS_AFP estafp on ls.SER_EST_AFP=estafp.COD_EST_AFP ,
+datapersuel.DOC_IDENTIDAD doc, datapersuel.COND_SER_PLAN conser,datapersuel.REG_PENSION rpen 
+
+where TRIM(ls.SER_COD)=TRIM($P{dnimayor}) and ls.NUM_SEREST =$P{numserest} and ls.SER_TIP_DOC_ID_ACT=doc.COD_DOC_ID and ls.SER_CON_PLA_ACT= conser.COD_CON_PLA
+and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
+	</queryString>
+	<field name="SER_APE_PAT" class="java.lang.String"/>
+	<field name="SER_APE_MAT" class="java.lang.String"/>
+	<field name="SER_NOM" class="java.lang.String"/>
+	<field name="SER_DOM" class="java.lang.String"/>
+	<field name="DES_DOC_ID" class="java.lang.String"/>
+	<field name="SER_DOC_ID_ACT" class="java.lang.String"/>
+	<field name="SER_CON_PLA_ACT" class="java.math.BigDecimal"/>
+	<field name="DES_CON_PLA" class="java.lang.String"/>
+	<field name="COD_ANT" class="java.lang.String"/>
+	<field name="SER_COD_DEP_CES" class="java.lang.String"/>
+	<field name="DES_DEP_CESANTES" class="java.lang.String"/>
+	<field name="SER_FECH_IN_UNMSM" class="java.lang.String"/>
+	<field name="DESC_REG_PEN" class="java.lang.String"/>
+	<field name="DES_ENT_ASEG" class="java.lang.String"/>
+	<field name="DES_EST_AFP" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="8" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="117" splitType="Stretch">
+			<staticText>
+				<reportElement x="388" y="32" width="167" height="48"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFICINA GENERAL DE RECURSOS HUMANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="32" width="170" height="37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="61" width="74" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Universidad del Perú,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="61" width="83" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DECANA DE AMERICA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="11" y="80" width="534" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="130" y="83" width="312" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[OFICINA DE GESTION Y ESCALAFON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="95" width="312" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[INFORME ESCALAFONARIO]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="435" y="0" width="120" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="399" y="0" width="36" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="12" width="120" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{usuarioies}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="399" y="12" width="36" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="12" width="339" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE ADMINISTRACION DE RECURSOS HUMANOS - QUIPUCAMAYOC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="251" height="12"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="379" splitType="Stretch">
+			<textField>
+				<reportElement x="162" y="6" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SER_APE_PAT}+" "+$F{SER_APE_MAT}+","+$F{SER_NOM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="6" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos y Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="6" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="26" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SER_DOM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="26" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="26" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Domicilio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="46" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DES_DOC_ID}+" - "+$F{SER_DOC_ID_ACT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="46" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="46" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Doc. Identidad]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="162" y="66" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DES_CON_PLA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="66" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="66" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condición del servidor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="106" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="106" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SER_COD_DEP_CES}+" - "+$F{DES_DEP_CESANTES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="106" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependencia]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="126" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SER_FECH_IN_UNMSM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="154" y="126" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="126" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Ingreso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="146" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="146" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESC_REG_PEN}+" - "+$F{DES_ENT_ASEG}+$F{DES_EST_AFP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="146" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Régimen de Pensión]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="86" width="347" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COD_ANT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="86" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código del servidor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="86" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="166" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estudios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="166" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="196" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="196" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tiempo de Servicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="226" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="226" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Licencias con Goce]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="256" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="256" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Licencias sin Goce]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="286" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="286" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Méritos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="347" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="347" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="154" y="316" width="6" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="316" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deméritos]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="176" width="498" height="10"/>
+				<subreportParameter name="dni">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/estudio.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="205" width="498" height="10"/>
+				<subreportParameter name="dnitser">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/tserv.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="236" width="498" height="10"/>
+				<subreportParameter name="dnilcg">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numlcg">
+					<subreportParameterExpression><![CDATA[$P{numserest}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/lcg.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="266" width="498" height="10"/>
+				<subreportParameter name="dnilsg">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numlsg">
+					<subreportParameterExpression><![CDATA[$P{numserest}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/lsg.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="326" width="498" height="10"/>
+				<subreportParameter name="dnide">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numde">
+					<subreportParameterExpression><![CDATA[$P{numserest}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/demerito.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="11" y="296" width="498" height="10"/>
+				<subreportParameter name="dnime">
+					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="numme">
+					<subreportParameterExpression><![CDATA[$P{numserest}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/merito.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="3" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="3" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -5,39 +5,31 @@
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">Seleccionar Servidor </h4>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Docentes</h4>
         </div>
 
         <div class="modal-body">
 
-
-
-
             <div class=" form-horizontal well-small" >
 
-
-
-                           <div class="row form-group">
-                                <div class="col-md-12">
+                            <div class="row form-group">
+                                 <div class="col-md-12">
                                       <label class="col-md-5 control-label " style="margin-left: -25%;">Plaza</label>
 
-                                             <div class="col-md-10">
-                                                  <input type="text" id="nombrePlaza"  class="form-control"  disabled>
+                                           <div class="col-md-10">
+                                               <input type="text" id="nombrePlaza"  class="form-control"  disabled>
 
-                                             </div>
+                                           </div>
 
-                                </div>
+                                 </div>
 
-                           </div>
-
-
-
+                            </div>
 
 
 
                             <div class="row form-group">
                                 <div class="col-md-12">
-                                    <label class="col-md-4 control-label" for="fechaInicial"   style="margin-left: -16%;">Fec.Inicial<span id="descr_obli" style="color:red;">*</span></label>
+                                    <label class="col-md-4 control-label" for="fechaInicial"   style="margin-left: -16%;"  >Fec.Inicial<span id="descr_obli" style="color:red;">*</span></label>
 
                                     <div class="col-md-7">
                                         <div class="input-group">
@@ -56,7 +48,7 @@
 
                             <div class="row form-group">
                                 <div class="col-md-12">
-                                    <label class="col-md-4 control-label" for="fechaFinal"   style="margin-left: -16%;">Fec.Final</label>
+                                    <label class="col-md-4 control-label" for="fechaFinal"   style="margin-left: -16%;" >Fec.Final</label>
 
                                     <div class="col-md-7">
                                         <div class="input-group">
@@ -81,11 +73,11 @@
                                        <div class="col-md-7">
                                            <select id="modalidad" class="form-control">
                                                 <!--<option value="99">Seleccione una opción</option>-->
-                                                <option value="1">Concurso</option>
-                                                <option value="2">Designación</option>
-                                                <option value="3">Nombramiento</option>
-                                                <option value="4">Reasignación</option>
-                                                <option value="5">Mandato Judicial</option>
+                                                 <option value="1">Concurso</option>
+                                                 <option value="2">Designación</option>
+                                                 <option value="3">Nombramiento</option>
+                                                 <option value="4">Reasignación</option>
+                                                 <option value="5">Mandato Judicial</option>
 
                                            </select>
                                         </div>
@@ -95,6 +87,24 @@
                             </div>
 
 
+                             <div class="row form-group">
+                                  <div class="col-md-12">
+                                        <label class="col-md-5 control-label " style="margin-left: -25%;">Cargo<span id="descr_obli" style="color:red;">*</span></label>
+
+                                            <div class="col-md-7">
+                                                <select id="ModOcupado2" class="form-control">
+                                                       <!--<option value="99">Seleccione una opción</option>-->
+
+                                                       <option value="6">Funcional Ocupado</option>
+                                                       <option value="4">Presupuestado Ocupado</option>
+
+                                                </select>
+                                            </div>
+
+                                  </div>
+
+                             </div>
+
 
                             <div id="advertenciaFechaInicial" class='alert alert-warning' style="text-align:center;display:none;">
                             </div>
@@ -103,7 +113,7 @@
 
 
 
-            <table id="table-servidores_asis2" class="table  table-bordered table-hover" style="font-size: 12px;">
+            <table id="table-servidores_asisD" class="table  table-bordered table-hover" style="font-size: 12px;">
                 <thead class="header" style="color: #040404;background-color:#f5f5f5">
                 <tr>
                     <th>codigo</th>
@@ -142,28 +152,28 @@
 
 
 <style type="text/css">
-    #table-servidores_asis2_length{
+    #table-servidores_asisD_length{
         display:none;
     }
 
-  #table-servidores_asis2_paginate{
+  #table-servidores_asisD_paginate{
         position: absolute;
         margin-top: -17px;
         left: 52%;
     }
-    #table-servidores_asis2_info{
+    #table-servidores_asisD_info{
         float: left;
         margin-top: -12px;
         margin-left: 18px;
         font-size: 10px;
         color: rgb(2, 2, 2);
     }
-    #table-servidores_asis2 tr{
+    #table-servidores_asisD tr{
         cursor: pointer;
     }
 
 
-    #table-servidores_asis2_previous{
+    #table-servidores_asisD_previous{
         cursor: pointer;
         display: inline-block;
         padding: 3px 10px;
@@ -172,7 +182,8 @@
         -webkit-border-radius: 15px;
         border-radius: 5px;
     }
-    #table-servidores_asis2_next{
+
+    #table-servidores_asisD_next{
         cursor: pointer;
         margin-left: 19px;
         display: inline-block;
@@ -182,4 +193,18 @@
         -webkit-border-radius: 15px;
         border-radius: 5px;
     }
+
+     .divContenedor{
+            width:600px ;
+            position: absolute;
+            left: 50%;
+            margin-left: -300px;
+            top: 100px;
+            text-align: center;
+        }
+
+
+
+
+
 </style>

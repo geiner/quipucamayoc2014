@@ -115,5 +115,10 @@ public class CuadroNominalServiceImpl implements CuadroNominalService {
     }
     */
 
+    @Override
+    public List<Servidor> docentesFuncional() {
+        return cuadroNominalMapper.docentesFuncional();
+    }
+
 
 }

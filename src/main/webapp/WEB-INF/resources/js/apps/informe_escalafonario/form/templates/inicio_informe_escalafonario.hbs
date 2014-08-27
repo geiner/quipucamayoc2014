@@ -1,0 +1,57 @@
+<fieldset>
+    <legend>Informe Escalafonario </legend>
+    <div class="tabReport tabs-left" id="header_est_cod">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#ies" data-toggle="tab" >Servidor</a></li>
+
+            <a class="btn btn-primary pull-right" id="list_serv_ies" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
+
+        </ul>
+        <div class="tab-content" >
+
+            <br>
+            <div class="row form-group" id="datoServi" style="display: none;">
+                <div class="col-md-2">
+                    <strong style="font-size: 13px;">DNI: <strong id="dniServi" style="font-size: 13px;color: #00585f;"></strong></strong>
+                </div>
+                <div class="col-md-4">
+                    <strong style="font-size: 13px;">Servidor: <strong id="nomServi" style="font-size: 13px;color: #00585f;"></strong></strong>
+                </div>
+
+                <div class="col-md-2">
+                    <strong style="font-size: 13px;">Cod Antiguo: <strong id="codiAnt" style="font-size: 13px;color: #00585f;"> </strong> </strong>
+                </div>
+                <div class="col-md-2">
+                    <strong style="font-size: 13px;">Tipo: <strong id="tipTrabIES" style="font-size:13px;color: #00585f; "></strong></strong>
+                </div>
+                <div class="col-md-2">
+                    <strong style="font-size: 13px;">Estado: <strong id="estServi" style="font-size:13px;color: #00585f; "></strong></strong>
+                </div>
+            </div>
+            <div class="button-group  pull-right " id="reporte_ies" style="margin-right: 5%;display: none">
+                <form action="api/informeescalafonario/reporteies/ies/pdf"  method="POST" id="form_reporte_ies" style="">
+                    <input type="hidden" style="display: none" id="dniies" name="dniies" >
+                    <input type="hidden" style="display: none" id="numser" name="numser" >
+                    <input type="hidden" style="display: none" id="usuaries" name="usuaries" >
+                    <button class="btn btn-warning pull-right" id="btn_desc_ies" data-target=".bs-example-modal-lg" style="margin-right: -33%;"><span class="glyphicon glyphicon-download"></span> Descargar Reporte</button>
+                </form>
+            </div>
+
+
+
+    </div>
+    </div>
+</fieldset>
+<div id="servModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+<style type="text/css">
+    .controls > .error {
+        color: #b94a48;
+        display: inline-block;
+        *display: inline;
+        padding-left: 5px;
+        vertical-align: middle;
+        *zoom: 1;
+    }
+
+</style>

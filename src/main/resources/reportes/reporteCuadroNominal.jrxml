@@ -45,41 +45,44 @@
 		<defaultValueExpression ><![CDATA["Sistemas"]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT    plaza.C_COD_PLAZA AS CODPLAZA,
-                      cargoC.T_CARCLA_NOM as NOMCLASIF,
-                      cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,
-                      DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,  'JEFE DE PRÁCTICA',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR    ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, 
-                      dependencia.UD_ID  AS DEPENDENCIACODD,
-                      dependencia.UD_DSC  AS DEPENDENCIA,
-                      plaza.N_EST_PLAZA AS IDESTPLAZA,
-                      estado.T_DES_ESTADO AS ESTPLAZA, 
-                      servidor_pap.SER_COD_ANT AS CODANT,
-                      nominal.SER_COD AS COD_SER,
-                      nominal.NUM_SEREST AS NUMSEREST,
-                      
-                      servidor.SER_APE_PAT||' '||servidor.SER_APE_MAT||' '||servidor.SER_NOM AS NOMBRES,                      
-
-                      TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,
-                      TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,
-                      serModalidad.SER_MOD_DESC AS MODALIDAD  
-                      FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo
-                      INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO
-                      INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD
-                      INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )
-                      LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA
-                      INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )
-                      INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR
-                      INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF
-                          )
-                      LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)
-                      LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)
-                      LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD
-                      WHERE (   cargo.N_UD_ID  IN (
-                      SELECT  dependencia1.ud_id
-                      FROM QPRODATAQUIPU.UNI_DEP dependencia1
-                      WHERE (  
-                      SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}   ) ) ) 
-                      LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}   )  )  )   )  AND  plaza.N_ANIO LIKE   $P{anio}   AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
-                      ORDER BY DEPENDENCIA,CONCATENADO,CODPLAZA]]></queryString>
+            cargoC.T_CARCLA_NOM as NOMCLASIF,
+            cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,
+            DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,  'JEFE DE PRÁCTICA',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR    ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, 
+            dependencia.UD_ID  AS DEPENDENCIACODD,
+            dependencia.UD_DSC  AS DEPENDENCIA,
+            plaza.N_EST_PLAZA AS IDESTPLAZA,
+            estado.T_DES_ESTADO AS ESTPLAZA,
+            servidor_estado.SER_COD_ANT AS CODANT,
+            nominal.SER_COD AS COD_SER,
+            servidor_estado.SER_CAT_ACT||' '||categoria.DESC_CATEG  AS CATEGORIA,      
+            nominal.NUM_SEREST AS NUMSEREST,
+            servidor.SER_APE_PAT||' '||servidor.SER_APE_MAT||' '||servidor.SER_NOM AS NOMBRES,   
+            TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,
+            TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,
+            serModalidad.SER_MOD_DESC AS MODALIDAD  
+            FROM   (( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo
+            INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO
+            INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD
+            INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )
+            LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA
+            INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )
+            INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR
+            INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF
+                      )
+            LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)
+            LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD  )
+            LEFT JOIN  DATAPERSUEL.SERVIDOR_ESTADO servidor_estado ON servidor_estado.SER_COD=nominal.SER_COD   AND servidor_estado.NUM_SEREST=nominal.NUM_SEREST)
+            
+            LEFT JOIN  DATAPERSUEL.CATEGORIA categoria ON categoria.COD_CATEG=servidor_estado.SER_CAT_ACT  
+            
+            WHERE (  
+            cargo.N_UD_ID  IN (
+            SELECT  dependencia1.ud_id
+            FROM QPRODATAQUIPU.UNI_DEP dependencia1
+            WHERE (  
+            SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   $P{codDep}   ) ) ) 
+            LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  $P{codDep}    )  )  )   )  AND  plaza.N_ANIO LIKE     $P{anio}  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )
+            ORDER BY DEPENDENCIA,CONCATENADO,CODPLAZA]]></queryString>
 
 	<field name="CODPLAZA" class="java.math.BigDecimal"/>
 	<field name="NOMCLASIF" class="java.lang.String"/>
@@ -91,6 +94,7 @@
 	<field name="ESTPLAZA" class="java.lang.String"/>
 	<field name="CODANT" class="java.lang.String"/>
 	<field name="COD_SER" class="java.lang.String"/>
+	<field name="CATEGORIA" class="java.lang.String"/>
 	<field name="NUMSEREST" class="java.math.BigDecimal"/>
 	<field name="NOMBRES" class="java.lang.String"/>
 	<field name="FECH_ING" class="java.lang.String"/>
@@ -113,7 +117,7 @@
 				<subreport  isUsingCache="true">
 					<reportElement
 						x="6"
-						y="12"
+						y="11"
 						width="799"
 						height="8"
 						key="subreport-1"/>
@@ -177,9 +181,9 @@
 				</textField>
 				<staticText>
 					<reportElement
-						x="189"
+						x="164"
 						y="83"
-						width="135"
+						width="131"
 						height="14"
 						key="staticText-11"/>
 					<box></box>
@@ -190,7 +194,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="334"
+						x="303"
 						y="83"
 						width="52"
 						height="14"
@@ -203,7 +207,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="453"
+						x="405"
 						y="83"
 						width="39"
 						height="13"
@@ -216,7 +220,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="507"
+						x="514"
 						y="83"
 						width="173"
 						height="13"
@@ -231,7 +235,7 @@
 					<reportElement
 						x="695"
 						y="82"
-						width="47"
+						width="50"
 						height="14"
 						key="staticText-18"/>
 					<box></box>
@@ -257,7 +261,7 @@
 					<reportElement
 						x="42"
 						y="83"
-						width="139"
+						width="114"
 						height="14"
 						key="staticText-20"/>
 					<box></box>
@@ -416,9 +420,9 @@
 				</line>
 				<staticText>
 					<reportElement
-						x="400"
+						x="363"
 						y="83"
-						width="39"
+						width="33"
 						height="13"
 						key="staticText-24"/>
 					<box></box>
@@ -427,6 +431,30 @@
 					</textElement>
 				<text><![CDATA[COD]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						x="460"
+						y="83"
+						width="46"
+						height="13"
+						key="staticText-25"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Categoria]]></text>
+				</staticText>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="171"
+						y="-1"
+						width="49"
+						height="52"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logo}]]></imageExpression>
+				</image>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -434,14 +462,14 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="61"  isSplitAllowed="true" >
+			<band height="75"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(true)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="190"
+						x="163"
 						y="7"
-						width="133"
-						height="31"
+						width="132"
+						height="51"
 						key="textField-8"/>
 					<box></box>
 					<textElement>
@@ -451,7 +479,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="333"
+						x="303"
 						y="7"
 						width="53"
 						height="30"
@@ -464,7 +492,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="453"
+						x="405"
 						y="7"
 						width="45"
 						height="30"
@@ -479,7 +507,7 @@
 					<reportElement
 						x="694"
 						y="7"
-						width="45"
+						width="51"
 						height="30"
 						key="textField-15"/>
 					<box></box>
@@ -516,10 +544,10 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="43"
+						x="42"
 						y="7"
-						width="139"
-						height="48"
+						width="114"
+						height="60"
 						key="textField-19"/>
 					<box></box>
 					<textElement>
@@ -529,7 +557,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="507"
+						x="513"
 						y="7"
 						width="174"
 						height="30"
@@ -542,9 +570,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="400"
+						x="363"
 						y="7"
-						width="45"
+						width="34"
 						height="30"
 						key="textField-26"/>
 					<box></box>
@@ -552,6 +580,19 @@
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODANT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="6"
+						width="46"
+						height="46"
+						key="textField-28"/>
+					<box></box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CATEGORIA}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

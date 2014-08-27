@@ -112,6 +112,11 @@ public class ServidorServiceImpl implements ServidorService {
     }
 
     @Override
+    public List<ServidorLaboral> utlCodAnt() {
+        return servidorMapper.ultCodAnt();
+    }
+
+    @Override
     public List<Servidor> findByCod(Servidor servidor) {
         return servidorMapper.findByCod(servidor);  //To change body of implemented methods use File | Settings | File Templates.
     }

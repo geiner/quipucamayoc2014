@@ -62,4 +62,6 @@ public interface ServidorService {
     List<ServidorLaboral> selectnumeroRegistros(String codigo,int num_ser_est);
 
     public List<ServidorLaboral> getNumserestServidor(String codSerPer,Integer numserest);
+
+    public List<ServidorLaboral> utlCodAnt();
 }

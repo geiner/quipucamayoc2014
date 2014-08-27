@@ -22,6 +22,7 @@ public class PlazaCAP {
     private String subDep;
     private Integer cod_est_plaza;
     private String cod_ant_ser;
+    private String categoria;
 
 
 
@@ -153,5 +154,14 @@ public class PlazaCAP {
 
     public void setCod_ant_ser(String cod_ant_ser) {
         this.cod_ant_ser = cod_ant_ser;
+    }
+
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

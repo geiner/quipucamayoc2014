@@ -12,6 +12,11 @@ public interface CuadroNominalService {
     List<Servidor> servidoresPorDepen(String codDep);
 
 
+
+
+    List<Servidor>  docentesFuncional();
+
+
     List<PlazaCAP> plazasPorDepen(String codDep, Integer anioPlaza);
 
     /*

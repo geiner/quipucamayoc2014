@@ -172,6 +172,7 @@ public class ReportServiceImpl implements ReportService {
         System.out.println("Mostramos la cadena sin defecto: "+cadena);
 
         String valor = context.getRealPath("WEB-INF/classes/reportes/subReportCuadroNominal.jasper");
+
         System.out.println("Context: ********************************************************************************************* "+context);
 
         // String realpath = ServletActionContext.getServletContext ().getRealPath ("/");
@@ -195,6 +196,21 @@ public class ReportServiceImpl implements ReportService {
 
 
         params.put("SUBREPORT_DIR",valor);
+
+        //****************
+
+       // String  rutaLogo=" WEB-INF/classes/reportes/escudo_reporte.jpg";
+
+
+        String  rutaLogo = context.getRealPath("WEB-INF/classes/reportes/escudo_reporte.jpg");
+        params.put("logo",rutaLogo);
+
+
+        //************************
+
+
+
+
 
         System.out.println(params);
         try {

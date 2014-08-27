@@ -42,6 +42,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 guar_o_actu2: 0,//guarda o actualiza I.laboral
                 num_ser_estado: 0,
                 elementoClickeado: null,
+                codCAS:'*BC',
                 unidadClicked: {
                     unidadId: 10002,
                     unidadDesc: "UNMSM"
@@ -97,14 +98,12 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     "click #reg_lab_clos": "fun_reg_lab_clos",
                     "click #reg_lab_show": "fun_reg_lab_show",
                     "click #cod_sea": "lista_servidor",
-//                    "click #cod_sea": "fun_search_servidor",
                     "click #save_laborales": "save_serv_lab",
                     "change #serv_act_pais": "fun_camb_pais_resid",
                     "click .tab_a": "fun_camb_tab_a",
                     "click #unidad": "modal_depend",
                     "click .tab_b": "fun_camb_tab_b",
                     "click #continuar": "continuar_datos_lab",
-                   // "keyup :input#codigo": "duplicar_dni",
                     "click #cancel_servidor": "cancelar_inf_gen",
                     "click #cancel_laboral": "cancelar_inf_gen2",
                     "click #table-servidor > tbody >tr": "hide_lista_serv",
@@ -187,7 +186,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         function three() {
 
                             $('#serv_est_vit').attr('disabled', 'disabled');
-
+                            $("#serv_car_fam").val(0);
 
                             $("#autocom").keyup(function () {
 
@@ -338,9 +337,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
 
                 },
-                /*duplicar_dni: function () {
-                    $('#num_document').val($('#codigo').val())
-                },*/
+
                 clickUnidad: function (e) {
 
                     if (this.elementoClickeado) {
@@ -403,25 +400,107 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 //                    this.fun_validar_codigo();
                 },
                 fun_serv_est: function () {
-                    if ($('#serv_est').val() == 7 || $('#serv_est').val() == 6 || $('#serv_est').val() == 4) {
+
+                    var self=this;
+
+
+                    if($("#serv_est").val() == 7){
+
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#div_ruc').show();
-                        $('#div_cod_ant').hide();
-                        $('#codigo_antiguo').val("");
                         $('#serv_gen  > option').eq(2).hide();
                         $('#serv_gen  > option').eq(4).hide();
                         $('#serv_gen  > option').eq(5).hide();
-                    } else {
+
+                        if(self.guar_o_actu2==0){
+                            this.model.get("servidorlaboral").url = "rest/cas/serv/ult_cod_ant";
+
+                            var fetch_s = this.model.get("servidorlaboral").fetch({});
+
+                            fetch_s.done(function () {
+
+                                var valor=self.model.get("servidorlaboral").get("cod_antiguo");
+                                var dimen=valor.length;
+                                for(var i=0;i<5-dimen;i++){
+                                    valor='0'+valor;
+                                    console.log(valor);
+                                }
+
+                                $("#codigo_antiguo").val("C"+valor);
+                                $("#codigo_antiguo").prop('disabled', true);
+                                $("#div_codAnt").show();
+
+                            });
+                            fetch_s.fail(function () {
+
+
+                            });
+                        }
+                        if(self.guar_o_actu2==1){
+
+                               var resul=self.codCAS.substring(0,1);
+
+                            alert(self.codCAS);
+
+                            if(resul=='C'){
+                                      $("#codigo_antiguo").val(self.codCAS);
+                                      $("#codigo_antiguo").prop('disabled', true);
+                                      $("#div_codAnt").show();
+                            }
+                            else{
+                                alert("aca!!");
+                                this.model.get("servidorlaboral").url = "rest/cas/serv/ult_cod_ant";
+
+                                var fetch_s = this.model.get("servidorlaboral").fetch({});
+
+                                fetch_s.done(function () {
+
+                                    var valor=self.model.get("servidorlaboral").get("cod_antiguo");
+                                    var dimen=valor.length;
+                                    for(var i=0;i<5-dimen;i++){
+                                        valor='0'+valor;
+                                        console.log(valor);
+                                    }
+
+                                    $("#codigo_antiguo").val("C"+valor);
+                                    $("#codigo_antiguo").prop('disabled', true);
+                                    $("#div_codAnt").show();
+
+                                });
+                                fetch_s.fail(function () {
+
+
+                                });
+                            }
+                        }
+
+                    }
+
+                    else if ( $('#serv_est').val() == 6 || $('#serv_est').val() == 4) {
+
+                        $("#codigo_antiguo").val("");
+                        $("#div_codAnt").hide();
+                        $('#serv_gen').val("999");
+                        $('#serv_tip').val("999");
+                        $('#div_ruc').show();
+                        $('#serv_gen  > option').eq(2).hide();
+                        $('#serv_gen  > option').eq(4).hide();
+                        $('#serv_gen  > option').eq(5).hide();
+                        $("#codigo_antiguo").prop('disabled', false);
+                    }else {
                         $('#serv_gen  > option').eq(2).show();
                         $('#serv_gen  > option').eq(4).show();
                         $('#serv_gen  > option').eq(5).show();
                         $('#serv_ruc').val("");
+                        $("#codigo_antiguo").val("");
+                        $("#div_codAnt").show();
                         $('#div_ruc').hide();
-                        $('#div_cod_ant').show();
                         $('#serv_gen').val("999");
                         $('#serv_tip').val("999");
                         $('#serv_gen').trigger('change');
+                        $("#codigo_antiguo").prop('disabled', false);
+
                     }
                 },
                 serv_actprovincia: function () {
@@ -573,7 +652,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         });
 
                     }
-                    console.log(self.guar_o_actu + " estoooooooooooo")
+
                     if (self.guar_o_actu == 0) {
                         self.model.get("servidor").url = "rest/cas/serv/servidor";
                         var self_s = self.model.get("servidor").save({}, { wait: true});
@@ -588,13 +667,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             $('#texto').html('<strong>la Información General se guardó correctamente. Haga click en Continuar para ingresar datos laborales del servidor.</strong>')
                             $('#footer_modal').html('<button type="button" class="btn btn-primary"  id="continuar">Continuar</button>');
                             $('#modal_message').modal();
-//                             $('#serv_save').html('<strong>la Información General se guardó correctamente</strong>')
-//                             $('#serv_save').show();
                             $('#cancel_servidor').click();
                             $("#num_document").val(cod)
-                            /*setTimeout(function (e) {
-                             $('.tab_b').click();
-                             },2000);*/
+
                         });
                     }
                     else {
@@ -1518,18 +1593,13 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             self.fun_search_servidor();
                         });
                         fetch_s.fail(function () {
-                           /* $("#block-descr_serv").hide();
+                            $("#block-descr_serv").hide();
                             var temp_help = $("#serv_cod");
                             temp_help.removeClass('alert-warning');
                             temp_help.addClass('alert-danger')
                             temp_help.show();
-                            temp_help.text("No existe registro!");*/
+                            temp_help.text("No existe registro!");
 
-                            var nom_completo = self.model.get("servidor").get("paterno") + ' ' + self.model.get("servidor").get("materno") + ' ' + self.model.get("servidor").get("nombre");
-                            $("#block-descr_serv").show();
-                            $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
-                            $('#desc_serv_lab').text(nom_completo)
-                            self.fun_search_servidor();
                         });
                     }
 
@@ -1537,6 +1607,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 lista_servidor: function (ev) {
                     var self = this;
+                    self.codCAS='*BC';
                     var clickedElement = $(ev.currentTarget);
                     $('#autocom').val("");
                     $("#div_nac").hide();
@@ -1548,6 +1619,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     this.div_nac_distr.reset();
                     $('#serv_act_prov').hide();
                     $('#serv_act_distr').hide();
+                    $("#serv_save").hide();
                     $('#ser_act_domi').val("");
 
 
@@ -1580,6 +1652,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var dni_serv = clickedElement.children(':nth-child(8)').text();
                     this.num_ser_estado = clickedElement.children(':nth-child(7)').text();
                    $("#num_document").val(dni_serv);
+
                     $('#num_document').attr('disabled', 'disabled');
                    // $('#num_document').removeAttr('disabled');
                     setTimeout(function () {
@@ -1587,10 +1660,11 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     }, 1000);
                     $("#list_servidores").modal("hide");
                 },
-                fun_search_servidor: function (ev) {
+                fun_search_servidor: function () {
 
                     console.log("este numserest "+parseInt(this.num_ser_estado))
                     var codigo = $("#num_document").val();
+
 
                     this.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
@@ -1598,7 +1672,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                     var fetch_s = this.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
 
-                    var fetch_l = this.model.get("servidorlaboral").fetch({ data: $.param({"codigo": codigo}) });
+                    var fetch_l = this.model.get("servidorlaboral").fetch({ data: $.param({"codigo": codigo},{"num_ser_est":this.num_ser_estado}) });
 
                     var self = this;
 
@@ -1703,23 +1777,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         console.log("done")
                         self.guar_o_actu2 = 1;
                         var temp_reg_pen = self.model.get("servidorlaboral").get("regPen");
-                        self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
-                                if (self.entidadesAseguradoraView.collection.length == 0)
-                                    $("#row_reg_pen").hide();
-                                else
-                                    $("#row_reg_pen").show();
-                                $("#ent_aseg").val(self.model.get("servidorlaboral").get("entAse"));
-                            }
-                        );
 
-                        self.estadosAFP.findByRpe(temp_reg_pen, function () {
-                                if (self.estadosAFP.collection.length == 0)
-                                    $("#div_est_afp").hide();
-                                else
-                                    $("#div_est_afp").show();
-                                $("#est_afp").val(self.model.get("servidorlaboral").get("estAfp"));
-                            }
-                        );
 
 
                         var temp_num_sis_pri_pen = $("#num_sis_pri_pen");
@@ -1743,12 +1801,54 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         }
 
                         $("#serv_est").val(self.model.get("servidorlaboral").get("estLab")).trigger('change');
+                        var tipGen=self.model.get("servidorlaboral").get("tipGen");
+                        var tipo=self.model.get("servidorlaboral").get("tip");
+                        var categ=self.model.get("servidorlaboral").get("cat");
+                        var regpen=self.model.get("servidorlaboral").get("regPen");
+                        var tipPag=self.model.get("servidorlaboral").get("tipPag");
+                        var entAseg=self.model.get("servidorlaboral").get("entAse");
+                        var estAFP=self.model.get("servidorlaboral").get("estAfp");
+                        var titCuen=self.model.get("servidorlaboral").get("titcueBan");
+                        var numCuent=self.model.get("servidorlaboral").get("cueBan");
+                        var codAnt=self.model.get("servidorlaboral").get("cod_antiguo");
+
+                        self.codCAS=codAnt;
+                          if(codAnt==null){
+                              alert("nulo");
+                              self.codCAS='*BC';
+                          }
+
+
+
                         setTimeout(function () {
-                            $("#serv_gen").val(self.model.get("servidorlaboral").get("tipGen")).trigger('change');
+
+                            $("#serv_gen").val(tipGen).trigger('change');
                             setTimeout(function () {
-                                $("#serv_tip").val(self.model.get("servidorlaboral").get("tip")).trigger('change');
+                                $("#serv_tip").val(tipo).trigger('change');
+                                $("#rpe").val(regpen).trigger('change');
+
+                                $("#tip_pag").val(tipPag).trigger('change');
                                 setTimeout(function () {
-                                    $("#serv_cat").val(self.model.get("servidorlaboral").get("cat"));
+                                    self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
+                                            if (self.entidadesAseguradoraView.collection.length == 0)
+                                                $("#row_reg_pen").hide();
+                                            else
+                                                $("#row_reg_pen").show();
+                                            $("#ent_aseg").val(entAseg);
+                                        }
+                                    );
+                                    self.estadosAFP.findByRpe(temp_reg_pen, function () {
+                                            if (self.estadosAFP.collection.length == 0)
+                                                $("#div_est_afp").hide();
+                                            else
+                                                $("#div_est_afp").show();
+                                            $("#est_afp").val(estAFP);
+                                        }
+                                    );
+                                    $("#serv_cat").val(categ);
+                                    $('#serv_tit_ban').val(titCuen);
+                                    $("#cta_ban").val(numCuent);
+                                   // $('#codigo_antiguo').val(codAnt);
                                 }, 1000);
                             }, 1000);
                         }, 1000);
@@ -1757,7 +1857,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                         $("#tip_pag").val(self.model.get("servidorlaboral").get("tipPag"));
                         $("#reg_lab").val(self.model.get("servidorlaboral").get("regLab"));
-                        $("#rpe").val(self.model.get("servidorlaboral").get("regPen"));
+                      //  $("#rpe").val(self.model.get("servidorlaboral").get("regPen"));
+
                         $("#reg_pen").val(self.model.get("servidorlaboral").get("insregpen"));
                         $("#serv_tip_ocup").val(self.model.get("servidorlaboral").get("tipocupuni"));
                         $("#serv_sind").val(self.model.get("servidorlaboral").get("sindic"));
@@ -1766,10 +1867,10 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         console.log(self.unidadSelected.unidadId + " ññññññññ");
 
                         temp_cue_ban.val(self.model.get("servidorlaboral").get("cueBan"));
-                        $('#serv_tit_ban').val(self.model.get("servidorlaboral").get("titcueBan"));
+
                         $('#cond_pla').attr('disabled','disabled');
                         $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"));
-                        $('#codigo_antiguo').val(self.model.get("servidorlaboral").get("cod_antiguo"))
+
                         temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
 
                         //render result

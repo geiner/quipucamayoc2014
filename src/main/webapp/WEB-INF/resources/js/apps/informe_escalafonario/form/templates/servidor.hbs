@@ -1,0 +1,52 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccione servidor</h4>
+        </div>
+        <div class="modal-body">
+            <table id="table-servidor" class="table table-bordered table-hover" style="font-size: 12px;">
+
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th>Nombres</th>
+                    <th>DNI</th>
+                    <th>Cod Antiguo</th>
+                    <th>Tipo</th>
+                    <th>Dependencia Cesante</th>
+                    <th>Estado</th>
+                    <th>Código de Trabajo Actual</th>
+                    <th>Codigo</th>
+                </tr>
+                </thead>
+                <tbody class="body-table " id="servi-body">
+                {{#each items}}
+                    <tr id="{{codigo}}" class="" data2="{{codAnt}}" data3="{{abv_est}}" data4="{{abv_tip_ser}}">
+                        <td>{{paterno}} {{materno}} {{nombre}}</td>
+                        <td>{{numDoc}}</td>
+                        <td >{{codAnt}}</td>
+                        <td>{{tipoServicio}}</td>
+                        <td>{{cesantia}}</td>
+                        <td>{{estado}}</td>
+                        <td>{{estadoTrabaActual}}</td>
+                        <td>{{codigo}}</td>
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen servidores</td>
+                {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $("#serv-table-modal>div").addClass("modal-dialog");
+        $("#serv-table-modal>div").addClass("modal-lg");
+    });
+</script>

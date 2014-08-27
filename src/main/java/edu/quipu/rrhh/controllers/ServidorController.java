@@ -196,6 +196,8 @@ public class ServidorController {
         ServidorLaboral servidorLaboral = new ServidorLaboral();
         servidorLaboral.setCod(codigo);
         servidorLaboral.setNum_ser_est(num_ser_est);
+        System.out.println("codigo:"+codigo);
+        System.out.println("num_serest:"+num_ser_est);
         List<ServidorLaboral> servidores = servidorService.findByCodLaboral(servidorLaboral);
         if (servidores.size() == 0)
             return null;
@@ -283,7 +285,17 @@ public class ServidorController {
             return null;
         return servidores.get(0);
     }
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/ult_cod_ant")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public ServidorLaboral utlCodAnt() {
 
+
+        List<ServidorLaboral> servidores = servidorService.utlCodAnt();
+        if (servidores.size() == 0)
+            return null;
+        return servidores.get(0);
+    }
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/entidadaseguradora")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ResponseBody

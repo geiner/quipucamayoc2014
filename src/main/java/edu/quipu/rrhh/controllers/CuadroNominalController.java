@@ -41,6 +41,16 @@ public class CuadroNominalController {
 
 
 
+    @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/docentes")
+    @ResponseBody
+    public List<Servidor>   docentesFuncional(){
+        List<Servidor> docentes=cuadroNominalService.docentesFuncional();
+        System.out.print("Aqui");
+        return docentes;
+    }
+
+
+
     @RequestMapping(method = RequestMethod.GET, produces="application/json", value= "/plazas/{codDep}"+"/{anioPlaza}")
     @ResponseBody
     public List<PlazaCAP> plazasPorDepen(@PathVariable(value="codDep") String codDep, @PathVariable(value="anioPlaza") Integer anioPlaza){

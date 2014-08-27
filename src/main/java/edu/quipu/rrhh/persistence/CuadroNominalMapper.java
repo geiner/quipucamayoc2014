@@ -9,47 +9,108 @@ import java.util.List;
 public interface CuadroNominalMapper {
 
 
+    @Select(value = "   SELECT    plaza.C_COD_PLAZA AS CODPLAZA,\n" +
+            "                  cargoC.T_CARCLA_NOM as NOMCLASIF,\n" +
+            "                  cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
+            "                  DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,  'JEFE DE PRÁCTICA',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR    ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, \n" +
+            "                  dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
+            "                  dependencia.UD_DSC  AS DEPENDENCIA,\n" +
+            "                  plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
+            "                  estado.T_DES_ESTADO AS ESTPLAZA,\n" +
+            "                  servidor_estado.SER_COD_ANT AS CODANT,    \n" +
+            "                  nominal.SER_COD AS COD_SER,    \n" +
+            "                  servidor_estado.SER_CAT_ACT||' '||categoria.DESC_CATEG  AS CATEGORIA,       \n" +
+            "                  nominal.NUM_SEREST AS NUMSEREST,\n" +
+            "                  servidor.SER_APE_PAT AS SERPAT,\n" +
+            "                  servidor.SER_APE_MAT AS SERMAT,\n" +
+            "                  servidor.SER_NOM AS SERNOM,\n" +
+            "                  TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
+            "                  TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
+            "                  serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
+            "                  FROM   (( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
+            "                  INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
+            "                  INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
+            "                  INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
+            "                  LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
+            "                  INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
+            "                  INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR\n" +
+            "                  INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF\n" +
+            "                                 )\n" +
+            "                  LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
+            "                  LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD  )\n" +
+            "                  LEFT JOIN  DATAPERSUEL.SERVIDOR_ESTADO servidor_estado ON servidor_estado.SER_COD=nominal.SER_COD   AND servidor_estado.NUM_SEREST=nominal.NUM_SEREST)\n" +
+            "                  \n" +
+            "                  LEFT JOIN  DATAPERSUEL.CATEGORIA categoria ON categoria.COD_CATEG=servidor_estado.SER_CAT_ACT  \n" +
+            "                 \n" +
+            "                  WHERE (  \n" +
+            "                  cargo.N_UD_ID  IN (\n" +
+            "                  SELECT  dependencia1.ud_id\n" +
+            "                  FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
+            "                  WHERE (  \n" +
+            "                  SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE  (#{codDependencia})    ) ) ) \n" +
+            "                  LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})    )  )  )   )  AND  plaza.N_ANIO LIKE  (#{anioPlaza})    AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
+            "                  ORDER BY NOMESTRUC")
+    @Results(value = {
+            @Result(javaType = PlazaCAP.class),
+            @Result(property = "cod_plaza",column = "CODPLAZA"),
+            @Result(property = "nom_estruc",column = "CONCATENADO"),
+            @Result(property = "id_depend",column = "DEPENDENCIACODD"),
+            @Result(property = "subDep",column = "DEPENDENCIA"),
+            @Result(property = "est_plaza",column = "ESTPLAZA"),
+            @Result(property = "cod_ant_ser",column = "CODANT"),
+            @Result(property = "cod_servidor",column = "COD_SER"),
+            @Result(property = "ape_pat",column = "SERPAT"),
+            @Result(property = "ape_mat",column = "SERMAT"),
+            @Result(property = "nom_ser",column = "SERNOM"),
+            @Result(property = "fech_ing",column = "FECH_ING"),
+            @Result(property = "fech_sal",column = "FECH_SAL"),
+            @Result(property = "ser_mod",column = "MODALIDAD"),
+            @Result(property = "categoria",column = "CATEGORIA"),
+            @Result(property = "cod_est_plaza",column = "IDESTPLAZA")
+    })
+    List<PlazaCAP> plazasPorDepen(@Param("codDependencia") String codDependencia, @Param("anioPlaza") Integer anioPlaza);
 
 
 
+    /*
 
 
-    @Select(value = " SELECT    plaza.C_COD_PLAZA AS CODPLAZA,\n" +
-            "          cargoC.T_CARCLA_NOM as NOMCLASIF,\n" +
-            "          cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
-            "          DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, \n" +
-            "          dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
-            "          dependencia.UD_DSC  AS DEPENDENCIA,\n" +
-            "          plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
-            "          estado.T_DES_ESTADO AS ESTPLAZA, \n" +
-            "          servidor_pap.SER_COD_ANT AS CODANT,\n" +
-            "          nominal.SER_COD AS COD_SER,\n" +
-            "          nominal.NUM_SEREST AS NUMSEREST,\n" +
-            "          servidor.SER_APE_PAT AS SERPAT,\n" +
-            "          servidor.SER_APE_MAT AS SERMAT,\n" +
-            "          servidor.SER_NOM AS SERNOM,\n" +
-            "          TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
-            "          TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
-            "          serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
-            "          FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
-            "          INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
-            "          INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
-            "          INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
-            "          LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
-            "          INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
-            "          INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR\n" +
-            "          INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF\n" +
-            "          )\n" +
-            "          LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
-            "          LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)\n" +
-            "          LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD\n" +
-            "          WHERE (   cargo.N_UD_ID  IN (\n" +
-            "          SELECT  dependencia1.ud_id\n" +
-            "          FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
-            "          WHERE (  \n" +
-            "          SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE  (#{codDependencia})   ) ) ) \n" +
-            "          LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})   )  )  )   )  AND  plaza.N_ANIO LIKE   (#{anioPlaza})  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
-            "          ORDER BY NOMESTRUC")
+     @Select(value = " SELECT    plaza.C_COD_PLAZA AS CODPLAZA,\n" +
+            "                      cargoC.T_CARCLA_NOM as NOMCLASIF,\n" +
+            "                      cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
+            "                      DECODE (cargoC.T_CARCLA_NOM,  'PROFESOR PRINCIPAL',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,'PROFESOR ASOCIADO',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR, 'PROFESOR AUXILIAR',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR ,  'JEFE DE PRÁCTICA',cargoC.T_CARCLA_NOM ||' '||cargoE.T_NOM_CARGO_ESTR    ,cargoE.T_NOM_CARGO_ESTR)  AS   CONCATENADO, \n" +
+            "                      dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
+            "                      dependencia.UD_DSC  AS DEPENDENCIA,\n" +
+            "                      plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
+            "                      estado.T_DES_ESTADO AS ESTPLAZA, \n" +
+            "                      servidor_pap.SER_COD_ANT AS CODANT,\n" +
+            "                      nominal.SER_COD AS COD_SER,\n" +
+            "                      nominal.NUM_SEREST AS NUMSEREST,\n" +
+            "                      servidor.SER_APE_PAT AS SERPAT,\n" +
+            "                      servidor.SER_APE_MAT AS SERMAT,\n" +
+            "                      servidor.SER_NOM AS SERNOM,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
+            "                      serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
+            "                      FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
+            "                      INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
+            "                      INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
+            "                      INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
+            "                      LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
+            "                      INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
+            "                      INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR\n" +
+            "                      INNER JOIN  QPRODATAPLANI.TB_CARGO_CLASIFICADOR cargoC ON  cargoC.C_CARCLA_COD=cargoClasif.N_COD_CARGO_CLASIF\n" +
+            "                          )\n" +
+            "                      LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
+            "                      LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)\n" +
+            "                      LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD\n" +
+            "                      WHERE (   cargo.N_UD_ID  IN (\n" +
+            "                      SELECT  dependencia1.ud_id\n" +
+            "                      FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
+            "                      WHERE (  \n" +
+            "                      SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   (#{codDependencia})   ) ) ) \n" +
+            "                      LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})   )  )  )   )  AND  plaza.N_ANIO LIKE    (#{anioPlaza})   AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
+            "                      ORDER BY NOMESTRUC")
     @Results(value = {
             @Result(javaType = PlazaCAP.class),
             @Result(property = "cod_plaza",column = "CODPLAZA"),
@@ -71,42 +132,50 @@ public interface CuadroNominalMapper {
 
 
 
+     */
 
 
 
-    /*
-    @Select(value = "SELECT  plaza.C_COD_PLAZA AS CODPLAZA,\n" +
-            "        cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
-            "        dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
-            "        dependencia.UD_DSC  AS DEPENDENCIA,\n" +
-            "        plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
-            "        estado.T_DES_ESTADO AS ESTPLAZA,\n" +
-            "        nominal.SER_COD AS COD_SER,\n" +
-            "        nominal.NUM_SEREST AS NUMSEREST,\n" +
-            "        servidor.SER_APE_PAT AS SERPAT,\n" +
-            "        servidor.SER_APE_MAT AS SERMAT,\n" +
-            "        servidor.SER_NOM AS SERNOM,\n" +
-            "        TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
-            "        TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
-            "        serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
-            "        \n" +
-            "FROM  ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
-            "INNER JOIN QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
-            "INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
-            "INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
-            "LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
-            "INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
-            "INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)\n" +
-            "LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
-            "LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD\n" +
-            "\n" +
-            "WHERE (   cargo.N_UD_ID  IN ( \n" +
-            "SELECT  dependencia1.ud_id\n" +
-            "FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
-            "WHERE (  \n" +
-            "SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE (#{codDependencia})) ) ) \n" +
-            "LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})   )  )  )   )  AND  plaza.N_ANIO LIKE   (#{anioPlaza}) AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
-            "ORDER BY NOMESTRUC")
+
+
+/*
+
+     Esta Bien!!!
+
+    @Select(value = "SELECT    plaza.C_COD_PLAZA AS CODPLAZA,\n" +
+            "                      cargoE.T_NOM_CARGO_ESTR as NOMESTRUC,\n" +
+            "                      dependencia.UD_ID  AS DEPENDENCIACODD,\n" +
+            "                      dependencia.UD_DSC  AS DEPENDENCIA,\n" +
+            "                      plaza.N_EST_PLAZA AS IDESTPLAZA,\n" +
+            "                      estado.T_DES_ESTADO AS ESTPLAZA,\n" +
+            "                      servidor_pap.SER_COD_ANT AS CODANT,\n" +
+            "                      nominal.SER_COD AS COD_SER,\n" +
+            "                      nominal.NUM_SEREST AS NUMSEREST,\n" +
+            "                      servidor.SER_APE_PAT AS SERPAT,\n" +
+            "                      servidor.SER_APE_MAT AS SERMAT,\n" +
+            "                      servidor.SER_NOM AS SERNOM,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_ING ,'DD/MM/YYYY')  AS FECH_ING,\n" +
+            "                      TO_CHAR(nominal.SER_FECH_SAL ,'DD/MM/YYYY')  AS FECH_SAL,\n" +
+            "                      serModalidad.SER_MOD_DESC AS MODALIDAD  \n" +
+            "            \n" +
+            "             FROM  ( ( ( ( (  QPRODATAPLANI.TB_CARGO cargo\n" +
+            "             INNER JOIN  QPRODATAPLANI.TB_NUM_PLAZAS plaza ON plaza.N_COD_CARGO=cargo.C_COD_CARGO\n" +
+            "             INNER JOIN QPRODATAPLANI.TB_CARGO_CLASIF_ESTRUCT cargoClasif ON  cargoClasif.C_COD_CARGO_CLASIF_ESTR=cargo.C_CARCLA_COD\n" +
+            "             INNER JOIN QPRODATAQUIPU.UNI_DEP dependencia ON dependencia.UD_ID=cargo.N_UD_ID  )\n" +
+            "             LEFT JOIN QPRODATAPLANI.TB_CUADRO_NOMINAL nominal ON nominal.COD_PLAZA=plaza.C_COD_PLAZA\n" +
+            "             INNER JOIN QPRODATAPLANI.TB_ESTADO_PLAZA estado ON  estado.C_COD_ESTADO=plaza.N_EST_PLAZA  )\n" +
+            "             INNER JOIN  QPRODATAPLANI.TB_CARGO_ESTRUCTURAL cargoE ON  cargoE.C_COD_CARGO_ESTR=cargoClasif.N_COD_CARGO_ESTR)\n" +
+            "             LEFT JOIN  QPRODATAPLANI.TB_SERVIDOR_MODALIDAD serModalidad ON  serModalidad.COD_SER_MODALIDAD=nominal.SER_MOD)\n" +
+            "             LEFT JOIN  DATAPERSUEL.SERVIDOR servidor ON  servidor.SER_COD=nominal.SER_COD)\n" +
+            "             LEFT JOIN  DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_NUM_DOC=nominal.SER_COD\n" +
+            "             \n" +
+            "             WHERE (   cargo.N_UD_ID  IN ( \n" +
+            "             SELECT  dependencia1.ud_id\n" +
+            "             FROM QPRODATAQUIPU.UNI_DEP dependencia1\n" +
+            "             WHERE (  \n" +
+            "             SUBSTR(dependencia1.ud_cod,1,(  SELECT  LENGTH(dep.ud_cod) FROM qprodataquipu.uni_dep dep WHERE (dep.ud_id LIKE   (#{codDependencia})  ) ) ) \n" +
+            "             LIKE  (SELECT  dep.ud_cod FROM qprodataquipu.uni_dep dep WHERE (  dep.ud_id LIKE  (#{codDependencia})  )  )  )   )  AND  plaza.N_ANIO LIKE   (#{anioPlaza})  AND (plaza.N_EST_PLAZA LIKE 3 OR  plaza.N_EST_PLAZA LIKE 4 OR  plaza.N_EST_PLAZA LIKE 5 OR  plaza.N_EST_PLAZA LIKE 6  )     )\n" +
+            "             ORDER BY NOMESTRUC")
     @Results(value = {
             @Result(javaType = PlazaCAP.class),
             @Result(property = "cod_plaza",column = "CODPLAZA"),
@@ -114,6 +183,7 @@ public interface CuadroNominalMapper {
             @Result(property = "id_depend",column = "DEPENDENCIACODD"),
             @Result(property = "subDep",column = "DEPENDENCIA"),
             @Result(property = "est_plaza",column = "ESTPLAZA"),
+            @Result(property = "cod_ant_ser",column = "CODANT"),
             @Result(property = "cod_servidor",column = "COD_SER"),
             @Result(property = "ape_pat",column = "SERPAT"),
             @Result(property = "ape_mat",column = "SERMAT"),
@@ -125,13 +195,9 @@ public interface CuadroNominalMapper {
     })
     List<PlazaCAP> plazasPorDepen(@Param("codDependencia") String codDependencia, @Param("anioPlaza") Integer anioPlaza);
 
-      */
 
 
-
-
-
-
+*/
 
 
 
@@ -165,6 +231,50 @@ public interface CuadroNominalMapper {
             @Result(property = "nombre",column = "NOMBRE")
     })
     List<Servidor> servidoresPorDepen(@Param("codDependencia") String codDependencia);
+
+
+
+    @Select(value = " SELECT    servidor_estado.SER_COD AS CODIGO,\n" +
+            "          servidor_estado.NUM_SEREST AS NUMSEREST,\n" +
+            "          servidor.SER_APE_PAT  AS APEPAT,\n" +
+            "          servidor.SER_APE_MAT AS APEMAT,\n" +
+            "          servidor.SER_NOM AS NOMBRE,\n" +
+            "          servidor_estado.SER_COD_DEP_RAC AS DEPENDENCIA,\n" +
+            "          servidor_plan.COD_CON_PLA AS CODPLA,\n" +
+            "          servidor_plan.DES_CON_PLA AS CONDICION\n" +
+            "          \n" +
+            "          FROM (\n" +
+            "          DATAPERSUEL.SERVIDOR_ESTADO servidor_estado\n" +
+            "          INNER JOIN DATAPERSUEL.SERVIDOR servidor ON servidor.SER_COD=servidor_estado.SER_COD\n" +
+            "          INNER JOIN DATAPERSUEL.COND_SER_PLAN servidor_plan ON servidor_plan.COD_CON_PLA=servidor_estado.SER_CON_PLA_ACT\n" +
+            "          INNER JOIN DATAPERSUEL.TB_SERVIDOR_PAP_2014 servidor_pap ON servidor_pap.SER_COD_ANT=servidor_estado.SER_COD_ANT)\n" +
+            "          \n" +
+            "          WHERE (servidor_pap.CARGO_FUN LIKE 1 )  ORDER BY servidor.SER_APE_PAT")
+    @Results(value = {
+            @Result(javaType = Servidor.class),
+            @Result(property = "codigo",column = "CODIGO"),
+            @Result(property = "descestado",column = "NUMSEREST"),
+            @Result(property = "paterno",column = "APEPAT"),
+            @Result(property = "materno",column = "APEMAT"),
+            @Result(property = "nombre",column = "NOMBRE")
+    })
+    List<Servidor> docentesFuncional();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /*

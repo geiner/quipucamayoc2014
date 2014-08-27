@@ -1426,15 +1426,7 @@
                       WHERE (dependencia.UD_ID LIKE   11290)
                       
                      
-                     ) T100
-                     
-                     
-                     
-                     
-                     
-                     
-                      
-                     ]]></queryString>
+                     ) T100]]></queryString>
 
 	<field name="M1" class="java.lang.String"/>
 	<field name="M2" class="java.math.BigDecimal"/>
@@ -1861,6 +1853,17 @@
 					</textElement>
 				<text><![CDATA[PLAZAS OCU. PTDA]]></text>
 				</staticText>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="174"
+						y="0"
+						width="49"
+						height="52"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{logo}]]></imageExpression>
+				</image>
 			</band>
 		</pageHeader>
 		<columnHeader>

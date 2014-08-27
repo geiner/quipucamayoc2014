@@ -14,6 +14,7 @@
                                        <th>Est. Plaza</th>
                                        <th>Cod Servidor</th>
                                        <th>DNI Servidor</th>
+                                       <th>Categoria</th>
                                        <th>Ape. Pat</th>
                                        <th>Ape. Mat</th>
                                        <th>Nombre</th>
@@ -32,13 +33,20 @@
 
                                       <td> {{subDep}}   </td>
 
-                                       <td>{{nom_estruc}}</td>
+                                      <td>{{nom_estruc}}</td>
 
                                       <td>{{est_plaza}}</td>
 
-                                       <td> {{cod_ant_ser}}   </td>
+                                      <td> {{cod_ant_ser}}   </td>
+
+
+
 
                                       <td>{{cod_servidor}}</td>
+
+                                       <td>   {{categoria}}      </td>
+
+
                                       <td>{{ape_pat}}</td>
                                       <td>{{ape_mat}} </td>
                                       <td>{{nom_ser}} </td>
@@ -66,3 +74,67 @@
 </table>
 
 
+
+<style type="text/css">
+
+
+
+
+#tabla_plazas_first{
+        cursor: pointer;
+        margin-right: 1px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+
+    #tabla_plazas_last{
+        cursor: pointer;
+        margin-left: 1px;
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        border-radius: 5px;
+    }
+
+
+ .paginate_button{
+           box-sizing: border-box;
+             display: inline-block;
+             min-width: 1.5em;
+             padding: 0.5em 1em;
+             margin-left: 2px;
+             text-align: center;
+             text-decoration: none !important;
+             cursor: pointer;
+             *cursor: hand;
+             color: #333333 !important;
+             border: 1px solid transparent;
+        }
+
+    .paginate_active{
+                cursor: pointer;
+                margin-left: 19px;
+                display: inline-block;
+                padding: 3px 10px;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                -webkit-border-radius: 15px;
+                border-radius: 5px;
+            }
+
+
+     #tabla_plazas_paginate{
+         position: absolute;
+         margin-top: -20px;
+         left: 40%;
+     }
+
+
+
+</style>

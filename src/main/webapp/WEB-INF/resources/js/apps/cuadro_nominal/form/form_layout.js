@@ -25,6 +25,9 @@ define(['app',
 
         "apps/cuadro_nominal/form/view/numPlazasServidor",
 
+
+        "apps/cuadro_nominal/form/view/tablaDocentes",
+
         "lib/bootstrap-datepicker",
         "lib/jquery.dataTables.min",
         "lib/avgrund",
@@ -54,6 +57,8 @@ define(['app',
 
               numPlazasServidorView,
 
+              tablaDocentesView,
+
 
               datePicker) {
         ErzaManager.module('CuadroNominalApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
@@ -80,6 +85,9 @@ define(['app',
 
 
                 numPlazasServidorView:new  numPlazasServidorView(),
+
+
+                tablaDocentesView:new  tablaDocentesView(),
 
 
 
@@ -116,6 +124,9 @@ define(['app',
                 nombrePlaza:"Ninguno",
 
 
+                numeroPagina:0,
+
+
 
 
 
@@ -147,6 +158,10 @@ define(['app',
 
                 events: {
                     "dblclick #table-servidores_asis > tbody > tr ": "seleccionarServidor",
+
+                    "dblclick #table-servidores_asisD > tbody > tr ": "seleccionarDocente",
+
+
                     "click #botonBuscarServidores": "mostrarServidoresPorDependencia",
                     "click #botonCapturarDatosParaEliminarPlazaAsignada": "capturarDatosParaEliminarPlazaAsignada",
                     "click #boton-unidadMio":"seleccionarUnidad",//************
@@ -166,10 +181,22 @@ define(['app',
 
                     "click #tabla_plazas_next":"clickNumeroPagina",
 
-                    "click #handler-explode":"efectoExplode"
+                    "click #handler-explode":"efectoExplode",
+
+                    "change #ModOcupado": "cambioAFuncOcu",
 
 
-                   // "dblclick #tabla_plazas > tbody > tr ": "clickRowTabla"
+                    "change #ModOcupado2": "cambioAPstdOcu",
+
+
+
+                    "click  #tabla_plazas_paginate": "obtenerNumeroPagina",
+
+                    //"click #tabla_plazas_paginate > span ": " obtenerNumeroPagina2"
+
+                    // "dblclick #tabla_plazas > tbody > tr ": "clickRowTabla"
+
+                    "click div.datepicker-days > table.table-condensed > tbody > tr ": "clickDiaCalendario"
 
 
 
@@ -340,16 +367,38 @@ define(['app',
 
                                         $("#tabla_plazas").dataTable({
 
-                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+                                            "sPaginationType": "full_numbers",
+                                            "iDisplayStart":  selfInterno.numeroPagina
+
 
                                             //**********AQUI
                                         });
 
+
+                                       /*
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                         $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                         $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                         $('.dataTables_filter input').addClass('buscador');
                                         $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                        */
+
+
+                                        $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                        $('#tabla_plazas_next').html("<i  class='glyphicon  glyphicon-chevron-right'></i>");
+                                        $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
+                                        $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
+                                        $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
+
+                                        //  $('.paginate_button').addClass("disabled");
+
+                                        $('.dataTables_filter input').attr('buscador');
+                                        $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+
+
 
                                     }
 
@@ -382,12 +431,12 @@ define(['app',
 
 
                                             $( "#explode" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
                                             $( "#explodeConDoblePlaza" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
@@ -395,7 +444,7 @@ define(['app',
 
 
                                             $( "#explode" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
@@ -429,6 +478,177 @@ define(['app',
                 },
 
 
+
+
+
+
+
+
+                seleccionarDocente: function (e) {
+
+                    var self=this;
+                    var clickedElement=$(e.currentTarget);
+                    var cod=clickedElement.children(':nth-child(1)').text();
+                    var numserest=clickedElement.children(':nth-child(2)').text();
+
+
+                    if(cod!="No existen servidores para esta dependencia") {
+
+                        if ($('#fechaInicial').val() == "") {
+
+                            $('#advertenciaFechaInicial').html("<strong>Por favor, ingrese la fecha inicial</strong>");
+                            $('#advertenciaFechaInicial').show();
+
+                        } else {
+
+                            self.model.get("addServidorAPlaza").set({
+                                "codPlaza": this.codPlaza,
+                                "codServidor": cod,
+                                "numserest": numserest,
+                                "fechIng": $('#fechaInicial').val(),
+                                "fechSal": $('#fechaFinal').val(),
+                                "modSer": $('#modalidad').val(),
+                                "estPlaza": $('#ModOcupado2').val()
+
+                            });
+
+                            console.log("Paso 1");
+
+
+
+                            this.model.get("addServidorAPlaza").url = "api/cuadro_nominal/addSerCuadroNominal2";
+
+                            var self_s = this.model.get("addServidorAPlaza").save({}, {wait: true});
+
+
+
+                            self_s.done(function () {
+
+
+                            });
+
+
+
+                            self_s.fail(function () {
+
+                                var  selfInterno=self;
+
+                                self.plazasCAPView.mostrarPlazasSegunDependencias(self.unidadSelected.unidadId,self.añoPlazas,function () {
+                                    if (self.plazasCAPView.collection.length != 0) {
+                                        //$("#tabla_plazas").dataTable();
+
+
+                                        $("#tabla_plazas").dataTable({
+
+                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+                                            "sPaginationType": "full_numbers",
+                                            "iDisplayStart":  selfInterno.numeroPagina
+
+
+                                            //**********AQUI
+                                        });
+
+
+                                        /*
+                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                         $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                                         $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                                         $('.dataTables_filter input').addClass('buscador');
+                                         $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                         */
+
+
+                                        $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                        $('#tabla_plazas_next').html("<i  class='glyphicon  glyphicon-chevron-right'></i>");
+                                        $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
+                                        $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
+                                        $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
+
+                                        //  $('.paginate_button').addClass("disabled");
+
+                                        $('.dataTables_filter input').attr('buscador');
+                                        $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+
+
+
+                                    }
+
+                                    $('#nom_encabezado_plazas').text(self.encabezado);
+
+
+                                    console.log("Paso 2");
+
+
+
+
+
+                                    selfInterno.numPlazasServidorView.obtenerNumPlazasServidor(cod,$('#anio_plazas').val(),function () {
+
+                                        console.log("El codigo del servidor es: "+cod);
+
+                                        //console.log("Año:"+$('#anio_plazas').val());
+
+
+                                        var valor= selfInterno.numPlazasServidorView.collection.at(0).get("cod_plaza");
+                                        console.log("Numero de plazas: "+valor);
+                                        console.log("Paso 3");
+
+                                        if(valor>1){
+
+                                            //  $("#el_div")[0].style.display='';
+                                            // $("#el_div").delay(3000).fadeOut("slow");
+
+
+
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(7000)
+                                                .hide( 500 );
+
+
+                                            $( "#explodeConDoblePlaza" ).show(500 )
+                                                .delay(7000)
+                                                .hide( 500 );
+
+
+                                        }else{
+
+
+                                            $( "#explode" ).show(500 )
+                                                .delay(7000)
+                                                .hide( 500 );
+
+
+                                        }
+
+
+
+                                    });
+
+
+
+
+
+
+
+                                })
+
+                            });
+
+
+
+
+                            $('#modalServidores').modal("hide")
+
+
+
+
+
+                        }
+                    }
+                },
 
 
 
@@ -479,16 +699,42 @@ define(['app',
 
                                         $("#tabla_plazas").dataTable({
 
-                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+                                            "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+                                            "sPaginationType": "full_numbers",
+                                            "iDisplayStart":  selfInterno.numeroPagina
+
+
+
+
+
+
+
+
                                              //************** AQUI
 
                                         });
 
+                                        /*
                                         $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                         $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                         $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                         $('.dataTables_filter input').addClass('buscador');
                                         $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                                        */
+
+
+
+                                        $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                        $('#tabla_plazas_next').html("<i  class='glyphicon  glyphicon-chevron-right'></i>");
+                                        $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
+                                        $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
+                                        $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
+
+                                        //  $('.paginate_button').addClass("disabled");
+
+                                        $('.dataTables_filter input').attr('buscador');
+                                        $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                                     }
 
@@ -518,12 +764,12 @@ define(['app',
 
 
                                             $( "#explode" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
                                             $( "#explodeConDoblePlaza" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
@@ -531,7 +777,7 @@ define(['app',
 
 
                                             $( "#explode" ).show(500 )
-                                                .delay(5000)
+                                                .delay(7000)
                                                 .hide( 500 );
 
 
@@ -634,6 +880,14 @@ define(['app',
                                     $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
                                     $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
                                     $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
+
+
+
+
+                                    $('#table-servidores_asis').attr('title', 'Pulse doble click para asignar!!!');
+
+
+
                                     $('.dataTables_filter input').attr('placeholder', 'Buscar..');
 
                                 }
@@ -669,6 +923,9 @@ define(['app',
                                     $('#table-servidores_asis2_wrapper').append("<div id='footer-table'></div>");
                                     $('#table-servidores_asis2_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#table-servidores_asis2_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                                    $('#table-servidores_asis2').attr('title', 'Pulse doble click para asignar!!!');
+
                                     $('.dataTables_filter input').attr('placeholder', 'Buscar..');
 
                                 }
@@ -868,27 +1125,43 @@ define(['app',
                             console.log("Valores ordenados: "+valor);
 
                              */
-
+                             var self_interno=self;
                             $("#tabla_plazas").dataTable({
 
                                 "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+                                "sPaginationType": "full_numbers",
+                                "iDisplayStart": self_interno.numeroPagina
 
-                                "paging": true,
-                                "pagingType": "full_numbers"
 
 
-                                 //*****    AQUI
+                                // "paging": true,
+                               //   "pagingType": "full_numbers"
+
+                              //  "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+
+
+                                //"displayStart": 40
+
+                               // "paging": true,
+                               // "pagingType": "full_numbers"
+
+
+                                //*****    AQUI
 
 
                             });
 
 
-                            $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
-                            $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                            $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-                           // $('#tabla_plazas_paginate').html(" <ul class='pagination'> <li><a href='#'>&laquo;</a></li> <li><a href='#'>1</a></li>  <li><a href='#'>2</a></li> <li><a href='#'>3</a></li> <li><a href='#'>4</a></li> <li><a href='#'>5</a></li> <li><a href='#'>&raquo;</a></li> </ul>   ");
-                            $('.dataTables_filter input').addClass('buscador');
-                            $('.dataTables_filter input').attr('placeholder','Buscar..');
+                              $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                              $('#tabla_plazas_next').html("<i  class='glyphicon  glyphicon-chevron-right'></i>");
+                              $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
+                              $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
+                              $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
+
+                          //  $('.paginate_button').addClass("disabled");
+
+                              $('.dataTables_filter input').attr('buscador');
+                              $('.dataTables_filter input').attr('placeholder','Buscar..');
 
 
                         }
@@ -947,15 +1220,9 @@ define(['app',
 
                     //console.log("Entro alerta anio");
                     $("#advertenciaAnioPlaza").hide();
-
                     $("#tablaPlazas").hide();
                     $('#form_reporteCN').hide();
-
-                    $('#form_reporteCN2').hide();
-
-
-
-
+                   $('#form_reporteCN2').hide();
 
 
                 },
@@ -995,9 +1262,14 @@ define(['app',
                                 if( self.plazasCAPView.collection.length!=0){
                                    // $("#tabla_plazas").dataTable();
 
+                                    var self_interno=self;
+
                                     $("#tabla_plazas").dataTable({
 
-                                        "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]]
+
+                                        "aaSorting": [[ 1, "asc" ],[ 2, "asc" ],[ 0, "asc" ]],
+                                        "sPaginationType": "full_numbers",
+                                        "iDisplayStart": self_interno.numeroPagina
 
                                           //*********  AQUI
 
@@ -1005,11 +1277,25 @@ define(['app',
 
                                     });
 
-
+                                  /*
                                     $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
                                     $('#tabla_plazas_next').html("<i  class='glyphicon glyphicon-forward'></i>");
                                     $('#tabla_plazas_previous').html("<i class='glyphicon glyphicon-backward'></i>");
                                     $('.dataTables_filter input').addClass('buscador');
+                                    $('.dataTables_filter input').attr('placeholder','Buscar..');
+
+                                    */
+
+
+                                    $('#tabla_plazas_wrapper').append("<div id='footer-table'></div>");
+                                    $('#tabla_plazas_next').html("<i  class='glyphicon  glyphicon-chevron-right'></i>");
+                                    $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
+                                    $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
+                                    $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
+
+                                    //  $('.paginate_button').addClass("disabled");
+
+                                    $('.dataTables_filter input').attr('buscador');
                                     $('.dataTables_filter input').attr('placeholder','Buscar..');
 
                                 }
@@ -1042,8 +1328,26 @@ define(['app',
 
                     var clickedElement=$(e.currentTarget);
                     var children = clickedElement.find('> ul > li');
-                    if (children.is(":visible")) children.hide('fast');
-                    else children.show('fast');
+                    if (children.is(":visible")) {
+
+                        console.log("Contraer");
+
+                        children.hide('fast');
+
+                       // clickedElement.attr('title', 'Expandir').find(' > i').addClass('glyphicon glyphicon-plus-sign').removeClass('glyphicon glyphicon-minus-sign');
+
+
+                    }
+                    else
+                        {
+                            console.log("Expandir");
+
+                          children.show('fast');
+
+                           // clickedElement.attr('title', 'Contraer').find(' > i').addClass('glyphicon glyphicon-minus-sign').removeClass('glyphicon glyphicon-plus-sign');
+
+
+                        }
 
                     e.stopPropagation();
 
@@ -1076,7 +1380,202 @@ define(['app',
 
                     console.log("Entre al boton next:"+ $("#tabla_plazas_info").text());
 
-                }
+                },
+
+
+
+
+                clickPanelDia : function(){
+
+                    console.log("Entre al boton next");
+
+                    console.log("Entre al boton next:"+ $("#tabla_plazas_info").text());
+
+                },
+
+
+                cambioAFuncOcu: function () {
+
+                    console.log("Entro combo funcional");
+
+                    //**********   TRABAJAR AQUI*********************
+
+                   var self=this;
+
+                    this.tablaDocentesView.TodosDocentes(function(){
+
+                            //$("#table-servidores_asis").dataTable();
+
+                            $('#nombrePlaza').val(self.nombrePlaza);
+
+
+                            $("#table-servidores_asisD").dataTable({
+
+                                "aaSorting": [[ 1, "asc" ]]
+
+
+
+
+                            });
+
+
+                            $('#table-servidores_asisD_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-servidores_asisD_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
+                            $('#table-servidores_asisD_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
+
+                            $('#table-servidores_asisD').attr('title', 'Pulse doble click para asignar!!!');
+
+                            $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                        }
+
+                    );
+
+
+                    this.servidoresModalHtml.show(this.tablaDocentesView);
+                    $('#modalServidores').modal();
+
+
+                },
+
+
+                cambioAPstdOcu: function () {
+
+                    console.log("Entro combo funcional  2");
+
+                    //**********   TRABAJAR AQUI*********************
+
+                    var self = this;
+                    this.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores, function () {
+
+                            //$("#table-servidores_asis").dataTable();
+
+                            $('#nombrePlaza').val(self.nombrePlaza);
+
+
+                            $("#table-servidores_asis").dataTable({
+
+                                "aaSorting": [
+                                    [ 1, "asc" ]
+                                ]
+
+
+                            });
+
+
+                            $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
+                            $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
+
+                            $('#table-servidores_asis').attr('title', 'Pulse doble click para asignar!!!');
+
+
+                            $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                        }
+                    );
+
+
+                    self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
+                    $('#modalServidores').modal();
+
+
+                    //********
+                    //    var  dato= this.modalidadAsignacionView.collection.at(0).get("descripcion");
+                    //   console.log("Valor de asignacion:"+dato);
+
+
+                    /*
+
+                     this.tablaDocentesView.TodosDocentes(function(){
+
+                     //$("#table-servidores_asis").dataTable();
+
+                     $('#nombrePlaza').val(self.nombrePlaza);
+
+
+                     $("#table-servidores_asis").dataTable({
+
+                     "aaSorting": [[ 1, "asc" ]]
+
+
+
+
+                     });
+
+
+                     $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
+                     $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
+                     $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
+                     $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                     }
+
+                     );
+
+
+                     this.servidoresModalHtml.show(this.tablaDocentesView);
+                     $('#modalServidores').modal();
+
+                     },
+
+                     */
+
+                },
+
+                obtenerNumeroPagina: function(){
+
+
+
+                    var  numeroPagina=$('.paginate_active').text();
+
+                    numeroPagina=numeroPagina-1;
+
+                    this.numeroPagina=numeroPagina*10;
+
+                    console.log("(F1) El numero de pagina es:"+this.numeroPagina);
+
+
+
+
+
+            },
+
+
+                obtenerNumeroPagina2: function(){
+
+
+
+
+                    var  numeroPagina=$('.paginate_active').text();
+
+                    console.log("(F2) El numero de pagina es:"+numeroPagina);
+
+
+
+
+
+                },
+
+
+
+
+
+                clickDiaCalendario: function(){
+
+
+
+
+
+
+                console.log("Click en panel de dias");
+
+
+
+
+
+            }
+
 
                 /*
 
