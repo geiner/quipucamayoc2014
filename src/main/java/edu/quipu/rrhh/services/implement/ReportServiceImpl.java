@@ -235,6 +235,11 @@ public class ReportServiceImpl implements ReportService {
         // params.put("nom_depen",cadena);
         params.put("anio", anio);
 
+        String  rutaLogo = context.getRealPath("WEB-INF/classes/reportes/escudo_reporte.jpg");
+        params.put("logo",rutaLogo);
+
+
+
 
         System.out.println(params);
         try {
@@ -248,6 +253,8 @@ public class ReportServiceImpl implements ReportService {
 
 
     }
+
+
 
     @Override
     public void cargarReporteDescansosxanio(HttpServletResponse response, String anio, String usuario, String[] array_codigos) {

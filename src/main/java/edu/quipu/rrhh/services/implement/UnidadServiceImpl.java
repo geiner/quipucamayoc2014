@@ -170,7 +170,7 @@ public class UnidadServiceImpl implements UnidadService {
 
 
 
-        }if(perfil.equals("JPFAC")){
+        }if(perfil.equals("JPFAC") ||  perfil.equals("JPDEP") ){
 
 
 

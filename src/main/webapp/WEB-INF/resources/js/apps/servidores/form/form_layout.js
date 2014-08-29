@@ -384,12 +384,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#ser_act_domi').val("");
                     $('#codigo').val("");
                     $('#codigo').removeAttr('disabled');
-                    $('#num_document').attr('disabled', 'disabled')
+                    $('#num_document').prop('disabled',false);
+                   // $('#num_document').attr('disabled', 'disabled')
 //                    this.fun_validar_codigo();
                 },
                 cancelar_inf_gen2: function () {
                     this.guar_o_actu = 0;
                     $('#codigo').val("");
+                    $("#advertencia").hide();
                     $("#block-descr_serv").hide();
 
                     $('.tab_a').click();
@@ -441,7 +443,6 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                                var resul=self.codCAS.substring(0,1);
 
-                            alert(self.codCAS);
 
                             if(resul=='C'){
                                       $("#codigo_antiguo").val(self.codCAS);
@@ -449,7 +450,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                       $("#div_codAnt").show();
                             }
                             else{
-                                alert("aca!!");
+
                                 this.model.get("servidorlaboral").url = "rest/cas/serv/ult_cod_ant";
 
                                 var fetch_s = this.model.get("servidorlaboral").fetch({});
@@ -488,12 +489,14 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $('#serv_gen  > option').eq(4).hide();
                         $('#serv_gen  > option').eq(5).hide();
                         $("#codigo_antiguo").prop('disabled', false);
-                    }else {
+                    }
+                    else {
+
                         $('#serv_gen  > option').eq(2).show();
                         $('#serv_gen  > option').eq(4).show();
                         $('#serv_gen  > option').eq(5).show();
                         $('#serv_ruc').val("");
-                        $("#codigo_antiguo").val("");
+                        $("#codigo_antiguo").val(self.codCAS);
                         $("#div_codAnt").show();
                         $('#div_ruc').hide();
                         $('#serv_gen').val("999");
@@ -612,7 +615,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             "hij": $("#serv_car_fam").val(),
                             "espfdom": $("#serv_espf_dom").val(),
                             "discapacidad": $("#serv_disc").val(),
-                            "fechaInUnmsm": $("#serv_ing_unmsm").val(),
+                           // "fechaInUnmsm": $("#serv_ing_unmsm").val(),
                             "telefono": parseInt($("#serv_tel").val()),
                             "celular": parseInt($("#serv_cel").val()),
                             "correo": $("#serv_correo").val()
@@ -645,7 +648,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             "hij": $("#serv_car_fam").val(),
                             "espfdom": $("#serv_espf_dom").val(),
                             "discapacidad": $("#serv_disc").val(),
-                            "fechaInUnmsm": $("#serv_ing_unmsm").val(),
+                           // "fechaInUnmsm": $("#serv_ing_unmsm").val(),
                             "telefono": parseInt($("#serv_tel").val()),
                             "celular": parseInt($("#serv_cel").val()),
                             "correo": $("#serv_correo").val()
@@ -734,14 +737,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         }
                                     } else if ($('#serv_act_pais').val() == "9589" && $('#ser_act_domi').val() != "" && $('#actdepartamento').val() != "99") {
                                         if ($('#serv_car_fam').val() != "") {
-                                            if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
+
                                                 self.insertar_inf_per_servidor();
-                                            } else {
-                                                $('#serv_save').hide();
-                                                $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
-                                                $('#advertencia').show();
-                                            }
+
                                         } else {
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
@@ -766,14 +764,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                 if ($('#serv_espf_dom').val() != "") {
                                     if ($('#serv_act_pais').val() == "9011" && $('#ser_act_domi').val() != "") {
                                         if ($('#serv_car_fam').val() != "") {
-                                            if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
+
                                                 self.insertar_inf_per_servidor();
-                                            } else {
-                                                $('#serv_save').hide();
-                                                $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
-                                                $('#advertencia').show();
-                                            }
+
                                         } else {
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
@@ -782,14 +775,9 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                         }
                                     } else if ($('#serv_act_pais').val() == "9589" && $('#ser_act_domi').val() != "" && $('#serv_act_provincia').val() != "") {
                                         if ($('#serv_car_fam').val() != "") {
-                                            if ($('#serv_nac').val() != "" && self.Comparar_Fecha(currentDate, $('#serv_ing_unmsm').val())) {
+
                                                 self.insertar_inf_per_servidor();
-                                            } else {
-                                                $('#serv_save').hide();
-                                                $('#advertencia').addClass("alert-warning");
-                                                $('#advertencia').html('<strong>La fecha de ingreso a la Universidad está mal ingresada</strong>')
-                                                $('#advertencia').show();
-                                            }
+
                                         } else {
                                             $('#serv_save').hide();
                                             $('#advertencia').addClass("alert-warning");
@@ -1152,6 +1140,8 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                     temp_serv_save.show();
                                     temp_serv_save.text("Datos laborales actualizados!");
                                     $('#cancel_laboral').click();
+
+                                    self.initialFetch();
                                 });
                             }
 
@@ -1569,7 +1559,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     $('#advertencia').hide();
 
                     var codigo = $("#num_document").val();
-                  //  alert("codigo:"+codigo);
+
                     if (codigo == "") {
                         $("#block-descr_serv").hide();
 //                        $('#cancel_laboral').click();
@@ -1579,7 +1569,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                     }
                     else {
-                      //  alert("codigo:"+codigo);
+
                         self.model.get("servidor").url = "rest/cas/serv/codigo/" + codigo;
 
                         var fetch_s = self.model.get("servidor").fetch({ data: $.param({"codigo": codigo}) });
@@ -1675,6 +1665,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                     var fetch_l = this.model.get("servidorlaboral").fetch({ data: $.param({"codigo": codigo},{"num_ser_est":this.num_ser_estado}) });
 
                     var self = this;
+
 
 
                     $("[id^='help_']").hide();
@@ -1775,6 +1766,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
 
                     fetch_l.done(function () {
                         console.log("done")
+
                         self.guar_o_actu2 = 1;
                         var temp_reg_pen = self.model.get("servidorlaboral").get("regPen");
 
@@ -1800,7 +1792,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                             tem_tit_ban.parent().parent().hide();
                         }
 
-                        $("#serv_est").val(self.model.get("servidorlaboral").get("estLab")).trigger('change');
+
                         var tipGen=self.model.get("servidorlaboral").get("tipGen");
                         var tipo=self.model.get("servidorlaboral").get("tip");
                         var categ=self.model.get("servidorlaboral").get("cat");
@@ -1811,24 +1803,28 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         var titCuen=self.model.get("servidorlaboral").get("titcueBan");
                         var numCuent=self.model.get("servidorlaboral").get("cueBan");
                         var codAnt=self.model.get("servidorlaboral").get("cod_antiguo");
+                        var numPen=self.model.get("servidorlaboral").get("numPen");
 
                         self.codCAS=codAnt;
+
                           if(codAnt==null){
-                              alert("nulo");
+
                               self.codCAS='*BC';
                           }
 
 
 
                         setTimeout(function () {
+                            $("#serv_est").val(self.model.get("servidorlaboral").get("estLab")).trigger('change');
 
-                            $("#serv_gen").val(tipGen).trigger('change');
                             setTimeout(function () {
-                                $("#serv_tip").val(tipo).trigger('change');
+                                $("#serv_gen").val(tipGen).trigger('change');
+
                                 $("#rpe").val(regpen).trigger('change');
 
                                 $("#tip_pag").val(tipPag).trigger('change');
                                 setTimeout(function () {
+                                    $("#serv_tip").val(tipo).trigger('change');
                                     self.entidadesAseguradoraView.findByRpe(temp_reg_pen, function () {
                                             if (self.entidadesAseguradoraView.collection.length == 0)
                                                 $("#row_reg_pen").hide();
@@ -1845,10 +1841,15 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                                             $("#est_afp").val(estAFP);
                                         }
                                     );
-                                    $("#serv_cat").val(categ);
+
                                     $('#serv_tit_ban').val(titCuen);
                                     $("#cta_ban").val(numCuent);
-                                   // $('#codigo_antiguo').val(codAnt);
+                                    $("#num_sis_pri_pen").val(numPen);
+
+                                    setTimeout(function(){
+                                        $("#serv_cat").val(categ);
+                                    },1000);
+
                                 }, 1000);
                             }, 1000);
                         }, 1000);
@@ -1871,7 +1872,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $('#cond_pla').attr('disabled','disabled');
                         $('#serv_ruc').val(self.model.get("servidorlaboral").get("ruc"));
 
-                        temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
+                      //  temp_num_sis_pri_pen.val(self.model.get("servidorlaboral").get("numPen"));
 
                         //render result
                         var temp_help = $("#help_sin_cas");
@@ -1884,6 +1885,7 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                         $("#block-descr_serv").show();
                         $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
                         $('#desc_serv_lab').text(nom_completo)
+
 
                     });
 

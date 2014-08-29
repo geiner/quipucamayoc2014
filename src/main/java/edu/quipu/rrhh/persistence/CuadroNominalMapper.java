@@ -366,12 +366,13 @@ public interface CuadroNominalMapper {
 
 
 
-    @Select(value = "SELECT dependencia2.UD_COD AS UD_COD, dependencia3.PERF_DESC  AS PERFIL\n" +
-            "FROM ((QPRODATAQUIPU.TB_HIST_USU_PERF  historialUsuario\n" +
-            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia ON dependencia.UD_ID=historialUsuario.UD_ID)\n" +
-            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia2 ON dependencia2.UD_ID=dependencia.UNIDEPCALDEP)\n" +
-            "INNER  JOIN  QPRODATAQUIPU.TB_PERFIL  dependencia3 ON dependencia3.PERF_COD=historialUsuario.PERF_COD\n" +
-            "WHERE (  substr(historialUsuario.T_MAIL,1,(length(historialUsuario.T_MAIL)-3)    )  LIKE   #{emailUsuario})")
+
+    @Select(value = "SELECT  dependencia2.UD_COD AS UD_COD, dependencia3.PERF_DESC  AS PERFIL\n" +
+            "        FROM ( (   QPRODATAQUIPU.TB_HIST_USU_PERF  historialUsuario\n" +
+            "        INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia ON dependencia.UD_ID=historialUsuario.UD_ID)\n" +
+            "        INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia2 ON dependencia2.UD_COD=SUBSTR(dependencia.UD_COD,1,5) ) \n" +
+            "        INNER  JOIN  QPRODATAQUIPU.TB_PERFIL  dependencia3 ON dependencia3.PERF_COD=historialUsuario.PERF_COD\n" +
+            "        WHERE (  substr(historialUsuario.T_MAIL,1,(length(historialUsuario.T_MAIL)-3)    )  LIKE   #{emailUsuario}  )")
     @Results(value = {
             @Result(javaType = Origen.class),
             @Result(property = "origenCodigo",column = "UD_COD"),
@@ -380,6 +381,21 @@ public interface CuadroNominalMapper {
     List<Origen> obtenerDependenciaUsuario(@Param("emailUsuario") String emailUsuario);
 
 
+   /*
+    @Select(value = "SELECT dependencia2.UD_COD AS UD_COD, dependencia3.PERF_DESC  AS PERFIL\n" +
+            "FROM ((QPRODATAQUIPU.TB_HIST_USU_PERF  historialUsuario\n" +
+            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia ON dependencia.UD_ID=historialUsuario.UD_ID)\n" +
+            "INNER  JOIN  QPRODATAQUIPU.UNI_DEP  dependencia2 ON dependencia2.UD_ID=dependencia.UNIDEPCALDEP)\n" +
+            "INNER  JOIN  QPRODATAQUIPU.TB_PERFIL  dependencia3 ON dependencia3.PERF_COD=historialUsuario.PERF_COD\n" +
+            "WHERE (  substr(historialUsuario.T_MAIL,1,(length(historialUsuario.T_MAIL)-3)    )  LIKE   #{emailUsuario}  )")
+    @Results(value = {
+            @Result(javaType = Origen.class),
+            @Result(property = "origenCodigo",column = "UD_COD"),
+            @Result(property = "origenDescripcion",column = "PERFIL")
+    })
+    List<Origen> obtenerDependenciaUsuario(@Param("emailUsuario") String emailUsuario);
+
+*/
 
     @Select(value = "SELECT  dep1.UD_ID   AS UD_ID_HIJO,dep1.UD_COD AS UD_COD_HIJO, LOWER(dep1.UD_DSC)  AS UD_DSC_HIJO,dep2.UD_ID  AS UD_ID_PADRE,dep2.UD_COD  AS  UD_COD_PADRE,  LOWER(dep2.UD_DSC)  AS UD_DSC_PADRE\n" +
             "FROM   QPRODATAQUIPU.UNI_DEP dep1\n" +

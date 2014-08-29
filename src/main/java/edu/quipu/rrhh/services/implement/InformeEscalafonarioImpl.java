@@ -38,14 +38,16 @@ public class InformeEscalafonarioImpl implements informeescalafonarioService{
     public void cargarReportesIES(HttpServletResponse response, String dniies, Integer numser, String usuaries) {
         String rutaReporte="/reportes/nuevo.jrxml";
         String valor = context.getRealPath("WEB-INF/classes/reportes");
+        String logo=context.getRealPath("WEB-INF/classes/reportes/escudo_reporte.jpg");
+        String logo1=context.getRealPath("WEB-INF/classes/reportes/logo.jpg");
         System.out.println("ENTRO A SERVICE iMPLEMENT DEL REPORTE");
         HashMap params = new HashMap();
         params.put("numserest",numser);
         params.put("dnimayor",dniies);
         params.put("usuarioies",usuaries);
         params.put("SUBREPORT_DIR",valor);
-
-
+        params.put("logo",logo);
+        params.put("logoquipu",logo1);
 
         System.out.println(params);
         try {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nuevo" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="581"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -15,11 +15,17 @@
 	<parameter name="usuarioies" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["johndejo1766@hotmail.com"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["escudo_reporte.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logoquipu" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Logo_Quipucamayoc.png"]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select ls.SER_APE_PAT,ls.SER_APE_MAT,ls.SER_NOM,nvl(ls.SER_DOM,' ')SER_DOM,doc.DES_DOC_ID ,ls.SER_DOC_ID_ACT,ls.SER_CON_PLA_ACT,conser.DES_CON_PLA ,nvl(ls.SER_COD_ANT,' ') COD_ANT, 
+		<![CDATA[select ls.SER_APE_PAT,ls.SER_APE_MAT,ls.SER_NOM,nvl(ls.SER_DOM,' ')SER_DOM,doc.DES_DOC_ID ,ls.SER_DOC_ID_ACT,ls.SER_CON_PLA_ACT,conser.DES_CON_PLA ,nvl(ls.SER_COD_ANT,' ') COD_ANT,
 ls.SER_COD_DEP_CES,ls.DES_DEP_CESANTES,to_char(ls.SER_FECH_IN_UNMSM,'dd/mm/yyyy') SER_FECH_IN_UNMSM,rpen.DESC_REG_PEN,ent.DES_ENT_ASEG,decode(ent.DES_ENT_ASEG,'Estado',' ',' - '||estafp.DES_EST_AFP) DES_EST_AFP
 from datapersuel.LISTA_SERVIDOR ls left join datapersuel.ENTIDAD_ASEGURADORA ent on ls.SER_ENT_ASEG=ent.ENT_ASEG_COD left join datapersuel.ESTADOS_AFP estafp on ls.SER_EST_AFP=estafp.COD_EST_AFP ,
-datapersuel.DOC_IDENTIDAD doc, datapersuel.COND_SER_PLAN conser,datapersuel.REG_PENSION rpen 
+datapersuel.DOC_IDENTIDAD doc, datapersuel.COND_SER_PLAN conser,datapersuel.REG_PENSION rpen
 
 where TRIM(ls.SER_COD)=TRIM($P{dnimayor}) and ls.NUM_SEREST =$P{numserest} and ls.SER_TIP_DOC_ID_ACT=doc.COD_DOC_ID and ls.SER_CON_PLA_ACT= conser.COD_CON_PLA
 and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
@@ -46,47 +52,47 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 		<band height="8" splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="117" splitType="Stretch">
+		<band height="109" splitType="Stretch">
 			<staticText>
-				<reportElement x="388" y="32" width="167" height="48"/>
+				<reportElement x="388" y="26" width="167" height="48"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OFICINA GENERAL DE RECURSOS HUMANOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="32" width="170" height="37"/>
+				<reportElement x="0" y="26" width="170" height="37"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="11" y="61" width="74" height="19"/>
+				<reportElement x="11" y="55" width="74" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Universidad del Perú,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="79" y="61" width="83" height="19"/>
+				<reportElement x="79" y="55" width="83" height="19"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="7" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[DECANA DE AMERICA]]></text>
 			</staticText>
 			<line>
-				<reportElement x="11" y="80" width="534" height="1"/>
+				<reportElement x="11" y="74" width="534" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="130" y="83" width="312" height="12"/>
+				<reportElement x="130" y="77" width="312" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<text><![CDATA[OFICINA DE GESTION Y ESCALAFON]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="130" y="95" width="312" height="18"/>
+				<reportElement x="130" y="89" width="312" height="18"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" isItalic="false" isUnderline="true"/>
 				</textElement>
@@ -120,20 +126,10 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 				</textElement>
 				<text><![CDATA[Usuario:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="-1" y="12" width="339" height="12"/>
-				<textElement>
-					<font fontName="Arial" size="9"/>
-				</textElement>
-				<text><![CDATA[SISTEMA DE ADMINISTRACION DE RECURSOS HUMANOS - QUIPUCAMAYOC]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="251" height="12"/>
-				<textElement>
-					<font fontName="Arial"/>
-				</textElement>
-				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
-			</staticText>
+			<image>
+				<reportElement x="252" y="15" width="46" height="56"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -424,7 +420,7 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/tserv.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="11" y="236" width="498" height="10"/>
+				<reportElement  positionType="Float" x="11" y="236" width="498" height="10"/>
 				<subreportParameter name="dnilcg">
 					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -435,7 +431,7 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/lcg.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="11" y="266" width="498" height="10"/>
+				<reportElement  positionType="Float" x="11" y="266" width="498" height="10"/>
 				<subreportParameter name="dnilsg">
 					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -446,7 +442,7 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/lsg.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="11" y="326" width="498" height="10"/>
+				<reportElement  positionType="Float" x="11" y="326" width="498" height="10"/>
 				<subreportParameter name="dnide">
 					<subreportParameterExpression><![CDATA[$P{dnimayor}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -473,7 +469,7 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="24" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<textField>
 				<reportElement x="435" y="3" width="80" height="20"/>
 				<textElement textAlignment="Right"/>
@@ -484,6 +480,27 @@ and ls.SER_RPE_ACT=rpen.COD_REG_PEN]]>
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="29" y="2" width="251" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NACIONAL MAYOR DE SAN MARCOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="13" width="322" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE ADMINISTRACION DE RECURSOS HUMANOS - QUIPUCAMAYOC]]></text>
+			</staticText>
+			<line>
+				<reportElement x="3" y="1" width="552" height="1"/>
+			</line>
+			<image>
+				<reportElement x="5" y="2" width="24" height="23"/>
+				<imageExpression><![CDATA[$P{logoquipu}]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 	<summary>

@@ -179,7 +179,7 @@ define(['app',
 
                     "click #botonEfecto":"mensajeDesaparece",
 
-                    "click #tabla_plazas_next":"clickNumeroPagina",
+                  //  "click #tabla_plazas_next":"clickNumeroPagina",
 
                     "click #handler-explode":"efectoExplode",
 
@@ -192,11 +192,17 @@ define(['app',
 
                     "click  #tabla_plazas_paginate": "obtenerNumeroPagina",
 
-                    //"click #tabla_plazas_paginate > span ": " obtenerNumeroPagina2"
+                   //"click  #tabla_plazas_paginate  span  ": "obtenerNumeroPagina2"
 
                     // "dblclick #tabla_plazas > tbody > tr ": "clickRowTabla"
 
-                    "click div.datepicker-days > table.table-condensed > tbody > tr ": "clickDiaCalendario"
+
+                   // "change #tabla_plazas_paginate > span > a": "cambioEnLosBotones",
+
+                    //"click .datepicker dropdown-menu ": "clickDiaCalendario"
+
+
+                   // "change :contains(“Mostrando”)": "cambioTextoInfo"
 
 
 
@@ -703,13 +709,6 @@ define(['app',
                                             "sPaginationType": "full_numbers",
                                             "iDisplayStart":  selfInterno.numeroPagina
 
-
-
-
-
-
-
-
                                              //************** AQUI
 
                                         });
@@ -856,7 +855,61 @@ define(['app',
                         console.log("Dependencia usuario destino:"+this.perfilUsuario);
                         console.log("Perfil usuario destino:"+this.depUsuario);
 
+                        //*****************************
 
+
+
+
+
+                        self.modalServidoresPorDependenciaView.TodosServidoresPorDependencia(this.codDepServidores,function(){
+
+                                //$("#table-servidores_asis").dataTable();
+
+                                $('#nombrePlaza').val(self.nombrePlaza);
+
+
+                                $("#table-servidores_asis").dataTable({
+
+                                    "aaSorting": [[ 1, "asc" ]]
+
+
+
+
+                                });
+
+
+                                $('#table-servidores_asis_wrapper').append("<div id='footer-table'></div>");
+                                $('#table-servidores_asis_next').html("<i  class='glyphicon glyphicon-forward'  id='adelante' ></i>");
+                                $('#table-servidores_asis_previous').html("<i class='glyphicon glyphicon-backward'  id='atras'></i>");
+
+
+
+
+                                $('#table-servidores_asis').attr('title', 'Pulse doble click para asignar!!!');
+
+
+
+                                $('.dataTables_filter input').attr('placeholder', 'Buscar..');
+
+                            }
+
+                        );
+
+
+                        self.servidoresModalHtml.show(self.modalServidoresPorDependenciaView);
+                        $('#modalServidores').modal();
+
+
+                        //********
+                        var  dato= this.modalidadAsignacionView.collection.at(0).get("descripcion");
+                        console.log("Valor de asignacion:"+dato);
+
+
+
+
+
+
+                             /*
 
                         if(this.perfilUsuario=="ADMIN"){
 
@@ -902,6 +955,8 @@ define(['app',
                                    //********
                             var  dato= this.modalidadAsignacionView.collection.at(0).get("descripcion");
                             console.log("Valor de asignacion:"+dato);
+
+
                              //**********
                         }else{
 
@@ -938,6 +993,10 @@ define(['app',
 
 
                         }
+
+                        */
+                        //********************************************************
+
 
 
                     }else{
@@ -1134,6 +1193,19 @@ define(['app',
 
 
 
+                           // "iDisplayStart": $('.paginate_active').text()
+
+
+
+                              //  "iDisplayStart": sPageButtonActive
+
+
+
+                             //  "iDisplayStart":
+
+                                //"iDisplayStart": true
+
+
                                 // "paging": true,
                                //   "pagingType": "full_numbers"
 
@@ -1157,8 +1229,9 @@ define(['app',
                               $('#tabla_plazas_previous').html("<i class='glyphicon  glyphicon-chevron-left'></i>");
                               $('#tabla_plazas_last').html("<i class='glyphicon glyphicon-fast-forward'></i>");
                               $('#tabla_plazas_first').html("<i class='glyphicon glyphicon-fast-backward'></i>");
-
-                          //  $('.paginate_button').addClass("disabled");
+                           // $("span").attr("disabled", true);
+                              // $('#tabla_plazas_paginate span ').attr("disabled", true);
+                          //  $('#tabla_plazas_paginate').attr("id","miid");
 
                               $('.dataTables_filter input').attr('buscador');
                               $('.dataTables_filter input').attr('placeholder','Buscar..');
@@ -1519,10 +1592,10 @@ define(['app',
 
                      },
 
+
                      */
 
                 },
-
                 obtenerNumeroPagina: function(){
 
 
@@ -1546,10 +1619,19 @@ define(['app',
 
 
 
+                    alert("Entro");
 
                     var  numeroPagina=$('.paginate_active').text();
 
-                    console.log("(F2) El numero de pagina es:"+numeroPagina);
+                    numeroPagina=numeroPagina-1;
+
+                    this.numeroPagina=numeroPagina*10;
+
+                    console.log("(F2) El numero de pagina es:"+this.numeroPagina);
+
+                  //  var  numeroPagina=$('.paginate_active').text();
+
+                    //console.log("(F2) El numero de pagina es:"+numeroPagina);
 
 
 
@@ -1563,18 +1645,28 @@ define(['app',
 
                 clickDiaCalendario: function(){
 
-
-
-
-
-
+                   alert("Calendario!!!");
                 console.log("Click en panel de dias");
 
 
+            },
+
+                cambioEnLosBotones: function(){
+
+                           alert("Entro al cambio");
+
+                },
+
+
+                cambioTextoInfo: function(){
+
+                    alert("Entro cambio de texto informacion");
+
+                }
 
 
 
-            }
+
 
 
                 /*
