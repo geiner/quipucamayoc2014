@@ -1016,6 +1016,8 @@ define(['app',
 
                    $('#modal-unidadesMio').modal('hide');
 
+                    this.numeroPagina=0;
+
                     this.unidadSelected = this.unidadClicked;
                    //$('#nom_depen1').text(this.unidadSelected.unidadId);// para probar
 
@@ -1296,6 +1298,7 @@ define(['app',
                     $("#tablaPlazas").hide();
                     $('#form_reporteCN').hide();
                    $('#form_reporteCN2').hide();
+                    this.numeroPagina=0;
 
 
                 },

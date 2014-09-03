@@ -146,12 +146,12 @@ public class ReportServiceImpl implements ReportService {
         String cadena=nom_depen;
 
 
-        cadena=cadena.replaceAll("á","?");
-        cadena=cadena.replaceAll("é","?");
-        cadena=cadena.replaceAll("í","?");
-        cadena=cadena.replaceAll("ó","?");
-        cadena=cadena.replaceAll("ú","?");
-        cadena=cadena.replaceAll("ñ","?");
+        cadena=cadena.replaceAll("Ã¡","á");
+        cadena=cadena.replaceAll("Ã©","é");
+        cadena=cadena.replaceAll("Ã­","í");
+        cadena=cadena.replaceAll("Ã³","ó");
+        cadena=cadena.replaceAll("Ãº","ú");
+        cadena=cadena.replaceAll("Ã±","ñ");
 
 
         char[] caracteres = cadena.toCharArray();
@@ -171,7 +171,7 @@ public class ReportServiceImpl implements ReportService {
 
         System.out.println("Mostramos la cadena sin defecto: "+cadena);
 
-        String valor = context.getRealPath("WEB-INF/classes/reportes/subReportCuadroNominal.jasper");
+        String valor = context.getRealPath("WEB-INF/classes/reportes");
 
         System.out.println("Context: ********************************************************************************************* "+context);
 

@@ -556,30 +556,30 @@ public interface ServidorMapper {
 
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_BANCO (" +
             "NUM_REG, SER_COD, NUM_SEREST, CTA_BANCO,TIPO_PAGO) " +
-            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod}),#{ser.cueBan},#{ser.tipPag})")
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})+1,#{ser.cueBan},#{ser.tipPag})")
     public void saveHistBanco(@Param("ser") ServidorLaboral servidor);
 
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_ASEG (" +
             "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,REG_PEN,NUM_SIS_PEN,ENT_ASEG,EST_AFP) " +
-            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})+1," +
             " '-',#{ser.regPen},#{ser.numPen},#{ser.entAse},#{ser.estAfp})")
     public void saveHistCondAseg(@Param("ser") ServidorLaboral servidor);
 
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_LAB (" +
             "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,COD_EST,COD_CATEG,COD_TIPO_SER,TTPO_GEN) " +
-            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})+1," +
             " '-',#{ser.estLab},#{ser.cat},#{ser.tip},#{ser.tipGen})")
     public void saveHistCondLab(@Param("ser") ServidorLaboral servidor);
 
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_COND_PLANI (" +
             "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,COND_PLA) " +
-            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})+1," +
             " '-',#{ser.conPla})")
     public void saveHistCondPlani(@Param("ser") ServidorLaboral servidor);
 
     @Insert(value="INSERT INTO QPDATAGESTION.TB_HIST_DEP (" +
             "NUM_REG, SER_COD, NUM_SEREST, NUM_RES,DEP_CES,DEP_ACT) " +
-            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})," +
+            "VALUES (1,#{ser.cod} ,(SELECT COUNT(ser_Cod) FROM Datapersuel.SERVIDOR_ESTADO  WHERE ser_cod=#{ser.cod})+1," +
             " '-',(SELECT COD_DEP_CESANTES FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING TRIM(UD_ID)=TRIM(#{ser.dependencia})) AND TRIM(UD_ID)=TRIM(#{ser.dependencia})),#{ser.dependencia})")
     public void saveHistHistDep(@Param("ser") ServidorLaboral servidor);
 
@@ -606,7 +606,7 @@ public interface ServidorMapper {
     void updateHistCondLab( @Param("ser") ServidorLaboral servidorLaboral);
 
     @Update(value ="UPDATE QPDATAGESTION.TB_HIST_COND_PLANI SET" +
-            " COND_PLA=#{ser.cueBan} " +
+            " COND_PLA=#{ser.conPla} " +
             "WHERE trim(SER_COD)=trim(#{ser.cod}) and trim(num_serest)=trim(#{ser.num_ser_est})")
     void updateHistCondPlani( @Param("ser") ServidorLaboral servidorLaboral);
 
