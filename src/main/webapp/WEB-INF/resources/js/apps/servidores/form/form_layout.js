@@ -815,6 +815,26 @@ define(["app", "hbs!apps/servidores/form/templates/servidoresLayout", 'lib/boots
                 },
                 serv_save_servidor: function () {
                     var self = this;
+
+                    var data = new FormData();
+
+                    data.append('archivo',$('#archivo')[0].files[0]);
+
+
+                    $.ajax({
+                        type:"post",
+                        dataType:"json",
+                        url:"/resources/js/apps/servidores/form/subir.php",
+                        contentType:false,
+                        data:data,
+                        processData:false,
+                        cache:false
+                    }).done(function(respuesta){
+                        alert(respuesta.mensaje);
+                    });
+
+
+
                     if ($('#num_document').val() != "" && !isNaN($('#num_document').val())) {
                         if (this.guar_o_actu == 0) {
                             var codigo = $("#num_document").val();
