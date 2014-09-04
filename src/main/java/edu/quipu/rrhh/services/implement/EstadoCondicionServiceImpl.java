@@ -4,18 +4,15 @@ package edu.quipu.rrhh.services.implement;
 import edu.quipu.rrhh.models.Contrato;
 import edu.quipu.rrhh.models.EstadoCondicion;
 import edu.quipu.rrhh.models.Hist_servidor;
-import edu.quipu.rrhh.models.Servidor;
 import edu.quipu.rrhh.persistence.EstadoCondicionMapper;
 import edu.quipu.rrhh.services.EstadoCondicionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.util.*;
 import java.util.List;
 
 @Service
-public class EstadoCondicionServiceImpl implements EstadoCondicionService{
+public class EstadoCondicionServiceImpl implements EstadoCondicionService {
 
     @Autowired
     EstadoCondicionMapper estadoCondicionMapper;
@@ -156,7 +153,50 @@ public class EstadoCondicionServiceImpl implements EstadoCondicionService{
 
     @Override
     public void addCondPla(String codigo, String numserest, String numResol, Integer condPlani, String fechcese, String obser){
+
         estadoCondicionMapper.addcondpla(codigo,numserest,numResol,condPlani,fechcese,obser);
+    }
+
+
+
+
+    @Override
+    public String traerContratosCAS(String serCod,Integer numSerest){
+        System.out.println("service impl sercod:"+serCod+"despues");
+        estadoCondicionMapper.traerContratosCAS(serCod, numSerest);
+        return "";
+    }
+
+    @Override
+    public void updateContrCas(String codigoCAS, Integer numSerestCAS, String fechaCeseCAS, String cese){
+        System.out.println("en service impl numserest: "+codigoCAS+" CODIGO: "+numSerestCAS);
+        System.out.println("en service impl cese: "+cese);
+        estadoCondicionMapper.updateContrCas(codigoCAS,numSerestCAS,fechaCeseCAS, cese);
+    }
+
+    @Override
+    public void updatePlazaCas(String codigoCAS, Integer numSerestCAS){
+        System.out.println("");
+        estadoCondicionMapper.updatePlazaCas(codigoCAS, numSerestCAS);
+    }
+
+    @Override
+    public void updateServEstCas(String codigoCAS, Integer numSerestCAS, String fechaCeseCAS, Integer condPlaniCas){
+        estadoCondicionMapper.updateServEstCas( codigoCAS,  numSerestCAS,fechaCeseCAS, condPlaniCas );
+    }
+
+    @Override
+    public List<Hist_servidor> buscarNroContratoCas(Hist_servidor hist_servidor) {
+       System.out.println("entro al service imple mostra contr cas codigo:"+hist_servidor.getCodigoCAS()+" numserest:"+hist_servidor.getNumSerestCAS());
+       System.out.println("el valor de la query: "+estadoCondicionMapper.buscarNroContratoCas(hist_servidor));
+        return estadoCondicionMapper.buscarNroContratoCas(hist_servidor);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addHistalertOk(String codigoCAS, String docSustentoCAS, Integer numSerestCAS, String tipoAlertCAS, String usuarioCAS){
+   System.out.println("entro a service impl tipo alerta codigo:"+codigoCAS+" numserest:"+numSerestCAS+" tipo de alerta: "+tipoAlertCAS+" usuario: "+usuarioCAS);
+
+      estadoCondicionMapper.addHistAlertOk(codigoCAS, docSustentoCAS, numSerestCAS, tipoAlertCAS, usuarioCAS);
     }
 
 

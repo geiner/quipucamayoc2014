@@ -72,6 +72,27 @@ public class EstadoCondicion {
 
     private String cat;
 
+    //parte de jean//////////////////////////////////////////
+    private String serCod;
+    private String contrato;
+
+    public String getSerCod() {
+        return serCod;
+    }
+
+    public void setSerCod(String serCod) {
+        this.serCod = serCod;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    ///////////////////////////////////////////////////////
     public String getCat() {
         return cat;
     }

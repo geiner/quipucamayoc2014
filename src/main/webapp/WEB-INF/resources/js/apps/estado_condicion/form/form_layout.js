@@ -12,11 +12,22 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
         "apps/estado_condicion/form/model/eliminarHistorialPlaza",
         "apps/estado_condicion/form/model/addHistorialPlaza",
 
+    "apps/estado_condicion/form/model/updateContrCAS",
+    "apps/estado_condicion/form/model/updatePlazasCAS",
+    "apps/estado_condicion/form/model/updateServEstadoCAS",
+    "apps/estado_condicion/form/model/insertHistCondPlaniCAS",
+    "apps/estado_condicion/form/model/mstrNroCAS",
+    "apps/estado_condicion/form/view/mostrarNumContratoCAS",
+    "apps/estado_condicion/form/model/insertHistAlertOkCAS",
+    "apps/estado_condicion/form/model/insertaralerta",
+
     "jquery","lib/jquery.dataTables.min","lib/bootstrap-datepicker","lib/core/validXtrem","bootstrap"],
 
     function (ErzaManager, InicioTemp, ListarServidorView, ListarResolView,ListarContrView,TipoView, RegimenView,
               EntidadView, EstadoAfpView, TipoPagoView, CondPlaView, Tabla_Cond_LabView, Tabla_Pago_BancoView,Tabla_Cond_AsegView, Tabla_DepView,Tabla_Cond_PlaView, Guardar_CondLabModel,
-              Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView,tablaPlazasAsignadasView, historialPlazaView, modalEliminacionItemHistorialView,  eliminarHistorialPlazaModel,addHistorialPlazaModel) {
+              Guardar_AlertModel, Guardar_CondAsegModel, Guardar_DependenciaModel,Guardar_PagoBancoModel, Guardar_CondPlaModel, CategoriaProfView,UnidadesDialogView,tablaPlazasAsignadasView, historialPlazaView, modalEliminacionItemHistorialView,  eliminarHistorialPlazaModel,addHistorialPlazaModel,
+              Update_Contr_CasModel, Update_Plazas_CasModel, Update_Serv_Est_CasModel, Insert_Hist_Cond_pla_CasModel, mstrNroCasModel, mostrarNumContratoCASView, insertHistAlertCasModel,
+              insertAlertCasModel) {
         ErzaManager.module('EstadoCondicionApp.Form.View', function (View, ErzaManager, Backbone, Marionette, $, _) {
 
 
@@ -47,6 +58,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 tablaPlazasAsignadasView: new tablaPlazasAsignadasView(),
                 historialPlazaView: new historialPlazaView(),
                 modalEliminacionItemHistorialView: new modalEliminacionItemHistorialView(),
+
+                //parte de jean
+                mostrarNumContratoCASView:new mostrarNumContratoCASView(),
 
 
                 // Variables,
@@ -108,7 +122,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
                     "tabla_plazas_asignadasHtml":"#tabla_plazas_asignadas",
                     "tabla_historial_plazaHtml":"#tabla_historial_plaza",
-                    "modalEliminacionItemHistorialHtml":"#modalEliminacionItemHistorial"
+                    "modalEliminacionItemHistorialHtml":"#modalEliminacionItemHistorial",
+
+                    //parte de jean
+                    numContratoCASReg:"#num_contr_cas"
 
 
                 },
@@ -207,7 +224,18 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
 
 
                         eliminarHistorialPlazaModel: new eliminarHistorialPlazaModel(),
-                        addHistorialPlazaModel: new addHistorialPlazaModel()
+                        addHistorialPlazaModel: new addHistorialPlazaModel(),
+
+                        //////parte de jean///////////////////////////////////////////
+                        "updateContCas":new Update_Contr_CasModel(),
+                        "updatePlazasCas":new Update_Plazas_CasModel(),
+                        "updateServidorEstadoCas": new Update_Serv_Est_CasModel(),
+                        "insertEnHistPlaniCas": new Insert_Hist_Cond_pla_CasModel(),
+                        "mstrNroCas": new mstrNroCasModel(),
+                        "insertHistAlertOk": new insertHistAlertCasModel(),//borrar
+                        "insertOk": new insertAlertCasModel()
+
+                        ///////////////////////////////////////////////////////////
 
                     });
                 },
@@ -389,6 +417,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#numresol").val("");
                     $("#categ_prof").val("9");
 
+                    //parte de jean
+                    $("#num_contr_cas").hide();
+
 
                 },
                 fun_regimen:function(){
@@ -561,6 +592,67 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 },
 
                 seleccionarServidor: function(e){
+                    //parte de jean//////////////////////////////////////////////////////
+                    var clickedElement=$(e.currentTarget);
+                    var self=this;
+                    var estadoServ = clickedElement.children(":nth-child(6)").text();
+                 //   alert("estado servidor: "+estadoServ);
+
+                    if(estadoServ=="CAS"){
+                        var serCod= clickedElement.children(":nth-child(2)").text();
+                        var numSerestCas=clickedElement.children(":nth-child(7)").text();
+                     //   alert("serCod="+serCod+" numserest="+numSerestCas);
+                        //  this.mostrarNumContratoCASView.getContratoCAS(serCod, numSerestCas, function(){
+
+                        //  })
+                        //BUSCA EL NUMERO DE CONTRATO DEL TRABAJADOR Y LO MUESTRA
+                        self.model.get("mstrNroCas").url = 'api/estado_condicion/mostrarNroCasContr/'+ serCod+'/'+numSerestCas;
+
+                        var fetch_s = self.model.get("mstrNroCas").fetch({ data: $.param({"serCod": serCod}, {"numSerestCas":numSerestCas})});
+
+                        fetch_s.done(function () {
+                            console.log(self.model.get("mstrNroCas").get("serCod"));
+                         //   alert("done "+self.model.get("mstrNroCas").get("contrato"))
+                            //  var nom_completo = self.model.get("servidor").get("paterno") + ' ' + self.model.get("servidor").get("materno") + ' ' + self.model.get("servidor").get("nombre");
+                            //   $("#block-descr_serv").show();
+                            //       $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
+                            //    $('#desc_serv_lab').text(nom_completo)
+                            //      self.fun_search_servidor();
+                            $("#nroContrCasDoc").text(self.model.get("mstrNroCas").get("contrato"))
+                        });
+                        fetch_s.fail(function () {
+                            /* $("#block-descr_serv").hide();
+                             var temp_help = $("#serv_cod");
+                             temp_help.removeClass('alert-warning');
+                             temp_help.addClass('alert-danger')
+                             temp_help.show();
+                             temp_help.text("No existe registro!");*/
+
+                            //     var nom_completo = self.model.get("servidor").get("paterno") + ' ' + self.model.get("servidor").get("materno") + ' ' + self.model.get("servidor").get("nombre");
+                            //    $("#block-descr_serv").show();
+                            //    $('#dni_serv_lab').text(self.model.get("servidor").get("codigo"))
+                            //    $('#desc_serv_lab').text(nom_completo)
+                            //    self.fun_search_servidor();     .
+                         //   alert("fail "+self.model.get("mstrNroCas").get("contrato"))
+                            $("#nroContrCasDoc").text("No tiene contrato asignado...")
+                        });
+                        self.numContratoCASReg.show(self.mostrarNumContratoCASView);
+                        // alert("numero de contrato"+$("#num_contrat_cas").val());
+                        $("#num_contr_cas").show();//muestra el doc de sustento
+                        $("#div_num_resol").hide();
+                        $("#div_doc_sustento").show();
+                        //mostrar el numero de contrato
+
+
+                    }else{
+                        $("#div_num_resol").show();
+                        $("#div_doc_sustento").hide();
+                        $("#num_contr_cas").hide();//esconde la reg del doc de sustento
+                    }
+
+
+                    //////////////////////////////////////////////////////////////////
+
                     var self=this;
 
                     $('#form_insert').show();
@@ -571,10 +663,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $("#sec_est_cond").show();
                     $("#est_cond").hide();
                     var clickedElement=$(e.currentTarget);
-/*
-                    alert("codigo:"+clickedElement.attr("id")+" numserest:"+clickedElement.children(':nth-child(7)').text()+" ti:"+clickedElement.children(":nth-child(4)").text());
-                    alert("nombre:"+clickedElement.children(':nth-child(1)').text()+" estado:"+clickedElement.children(':nth-child(5)').text()+" categoria:"+clickedElement.attr("data"));
-*/
+                    /*
+                     alert("codigo:"+clickedElement.attr("id")+" numserest:"+clickedElement.children(':nth-child(7)').text()+" ti:"+clickedElement.children(":nth-child(4)").text());
+                     alert("nombre:"+clickedElement.children(':nth-child(1)').text()+" estado:"+clickedElement.children(':nth-child(5)').text()+" categoria:"+clickedElement.attr("data"));
+                     */
                     this.codigo=clickedElement.attr("id");
 
                     var codGen=clickedElement.attr("data1").trim();
@@ -620,10 +712,10 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     var dni=clickedElement.children(':nth-child(2)').text();
 
 
-                   // alert(dni+" "+nombre+" "+cod_ant+" "+est);
+                    // alert(dni+" "+nombre+" "+cod_ant+" "+est);
                     if(this.codEst=="2" && this.codTipo=="1" && this.codGen=="1"){
-                          $("#div_input").hide();
-                          $("#div_select").show();
+                        $("#div_input").hide();
+                        $("#div_select").show();
 
                     }
                     else{
@@ -687,43 +779,43 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     $('#estado_condicion-modal1').modal('hide');
 
 
-                      this.CategoriaProfView.fetchCategoriaProf(codEst,function(){
+                    this.CategoriaProfView.fetchCategoriaProf(codEst,function(){
 
-                          if(est=="CAS" && codGen=="ADMINISTRATIVO" && desctip=="ADMINISTRATIVO"){
-
-
-
-                              for(var i=1;i<24;i++){
-
-                                  $("#categ_prof>option").eq(i).hide();
-
-                              }
-                              $("#categ_prof>option").eq(17).show();
-                              //console.log($("#categ_prof>option").length());
-                          }
-
-                          if(est=="CAS" && codGen=="DOCENTE" && desctip=="DOCENTE"){
-
-
-                          }
-                      });
+                        if(est=="CAS" && codGen=="ADMINISTRATIVO" && desctip=="ADMINISTRATIVO"){
 
 
 
-                     this.CategoriaProfReg.show(this.CategoriaProfView);
+                            for(var i=1;i<24;i++){
+
+                                $("#categ_prof>option").eq(i).hide();
+
+                            }
+                            $("#categ_prof>option").eq(17).show();
+                            //console.log($("#categ_prof>option").length());
+                        }
+
+                        if(est=="CAS" && codGen=="DOCENTE" && desctip=="DOCENTE"){
+
+
+                        }
+                    });
+
+
+
+                    this.CategoriaProfReg.show(this.CategoriaProfView);
 
                     //Levantar la tabla Condicion Laboral
 
                     self.Tabla_Cond_LabView.fetchTablaCondLab(cod,numest,function () {
-                    if(self.Tabla_Cond_LabView.collection.length!=0){
-                        $("#table-cond-lab").dataTable();
-                        $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
-                        $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                        $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+                        if(self.Tabla_Cond_LabView.collection.length!=0){
+                            $("#table-cond-lab").dataTable();
+                            $('#table-cond-lab_wrapper').append("<div id='footer-table'></div>");
+                            $('#table-cond-lab_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                            $('#table-cond-lab_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                        $('.dataTables_filter input').attr('placeholder', 'buscar..');
-                          }
-                        });
+                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                        }
+                    });
                     self.TCLReg.show(self.Tabla_Cond_LabView);
 
                     //Levantar la tabla Condicion del Asegurado
@@ -1654,17 +1746,148 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                 },
 
 
-                guardarCondPla: function(){
+                guardarCondPla: function(e){
 
+                 //   alert("entro a guardarcondpla")
                     var self=this;
                     var fechcese=$('#fech_cese').val();
 
                     var obser=$('#obs').val();
 
-                    var numResol=$("#numresol_pla").val();
+                    if($("#est_emp").text()!="CAS"){
+                  //      alert("entro a if")//si selecciona cualquier trabajador que no sea cas entonces tomara el  nro resol
+                        var numResol=$("#numresol_pla").val();
+                    }
+                    else{
+                   //     alert("entro al else")//si es cas toma el valor del num de doc sustento
+                        var numResol=$("#num_doc_sustento").val();
+                    }
+                  //  alert("resol: "+numResol);
                     var condPlani=$("#pla").val();
 
-                    if($("#pla").val()=="100"){
+
+                    if($("#est_emp").text()=="CAS"){ //si es igual a cas realida todo lo que estaba en el medodo de updatecas
+                      //  alert("entro al metodo de cas update")
+                        var clickedElement=$(e.currentTarget);
+                        var self=this;
+
+                        var dnicas=$("#dni_emp").text();
+                        var numserestcas=this.numserest
+                        var fechcese= $('#fech_cese').val();
+
+                        var obsercas=$('#obs').val();
+
+                        if($("#est_emp").text()!="CAS"){
+                         //   alert("entro a if")//si selecciona cualquier trabajador que no sea cas entonces tomara el  nro resol
+                            var numResol=$("#numresol_pla").val();
+                        }
+                        else{
+                         //   alert("entro al else")//si es cas toma el valor del num de doc sustento
+                            var numResol=$("#num_doc_sustento").val();
+                        }
+                      //  alert("resol: "+numResol);
+                        var condPlanicas=$("#pla").val();
+
+                      //  alert("dni: "+dnicas+" numserest: "+numserestcas+" fechacese:"+fechcese);
+                        if($("#est_emp").text()=="CAS"){
+                         //   alert("guardar en las tablas correspondientes");
+                            this.model.get("updateContCas").set({
+                                "codigoCAS":dnicas,
+                                "numSerestCAS":numserestcas,
+                                "fechaceseCAS":fechcese
+                            })
+                            this.model.get("updateContCas").url='api/estado_condicion/updateContrAden';
+                            var self_s=this.model.get("updateContCas").save({}, {wait:true});
+                            self_s.done(function(){
+                            //    alert("entro al done :)")
+
+                            });
+                            self_s.fail(function(){
+                             //   alert("entro al fail :)")
+                            })
+
+                            //update a plazas para poner "vacante"
+                            this.model.get("updatePlazasCas").set({
+                                "codigoCAS":dnicas,
+                                "numSerestCAS":numserestcas
+                            })
+                            this.model.get("updatePlazasCas").url='api/estado_condicion/updatePlazasCas';
+                            var self_s=this.model.get("updatePlazasCas").save({},{wait:true});
+                            self_s.done(function(){
+
+                            })  ;
+                            self_s.fail(function(){
+                             //   alert("entro a fail plazas cas")
+                            }) ;
+
+                            //update a servidor_estado
+                            this.model.get("updateServidorEstadoCas").set({
+                                "codigoCAS":dnicas,
+                                "numSerestCAS":numserestcas,
+                                "fechaceseCAS":fechcese,
+                                "condPlaniCAS":condPlani
+                            })
+                            this.model.get("updateServidorEstadoCas").url='api/estado_condicion/updateServEstCas';
+                            var self_s=this.model.get("updateServidorEstadoCas").save({}, {wait:true});
+                            self_s.done(function(){
+
+                            })  ;
+                            self_s.fail(function(){
+                             //   alert("entro a fail servidor estado cas")
+                            })  ;
+
+
+                          //  alert("mandara los valores a histcondplani:"+dnicas+" "+numserestcas+" "+numResol+" "+condPlanicas+" "+fechcese+" "+obsercas)
+                            ////insert en hist_cond_plani
+                            /* this.model.get("insertEnHistPlaniCas").set({
+
+
+                             "codigo":dnicas,
+                             "estadoTrabaActual":numserestcas,
+                             "numResol": numResol,
+                             "codicPlani": condPlanicas,
+                             "fechaCese": fechcese,
+                             "obsPlani": obsercas
+
+
+                             })
+                             this.model.get("insertEnHistPlaniCas").url='api/estado_condicion/addcondpla';
+                             var self_s=this.model.get("insertEnHistPlaniCas").save({}, {wait:true});
+                             self_s.done(function(){
+
+                             })  ;
+                             self_s.fail(function(){
+                             alert("entro a fail histoplani cas")
+                             self.Tabla_Cond_PlaView.fetchTablaCondPla(dnicas,numserestcas, function(){
+                             if(self.Tabla_Cond_PlaView.collection.length!=0){
+                             $("#table-cond-pla").dataTable();
+
+                             $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
+                             $('#table-cond-pla_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                             $('#table-cond-pla_previous').html("<i class='glyphicon glyphicon-backward'></i>");
+
+                             $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+
+
+                             }
+                             });
+                             self.TCPReg.show(self.Tabla_Cond_PlaView);
+
+                             self.ListarServidorView.fetchServ();
+
+                             })///////////////////////
+                             */
+
+
+                        }
+
+                     //   alert("salio del metodo de cas update")
+                    }
+
+
+
+                    if($("#pla").val()=="100"){ //el combo esta en: "seleccione..."
 
 
                         $("#est_cond").show();
@@ -1674,9 +1897,9 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         $("#est_cond").addClass("alert-warning");
                     }
                     else{
-
-                        if($("#numresol_pla").val()==""){
-
+                        //parte de jean -Cambio hecho por mi
+                        if(numResol=="" && $("#est_emp").text()!="CAS"){ //SI LA RESOLUCION ES VACIA Y ES UN TRAB DIFERENTE DE CAS
+                            //////////////////////////////////////////////////////////
 
                             $("#est_cond").show();
                             $("#est_cond").removeClass("alert-warning");
@@ -1686,16 +1909,40 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                         }
                         else{
 
-                            if($("#pla").val()=="5"){
-
-                                if($("#fech_cese").val()==""){
+                            if($("#pla").val()=="5" || $("#pla").val()=="6" || $("#pla").val()=="9" || $("#pla").val()=="10"){ //si esta en cese
+                              //  alert("entro a pla=5")
+                                if($("#fech_cese").val()==""){ //si esta vacio la fecha de cese --> muestra un mensaje
                                     $("#est_cond").show();
                                     $("#est_cond").removeClass("alert-warning");
                                     $("#est_cond").removeClass("alert-success");
                                     $("#est_cond").html("Ingrese una fecha de Cese para <strong>"+$("#employed").text()+"</strong>");
                                     $("#est_cond").addClass("alert-warning");
                                 }
-                                else{
+                                else{  // sino es vacio guarda en la tabla   tb_hist_cond_plani
+                                 //   alert("entro a guradrcondpla") ;
+                                    ////////////////////////////////////////////
+                                    //   if($("#est_emp").text()=="CAS"){
+                                    /*           alert("guardar en las tablas correspondientes");
+                                     this.model.get("updateContCas").set({
+                                     "codigo":"47461377",
+                                     "estadoTrabaActual":"1"
+                                     })
+                                     this.model.get("updateContCas").url='api/estado_condicion/updateContrAden';
+                                     var self_s=this.model.get("updateContCas").save({}, {wait:true});
+                                     self_s.done(function(){
+                                     alert("entro al done :)")
+
+                                     });
+                                     self_s.fail(function(){
+                                     alert("entro al fail :)")
+                                     })*/
+
+
+
+                                    //   }
+                                    //   else {     //borra este else y su llave y borrar el if de arriba para que siempre entre a este metodo siempre que sea algun tipo de cese
+                                  //  alert("es diferente de cas")
+                                  //  alert("guardarcondpla")
                                     this.model.get("guardarHist").set({
                                         "codigo":this.codigo,
                                         "estadoTrabaActual":this.numserest,
@@ -1733,6 +1980,42 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                                         self.ListarServidorView.fetchServ();
 
                                     });
+                                    //  }
+
+
+                                    setTimeout(function () {
+                                        ///parte de jean
+                                        if($("#est_emp").text()=="CAS"){
+                                            //insertar en hist_alert_ok
+                                            //   var usuariocas= $("#email").text()
+                                            //   alert("codigo:"+dnicas+" numserest:"+numserestcas+" docsustento:"+numResol+" usuariocas:"+usuariocas);
+
+                                            self.model.get("insertOk").set({
+                                                "codigoCAS": $("#dni_emp").text(),
+                                                "numSerestCAS":self.numserest,
+                                                "docSustentoCAS":$("#num_doc_sustento").val(),
+                                                "tipoAlertaCAS":5,
+                                                "usuarioCAS": $("#email").text()
+                                            })
+                                            self.model.get("insertOk").url = 'api/estado_condicion/alerta';
+                                            var self_s=self.model.get("insertOk").save({}, {wait:true});
+                                            self_s.done(function(){
+
+                                            })
+                                            self_s.fail(function(){
+                                                //   alert("entro a fail insert ok")
+                                            })
+
+                                        }
+
+
+                                    },1000);
+
+
+
+
+
+
 
                                     $("#est_cond").show();
                                     $("#est_cond").removeClass("alert-warning");
@@ -1791,185 +2074,185 @@ define(["app", "hbs!apps/estado_condicion/form/templates/inicio_estado_condicion
                     }
 
 
-               //    alert(this.codigo+" "+this.numserest+"/"+numResol+"/"+condPlani+"/"+fechcese+"/"+obser);
+                    //    alert(this.codigo+" "+this.numserest+"/"+numResol+"/"+condPlani+"/"+fechcese+"/"+obser);
 
 
 
 
-/*
-                    if(this.numresol!=null){
-                        if(codcond!=5){
+                    /*
+                     if(this.numresol!=null){
+                     if(codcond!=5){
 
-                           $("#advertencia").hide();
-                        //Aqui se inserta en la tabla tb_hist_cond_pla
-                        this.model.get("guardarcondpla").set({
-                            "codigo": codigo,
-                            "numserest": numserest,
-                            "numres1": numres,
-                            "codcond": codcond,
-                            "fechcese": fechcese,
-                            //"fechnomb": fechnomb,
-                            "obser": obser
-                        })
-                        this.model.get("guardarcondpla").url='api/estado_condicion/addcondpla';
-                        var self_s=this.model.get("guardarcondpla").save({}, {wait: true});
-                        var self=this;
-                        self_s.done(function(){
+                     $("#advertencia").hide();
+                     //Aqui se inserta en la tabla tb_hist_cond_pla
+                     this.model.get("guardarcondpla").set({
+                     "codigo": codigo,
+                     "numserest": numserest,
+                     "numres1": numres,
+                     "codcond": codcond,
+                     "fechcese": fechcese,
+                     //"fechnomb": fechnomb,
+                     "obser": obser
+                     })
+                     this.model.get("guardarcondpla").url='api/estado_condicion/addcondpla';
+                     var self_s=this.model.get("guardarcondpla").save({}, {wait: true});
+                     var self=this;
+                     self_s.done(function(){
 
-                        });
+                     });
 
-                        self_s.fail(function(){
+                     self_s.fail(function(){
 
-                        });
+                     });
 
-                        //Aqui se inserta en la tabla alertas pendientes
-                        this.model.get("guardaralertpend").set({
-                            "codigo": codigo,
-                            "numserest": numserest,
-                            "tipalert":5,
-                            "email": email
+                     //Aqui se inserta en la tabla alertas pendientes
+                     this.model.get("guardaralertpend").set({
+                     "codigo": codigo,
+                     "numserest": numserest,
+                     "tipalert":5,
+                     "email": email
 
-                        })
+                     })
 
-                        this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
+                     this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
 
-                        var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
+                     var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
 
-                        var self = this;
+                     var self = this;
 
-                        self_s.done(function () {
-
-
-                        });
-
-                        self_s.fail(function () {
-                            self.Tabla_Cond_PlaView.fetchTablaCondPla(cod, numest, function(){
-                                if(self.Tabla_Cond_PlaView.collection.length!=0){
-                                    $("#table-cond-pla").dataTable();
-
-                                    $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
-                                    $('#table-cond-pla_next').html("<i  class='glyphicon glyphicon-forward'></i>");
-                                    $('#table-cond-pla_previous').html("<i class='glyphicon glyphicon-backward'></i>");
-
-                                    $('.dataTables_filter input').attr('placeholder', 'buscar..');
-
-                                }
-                            });
-                            self.TCPReg.show(self.Tabla_Cond_PlaView);
-
-                        });
+                     self_s.done(function () {
 
 
-                        $("#correcto").show();
+                     });
 
-                        //Limpiamos los campos
-                        $('#numctabanco').val("");
-                        $('#numresol').val("");
-                        $('#numresol_aseg').val("");
-                        $('#numresol_tipo_pago').val("");
-                        $('#numresol_dep').val("");
-                        $('#numresol_pla').val("");
-                        $('#obs').val("");
-                        $('#fech_cese').val("");
-                        $('#fech_nomb').val("");
-                        }else{
-                            if(fechcese!=""){
-                                $("#advertencia").hide();
+                     self_s.fail(function () {
+                     self.Tabla_Cond_PlaView.fetchTablaCondPla(cod, numest, function(){
+                     if(self.Tabla_Cond_PlaView.collection.length!=0){
+                     $("#table-cond-pla").dataTable();
 
-                                //Aqui se inserta en la tabla tb_hist_cond_pla
-                                this.model.get("guardarcondpla").set({
-                                    "codigo": codigo,
-                                    "numserest": numserest,
-                                    "numres1": numres,
-                                    "codcond": codcond,
-                                    "fechcese": fechcese,
-                                    //"fechnomb": fechnomb,
-                                    "obser": obser
-                                })
-                                this.model.get("guardarcondpla").url='api/estado_condicion/addcondpla';
-                                var self_s=this.model.get("guardarcondpla").save({}, {wait: true});
-                                var self=this;
-                                self_s.done(function(){
+                     $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
+                     $('#table-cond-pla_next').html("<i  class='glyphicon glyphicon-forward'></i>");
+                     $('#table-cond-pla_previous').html("<i class='glyphicon glyphicon-backward'></i>");
 
-                                });
+                     $('.dataTables_filter input').attr('placeholder', 'buscar..');
 
-                                self_s.fail(function(){
+                     }
+                     });
+                     self.TCPReg.show(self.Tabla_Cond_PlaView);
 
-                                });
-
-                                //Aqui se inserta en la tabla alertas pendientes
-                                this.model.get("guardaralertpend").set({
-                                    "codigo": codigo,
-                                    "numserest": numserest,
-                                    "tipalert":5,
-                                    "email": email
-
-                                })
-
-                                this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
-
-                                var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
-
-                                var self = this;
-
-                                self_s.done(function () {
+                     });
 
 
+                     $("#correcto").show();
 
-                                });
+                     //Limpiamos los campos
+                     $('#numctabanco').val("");
+                     $('#numresol').val("");
+                     $('#numresol_aseg').val("");
+                     $('#numresol_tipo_pago').val("");
+                     $('#numresol_dep').val("");
+                     $('#numresol_pla').val("");
+                     $('#obs').val("");
+                     $('#fech_cese').val("");
+                     $('#fech_nomb').val("");
+                     }else{
+                     if(fechcese!=""){
+                     $("#advertencia").hide();
 
-                                self_s.fail(function () {
-                                    self.Tabla_Cond_PlaView.fetchTablaCondPla(cod, numest, function(){
-                                        if(self.Tabla_Cond_PlaView.collection.length!=0){
-                                            $("#table-cond-pla").dataTable();
+                     //Aqui se inserta en la tabla tb_hist_cond_pla
+                     this.model.get("guardarcondpla").set({
+                     "codigo": codigo,
+                     "numserest": numserest,
+                     "numres1": numres,
+                     "codcond": codcond,
+                     "fechcese": fechcese,
+                     //"fechnomb": fechnomb,
+                     "obser": obser
+                     })
+                     this.model.get("guardarcondpla").url='api/estado_condicion/addcondpla';
+                     var self_s=this.model.get("guardarcondpla").save({}, {wait: true});
+                     var self=this;
+                     self_s.done(function(){
 
-                                            $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
-                                            $('#table-cond-pla_next').html("<i class='icon-forward'></i>");
-                                            $('#table-cond-pla_previous').html("<i class='icon-backward'></i>");
+                     });
 
-                                            $('.dataTables_filter input').attr('placeholder', 'buscar..');
+                     self_s.fail(function(){
 
-                                        }
-                                    });
-                                    self.TCPReg.show(self.Tabla_Cond_PlaView);
+                     });
 
-                                });
+                     //Aqui se inserta en la tabla alertas pendientes
+                     this.model.get("guardaralertpend").set({
+                     "codigo": codigo,
+                     "numserest": numserest,
+                     "tipalert":5,
+                     "email": email
 
-                                //Mensaje de confirmacion
+                     })
 
+                     this.model.get("guardaralertpend").url = 'api/estado_condicion/addalertpend';
 
-                                $("#correcto").show();
-                                //Refresco de la tabla condicion planilla
+                     var self_s = this.model.get("guardaralertpend").save({}, {wait: true});
+
+                     var self = this;
+
+                     self_s.done(function () {
 
 
 
+                     });
+
+                     self_s.fail(function () {
+                     self.Tabla_Cond_PlaView.fetchTablaCondPla(cod, numest, function(){
+                     if(self.Tabla_Cond_PlaView.collection.length!=0){
+                     $("#table-cond-pla").dataTable();
+
+                     $('#table-cond-pla_wrapper').append("<div id='footer-table'></div>");
+                     $('#table-cond-pla_next').html("<i class='icon-forward'></i>");
+                     $('#table-cond-pla_previous').html("<i class='icon-backward'></i>");
+
+                     $('.dataTables_filter input').attr('placeholder', 'buscar..');
+
+                     }
+                     });
+                     self.TCPReg.show(self.Tabla_Cond_PlaView);
+
+                     });
+
+                     //Mensaje de confirmacion
 
 
-                                //Limpiamos los campos
-                                $('#numctabanco').val("");
-                                $('#numresol').val("");
-                                $('#numresol_aseg').val("");
-                                $('#numresol_tipo_pago').val("");
-                                $('#numresol_dep').val("");
-                                $('#numresol_pla').val("");
-                                $('#obs').val("");
-                                $('#fech_cese').val("");
-                                $('#fech_nomb').val("");
+                     $("#correcto").show();
+                     //Refresco de la tabla condicion planilla
 
-                                this.numresol=null;
 
-                            } else{
-                                $('#mensaje_cese').modal("show");
-                            }
 
-                        }
 
-                    }
-                    else{
-                        $("#correcto").hide();
-                        $("#advertencia").show();
-                    }
-*/
+
+                     //Limpiamos los campos
+                     $('#numctabanco').val("");
+                     $('#numresol').val("");
+                     $('#numresol_aseg').val("");
+                     $('#numresol_tipo_pago').val("");
+                     $('#numresol_dep').val("");
+                     $('#numresol_pla').val("");
+                     $('#obs').val("");
+                     $('#fech_cese').val("");
+                     $('#fech_nomb').val("");
+
+                     this.numresol=null;
+
+                     } else{
+                     $('#mensaje_cese').modal("show");
+                     }
+
+                     }
+
+                     }
+                     else{
+                     $("#correcto").hide();
+                     $("#advertencia").show();
+                     }
+                     */
 
                 },
 

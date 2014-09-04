@@ -1,7 +1,6 @@
 package edu.quipu.rrhh.models;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Hist_servidor implements Serializable{
     private static final long serialVersionUID = 3159033005313632895L;
@@ -44,7 +43,81 @@ public class Hist_servidor implements Serializable{
     private Integer codPago;
     private String susDoc;
 
+    //parte jean  ///////////////////////////////
+    private String codigoCAS;
+    private Integer numSerestCAS;
+    private String fechaceseCAS;
+    private Integer condPlaniCAS;
+    private String contrato;
+    private String docSustentoCAS;
+    private String usuarioCAS;
+    private String tipoAlertaCAS;
 
+    public String getCodigoCAS() {
+        return codigoCAS;
+    }
+
+    public void setCodigoCAS(String codigoCAS) {
+        this.codigoCAS = codigoCAS;
+    }
+
+    public Integer getNumSerestCAS() {
+        return numSerestCAS;
+    }
+
+    public void setNumSerestCAS(Integer numSerestCAS) {
+        this.numSerestCAS = numSerestCAS;
+    }
+
+    public String getFechaceseCAS() {
+        return fechaceseCAS;
+    }
+
+    public void setFechaceseCAS(String fechaceseCAS) {
+        this.fechaceseCAS = fechaceseCAS;
+    }
+
+    public Integer getCondPlaniCAS() {
+        return condPlaniCAS;
+    }
+
+    public void setCondPlaniCAS(Integer condPlaniCAS) {
+        this.condPlaniCAS = condPlaniCAS;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    public String getDocSustentoCAS() {
+        return docSustentoCAS;
+    }
+
+    public void setDocSustentoCAS(String docSustentoCAS) {
+        this.docSustentoCAS = docSustentoCAS;
+    }
+
+    public String getUsuarioCAS() {
+        return usuarioCAS;
+    }
+
+    public void setUsuarioCAS(String usuarioCAS) {
+        this.usuarioCAS = usuarioCAS;
+    }
+
+    public String getTipoAlertaCAS() {
+        return tipoAlertaCAS;
+    }
+
+    public void setTipoAlertaCAS(String tipoAlertaCAS) {
+        this.tipoAlertaCAS = tipoAlertaCAS;
+    }
+
+    /////////////////////////////////////
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

@@ -3,8 +3,8 @@ package edu.quipu.rrhh.persistence;
 
 import edu.quipu.rrhh.models.Contrato;
 import edu.quipu.rrhh.models.EstadoCondicion;
-import edu.quipu.rrhh.models.Servidor;
 import edu.quipu.rrhh.models.Hist_servidor;
+import edu.quipu.rrhh.models.Servidor;
 import org.apache.ibatis.annotations.*;
 import org.springframework.dao.DataAccessException;
 
@@ -301,7 +301,7 @@ public interface EstadoCondicionMapper {
      //Insertar modificacion en la tabla tb_hist_cond_lab
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_lab " +
             " values ( (select MAX(NUM_REG) from  TB_HIST_COND_LAB where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,#{codigo},#{numserest},#{numres},#{codest},#{codcateg},#{codtip},#{codgen})")
-     public void addHist_lab(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("numres") String numres, @Param("codest") Integer codest, @Param("codtip") Integer codtip, @Param("codgen") Integer codgen,@Param("codcateg") String codcateg) throws DataAccessException;
+     public void addHist_lab(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("numres") String numres, @Param("codest") Integer codest, @Param("codtip") Integer codtip, @Param("codgen") Integer codgen, @Param("codcateg") String codcateg) throws DataAccessException;
 
     //insertar en alerta pendiente
      @Insert(value= "insert into qpdatagestion.tb_alerta_pendiente values (Num_alert_reg.nextval, #{codigo},#{numserest},#{tipalert},#{email}, (select sysdate from sys.dual))")
@@ -321,7 +321,7 @@ public interface EstadoCondicionMapper {
     @Insert(value = "insert into qpdatagestion.tb_hist_banco values " +
             "((select MAX(NUM_REG) from  TB_HIST_BANCO where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +
             "#{codigo}, #{numserest}, #{numCuenta}, #{codPago},#{susDoc})")
-    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("codPago") Integer codPago, @Param("numCuenta") String numCuenta,@Param("susDoc") String susDoc) throws DataAccessException;
+    public void addpagobanco(@Param("codigo") String codigo, @Param("numserest") String numserest, @Param("codPago") Integer codPago, @Param("numCuenta") String numCuenta, @Param("susDoc") String susDoc) throws DataAccessException;
 
     //Insertar modificacion en la tabla tb_hist_cond_plani
     @Insert(value = "insert into qpdatagestion.tb_hist_cond_plani values((select MAX(NUM_REG) from  TB_HIST_COND_PLANI where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1," +
@@ -332,7 +332,7 @@ public interface EstadoCondicionMapper {
     @Insert(value = "insert into qpdatagestion.tb_hist_dep values\n" +
             "((select MAX(NUM_REG) from  TB_HIST_DEP where ser_cod=#{codigo} and num_serest=#{numserest} group by SER_COD,NUM_SEREST)+1,\n" +
             " #{codigo},#{numserest},#{numresol},#{codDep},#{codCes})")
-    void addHist_dep(@Param("codigo") String codigo,@Param("numserest") String estadoTrabaActual,@Param("numresol") String numResol,@Param("codDep") String codDep,@Param("codCes")  String codCes);
+    void addHist_dep(@Param("codigo") String codigo, @Param("numserest") String estadoTrabaActual, @Param("numresol") String numResol, @Param("codDep") String codDep, @Param("codCes") String codCes);
 
     @Select(value = "SELECT COD_DEP_CESANTES AS codCes FROM DEPENDENCIA_CESANTES WHERE COD_DEP_CESANTES=(SELECT MIN(COD_DEP_CESANTES) " +
             "FROM DEPENDENCIA_CESANTES GROUP BY UD_ID HAVING UD_ID=#{codGen}) AND UD_ID=#{codGen}")
@@ -351,4 +351,59 @@ public interface EstadoCondicionMapper {
 
 })
     public List<Contrato> listar_contratos(@Param("codigo") String codigo);
+
+  /////////////////////////////////////////parte de jean//////////////////////////////////////////////////////////////////////
+
+    @Select(value = " SELECT T_CONTRATO_NUMERO AS contrato FROM TB_CONTRATOS_ADENDAS WHERE SER_COD=#{serCod} and num_serest=#{numSerest} and t_adenda_numero is null")
+    @Results( value = {
+            @Result(javaType = EstadoCondicion.class),
+
+            @Result(property = "contrato", column = "contrato")
+
+    })
+
+    public String traerContratosCAS(@Param("serCod") String serCod, @Param("numSerest") Integer numSerest) throws  DataAccessException;
+
+
+    @Update(value = "UPDATE QPDATAGESTION.TB_CONTRATOS_ADENDAS " +
+            " SET T_CONTRATOADENDA_ESTADO = 'CESE', F_CONTRATOADENDA_FIN_LABORAL=#{fechaCeseCAS} " +
+            " WHERE NUM_SEREST=#{numSerestCAS} and SER_COD=#{codigoCAS}")
+
+    public void updateContrCas(@Param("codigoCAS") String codigoCAS, @Param("numSerestCAS") Integer numSerestCAS, @Param("fechaCeseCAS") String fechaCeseCAS, @Param("cese") String cese);
+
+    @Update(value = " UPDATE QPDATAGESTION.TB_PLAZAS " +
+                    " SET N_PLAZA_ESTADO='VACANTE' " +
+                    " WHERE C_PLAZA_ID=( " +
+                    " SELECT C_PLAZA_ID FROM QPDATAGESTION.TB_PLAZAS WHERE C_PLAZA_ID=( " +
+                    " SELECT C_PLAZA_ID FROM QPDATAGESTION.TB_PLAZAS_HISTORIAL WHERE C_CONTRATOADENDA_ID=( " +
+                    " select C_CONTRATOADENDA_ID from qpdatagestion.tb_contratos_adendas where SER_COD=#{codigoCAS} AND NUM_SEREST=#{numSerestCAS} AND T_ADENDA_NUMERO IS NULL)))")
+    public void updatePlazaCas(@Param("codigoCAS") String codigoCAS, @Param("numSerestCAS") Integer numSerestCAS);
+
+    @Update(value = "update datapersuel.servidor_estado " +
+            " set ser_con_pla_act=#{condPlaniCas}, ser_fech_cese=#{fechaCeseCAS} " +
+            " where ser_cod=#{codigoCAS} and num_serest=#{numSerestCAS}")
+    public void updateServEstCas(@Param("codigoCAS") String codigoCAS, @Param("numSerestCAS") Integer numSerestCAS, @Param("fechaCeseCAS") String fechaCeseCAS, @Param("condPlaniCas") Integer condPlaniCas);
+
+
+
+    @Select(value = "{call qpdatagestion.servidor_wkg.sp_grabar_datos_servidor(#{ser.codigo}," +
+            "#{ser.paterno},#{ser.materno},#{ser.nombre},#{ser.nacimiento},#{ser.telefono}," +
+            "#{ser.sexo},#{ser.numDoc},#{ser.hij},#{ser.estCiv},#{ser.tipoDoc},#{ser.fechaInUnmsm}," +
+            "#{ser.domicilio},#{ser.ruc},#{ser.numSegSoc},#{ser.estVit},#{ser.titCueBan},#{ser.correo}) }")
+    void save(@Param("ser") Servidor servidor);
+
+    @Select(value ="SELECT T_CONTRATO_NUMERO AS contrato FROM TB_CONTRATOS_ADENDAS WHERE trim(SER_COD)=trim(#{contr.codigoCAS}) " +
+            " and num_serest=#{contr.numSerestCAS} and t_adenda_numero is null " )
+    @Results(value = {@Result(javaType = Hist_servidor.class),
+            @Result(property = "contrato", column = "contrato"),
+
+    })
+    List<Hist_servidor> buscarNroContratoCas(@Param("contr") Hist_servidor hist_servidor);
+
+    @Insert(value = "insert into qpdatagestion.tb_hist_alerta_ok (ID_HIST_ALERTA, NUM_REG, SER_COD, NUM_SEREST, TIPO_ALERTA, USU_GESTION, FECHA_ALERTA) values((select nvl(MAX(id_hist_alerta),0)+1 from qpdatagestion.tb_hist_alerta_ok ),(select MAX(NUM_REG) from  TB_HIST_COND_PLANI where trim(ser_cod)=trim(#{codigoCAS}) and num_serest=#{numSerestCAS} group by SER_COD,NUM_SEREST), " +
+            " #{codigoCAS},#{numSerestCAS},#{tipoAlertCAS},#{usuarioCAS}, (select sysdate from sys.dual) )")
+   public void addHistAlertOk(@Param("codigoCAS")String codigoCAS,@Param("docSustentoCAS")String docSustentoCAS,@Param("numSerestCAS")Integer numSerestCAS,@Param("tipoAlertCAS")String tipoAlertCAS,@Param("usuarioCAS")String usuarioCAS);
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

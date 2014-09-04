@@ -1,7 +1,9 @@
 package edu.quipu.rrhh.controllers;
 
+import edu.quipu.rrhh.models.Contrato;
+import edu.quipu.rrhh.models.EstadoCondicion;
+import edu.quipu.rrhh.models.Hist_servidor;
 import edu.quipu.rrhh.services.EstadoCondicionService;
-import edu.quipu.rrhh.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,7 @@ import java.util.List;
 public class EstadoCondicionController {
 
    @Autowired
-    EstadoCondicionService estadoCondicionService;
+   EstadoCondicionService estadoCondicionService;
 
     //Listar a todos los trabajadores
     @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/listar")
@@ -243,9 +245,108 @@ public class EstadoCondicionController {
     @ResponseBody
     public void addCondPla(@RequestBody Hist_servidor estadoCondicion){
 
-        System.out.print("Numero de Resol:"+estadoCondicion.getNumResol());
+        System.out.print("Numero de Resol:"+estadoCondicion.getNumResol()+" codigo:"+estadoCondicion.getCodigo()+" numserest:"+estadoCondicion.getEstadoTrabaActual()+
+        "condicion en planilla: "+estadoCondicion.getCodicPlani()+" fecha: "+estadoCondicion.getFechaCese()+" obser:"+estadoCondicion.getObsPlani());
         estadoCondicionService.addCondPla(estadoCondicion.getCodigo(), estadoCondicion.getEstadoTrabaActual(),estadoCondicion.getNumResol(),
                 estadoCondicion.getCodicPlani(), estadoCondicion.getFechaCese(),estadoCondicion.getObsPlani());
     }
+
+       //parte de jean////////////////////////////////////////////////////
+    //para traer los contratos de los cas
+    @RequestMapping(method = RequestMethod.GET,  produces = "application/json", value = "/contratocas/{serCodCas}/{numSerestCas}")
+    @ResponseBody
+    public String traerContratosCAS(@PathVariable(value = "serCodCas") String serCodCas,
+                                           @PathVariable(value = "numSerestCas") Integer numSerestCas){
+
+
+        while(serCodCas.length()<10){
+            System.out.println("entro al while");
+            serCodCas=serCodCas+" ";
+        }
+
+        System.out.println("entro a controlador traer contrato cas sercod="+serCodCas+"numserest="+numSerestCas);
+       estadoCondicionService.traerContratosCAS(serCodCas, numSerestCas);
+        return  "";
+    }
+
+
+
+
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/updateContrAden")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void updateContrCas(@RequestBody Hist_servidor estadoCondicion){
+        System.out.println("numserest: "+estadoCondicion.getNumSerestCAS()+" CODIGO: "+estadoCondicion.getCodigoCAS());
+        String cese="CESE";
+        System.out.println("cese: "+cese);
+        String dnicas=estadoCondicion.getCodigoCAS();
+        while(dnicas.length()<10){
+            System.out.println("entro al while");
+            dnicas=dnicas+" ";
+        }
+        estadoCondicionService.updateContrCas(dnicas, estadoCondicion.getNumSerestCAS(), estadoCondicion.getFechaceseCAS(), cese);
+        //return "";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/updatePlazasCas")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void updatePlazaCas(@RequestBody Hist_servidor estadoCondicion){
+        System.out.println("numserest: "+estadoCondicion.getNumSerestCAS()+" CODIGO: "+estadoCondicion.getCodigoCAS());
+
+
+        String dnicas=estadoCondicion.getCodigoCAS();
+        while(dnicas.length()<10){
+            System.out.println("entro al while");
+            dnicas=dnicas+" ";
+        }
+        estadoCondicionService.updatePlazaCas(dnicas, estadoCondicion.getNumSerestCAS());
+    }
+
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/updateServEstCas")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void updateServidorEstadoCas(@RequestBody Hist_servidor estadoCondicion){
+        System.out.println("numserest: "+estadoCondicion.getNumSerestCAS()+" CODIGO: "+estadoCondicion.getCodigoCAS());
+
+
+        String dnicas=estadoCondicion.getCodigoCAS();
+        while(dnicas.length()<10){
+            System.out.println("entro al while");
+            dnicas=dnicas+" ";
+        }
+        estadoCondicionService.updateServEstCas(dnicas, estadoCondicion.getNumSerestCAS(), estadoCondicion.getFechaceseCAS(), estadoCondicion.getCondPlaniCAS());
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/mostrarNroCasContr/{serCod}/{numSerestCas}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public Hist_servidor buscarNroContratoCas(@PathVariable(value = "serCod") String serCod, @PathVariable(value = "numSerestCas") Integer numSerestCas) {
+        Hist_servidor hist_servidor = new Hist_servidor();
+        System.out.println("mostrar numero contrato cas sercod:"+serCod+" numserest"+numSerestCas);
+        hist_servidor.setCodigoCAS(serCod);
+        hist_servidor.setNumSerestCAS(numSerestCas);
+        List<Hist_servidor> hist_servidores = estadoCondicionService.buscarNroContratoCas(hist_servidor);
+        if (hist_servidores.size() == 0)
+            return null;
+        return hist_servidores.get(0);
+    }
+
+    @RequestMapping(method = RequestMethod.POST,  produces = "application/json", consumes = "application/json", value = "/alerta")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public void addHistalertOk(@RequestBody Hist_servidor estadoCondicion){
+
+        System.out.print("ENTRO A HIST ALERT OK CONTROLLERnumserest:"+estadoCondicion.getNumSerestCAS()+" codigo:"+estadoCondicion.getCodigoCAS()+" numresol:"+estadoCondicion.getDocSustentoCAS()+
+              "tipo de alerta:"+estadoCondicion.getTipoAlertaCAS()+" usuario:"+estadoCondicion.getUsuarioCAS() );
+        estadoCondicionService.addHistalertOk(estadoCondicion.getCodigoCAS(), estadoCondicion.getDocSustentoCAS(),estadoCondicion.getNumSerestCAS(), estadoCondicion.getTipoAlertaCAS(), estadoCondicion.getUsuarioCAS());
+    }
+
+
+
+
+
+
 
 }
