@@ -166,6 +166,9 @@
                 <sec:authorize access="hasAnyRole('${userAccess}54')">
                     <li id="contrat"><a href="#contratos"><strong>CONTRATOS</strong></a></li>
                 </sec:authorize>
+                <sec:authorize access="hasAnyRole('${userAccess}54')">
+                    <li id="adend"><a href="#adendas"><strong>ADENDAS</strong></a></li>
+                </sec:authorize>
                 <li id="capacitacion"> <a class="" href="#"><strong>CAPACITACIÓN</strong></a></li>
                 <sec:authorize access="hasAnyRole('${userAccess}62')">
                     <li id="tit_beneficio" class="dropdown">

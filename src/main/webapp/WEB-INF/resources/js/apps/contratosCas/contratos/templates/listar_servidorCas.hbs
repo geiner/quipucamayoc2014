@@ -1,0 +1,38 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Servidor</h4>
+        </div>
+        <div class="modal-body">
+            <table id="tabla" class="table  table-bordered table-hover" style="font-size: 12px;">
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th style="text-align: center">Nombres</th>
+                    <th style="text-align: center">DNI</th>
+                    <th style="text-align: center">Tipo</th>
+                    <th style="text-align: center">Dependencia </th>
+                    <th style="text-align: center">Numserest</th>
+
+                </tr>
+                </thead>
+                <tbody class="body-table" id="fam_content">
+                {{#each items}}
+                    <tr id="{{numDoc}}" data="{{tipo}}" data1="{{udid}}" data2="{{codigo}}"class="">
+
+                        <td style="text-align: center">{{paterno}} {{materno}} {{nombre}}</td>
+                        <td style="text-align: center">{{numDoc}}</td>
+                        <td style="text-align: center">{{tiposervidor}}</td>
+                        <td style="text-align: center">{{dependencia}}</td>
+                        <td style="text-align: center">{{num_serest}}</td>
+
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen datos que mostrar.</td>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

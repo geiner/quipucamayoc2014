@@ -18,7 +18,7 @@ define(["marionette"], function(Marionette){
 
 	ErzaManager.on("initialize:after", function(){
 		if(Backbone.history){
-			require(["apps/contratos/contratos_app","apps/planillas/planillas_app","apps/inicio/inicio_app","apps/servidores/servidores_app",
+			require(["apps/adendasCas/adendasCas_app","apps/contratosCas/contratosCas_app","apps/planillas/planillas_app","apps/inicio/inicio_app","apps/servidores/servidores_app",
                 "apps/solicitudes/solicitudes_app","apps/legajos/legajos_app","apps/roles/roles_app","apps/estado_condicion/estado_condicion_app","apps/vacaciones/vacaciones_app",
                 "apps/resoluciones/resoluciones_app","apps/asistencia/asistencia_app","apps/desc_medicos/desc_medicos_app","apps/cuadro_nominal/cuadro_nominal_app","apps/reportes/reportes_app","apps/informe_escalafonario/informe_escalafonario_app"], function () {       //para cada modulo agregar la url donde se encuentra apps/planillas/planillas_app
 				Backbone.history.start();

@@ -1,0 +1,217 @@
+<link href="resources/css/vendor/datepicker.css" rel="stylesheet">
+
+<fieldset>
+
+<legend>Ingreso de Nuevo Contrato Cas</legend>
+
+<div id="errorFech" class="alert alert-warning" style="text-align: center; display:none;"><strong>Error... La Fecha Final debe ser mayor que la Fecha Inicial.</strong></div>
+<div id="camposOblig" class="alert alert-warning" style="text-align: center; display:none;"><strong>Debe ingresar todos los campos obligatorios.</strong></div>
+<div id="exito" class="alert alert-success" style="text-align: center; display:none;"><strong>Se guardó exitosamente el Contrato CAS. Gracias...</strong></div>
+
+
+<div class="tabReport tabs-left" id="header_est_cod">
+    <a class="btn btn-primary pull-right" id="list_serv_cas" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-search"></span> Buscar Servidor</a>
+</div>
+<br>
+<br>
+
+<div class="tab-content" >
+
+    <br>
+    <div class="row form-group" id="datoServCas" style="display: none;">
+        <div class="col-md-2">
+            <strong style="font-size: 13px;">DNI: <strong id="dniServ" style="font-size: 13px;color: #00585f;"></strong></strong>
+        </div>
+        <div class="col-md-4">
+            <strong style="font-size: 13px;">Servidor: <strong id="nomServ" style="font-size: 13px;color: #00585f;"></strong></strong>
+        </div>
+        <div class="col-md-2">
+            <strong style="font-size: 13px;">Tipo: <strong id="tipServ" style="font-size:13px;color: #00585f; "></strong></strong>
+        </div>
+        <div class="col-md-4">
+            <strong style="font-size: 13px;">Dep: <strong id="depServ" style="font-size:13px;color: #00585f; "></strong></strong>
+        </div>
+    </div>
+</div>
+
+<form class="form-horizontal well" id="form_contrato" onsubmit="return">
+    <div class="row form-group" id="numYtipCont">
+
+        <div class="col-md-6">
+            <div class="col-md-3" >
+                <label>Nº Contrato:</label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-6" id="divNumCont" >
+                <input type="text" id="numCont" placeholder="Ingrese el Numero" class="form-control pull-right" />
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-4">
+                <label>Tipo Contrato: </label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-6" id="divTipoCont" style="margin-left: -8%">
+
+                <select id="tipoCont" class="form-control" >
+                    <option value="2"> Administrativo</option>
+                    <option value="1"> Docente</option>
+                </select>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-md-6" >
+            <div class="col-md-3">
+                <label>Fecha Inicio: </label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-9" style="width: 66%">
+                <div class="input-group" style=" width: 91%">
+                    <input type="text" value="" id="fecha_ini_cont" placeholder="Ejm. 11/05/2004" readonly=""
+                           class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_ini_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_ini_clos"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-6" id="div_fech_fin" >
+            <div class="col-md-3" >
+                <label>Fecha Fin: </label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-9" style="width: 66%">
+                <div class="input-group" style=" width: 91%">
+                    <input type="text" value="" id="fecha_fin_cont" placeholder="Ejm. 11/05/2004" readonly=""
+                           class="form-control">
+                                    <span class="input-group-btn">
+                                     <button class="btn btn-default" type="button" id="ingres_fin_show"><span
+                                             class=" glyphicon glyphicon-calendar"></span></button>
+                                     <button class="btn btn-default" type="button" id="ingres_fin_clos"><span
+                                             class=" glyphicon glyphicon-refresh"></span></button>
+                                     </span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row form-group" id="numYtipCont">
+
+        <div class="col-md-6">
+            <div class="col-md-4" >
+                <label>Nº Horas x Sem:</label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-6" id="divNumCont" style="margin-left: -8%" >
+                <input type="text" id="numHoras" placeholder="Ingrese el Numero" class="form-control pull-right" />
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-4">
+                <label>Rem. Mensual: </label>
+                <span style="color: red">*</span>
+            </div>
+            <div class="col-md-6" id="montoSueldo" style="margin-left: -8%">
+                <input type="text" id="sueldo" placeholder="Ingrese el Monto" class="form-control pull-right" />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row form-group" id="divCargo">
+        <div class="col-md-6">
+
+            <div class="col-md-4">
+                <label>Cargo:</label>
+                <span style="color: red">*</span>
+            </div>
+
+
+            <div class="input-group-btn" class="col-md-8">
+                <div class="col-md-8" >
+                    <input class="form-control" type="text" id="cargo" placeholder="Elija un Cargo" readonly="" style="margin-left: -21%; width: 115%"/>
+                </div>
+                <div class="col-md-4" >
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="buscarCargo" style="margin-left: -50%">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="col-md-4">
+                <label>Plaza:</label>
+                <span style="color: red">*</span>
+            </div>
+
+
+            <div class="input-group-btn" class="col-md-8">
+                <div class="col-md-8"  >
+                    <input class="form-control" type="text" id="plaza" placeholder="Elija plaza vacante" readonly="" style="margin-left: -21%; width: 88%"/>
+                </div>
+                <div class="col-md-4" >
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="buscarPlazas" style="margin-left: -114%">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+
+    <div class="row form-group">
+
+        <div class="col-md-6" >
+            <button type="button" class="btn btn-primary pull-left" id="btn_guardar_cont" style="margin-left:80% " ><span class="glyphicon glyphicon-new-window"></span> Guardar</button>
+        </div>
+
+        <div class="col-md-6" >
+            <a class="btn btn-default pull-right" id="btn_limpiar" style="margin-right: 84%" data-target=".bs-example-modal-lg"><span class="glyphicon glyphicon-new-window"></span> Limpiar</a>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+
+</fieldset>
+
+<div id="servidoresCasModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+<div id="cargosModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+<div id="plazasModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
+
+<style type="text/css">
+
+</style>

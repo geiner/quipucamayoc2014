@@ -1,0 +1,44 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <!--<h6 class="modal-title" id="myModalLabel">Seleccionar Contrato</h6>-->
+        </div>
+        <div class="modal-body">
+            <table id="tabla-contratos" class="table  table-bordered table-hover" style="font-size: 10px;">
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th style="text-align: center">DNI</th>
+                    <th style="text-align: center">Apellidos y Nombres</th>
+                    <th style="text-align: center">Nº Contrato</th>
+                    <th style="text-align: center">Cargo</th>
+                    <th style="text-align: center">Fecha Ini.</th>
+                    <th style="text-align: center">Fech. Fin</th>
+                    <th style="text-align: center">Monto</th>
+                    <th style="text-align: center">Tipo</th>
+
+                </tr>
+                </thead>
+                <tbody class="body-table" id="fam_content">
+                {{#each items}}
+                    <tr id="{{numDoc}}" data="{{idcargo}}" data1="{{num_serest}}" class="">
+
+                        <td style="text-align: center">{{numDoc}} </td>
+                        <td style="text-align: center">{{paterno}} {{materno}} {{nombre}} </td>
+                        <td style="width: 90px; text-align:center">{{contrato}} </td>
+                        <td style="text-align: center">{{descargo}} </td>
+                        <td style="text-align: center">{{fechini}} </td>
+                        <td style="text-align: center">{{fechfin}} </td>
+                        <td style="text-align: center">{{monto1}} </td>
+                        <td style="text-align: center">{{destipo}} </td>
+
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen datos que mostrar.</td>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

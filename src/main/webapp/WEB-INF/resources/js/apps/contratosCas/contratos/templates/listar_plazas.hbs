@@ -1,0 +1,48 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Seleccionar Plaza</h4>
+        </div>
+        <div class="modal-body">
+            <table id="tabla-plazas" class="table  table-bordered table-hover" style="font-size: 12px;">
+                <thead class="header" style="color: #040404;background-color:#f5f5f5">
+                <tr>
+                    <th style="text-align: center">Codigo Plaza</th>
+                    <th style="text-align: center">Estado Plaza</th>
+                    <th style="text-align: center">DNI</th>
+                    <th style="text-align: center">Servidor - Ultimo Contrato</th>
+                    <th style="text-align: center">Nº Contrato</th>
+                    <th style="text-align: center">Fech. Ini.</th>
+                    <th style="text-align: center">Fech. Fin</th>
+                    <th style="text-align: center">Estado </th>
+                    <th style="text-align: center">Fin Laboral</th>
+
+                </tr>
+                </thead>
+                <tbody class="body-table" id="fam_content">
+                {{#each items}}
+                    <tr id="{{contrato}}" data4="{{id}}" class="">
+
+                        <td>{{cod}} </td>
+                        <td>{{estado}} </td>
+                        <td>{{dniServ}} </td>
+                        <td>{{nomServ}} </td>
+                        <td>{{contrato}} </td>
+                        <td>{{fechaIni}} </td>
+                        <td>{{fechaFin}} </td>
+                        <td>{{estadoCont}} </td>
+                        <td>{{fechaFinLab}} </td>
+
+
+
+                    </tr>
+                {{else}}
+                    <td colspan="6">No existen datos que mostrar.</td>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

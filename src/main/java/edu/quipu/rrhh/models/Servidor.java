@@ -1,7 +1,6 @@
 package edu.quipu.rrhh.models;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Servidor implements Serializable {
 
@@ -67,6 +66,23 @@ public class Servidor implements Serializable {
     private String departAct;
     private String provinAct;
     private String distrAct;
+
+    // //para Contrato CAS
+
+    private Integer tipo;
+    private Integer depCes;
+    private Integer udid;
+    private String dependencia;
+    private Integer monto1;
+
+    //para Adendas CAS
+
+    private String contrato;
+    private String descargo;
+    private Integer idcargo;
+    private String fechini;
+    private String fechfin;
+    private String destipo;
 
 
     public String getPaisAct() {
@@ -527,5 +543,95 @@ public class Servidor implements Serializable {
 
     public void setEstadoTrabaActual(String estadoTrabaActual) {
         this.estadoTrabaActual = estadoTrabaActual;
+    }
+
+    ////////////////////////////////////
+
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
+    }
+
+    public Integer getDepCes() {
+        return depCes;
+    }
+
+    public void setDepCes(Integer depCes) {
+        this.depCes = depCes;
+    }
+
+    public Integer getUdid() {
+        return udid;
+    }
+
+    public void setUdid(Integer udid) {
+        this.udid = udid;
+    }
+
+    public String getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(String dependencia) {
+        this.dependencia = dependencia;
+    }
+
+    public Integer getMonto1() {
+        return monto1;
+    }
+
+    public void setMonto1(Integer monto1) {
+        this.monto1 = monto1;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    public String getDescargo() {
+        return descargo;
+    }
+
+    public void setDescargo(String descargo) {
+        this.descargo = descargo;
+    }
+
+    public Integer getIdcargo() {
+        return idcargo;
+    }
+
+    public void setIdcargo(Integer idcargo) {
+        this.idcargo = idcargo;
+    }
+
+    public String getFechini() {
+        return fechini;
+    }
+
+    public void setFechini(String fechini) {
+        this.fechini = fechini;
+    }
+
+    public String getFechfin() {
+        return fechfin;
+    }
+
+    public void setFechfin(String fechfin) {
+        this.fechfin = fechfin;
+    }
+
+    public String getDestipo() {
+        return destipo;
+    }
+
+    public void setDestipo(String destipo) {
+        this.destipo = destipo;
     }
 }
